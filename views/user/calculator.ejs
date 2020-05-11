@@ -1,0 +1,26 @@
+<%- include("../partials/header") %>
+
+  <!-- CONTENT -->
+  <div id="initial-user-screen" class="mt-3 mx-4">
+    <h3>Calculadora de Riesgo</h3>
+    <h5 class="line-between mt-4"><span>Información de la cuenta:</span></h5>
+    <input id="account-size" class="d-block ml-2 calculator-input rounded my-2" type="number" min="0" placeholder="Tamaño de la cuenta">
+    <input id="ops-risk" class="d-block ml-2 calculator-input rounded my-2" type="number" min="0" placeholder="Riesgo de la cuenta en %">
+    <div class="separator ml-2">or</div>
+    <input id="trade-size" class="d-block ml-2 calculator-input rounded my-2" type="number" min="0" placeholder="Tamaño de la operación">
+    <h5 class="line-between mt-4"><span>Información de la operación:</span></h5>
+    <input id="sl-per" class="d-block ml-2 calculator-input rounded my-2" type="number" min="0" placeholder="Tamaño de Stop-Loss en %">
+    <h5 class="line-between mt-4"><span>Resultado:</span></h5>
+    <div class="ml-2">
+      <label>Tamaño de la operacion en lotes:</label>
+      <strong><span id="ops-size"></span></strong>
+      <button type="button" class="btn btn-primary d-block" onclick="calcRisk()">CALCULAR</button>
+    </div>
+  </div>
+
+  <!-- <section> is inside partials -->
+  </section>
+
+  <!-- FIXME: change partials to include only the necessary JS to run the calculator -->
+
+<%- include("../partials/footer") %>

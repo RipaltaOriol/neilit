@@ -1,0 +1,74 @@
+<%- include("../../partials/header-sub") %>
+
+  <!-- CONTENT -->
+  <div id="initial-user-screen" class="mt-3 mx-4">
+    <!-- COMMMET HISTORY -->
+    <div class="journal-box my-4">
+      <form action="/username/journal/comment" method="POST">
+        <h5>Historial de Comentarios</h5>
+        <hr>
+        <!-- FIXME: Problem sorting times -->
+        <% var indexE = 0; %>
+        <% var indexC = 0; %>
+        <% while(indexC < historyComment.date.length || indexE < historyEntry.date.length) { %>
+          <% if (indexE == historyEntry.date.length) { %>
+            <p class="bg-light p-2 rounded">
+              <%= historyComment.content[indexC] %>
+              <span class="badge badge-warning"><%= historyComment.date[indexC] %></span>
+            </p>
+            <% indexC++; %>
+          <% } else if (indexC == historyComment.date.length) { %>
+            <div class="card mb-3 comment-entry d-none" style="width: 36rem;">
+              <div class="card-body">
+                <h5 class="card-title"><%= historyEntry.content[indexE] %></h5>
+                <h6 class="card-subtitle my-2 text-muted"><%= historyEntry.date[indexE] %></h6>
+                <p class="card-text">Este texto incluirá información de la entrada para que
+                  el usuario pueda orientarse en cuanto al tipo de operación. Por ejemplo, dirección, reusltado y estrategia.</p>
+                <a href="#" class="card-link">Go to entry</a>
+              </div>
+            </div>
+            <% indexE++; %>
+          <% } else { %>
+            <% var dateC = new Date(historyComment.date[indexC]); %>
+            <% var dateE = new Date(historyEntry.date[indexE]); %>
+            <% if (dateC < dateE) { %>
+                <p class="bg-light p-2 rounded">
+                  <%= historyComment.content[indexC] %>
+                  <span class="badge badge-warning"><%= historyComment.date[indexC] %></span>
+                </p>
+              <% indexC++; %>
+            <% } else { %>
+              <div class="card mb-3 comment-entry d-none" style="width: 36rem;">
+                <div class="card-body">
+                  <h5 class="card-title"><%= historyEntry.content[indexE] %></h5>
+                  <h6 class="card-subtitle my-2 text-muted"><span class="badge badge-warning"><%= historyEntry.date[indexE] %></span></h6>
+                  <p class="card-text">Este texto incluirá información de la entrada para que
+                    el usuario pueda orientarse en cuanto al tipo de operación. Por ejemplo, dirección, reusltado y estrategia.</p>
+                  <a href="#" class="card-link">Go to entry</a>
+                </div>
+              </div>
+              <% indexE++; %>
+            <% } %>
+          <% } %>
+        <% } %>
+
+        <br>
+        <div class="d-flex justify-content-end">
+          <!-- <button type="button" name="button"></button>
+          <button type="button" name="button"></button> -->
+          <button type="button" class="ml-2 px-3 py-2 default-btn">Añadir TAs</button>
+          <button id="removeE" type="button" class="ml-2 px-3 py-2 invert-btn d-none" onclick="removeEntries()">Quitar Entradas</button>
+          <button id="showE" type="button" class="ml-2 px-3 py-2 default-btn" onclick="addEntries()">Añadir Entradas</button>
+          <a href="javascript:history.back()" class="ml-2 px-3 py-2 default-btn">Atrás</a>
+        </div>
+      </form>
+    </div>
+
+
+
+  </div>
+
+<!-- <section> is inside partials -->
+</section>
+
+<%- include("../../partials/footer-sub") %>

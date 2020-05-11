@@ -1,0 +1,123 @@
+@font-face { font-family: Genera-AltLight; src: url("../fonts/Genera-AltLight.ttf");}
+@font-face { font-family: CODE; font-weight: bold; src: url("../fonts/CODE-Bold.otf");}
+
+body {
+  font-family: Genera-AltLight;
+}
+
+nav {
+  background-color: #d5ddeb;
+  border-bottom: 0.5px solid black;
+}
+
+.boundries {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.navbar-brand {
+  font-size: 20px;
+}
+
+.nonactive:active {
+  border: 0.5px solid black!important;
+}
+
+.settings-titles {
+  border-bottom: 0.5px solid black;
+}
+
+.names-field {
+  display: block;
+  width: 400px;
+  border: none;
+  border-bottom: 1px solid grey;
+}
+
+.names-field:focus {
+  outline: none;
+}
+
+#profile-image-change {
+  margin: 0 auto;
+  object-fit: cover;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  display: block;
+}
+
+/* -- UTILITIES -- */
+.auto-center-element {
+  margin: 0 auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.adjust-width {
+  width: 400px;
+}
+
+.accept-btn {
+  max-width: 100px;
+}
+
+.absolute-toNav {
+  position: fixed;
+  top: 56px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.default-btn {
+  font-size: 16px!important;
+  color: white!important;
+  border: 0.5px solid #FF8818!important;
+  border-radius: .25rem!important;
+  background-image: linear-gradient(#FFCF18, #FF8818)!important;
+}
+
+.invert-btn {
+  font-size: 16px!important;
+  color: #FF8818!important;
+  border: 0.5px solid #FF8818!important;
+  border-radius: .25rem!important;
+  background: none!important;
+}
+
+/* .cancel-button {
+  font-size: 16px!important;
+  color: white!important;
+  border: 0.5px solid #FF8818!important;
+  border-radius: .25rem!important;
+  background-image: linear-gradient(#FFCF18, #FF8818)!important;
+}
+
+.delete-button {
+  font-size: 16px!important;
+  color: #FF8818!important;
+  border: 0.5px solid #FF8818!important;
+  border-radius: .25rem!important;
+  background: none!important;
+}
+
+.modify-button {
+  font-size: 16px!important;
+  color: white!important;
+  border: 0.5px solid #FF8818!important;
+  border-radius: .25rem!important;
+  background-image: linear-gradient(#FFCF18, #FF8818)!important;
+} */
+
+#first-settings-title {
+  margin-top: 88px;
+}
+
+@media (min-width: 768px) {
+  #first-settings-title {
+    margin-top: 0px;
+  }
+}
+/* --------------- */

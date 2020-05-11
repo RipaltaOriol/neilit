@@ -1,0 +1,59 @@
+<%- include("../../partials/header-sub") %>
+
+  <!-- CONTENT -->
+  <div id="initial-user-screen" class="mt-3 mx-4">
+
+  <!-- NOTE: CHANGE THE ENTRY NAMING CONVENTIN TO TA -->
+  <!-- WARNING: There have been some changes, taket the difrernce and use
+        the original ejs as the skeleton -->
+  <!-- ********************************************* -->
+
+    <!-- SHOW TA -->
+    <div id="show-ta" class="entries my-4">
+      <form action="/username/journal/ta/<%= thisTaID %>?_method=DELETE" method="POST">
+        <h5><strong>Análisis Técnico</strong>: <%= taTitle %> [by <%= user %>]</h5>
+        <hr>
+        <div class="d-flex flex-wrap mb-3">
+          <select id="ta-pair" name="pair" class="entry-pair custom-select py-1 mx-4 my-1 view-ta" disabled>
+            <% for (var c = 0; c < currencies.length; c++) { %>
+              <option value="<%= currencies[c] %>" class="valid"><%= currencies[c] %></option>
+            <% } %>
+          </select>
+          <div class="entry-category mx-4 my-1">
+            <label for="size" class="my-0 mr-1">Categoría</label>
+            <input type="text" class="field-input" name="" value="<%= taInfo.category %>" disabled>
+          </div>
+          <div class="entry-date mx-4 my-1">
+            <label for="size" class="my-0 mr-1">Fecha</label>
+            <input id="ta-date" type="text" class="field-input" name="date" disabled>
+          </div>
+        </div>
+        <hr>
+        <div id="ta-user-content" class="">
+        <!-- START: user content -->
+
+        </div>
+        <!-- END: user content -->
+        <div class="d-flex justify-content-end">
+          <a href="javascript:history.back()" class="ml-2 px-3 py-2 default-btn"> Cancelar</a>
+          <a href="/username/journal/ta/<%= thisTaID %>/edit" class="ml-2 px-3 py-2 invert-btn">Modificar</a>
+          <button type="submit" class="ml-2 px-3 py-2 invert-btn">Eliminar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<!-- <section> is inside partials -->
+</section>
+
+
+
+<script>
+  // This function is only to show existing TA's so it could be a separate JS field
+  var taObject;
+  var taObject = <%- JSON.stringify(taInfo) %>;
+  var strategies = <%- JSON.stringify(strategies) %>;
+  var timeframes = <%- JSON.stringify(timeframes) %>;
+</script>
+
+<%- include("../../partials/footer-sub") %>

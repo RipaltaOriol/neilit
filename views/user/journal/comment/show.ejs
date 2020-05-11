@@ -1,0 +1,31 @@
+<%- include("../../partials/header-sub") %>
+
+  <!-- CONTENT -->
+  <div id="initial-user-screen" class="mt-3 mx-4">
+
+    <!-- NEW ENTRY -->
+    <div id="new" class="journal-box my-4">
+      <form action="/username/journal/comment/<%= comment.id %>?_method=DELETE" method="POST">
+        <h5>Comentatio creado el <%= comment.date %></h5>
+        <hr>
+        <div class="entry-comments mb-3">
+          <div id="entry-comment"><%= comment.comment %></div>
+        </div>
+        <br>
+
+        <div class="d-flex justify-content-end">
+          <a href="javascript:history.back()" class="ml-2 px-3 py-2 default-btn"> Cancelar</a>
+          <a href="/username/journal/comment/<%= comment.id %>/edit" class="ml-2 px-3 py-2 invert-btn">Modificar</a>
+          <button type="submit" class="ml-2 px-3 py-2 invert-btn">Eliminar</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+<!-- <section> is inside partials -->
+</section>
+
+
+
+<%- include("../../partials/footer-sub") %>

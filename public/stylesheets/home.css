@@ -1,0 +1,264 @@
+@font-face { font-family: Genera-AltLight; src: url("../fonts/Genera-AltLight.ttf");}
+@font-face { font-family: Nunito; src: url("../fonts/Nunito-Regular.ttf");}
+@font-face { font-family: Nunito; src: url("../fonts/Nunito-Light.ttf"); font-weight: lighter;}
+@font-face { font-family: Nunito; src: url("../fonts/Nunito-SemiBold.ttf"); font-weight: 500;}
+@font-face { font-family: Nunito; src: url("../fonts/Nunito-Bold.ttf"); font-weight: bold;}
+
+body {
+  font-family: Nunito;
+  margin: 0;
+  padding: 0;
+}
+
+form {
+  display: inline;
+}
+
+.facebook-btn {
+  width: 14px;
+}
+
+.instagram-btn {
+  width: 27px;
+}
+
+.input-group {
+  width: 450px;
+  margin: 0 auto;
+}
+
+.toolbar-item {
+  font-family: Nunito;
+  font-size: 18px;
+  color: black;
+  width: 60px;
+  text-align: center;
+}
+
+.toolbar-item:hover {
+  color: black;
+  text-decoration: none;
+}
+
+.toolbar-image {
+  width: 30px;
+  height: 30px;
+}
+
+.top-nav {
+  width: 100%;
+  height: 50px;
+  background-color: #FF8818; /* for browsers that do not support gradients */
+  background-image: linear-gradient(#FFCF18, #FF8818); /* standard syntax (must be last) */
+}
+
+.top-nav-n {
+  font-family: Nunito;
+  font-weight: bold;
+  font-size: 38px;
+  color: white;
+}
+
+.widget-header {
+  margin: 0 auto;
+  width: 400px;
+  text-align: center;
+}
+
+.widget-header .big {
+  font-family: Nunito;
+  font-size: 24px;
+  color: #FF8818;
+}
+
+.widget-header .small {
+  font-family: Nunito;
+  font-weight: lighter;
+  font-size: 16px;
+  color: #000000;
+}
+
+.widget-header .line {
+  border: 1px solid #AAAAAA;
+}
+
+.signup-form {
+  margin: 0 auto;
+  width: 400px;
+}
+
+.signup-form .form-input {
+  font-family: Nunito;
+  font-size: 16px;
+  border: 1px solid #AAAAAA;
+  border-radius: 2px;
+  height: 35px;
+  padding-left: 8px;
+}
+
+.signup-form .form-input:focus {
+  outline: none;
+}
+
+.signup-form .form-input::placeholder {
+  font-family: Nunito;
+  font-size: 16px;
+  color: #707070;
+}
+
+.form-check-label {
+  font-family: Nunito;
+  font-size: 14px;
+  color: #707070;
+}
+
+.emphasize-word {
+  color: #FF8818;
+}
+
+.signlogin-button {
+  font-family: Nunito;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  /* missing drop shadow */
+  background-color: #FF8818; /* for browsers that do not support gradients */
+  background-image: linear-gradient(#FFCF18, #FF8818); /* standard syntax (must be last) */
+  width: 100px;
+  height: 34px;
+  margin: 0 auto;
+}
+
+.signlogin-section p {
+  font-family: Nunito;
+  font-size: 14px;
+  text-align: center;
+  color: #707070;
+}
+
+.signlogin-section p a {
+  color: #FF8818;
+}
+
+/* -- UTILITIES -- */
+.spacer {
+  display: block;
+  content: "";
+  height: calc(100vh - 65px);
+  z-index: -10;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+/* --------------- */
+/*   Jaume's CSS   */
+
+
+/* --------------- */
+#top-widget {
+  width: 100px;
+  background-color: red;
+}
+
+#login {
+  font-family: Nunito;
+  font-size: 16px;
+  color: white;
+  width: 100px;
+  background-color: #FF8818; /* for browsers that do not support gradients */
+  background-image: linear-gradient(#FFCF18, #FF8818); /* standard syntax (must be last) */
+  border: none;
+}
+
+#signup {
+  font-family: Nunito;
+  font-size: 16px;
+  color: white;
+  width: 98px;
+  background-color: none;
+  border: 1px solid white;
+}
+
+#home-main {
+  height: 88%;
+  text-align: center;
+}
+
+#header-logo {
+  width: 100%;
+  text-align: center;
+}
+
+#logo-main {
+  width: 380px;
+}
+
+#logo-tagline {
+  font-size: 26px;
+  font-weight: 500;
+  color: #ff8818;
+}
+
+#header-sub {
+  font-family: Nunito;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  width: 450px;
+  margin: 0 auto;
+}
+
+#header-info {
+  font-family: Nunito;
+  font-weight: bold;
+  color: white;
+  font-size: 21px;
+}
+
+#request-code {
+  border: none;
+  opacity: 0.8;
+}
+
+#request-code:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+
+#send-code {
+  font-family: Nunito;
+  border: none;
+  color: white;
+  background-color: #000000; /* for browsers that do not support gradients */
+  background-image: linear-gradient(#FFCF18, #FF8818); /* standard syntax (must be last) */
+}
+
+#home-bg-img {
+  background-image: linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url("../imgs/homepage-BG.jpg");
+  background-color: #cccccc;
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+
+#arrow {
+  text-align: center;
+  height: 80px;
+  position: relative;
+}
+
+#arrow img {
+  width: 80px;
+  -webkit-filter: invert(100%); /* Safari 6.0 - 9.0 */
+  filter: invert(100%);
+}

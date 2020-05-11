@@ -1,0 +1,27 @@
+<%- include("./partials/header-home") %>
+
+  <div class="top-nav d-flex align-items-center justify-content-center">
+    <span class="top-nav-n">N</span>
+  </div>
+
+  <!-- Signup Widget -->
+  <section class="signlogin-section mt-5">
+    <div class="widget-header">
+      <p class="big m-0">Log in</p>
+      <p class="small m-0">Accede a tu cuenta</p>
+      <hr class="line mt-2">
+    </div>
+    <form method="POST" action="/login">
+      <div class="d-flex flex-column signup-form">
+        <input class="form-input my-1" type="email" name="email" placeholder="Correo electrónico">
+        <input class="form-input my-1" type="password" name="password" placeholder="Contraseña">
+
+        <button class="signlogin-button mt-4" type="submit">Entrar</button>
+      </div>
+    </form>
+
+    <p class="mt-2 mb-0">¿No tienes una cuenta? <a href="\signup">Registrate</a></p>
+    <p><a href="#">¿Has olvidado tu contraseña?</a></p>
+  </section>
+
+<%- include("./partials/footer-home") %>

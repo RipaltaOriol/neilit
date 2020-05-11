@@ -1,0 +1,155 @@
+<%- include("../../partials/header-sub") %>
+
+  <!-- CONTENT -->
+  <div id="initial-user-screen" class="mt-3 mx-4">
+
+    <!-- NEW ENTRY -->
+    <div id="new" class="journal-box my-4">
+      <form action="/username/journal/entry" method="POST">
+        <h5>Crear Entrada</h5>
+        <hr>
+        <div class="d-flex flex-wrap">
+          <input id="pair-entry" type="text" name="pair" list="pairsntickers" class="entry-pair custom-select py-1 mx-4 my-1" placeholder="PAIRS" onchange="setCategory()">
+            <datalist id="pairsntickers">
+              <% for (var c = 0; c < currencies.length; c++) { %>
+                <option value="<%= currencies[c] %>">
+              <% } %>
+            </datalist>
+          <div class="entry-category mx-4 my-1">
+            <label for="catetory" class="my-0 mr-1">Categoría</label>
+            <input id="entry-category" type="text" class="field-input" name="category" readonly>
+          </div>
+          <div class="entry-size mx-4 my-1">
+            <label for="size" class="my-0 mr-1">Tamaño</label>
+            <input type="number" class="entry-size field-input" name="size" min="0" step="0.1">
+          </div>
+          <select class="entry-strategy custom-select py-1 mx-4 my-1" name="strategy">
+            <option value="default" selected>Estrategia</option>
+            <% for (var s = 0; s < strategies.length; s++) { %>
+              <option value="<%= strategies[s] %>" class="valid"><%= strategies[s] %></option>
+            <% } %>
+          </select>
+          <div class="entry-date mx-4 my-1">
+            <label for="date" class="my-0 mr-1">Entrada</label>
+            <input type="date" class="field-input" name="entryDate">
+          </div>
+          <div class="entry-time mx-4 my-1">
+            <label for="time" class="my-0 mr-2">Hora</label>
+            <input id="time-input" type="text" class="field-input" name="time" onkeydown="checkTime(event)">
+          </div>
+          <div class="entry-direction mx-4 my-1">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="entryDirection" id="create-entry-buy" value="long">
+              <label class="form-check-label" for="create-entry-buy">Compra</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="entryDirection" id="create-entry-sell" value="short">
+              <label class="form-check-label" for="create-entry-sell">Venta</label>
+            </div>
+          </div>
+          <div class="entry-price mx-4 my-1">
+            <label for="entry-price" class="my-0 mr-2">Precio</label>
+            <input type="number" min="0" step="0.00001" class="entry-price field-input" name="entryPrice">
+          </div>
+          <div class="entry-stoploss mx-4 my-1">
+            <label for="stop-loss" class="my-0 mr-2">SL</label>
+            <input type="number" min="0" step="0.00001" class="entry-sl field-input" name="stopLoss">
+          </div>
+          <div class="entry-takeprofits mx-4 my-1">
+            <label for="take-profit" class="my-0 mr-2">TP</label>
+            <input type="number" min="0" step="0.00001" class="entry-tp field-input" name="takeProfit">
+          </div>
+        </div>
+        <br>
+        <h5>Análisis técnico</h5>
+        <hr>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="entryTA" id="existingTA" value="existing" onclick="addingTA(this)">
+          <label class="form-check-label" for="existingTA">
+            Conectar a análisis técnico
+          </label>
+        </div>
+        <!-- BTN input to pass the TA id to connect the entyr with -->
+        <input id="infoTa" type="text" class="d-none" name="taId">
+        <div id="selectTa" class="dropdown d-none">
+          <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Selecciona el análisis técnico que quieras adjuntar:
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            <% for (var i = 0; i < tanalysis.ta_id.length; i++) { %>
+              <a class="dropdown-item" onclick="passTaId('<%= tanalysis.ta_id[i] %>', '<%= tanalysis.ta_title[i] %>')"><%= tanalysis.ta_title[i] %></a>
+            <% } %>
+          </div>
+          <p>TA seleccionado: <strong id="show-selectedTA"></strong></p>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="entryTA" id="offlineTA" value="offline" onclick="addingTA(this)">
+          <label class="form-check-label" for="offlineTA">
+            Análisis técnico offline
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="entryTA" id="noneTA" value="none" onclick="addingTA(this)">
+          <label class="form-check-label" for="noneTA">
+            Entrada sin análisis técnico
+          </label>
+        </div>
+        <br>
+        <h5>Comentarios</h5>
+        <hr>
+        <div class="entry-comments mb-3">
+          <div id="entry-comment" contenteditable="true">Utilice este espacio para escribir algún comentario adicional</div>
+        </div>
+        <textarea id="comment-input" name="comment" class="d-none"></textarea>
+        <br>
+        <h5>Cerrar Entrada</h5>
+        <hr>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="status" id="open-entry" value="0" onclick="displayClose(this.value)">
+          <label class="form-check-label" for="open-entry">
+            La entrada permanece abierta
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="status" id="close-entry" value="1" onclick="displayClose(this.value)">
+          <label class="form-check-label" for="close-entry">
+            La entrada esta cerrada
+          </label>
+        </div>
+        <div class="close-fields d-none">
+          <div class="entry-exit-date my-2">
+            <label for="exit" class="my-0 mr-2">Salida</label>
+            <input type="date" class="field-input" name="exitDate">
+          </div>
+          <div class="my-2">
+            <label for="close-price" class="my-0 mr-2">Precio</label>
+            <input type="number" min="0" step="0.00001" class="field-input" name="closePrice">
+          </div>
+          <div class="form-group">
+            <label for="entry-result">Resultado</label>
+            <select id="entry-result" name="result">
+              <option value="win">Win</option>
+              <option value="break even">Break Even</option>
+              <option value="loss">Loss</option>
+            </select>
+          </div>
+        </div>
+        <div class="d-flex justify-content-around">
+          <button id="create-entry" type="submit" class="px-3 py-2 journal-button">Crear</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+<!-- <section> is inside partials -->
+</section>
+
+<script type="text/javascript">
+  var currencies = <%- JSON.stringify(currencies) %>;
+  var categories = <%- JSON.stringify(categories) %>;
+  var strategies = <%- JSON.stringify(strategies) %>;
+  var entry = null;
+</script>
+
+<%- include("../../partials/footer-sub") %>

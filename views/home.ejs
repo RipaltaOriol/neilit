@@ -1,0 +1,65 @@
+<%- include("./partials/header-home") %>
+
+<!-- Header -->
+<div id="home-bg-img" class="d-flex flex-column">
+  <!-- Upper Buttons Bar -->
+  <nav class="navbar d-flex justify-content-end">
+    <a class="m-2" href="/username">
+      <img class="facebook-btn" src="../imgs/icons/facebook.svg" alt="">
+    </a>
+    <a class="m-2" href="#">
+      <img class="instagram-btn" src="../imgs/icons/instagram.svg" alt="">
+    </a>
+    <a id="login" class="btn m-2 my-lg-0 py-1" href="/login">
+      Log In
+    </a>
+    <a id="signup" class="btn m-2 my-lg-0 py-1" href="/signup">
+      Sing Up
+    </a>
+  </nav>
+  <!-- LOGO GOES HERE -->
+  <div id="home-main" class="d-flex flex-column justify-content-center">
+    <span id="header-logo" class="m-0">
+      <img id="logo-main" src="/imgs/logo.svg" alt="">
+      <p id="logo-tagline">Upgrade you trading</p>
+    </span>
+    <p id="header-sub">
+      ¿Sigues usando un diario? Pásate a lo digital. No pierdas más tiempo buscando. Encuéntralo todo a la primera.
+    </p>
+    <br>
+    <p id="header-info" class="mb-0">SOLICITA TU CÓDIGO DE ACCESO</p>
+    <div class="input-group mb-3">
+      <input id="request-code" type="email" class="form-control" placeholder="sample@email.com">
+      <div class="input-group-append">
+        <button id="send-code" class="btn" type="button" id="button-addon2">Button</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Spacer -->
+<br class="spacer">
+
+<!-- Arrow -->
+<div id="arrow">
+  <img src="../imgs/icons/expand.svg" alt="">
+</div>
+
+
+<!-- Content -->
+<section class="">
+  <div id="toolbar" class="d-flex justify-content-center mx-5">
+    <a href="#" class="toolbar-item mx-3 align-self-center">Home</a>
+    <a href="#" class="toolbar-item mx-3 align-self-center">Neilit</a>
+    <a href="#" class="toolbar-item mx-3 align-self-center">Precios</a>
+    <img class="toolbar-image mx-3" src="../imgs/logo_N.svg" alt="">
+    <a href="#" class="toolbar-item mx-3 align-self-center">Equipo</a>
+    <a href="#" class="toolbar-item mx-3 align-self-center">Noticias</a>
+    <a href="#" class="toolbar-item mx-3 align-self-center">Contacto</a>
+  </div>
+</section>
+
+
+
+
+<%- include("./partials/footer-home") %>
