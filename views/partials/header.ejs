@@ -20,7 +20,7 @@
       <div id="sideNav" class="sidenav">
         <div id="header-info" class="d-flex header-info mx-3 justify-content-between">
             <span class="navbar-header">NEILIT</span>
-            <a id="close-menu" href="#">
+            <a id="close-menu" href="#!">
               <img class="color-white menu-toggle" src="/imgs/icons/menu-open.svg" alt="">
             </a>
         </div>
@@ -29,31 +29,31 @@
             <span>
               <img class="color-white menu-icons" src="/imgs/icons/home.svg" alt="">
             </span>
-            <a href="/username">Inicio</a>
+            <a href="/<%= currentUser.username %>">Inicio</a>
           </span>
           <span class="menu-element-fix my-1">
             <span>
               <img class="color-white menu-icons" src="/imgs/icons/donut.svg" alt="">
             </span>
-            <a href="#">Estadisticas</a>
+            <a href="#!">Estadisticas</a>
           </span>
           <span class="menu-element-fix my-1">
             <span>
               <img class="color-white menu-icons" src="/imgs/icons/journal.svg" alt="">
             </span>
-            <a href="/username/journal">Diario</a>
+            <a href="/<%= currentUser.username %>/journal">Diario</a>
           </span>
           <span class="menu-element-fix my-1">
             <span>
               <img class="color-white menu-icons" src="/imgs/icons/open-ops.svg" alt="">
             </span>
-            <a href="#">Operaciones abiertas</a>
+            <a href="#!">Operaciones abiertas</a>
           </span>
           <span class="menu-element-fix my-1">
             <span>
               <img class="color-white menu-icons" src="/imgs/icons/security.svg" alt="">
             </span>
-            <a href="/username/calculator">Calculadora de Riesgo</a>
+            <a href="/<%= currentUser.username %>/calculator">Calculadora de Riesgo</a>
           </span>
           <br>
           <!-- NOTE: the code below is used to add dynamic links to the app -->
@@ -69,7 +69,7 @@
             <!-- <hr class="rule-dynamic">
           </div> -->
 
-          <a href="#user/settings" class="text-center mt-auto bottom-btn">
+          <a href="#!" class="text-center mt-auto bottom-btn">
             Hello World
           </a>
         </div>
@@ -83,6 +83,7 @@
           <button id="trigger-search" class="align-self-bottom" type="button" name="button">
             <img src="/imgs/icons/search.svg" alt="">
           </button>
-          <a href="/username/settings" class="mx-1 d-flex align-self-bottom"><img class="header-buttons" src="/imgs/icons/settings.svg" alt=""></a>
-          <a href="#" class="d-flex align-self-bottom" role="button" onclick="openProfile()"><img class="header-buttons" src="/imgs/icons/profile.svg" alt=""></a>
+          <a href="/<%= currentUser.username %>/settings" class="mx-1 d-flex align-self-bottom"><img class="header-buttons" src="/imgs/icons/settings.svg" alt=""></a>
+          <!-- FIXME: detele this function (onClick) -->
+          <a href="#!" class="d-flex align-self-bottom" role="button" onclick="openProfile()"><img class="header-buttons" src="/imgs/icons/profile.svg" alt=""></a>
         </div>

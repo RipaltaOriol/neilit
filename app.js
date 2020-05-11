@@ -97,6 +97,7 @@ app.get("/login", (req, res) => {
 app.post("/login", passport.authenticate('local-login'), (req, res) => {
   // FIXME: doesn't handle error login (default error)
   res.redirect("/" + req.user.username)
+  console.log(req.user);
 })
 
 // SIGNUP ROUTE
@@ -217,12 +218,12 @@ app.get("/:profile/journal/comment", isLoggedIn, (req, res) => {
 })
 
 // NEW COMMNET ROUTE
-app.get("/:user/journal/comment/new", isLoggedIn, (req, res) => {
+app.get("/:profile/journal/comment/new", isLoggedIn, (req, res) => {
   res.render("user/journal/comment/new")
 })
 
 // POST NEW COMMENT ROUTE
-app.post("/:user/journal/comment", isLoggedIn, (req, res) => {
+app.post("/:profile/journal/comment", isLoggedIn, (req, res) => {
   var commentQuery = 'INSERT INTO comments SET ?';
   // create object w/ comment info
   var newcomment = {
@@ -234,7 +235,7 @@ app.post("/:user/journal/comment", isLoggedIn, (req, res) => {
   connection.query(commentQuery, newcomment, (err, results) => {
     if (err) throw err;
     //console.log(results.insertId);
-    res.redirect('/username/journal');
+    res.redirect('/' + req.user.username + '/journal');
 
   });
 })
@@ -1045,8 +1046,13 @@ app.get("/username/settings", function(req, res){
 
 
 function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
-    return next();
+  if(req.isAuthenticated() ) {
+    if (req.user.username === req.params.profile) {
+      return next();
+    } else {
+      // FIXME: so it doesn't freeze and return to previous ROUTE
+      return false;
+    }
   }
     res.redirect("/login");
 }

@@ -1,35 +1,38 @@
 <%- include("./partials/header-home") %>
 
-  <div class="top-nav d-flex align-items-center justify-content-center">
-    <span class="top-nav-n">N</span>
+  <div class="home-nav d-flex justify-content-center">
+    <h1 class="my-auto">N</h1>
   </div>
 
-  <!-- Signup Widget -->
-  <section class="signlogin-section mt-5">
-    <div class="widget-header">
-      <p class="big m-0">Sign up</p>
-      <p class="small m-0">Desata todo tu potencial con Neilit</p>
+  <!-- SIGNUP -->
+  <section class="mt-5">
+    <div class="home-form">
+      <h1 class="m-0">Sign up</h1>
+      <h5 class="m-0">Desata todo tu potencial con Neilit</h5>
       <hr class="line mt-2">
     </div>
-    <form method="POST" action="/signup">
-      <div class="d-flex flex-column signup-form">
-        <input class="form-input my-1" type="text" name="name" placeholder="Nombre">
-        <input class="form-input my-1" type="text" name="surname" placeholder="Apellido">
-        <input class="form-input my-1" type="text" name="username" placeholder="Nombre de usuario">
-        <input class="form-input my-1" type="text" name="email" placeholder="Correo electrónico">
-        <input class="form-input my-1" type="password" name="password" placeholder="Contraseña">
-        <input class="form-input my-1" type="password" name="" placeholder="Confirmar contraseña">
 
+    <form method="POST" action="/signup">
+      <div class="d-flex flex-column">
+        <input class="my-1" type="text" name="name" placeholder="Nombre">
+        <input class="my-1" type="text" name="surname" placeholder="Apellido">
+        <input class="my-1" type="text" name="username" placeholder="Nombre de usuario">
+        <input class="my-1" type="email" name="email" placeholder="Correo electrónico">
+        <input class="my-1" type="password" name="password" placeholder="Contraseña">
+        <input class="my-1" type="password" name="confirm-password" placeholder="Confirmar contraseña">
         <div class="form-group form-check mt-3">
+          <!-- FIXME: missing name -->
           <input type="checkbox" class="form-check-input" id="dataProtectionInformation">
-          <label class="form-check-label" for="dataProtectionInformation">Al hacer click en Continuar, acepto los <span class="emphasize-word">Términos y Condiciones de Uso</span> de Neilit</label>
+          <label class="form-check-label" for="dataProtectionInformation">Al hacer click en Continuar, acepto los <span class="e">Términos y Condiciones de Uso</span> de Neilit</label>
         </div>
 
-        <button class="signlogin-button mt-4" type="submit">Continuar</button>
+        <button class="btn text-light" type="submit">Continuar</button>
       </div>
     </form>
 
-    <p class="mt-2">¿Ya tienes cuenta? <a href="\login">Entar</a></p>
+    <div class="home-form">
+      <p class="mt-2">¿Ya tienes cuenta? <a href="\login">Entar</a></p>
+    </div>
   </section>
 
 <%- include("./partials/footer-home") %>

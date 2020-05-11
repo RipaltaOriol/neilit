@@ -1,7 +1,7 @@
 INSERT INTO users (username, email, name, surname, password)
 VALUES
   ('shyvama', 'oriolripaltaimaso@gmail.com', 'Oriol', 'Ripalta Maso', '123'),
-  ('mmmitusss', 'gelabertgalmes98@gmail.com', 'Jaume', 'Gelabert Galmes', '123');
+  ('mmmitusss', 'gelabertgalmes98@gmail.com', 'Jaume', 'Gelabert Galmes', '636192508Aa+');
 
 INSERT INTO strategies (strategy, user_id)
 VALUES
