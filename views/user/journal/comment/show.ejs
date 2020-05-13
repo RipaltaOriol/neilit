@@ -1,31 +1,27 @@
-<%- include("../../partials/header-sub") %>
+<%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div id="initial-user-screen" class="mt-3 mx-4">
-
-    <!-- NEW ENTRY -->
-    <div id="new" class="journal-box my-4">
+  <div class="mt-3 mx-4">
+    <div class="journal-box">
       <form action="/username/journal/comment/<%= comment.id %>?_method=DELETE" method="POST">
-        <h5>Comentatio creado el <%= comment.date %></h5>
+        <h3 class="mb-0">Comentatio creado el <%= comment.date %></h3>
         <hr>
-        <div class="entry-comments mb-3">
-          <div id="entry-comment"><%= comment.comment %></div>
+        <div class="mb-2">
+          <div><%= comment.comment %></div>
         </div>
         <br>
-
         <div class="d-flex justify-content-end">
-          <a href="javascript:history.back()" class="ml-2 px-3 py-2 default-btn"> Cancelar</a>
-          <a href="/username/journal/comment/<%= comment.id %>/edit" class="ml-2 px-3 py-2 invert-btn">Modificar</a>
-          <button type="submit" class="ml-2 px-3 py-2 invert-btn">Eliminar</button>
+          <a href="javascript:history.back()" class="btn-neilit">Cancelar</a>
+          <a href="/username/journal/comment/<%= comment.id %>/edit" class="btn-inverted">Modificar</a>
+          <button type="submit" class="btn-neilit">Eliminar</button>
         </div>
       </form>
     </div>
-
   </div>
 
-<!-- <section> is inside partials -->
-</section>
+  <!-- <section> is inside partials -->
+  </section>
+<!-- LOCAL SCRIPTS -->
+<script type="text/javascript" src="/js/comment.js"></script>
 
-
-
-<%- include("../../partials/footer-sub") %>
+<%- include("../../../partials/footer-log") %>

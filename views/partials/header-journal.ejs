@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+      <!-- BOOTSTRAP -->
+      <link rel="stylesheet" href="/utilities/bootstrap/css/bootstrap.min.css">
+      <!-- CSS -->
+      <link rel="stylesheet" href="/stylesheets/app.css">
+      <link rel="stylesheet" href="/stylesheets/journal.css">
+
+      <title>Neilit || <%= currentUser.username %></title>
+    </head>
+    <body>
+      <!-- MENU BAR -->
+      <div id="neilit-menu">
+        <div id="header-menu" class="d-flex mx-3">
+            <h1>NEILIT</h1>
+            <a id="toggle-c-menu" class="ml-auto" href="#!">
+              <img src="/imgs/icons/menu-open.svg" alt="toggle menu">
+            </a>
+        </div>
+        <div id="content-menu" class="d-flex flex-column mx-3">
+          <span class="element-menu mt-2">
+            <img src="/imgs/icons/home.svg" alt="">
+            <a href="/<%= currentUser.username %>">Inicio</a>
+          </span>
+          <span class="element-menu mt-2">
+            <img src="/imgs/icons/donut.svg" alt="">
+            <a href="#!">Estadisticas</a>
+          </span>
+          <span class="element-menu mt-2">
+            <img src="/imgs/icons/journal.svg" alt="">
+            <a href="/<%= currentUser.username %>/journal">Diario</a>
+          </span>
+          <span class="element-menu mt-2">
+            <img src="/imgs/icons/open-ops.svg" alt="">
+            <a href="#!">Operaciones abiertas</a>
+          </span>
+          <span class="element-menu mt-2">
+            <img src="/imgs/icons/security.svg" alt="">
+            <a href="/<%= currentUser.username %>/calculator">Calculadora de Riesgo</a>
+          </span>
+          <br>
+        </div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <section id="content" class="mt-4">
+        <div id="header-top" class="d-flex mx-4">
+          <a id="toggle-o-menu" class="ml-1 mr-4 d-none" href="#!">
+            <img src="/imgs/icons/menu.svg">
+          </a>
+
+          <form class="d-flex justify-content-end">
+            <input id="search" type="text" placeholder="¿Qué estás buscando?">
+            <button id="search-icon" type="submit">
+              <img src="/imgs/icons/search.svg" alt="search">
+            </button>
+          </form>
+
+          <a href="/<%= currentUser.username %>/settings" class="mx-1 d-flex align-self-bottom">
+            <img class="btn-top" src="/imgs/icons/settings.svg" alt="">
+          </a>
+        </div>

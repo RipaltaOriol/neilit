@@ -13,7 +13,7 @@ var entryClose = document.getElementById("close-entry");
 var closeFields = document.getElementsByClassName("close-fields")[0];
 var editView = document.getElementsByClassName("edit-view")[0];
 
-var createComment = document.getElementById("create-comment");
+
 
 // JS for the COMMENT section of the JOURNAL
 // Pass the text inside the comment to an input to send to backend
@@ -37,12 +37,7 @@ function addEntries() {
   }
 }
 
-if (createComment != null) {
-  createComment.addEventListener("click", () => {
-    var passComment = $("#comment-input");
-    passComment.val(entryComment.textContent || entryComment.innerText);
-  })
-}
+
 
 
 if (!(editView == null)) {

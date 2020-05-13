@@ -224,13 +224,13 @@ app.get("/:profile/journal/comment/new", isLoggedIn, (req, res) => {
 
 // POST NEW COMMENT ROUTE
 app.post("/:profile/journal/comment", isLoggedIn, (req, res) => {
+  console.log(req.body);
   var commentQuery = 'INSERT INTO comments SET ?';
   // create object w/ comment info
   var newcomment = {
     user_id: req.user.id,
     comment: req.body.comment
   }
-  //console.log(req.body);
   // save comment to the DB
   connection.query(commentQuery, newcomment, (err, results) => {
     if (err) throw err;
@@ -1046,15 +1046,17 @@ app.get("/username/settings", function(req, res){
 
 
 function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated() ) {
-    if (req.user.username === req.params.profile) {
-      return next();
-    } else {
-      // FIXME: so it doesn't freeze and return to previous ROUTE
-      return false;
-    }
-  }
-    res.redirect("/login");
+  // if(req.isAuthenticated() ) {
+  //   if (req.user.username === req.params.profile) {
+  //     return next();
+  //   } else {
+  //     // FIXME: so it doesn't freeze and return to previous ROUTE
+  //     return false;
+  //   }
+  // }
+  //   res.redirect("/login");
+  // The MIDDLEWARE has been dissables for DEV. purposes
+  return next();
 }
 
 // PORT LISTENING
