@@ -1,69 +1,300 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<%- include("../partials/header-settings") %>
 
-
-  <!-- BOOTSTRAP -->
-  <link rel="stylesheet" href="/utilities/bootstrap/css/bootstrap.min.css">
-
-  <!-- The link to the CSS file -->
-  <link rel="stylesheet" href="/stylesheets/settings.css">
-
-
-  <title>Neilit || Settings</title>
-</head>
-<body>
-  <div class="m-5">
-    <div class="container-flex mb-5">
-      <div class="d-flex justify-content-around underline">
-        <a href="#" class="settings-sections">Perfil</a>
-        <a href="#" class="settings-sections">Cuenta y facturación</a>
-        <a href="#" class="settings-sections">Configuración</a>
-        <a href="#" class="settings-sections">Personalización</a>
-        <a href="https://www.google.com" class="settings-sections">Ayuda y soporte</a>
-      </div>
-    </div>
-    <div class="container-flex mb-5">
-      <div class="d-flex flex-column align-items-center">
-        <img src="/imgs/undefined.png" class="avatar mb-2">
-        <a href="#" class="anchor-avatar">Editar foto</a>
-      </div>
-    </div>
-
-    <div class="container-flex">
-      <div class="row">
-        <div class="col-6">
-          <p class="settings-header mb-1">Información privada</p>
-          <hr class="mt-1">
-          <p class="settings-field mb-1">Email</p>
-          <p class="settings-info">gelabert@neilit.com</p>
-          <p class="settings-field mb-1">Nombre</p>
-          <p class="settings-info">Jaume</p>
-          <p class="settings-field mb-1">Apellido</p>
-          <p class="settings-info">Gelabert</p>
-          <p class="settings-field mb-1">Número de teléfono</p>
-          <p class="settings-info">+34 645665435</p>
-          <p class="settings-field mb-1">Contraseña</p>
-          <p class="settings-info">*********</p>
-        </div>
-        <div class="col-6">
-          <p class="settings-header mb-1">Información pública</p>
-          <hr class="mt-1">
-          <p class="settings-field mb-1">Nombre de usuario</p>
-          <p class="settings-info">mmmitusss</p>
-          <p class="settings-field mb-1">Activo favorito</p>
-          <p class="settings-info">EUR/USD</p>
-        </div>
-      </div>
-      <!-- Do NOT remove -->
-      <div class="row">
-        <a href="/logout" class="m-auto btn btn-danger">Sign out</a>
+  <div class="bg-orange py-2">
+    <div class="w-100 row mx-auto d-flex align-items-center">
+      <div class="col-4">
+        <a href="javascript:history.back()" class="text-light">
+          <img src="/imgs/icons/arrow-left.svg" class="icon-content-xs">
+          Back to dashboard
+        </a>
       </div>
     </div>
   </div>
 
-</body>
-</html>
+  <div class="w-100 d-flex justify-content-center my-3">
+    <ul class="nav">
+      <li class="nav-item mx-1">
+        <a class="nav-link active" role="tab" href="#profile" data-toggle="tab">
+          Perfil
+        </a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" role="tab" href="#accountBilling" data-toggle="tab">
+          Account and Billing
+        </a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" role="tab" href="#settings" data-toggle="tab">
+          Settings
+        </a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" role="tab" href="#customization" data-toggle="tab">
+          Customization
+        </a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" role="tab" href="#helpSupport" data-toggle="tab">
+          Help and Support
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <!-- tabs content -->
+    <div class="tab-content">
+      <!-- profile -->
+      <div role="tabpanel" class="tab-box tab-pane active" id="profile">
+        <div class="d-flex flex-column">
+          <div class="d-flex justify-content-between">
+
+            <div class="w-50 mx-5 my-4">
+              <h4 class="pb-1 mb-3">Private Information</h4>
+              <h5 class="mb-1">Email</h5>
+              <p>gelabertgalmes98@gmail.com</p>
+              <h5 class="mb-1">Name</h5>
+              <p>Jaume</p>
+              <h5 class="mb-1">Last Name</h5>
+              <p>Gelabert Galmés</p>
+              <h5 class="mb-1">Phone Number</h5>
+              <p>646985647</p>
+              <h5 class="mb-1">Password</h5>
+              <p>************</p>
+            </div>
+
+            <div class="w-50 mx-5 my-4">
+              <h4 class="pb-1 mb-3"> Public Information </h4>
+              <h5 class="mb-1">Profile Picture</h5>
+              <img src="/imgs/icons/face.svg" class="mb-2" alt="profile picture">
+              <h5 class="mb-1">Username</h5>
+              <p>@mmmitusss</p>
+            </div>
+
+          </div>
+          <div class="d-flex justify-content-center mb-3">
+            <a href="/logout" class="btn btn-outline-danger">Sign off</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- account & billing -->
+      <div role="tabpanel" class="tab-box tab-pane" id="accountBilling">
+        <div class="bg-orange d-flex flex-column text-center py-5">
+          <h2 class="text-light">Get 6 months free!</h2>
+          <h5 class="text-light">Switch to the annual plan and save $ 60. You will have access to exclusive features.</h5>
+        </div>
+        <div class="d-flex justify-content-between">
+
+          <div class="w-50 mx-5 my-4">
+            <h4 class="pb-1 mb-3">My Plan</h4>
+            <h5 class="mb-1">Neilit Pro <a href="#!" class="orange font-13">What does the plan include?</a></h5>
+            <p class="mb-1">Remaining days: 14 days</p>
+            <a href="#!"><p>Cancel automatic renewal</p></a>
+          </div>
+
+          <div class="w-50 mx-5 my-4">
+            <h4 class="pb-1 mb-3">Payment method</h4>
+
+            <div class="d-flex align-items-start">
+              <img src="/imgs/icons/payment.svg" class="img-md mr-2">
+              <p class=" mr-2">*9872</p>
+              <img src="/imgs/icons/lock.svg" class="img-sm mr-2" data-toggle="tooltip" data-placement="right" title="Mensaje sobre seguridad del metodo de pago">
+            </div>
+            <a href="#!" class="a-sm mb-2">Change payment method</a>
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 mr-2">Billing Interval</h5>
+              <p class="mb-0">Monthly</p>
+            </div>
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 mr-2">Invoice Amount</h5>
+              <p class="mb-0">$25</p>
+            </div>
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 mr-2">Email</h5>
+              <p class="mb-0">gelabertgalmes98@gmail.com</p>
+            </div>
+
+            <div class="d-flex justify-content-center mt-2">
+              <a href="#" class="orange" data-toggle="modal" data-target="#invoices"> See Invoices</a>
+            </div>
+
+            <!-- invoices -->
+            <div class="modal fade" id="invoices" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body ">
+                    <a href="#!" class="outline-none">
+                      <div class="d-flex justify-content-between align-items-center invoice px-1">
+                        <span>10 de Septiembre 2020</span>
+                        <div class="d-flex justify-content-end align-items-center">
+                          <span class="invoice-pending px-1 ml-3">Pending</span>
+                          <span class="ml-3">$25</span>
+                          <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#!" class="outline-none">
+                      <div class="d-flex justify-content-between align-items-center invoice px-1">
+                        <span>10 de Agosto 2020</span>
+                        <div class="d-flex justify-content-end align-items-center">
+                          <span class="invoice-clear px-1 ml-3">Succesfull</span>
+                          <span class="ml-3">$25</span>
+                          <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#!" class="outline-none">
+                      <div class="d-flex justify-content-between align-items-center invoice px-1">
+                        <span>10 de Julio 2020</span>
+                        <div class="d-flex justify-content-end align-items-center">
+                          <span class="invoice-clear px-1 ml-3">Succesfull</span>
+                          <span class="ml-3">$25</span>
+                          <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#!" class="outline-none">
+                      <div class="d-flex justify-content-between align-items-center invoice px-1">
+                        <span>10 de Junio 2020</span>
+                        <div class="d-flex justify-content-end align-items-center">
+                          <span class="invoice-clear px-1 ml-3">Succesfull</span>
+                          <span class="ml-3">$25</span>
+                          <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#!" class="outline-none">
+                      <div class="d-flex justify-content-between align-items-center invoice px-1">
+                        <span>10 de May 2020</span>
+                        <div class="d-flex justify-content-end align-items-center">
+                          <span class="invoice-clear px-1 ml-3">Succesfull</span>
+                          <span class="ml-3">$25</span>
+                          <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- settings -->
+      <div role="tabpanel" class="tab-box tab-pane" id="settings">
+        <div class="d-flex justify-content-between">
+          <div class="text-left w-50 mx-5 my-4">
+            <h4 class="pb-1 mb-3">Configuración de Balance</h4>
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 mr-2">Account Currency</h5>
+              <p class="mb-0">< dropdown ></p>
+            </div>
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 mr-2">Balance Inicial</h5>
+              <p class="mb-0">25.000</p>
+            </div>
+            <!-- dark mode -->
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 mr-2">Dark mode</h5>
+              <label class="switch mb-0">
+                <input type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <!-- sound -->
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 mr-2">Enable sound Inicial</h5>
+              <label class="switch mb-0">
+                <input type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="text-left w-50 mx-5 my-4">
+            <div class="mb-3">
+              <h4 class="pb-1 mb-2">
+                Current Goals
+                <a href="#!" class="mb-0 float-right">Add Goal</a>
+              </h4>
+              <p class="mt-0 mb-1">+5% semanal</p>
+              <p class="mt-0 mb-1">Escribir en el journal a diario</p>
+              <p class="mt-0 mb-1">Backtest all USD/JPY</p>
+              <p class="mt-0 mb-1">Launch Neilit!</p>
+            </div>
+            <div class="">
+              <h4 class="pb-1 mb-3">
+                Strategies
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create a new strategy to add to on your TA">
+              </h4>
+              <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100">
+              <!-- all strategies -->
+              <a href="#!" id="">
+                <ul id="listStrategy" class="pl-0">
+
+                </ul>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- customization -->
+      <div role="tabpanel" class="tab-box tab-pane" id="customization">
+        <div class="d-flex flex-column align-items-center py-5 text-center">
+              <h2 class="w-50">We Are Currently Working On This Page.</h2>
+            <span class="w-50 mt-3 grey">
+              To know more about what we are working on, you can visit
+              <a href="#!">next updates</a>.
+            </span>
+        </div>
+      </div>
+
+      <!-- help & support -->
+      <div role="tabpanel" class="tab-box tab-pane" id="helpSupport">
+        <div class="d-flex justify-content-between">
+
+          <div class="w-50 mx-5 my-4">
+            <h4 class="pb-1 mb-3">
+              FAQs
+              <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Frequently Asked Question(s)">
+            </h4>
+            <div class="d-flex flex-column">
+              <a href="#!" class="FAQ mb-1">How to create an entry</a>
+              <a href="#!" class="FAQ mb-1">How to backtest</a>
+              <a href="#!" class="FAQ mb-1">Interpret statistics</a>
+              <a href="#!" class="FAQ mb-1">Upgrade your plan</a>
+              <a href="#!" class="FAQ mb-1">Random questions</a>
+              <a href="#!" class="FAQ mb-1">How to create an entry</a>
+            </div>
+          </div>
+
+          <div class="w-50 mx-5 my-4">
+            <div class="mb-4">
+              <h4 class="pb-1 mb-3">Ask Us</h4>
+              <span class="grey">
+                Send a message to
+                <a href="#" class="linkNaranja">support@neilit.com</a>
+                and we will help you as soon as possible.
+              </span>
+            </div>
+
+            <div class="">
+              <h4 class="pb-1 mb-3">Wiki</h4>
+              <span class="grey">
+                Solve all your doubts at the moment. You will
+                find most of Neilit's functions described in depth.
+              </span>
+              <div class="text-center mt-3">
+                <a href="#!" class="btn-neilit">Go to Wiki</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include("../partials/footer-settings") %>

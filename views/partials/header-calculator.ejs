@@ -16,52 +16,69 @@
     <body>
       <!-- MENU BAR -->
       <div id="neilit-menu">
-        <div id="header-menu" class="d-flex mx-3">
+        <div id="header-menu" class="d-flex mx-3 pl-2">
             <h1>NEILIT</h1>
             <a id="toggle-c-menu" class="ml-auto" href="#!">
               <img src="/imgs/icons/menu-open.svg" alt="toggle menu">
             </a>
         </div>
         <div id="content-menu" class="d-flex flex-column mx-3">
-          <span class="element-menu mt-2">
-            <img src="/imgs/icons/home.svg" alt="">
-            <a href="/<%= currentUser.username %>">Inicio</a>
-          </span>
-          <span class="element-menu mt-2">
-            <img src="/imgs/icons/donut.svg" alt="">
-            <a href="#!">Estadisticas</a>
-          </span>
-          <span class="element-menu mt-2">
-            <img src="/imgs/icons/journal.svg" alt="">
-            <a href="/<%= currentUser.username %>/journal">Diario</a>
-          </span>
-          <span class="element-menu mt-2">
-            <img src="/imgs/icons/open-ops.svg" alt="">
-            <a href="#!">Operaciones abiertas</a>
-          </span>
-          <span class="element-menu mt-2">
-            <img src="/imgs/icons/security.svg" alt="">
-            <a href="/<%= currentUser.username %>/calculator">Calculadora de Riesgo</a>
-          </span>
-          <br>
+          <a href="/<%= currentUser.username %>">
+            <div class="element-menu d-flex align-items-center mt-2 ml-3">
+              <img src="/imgs/icons/home.svg" alt="home">
+              <span class="pl-2">Home</span>
+            </div>
+          </a>
+          <a href="#!">
+            <div class="element-menu d-flex align-items-center mt-2 ml-3">
+              <img src="/imgs/icons/donut.svg" alt="statistics">
+              <span class="pl-2">Estadísticas</span>
+            </div>
+          </a>
+          <a href="/<%= currentUser.username %>/journal">
+            <div class="element-menu d-flex align-items-center mt-2 ml-3">
+              <img src="/imgs/icons/journal.svg" alt="journal">
+              <span class="pl-2">Diario</span>
+            </div>
+          </a>
+          <a href="/<%= currentUser.username %>/journal">
+            <div class="element-menu d-flex align-items-center mt-2 ml-3">
+              <img src="/imgs/icons/plan.svg" alt="trading plan">
+              <span class="pl-2">Trading Plan</span>
+            </div>
+          </a>
+          <a href="/<%= currentUser.username %>/calculator">
+            <div class="element-menu d-flex align-items-center mt-2 ml-3">
+              <img src="/imgs/icons/calculator.svg" alt="calculator">
+              <span class="pl-2">Calculadora</span>
+            </div>
+          </a>
+        </div>
+        <div class="mt-auto text-center">
+          <button class="btn-inverted w-75">
+            <strong>Upgrade to Pro!</strong>
+          </button>
         </div>
       </div>
 
-      <!-- SEARCH BAR -->
       <section id="content" class="mt-4">
-        <div id="header-top" class="d-flex mx-4">
-          <a id="toggle-o-menu" class="ml-1 mr-4 d-none" href="#!">
-            <img src="/imgs/icons/menu.svg">
-          </a>
-
-          <form class="d-flex justify-content-end">
-            <input id="search" type="text" placeholder="¿Qué estás buscando?">
-            <button id="search-icon" type="submit">
-              <img src="/imgs/icons/search.svg" alt="search">
-            </button>
-          </form>
-
-          <a href="/<%= currentUser.username %>/settings" class="mx-1 d-flex align-self-bottom">
-            <img class="btn-top" src="/imgs/icons/settings.svg" alt="">
-          </a>
+        <div id="header-top" class="d-flex justify-content-between mx-4 ">
+          <div>
+            <a id="toggle-o-menu" class="ml-1 mr-4 d-none" href="#!">
+              <img src="/imgs/icons/menu.svg">
+            </a>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="ml-3">
+              <form id="search">
+                <input spellcheck="false" type="search" placeholder="Search">
+              </form>
+            </div>
+            <a href="/<%= currentUser.username %>/settings" class="ml-2 h-100 d-flex flex-column justify-content-center">
+              <img class="btn-top" src="/imgs/icons/settings.svg" alt="settings">
+            </a>
+            <a href="#!" class="ml-3 h-100 d-flex flex-column justify-content-center">
+              <img class="btn-top" src="/imgs/icons/face.svg" alt="profile">
+            </a>
+          </div>
         </div>

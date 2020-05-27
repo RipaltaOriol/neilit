@@ -18,24 +18,7 @@ var editView = document.getElementsByClassName("edit-view")[0];
 // JS for the COMMENT section of the JOURNAL
 // Pass the text inside the comment to an input to send to backend
 
-// Show entries on [All Comments Route]
-function removeEntries() {
-  document.getElementById('removeE').classList.add('d-none')
-  document.getElementById('showE').classList.remove('d-none')
-  var allEntries = document.getElementsByClassName('comment-entry');
-  for (var i = 0; i < allEntries.length; i++) {
-    allEntries[i].classList.add('d-none')
-  }
-}
 
-function addEntries() {
-  document.getElementById('removeE').classList.remove('d-none')
-  document.getElementById('showE').classList.add('d-none')
-  var allEntries = document.getElementsByClassName('comment-entry');
-  for (var i = 0; i < allEntries.length; i++) {
-    allEntries[i].classList.remove('d-none')
-  }
-}
 
 
 
@@ -513,7 +496,7 @@ if (ta_new_strategy != null) {
 // NOTE: deleting adds 'permanent' class 'display:none'. If the elements
 // were truly deleted this would affect the identifiers because they are
 // dynamic
-function tellIndex(idElement) {
+function whatIndex(idElement) {
   var listOfAddedElements = $(".delete_element");
   var currentDeleteElement = listOfAddedElements.index(idElement);
   var currentAddedElement = $(".ta-element");

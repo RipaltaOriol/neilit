@@ -1,6 +1,8 @@
 // Load necessary requirements and connenctions
-var LocalStrategy  = require('passport-local').Strategy;
-var mysql           = require('mysql');
+const LocalStrategy  = require('passport-local').Strategy;
+const mysql           = require('mysql');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 // Connect to DB
 var connection = mysql.createConnection({
@@ -37,32 +39,39 @@ module.exports = function(passport) {
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
   function(req, email, password, done) {
-    console.log(req.body.username);
-    console.log(req.body.password);
     connection.query('SELECT * FROM users WHERE email = ?', email, function(err, rows) {
-      console.log(rows);
-      console.log('above row object');
       if (err) return done(err);
-      if (rows.length) {
-        return done(null, false) // after false you can pass your flash message
+      if (rows.length > 0) {
+        return done(null, false, req.flash("error", "An account with this email already exists."));
       } else {
+        if (req.body.password != req.body.confirmPassword) {
+          return done(null, false, req.flash("error", "Passwords don't match."));
+        }
         // Create user if no user with that email exists
         var newUserMysql = new Object();
         newUserMysql.username = req.body.username;
         newUserMysql.email = email;
         newUserMysql.name = req.body.name;
         newUserMysql.surname = req.body.surname;
-        // FIXME: the current user model contains no generateHash function
-        newUserMysql.password = password // use the generateHash function in our user model
-        var insertQuery = "INSERT INTO users SET ?";
-        // FIXME: newUserInsert has to be created: it doesn't exists
-        connection.query(insertQuery, newUserMysql, (err, rows) => {
-          if (err) throw err;
-          newUserMysql.id = rows.insertId;
-          // FIXME: do NOT retrun the password inside this Object
-          // FIXME: build a new Object with required info only (i.e. id, username, mail, etc)
-          return done(null, newUserMysql)
+        // Hash password
+        var hashingPassword = new Promise (function(resolve, reject) {
+          setTimeout(function() {
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+              resolve(hash);
+            });
+          }, 2000);
         });
+        hashingPassword.then(function(hash) {
+          newUserMysql.password = hash;
+          connection.query("INSERT INTO users SET ?", newUserMysql, (err, rows) => {
+            if (err) throw err;
+            newUserMysql.id = rows.insertId;
+            newUserMysql.password = null;
+            return done(null, newUserMysql)
+          });
+        }).catch(function(data) {
+          // failed to hash
+        })
       }
     });
   }));
@@ -77,15 +86,19 @@ module.exports = function(passport) {
       if (err) return done(err);
       if (!rows.length) {
       // User not found
-        return done (null,false); // after false you can pass your flash message
+        return done (null,false, req.flash("error", "User not found."));
       }
-      // User found but wrong password
-      if (!(rows[0].password == password)) {
-        return done(null, false) // after false you can pass your flash message [WRONG]
-      } else {
-      // Successful login
-        return done(null, rows[0]);
-      }
+      bcrypt.compare(password, rows[0].password, function(err, result) {
+        // User found but wrong password
+        if (!result) {
+          return done(null, false, req.flash("error", "Oops! Wrong password."))
+        }
+        // Successful login
+        else {
+          rows[0].password = null;
+          return done(null, rows[0]);
+        }
+      });
     });
   }));
 };

@@ -1,0 +1,116 @@
+.journal-box .btn-neilit {
+  color: white;
+}
+  .journal-box .btn-neilit:hover {
+    text-decoration: none;
+  }
+  .journal-box .btn-inverted {
+    color: #ff8818;
+  }
+    .journal-box .btn-inverted:hover {
+      color: white;
+    }
+
+/* || Utility */
+.bg-hover {
+  border-radius: .25rem;
+}
+  .bg-hover:hover {
+    background-color: #f7f7f7;
+  }
+
+.date-badge {
+  display: block;
+  color: #ff8818;
+}
+
+.dropdown-menu {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+  border: none;
+}
+  .dropdown-menu a {
+    border-radius: .25rem;
+  }
+    .dropdown-menu a:active{
+      color: white;
+      background-color: #ff8818;
+    }
+
+#client-comment {
+  color: black;
+}
+  #client-comment:focus {
+    color: black;
+    background-color: #f7f7f7;
+    border-radius: .25rem;
+    outline: none;
+  }
+  #client-comment[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #7b7b7b;
+  }
+  #client-comment[placeholder]:empty:focus:before {
+    content: "";
+  }
+
+#add-e {
+  color: #ff8818;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: .25rem;
+}
+  #add-e:hover {
+    background-color: #f7f7f7;
+  }
+  #add-e:focus {
+    box-shadow: none;
+  }
+
+/* || Technical Analysis Elments */
+/* FIXME: refactor unecessary specification */
+#ta-content { }
+  #ta-content .title {
+    width: 100%;
+    font-size: 24px;
+    font-weight: 500;
+    border-radius: .25rem;
+    text-decoration: underline;
+  }
+    #ta-content .title:hover {
+      background-color: #f7f7f7;
+    }
+  #ta-content .text {
+    width: 100%;
+    border-radius: .25rem;
+    overflow: auto;
+  }
+    #ta-content .text:hover {
+      background-color: #f7f7f7;
+    }
+  #ta-content .image {
+    border-radius: .25rem;
+  }
+    #ta-content .image:hover {
+      background-color: #f7f7f7;
+    }
+    #ta-content .image input {
+      max-width: 300px;
+      border: 2px solid #ff8818;
+      border-radius: .25rem;
+    }
+  #ta-content .image-src {
+    max-width: 100%;
+    max-height: 600px;
+  }
+  #ta-content .strategy {
+    border-radius: .25rem;
+  }
+    #ta-content .strategy:hover {
+      background-color: #f7f7f7;
+    }
+  #ta-content .move{
+    display: inline;
+  }
+  #ta-content .drop {
+    display: inline;
+  }

@@ -5,5 +5,5 @@ DELETE FROM strategies;
 DELETE FROM tanalysis;
 DELETE FROM telements;
 DELETE FROM pairs;
+DELETE FROM comments;
 DELETE FROM users;
-DELETE FROM commnets;

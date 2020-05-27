@@ -1,6 +1,11 @@
 /* || Bootstrap class */
 .container {
-  max-width: 1125px;
+  max-width: 1025px;
+}
+
+/* || Bootstrap class */
+.custom-select {
+  height: auto;
 }
 
 .journal-box {
@@ -27,10 +32,57 @@
       box-shadow: none;
     }
   .journal-box .journal-link {
+    display: block;
     color: #7B7B7B;
   }
 
+.checkbox-orange {
+  display: block;
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+  .checkbox-orange input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+    .checkbox-orange:hover input ~ .checkmark {
+      background-color: #EEEEEE;
+    }
+    .checkbox-orange input:checked ~ .checkmark {
+      background-color: #FF8818;
+    }
+    .checkbox-orange input:checked ~ .checkmark:after {
+      display: block;
+    }
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 5px;
+  height: 15px;
+  width: 15px;
+  border: 2px solid #FF8818;
+  border-radius: 2px;
+}
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
 .comment-date {
+  text-align: right;
   color: #7B7B7B;
   vertical-align: initial;
 }

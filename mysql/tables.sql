@@ -22,7 +22,7 @@ CREATE TABLE users
     email VARCHAR(40) NOT NULL,
     name VARCHAR(40) NOT NULL,
     surname VARCHAR(40) NOT NULL,
-    password VARCHAR(40) NOT NULL,
+    password VARCHAR(4000) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
   );
 

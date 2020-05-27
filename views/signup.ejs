@@ -1,38 +1,73 @@
 <%- include("./partials/header-home") %>
 
-  <div class="home-nav d-flex justify-content-center">
-    <h1 class="my-auto">N</h1>
-  </div>
-
-  <!-- SIGNUP -->
-  <section class="mt-5">
-    <div class="home-form">
-      <h1 class="m-0">Sign up</h1>
-      <h5 class="m-0">Desata todo tu potencial con Neilit</h5>
-      <hr class="line mt-2">
+<div class="bg-orange py-1">
+  <div class="w-100 row mx-auto d-flex align-items-center">
+    <div class="col-4">
+      <a href="/" class="text-light">
+        <img src="/imgs/icons/arrow-left.svg" class="icon-content-xs">
+        Go Back
+      </a>
+    </div>
+    <div class="col-4">
+      <h1 class="text-light text-center mb-0">NEILIT</h1>
     </div>
 
-    <form method="POST" action="/signup">
-      <div class="d-flex flex-column">
-        <input class="my-1" type="text" name="name" placeholder="Nombre">
-        <input class="my-1" type="text" name="surname" placeholder="Apellido">
-        <input class="my-1" type="text" name="username" placeholder="Nombre de usuario">
-        <input class="my-1" type="email" name="email" placeholder="Correo electrónico">
-        <input class="my-1" type="password" name="password" placeholder="Contraseña">
-        <input class="my-1" type="password" name="confirm-password" placeholder="Confirmar contraseña">
-        <div class="form-group form-check mt-3">
-          <!-- FIXME: missing name -->
-          <input type="checkbox" class="form-check-input" id="dataProtectionInformation">
-          <label class="form-check-label" for="dataProtectionInformation">Al hacer click en Continuar, acepto los <span class="e">Términos y Condiciones de Uso</span> de Neilit</label>
-        </div>
-
-        <button class="btn text-light" type="submit">Continuar</button>
+    <div class="col-4 d-flex justify-content-end">
+      <!-- Size: M, L Y XL -->
+      <div class="d-none d-md-block text-light">
+        Already a member?
+        <a href="/login" class="text-light ml-1 hover-white">
+          <strong>Log in</strong>
+        </a>
       </div>
-    </form>
-
-    <div class="home-form">
-      <p class="mt-2">¿Ya tienes cuenta? <a href="\login">Entar</a></p>
+      <!-- Size: S Y XS -->
+      <div class="d-block d-md-none">
+        <a href="/login" class="text-light ml-1 hover-white">
+          <strong>Log in</strong>
+        </a>
+      </div>
     </div>
-  </section>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <!-- flash messages -->
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-danger" role="alert">
+      <%= error %>
+    </div>
+  <% } %>
+  <% if (success && success.length > 0) { %>
+    <div class="alert alert-success" role="alert">
+      <%= success %>
+    </div>
+  <% } %>
+  <div class="row d-flex justify-content-center">
+    <!-- NOTE: adjust the bootstrap class to change dimensions across different screens -->
+    <div class="col-10 col-md-8 col-lg-5 text-center">
+      <h2 class="orange">Sign Up</h2>
+      <p class="border-bottom">Create a new account</p>
+      <form class="d-flex flex-column" method="POST" action="/signup">
+        <!-- first name -->
+        <input class="mb-2 pl-2" type="text" required="required" name="name" value="" placeholder="First Name">
+        <!-- last name -->
+        <input class="mb-2 pl-2" type="text" required="required" name="surname"placeholder="Last Name">
+        <!-- username -->
+        <input class="mb-2 pl-2" type="text" required="required" name="username" placeholder="Username">
+        <!-- email -->
+        <input class="mb-2 pl-2" type="email" required="required" name="email" placeholder="Email">
+        <!-- password -->
+        <input class="mb-2 pl-2" type="password" required="required" name="password" placeholder="Password">
+        <!-- confirm password -->
+        <input class="mb-2 pl-2" type="password" required="required" name="confirmPassword" placeholder="Cofirm Password">
+        <button class="btn-neilit" type="submit">Continuar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="footer text-center w-100">
+  <p class="font-13">Designed in Barcelona. Developed in Boston.</p>
+</div>
 
 <%- include("./partials/footer-home") %>

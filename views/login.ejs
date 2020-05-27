@@ -1,29 +1,67 @@
 <%- include("./partials/header-home") %>
 
-  <div class="home-nav d-flex justify-content-center">
-    <h1 class="my-auto">N</h1>
-  </div>
-
-  <!-- LOGIN -->
-  <section class="mt-5">
-    <div class="home-form">
-      <h1 class="m-0">Log in</h1>
-      <h5 class="m-0">Accede a tu cuenta</h5>
-      <hr class="line mt-2">
+<div class="bg-orange py-1">
+  <div class="w-100 row mx-auto d-flex align-items-center">
+    <div class="col-4">
+      <a href="/" class="text-light">
+        <img src="/imgs/icons/arrow-left.svg" class="icon-content-xs">
+        Go Back
+      </a>
+    </div>
+    <div class="col-4">
+      <h1 class="text-light text-center mb-0">NEILIT</h1>
     </div>
 
-    <form method="POST" action="/login">
-      <div class="d-flex flex-column">
-        <input class="my-1" type="email" name="email" placeholder="Correo electrónico">
-        <input class="my-1" type="password" name="password" placeholder="Contraseña">
-        <button class="btn text-light mt-1" type="submit">Entrar</button>
+    <div class="col-4 d-flex justify-content-end">
+      <!-- Size: M, L Y XL -->
+      <div class="d-none d-md-block text-light">
+        Not a member?
+        <a href="/signup" class="text-light ml-1 hover-white">
+          <strong>Sign up</strong>
+        </a>
       </div>
-    </form>
-
-    <div class="home-form">
-      <p class="mt-2 mb-0">¿No tienes una cuenta? <a href="\signup">Registrate</a></p>
-      <p><a href="#">¿Has olvidado tu contraseña?</a></p>
+      <!-- Size: S Y XS -->
+      <div class="d-block d-md-none">
+        <a href="/signup" class="text-light ml-1 hover-white">
+          <strong>Sign up</strong>
+        </a>
+      </div>
     </div>
-  </section>
+  </div>
+</div>
+
+
+<div class="container mt-4">
+  <!-- flash messages -->
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-danger" role="alert">
+      <%= error %>
+    </div>
+  <% } %>
+  <% if (success && success.length > 0) { %>
+    <div class="alert alert-success" role="alert">
+      <%= success %>
+    </div>
+  <% } %>
+  <div class="row d-flex justify-content-center">
+    <!-- NOTE: adjust the bootstrap class to change dimensions across different screens -->
+    <div class="col-10 col-md-8 col-lg-5 text-center">
+      <h2 class="orange">Welcome</h2>
+      <p class="border-bottom">Log in into your account</p>
+      <form class="d-flex flex-column" method="POST" action="/login">
+        <!-- email -->
+        <input class="mb-2 pl-2" type="email" required="required" name="email" value="" placeholder="Email">
+        <!-- password -->
+        <input class="mb-2 pl-2" type="password" required="required" name="password"placeholder="Password">
+        <button class="btn-neilit" type="submit">Sign in</button>
+        <a href="#!" class="mt-1 text-dark">Forgot password?</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="footer text-center w-100">
+  <p class="font-13">Designed in Barcelona. Developed in Boston.</p>
+</div>
 
 <%- include("./partials/footer-home") %>
