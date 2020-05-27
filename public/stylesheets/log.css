@@ -36,6 +36,17 @@
       background-color: #ff8818;
     }
 
+.widget-trigger { }
+  .widget-trigger span {
+    font-weight: bold;
+    color: #ff8818;
+  }
+
+.widget-general { }
+  .widget-general span {
+    font-weight: bold;
+  }
+
 #client-comment {
   color: black;
 }

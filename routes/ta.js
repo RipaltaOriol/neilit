@@ -27,14 +27,15 @@ router.get("/new", isLoggedIn, (req, res) => {
     image: imageTA.html,
     strategy: strategyTA.html(userStrategies)
   }
-  
-  res.render("user/journal/ta/new", {
-                                      currencies:pairs,
-                                      categories:categories,
-                                      strategies:userStrategies,
-                                      timeframes:timeframes,
-                                      elements: elements
-                                    }
+
+  res.render("user/journal/ta/new",
+    {
+      currencies:pairs,
+      categories:categories,
+      strategies:userStrategies,
+      timeframes:timeframes,
+      elements: elements
+    }
   );
 });
 
@@ -42,104 +43,106 @@ router.get("/new", isLoggedIn, (req, res) => {
 router.post("/", isLoggedIn, (req, res) => {
   console.log('This is the pair: ' + req.body.pair);
   console.log('And this is the date: ' + req.body.date);
+  console.log('THIS IS THE BODY:');
+  console.log(req.body);
   // check that the inputs provided are valid/correct
-  if (req.body.pair == "" || req.body.date == "") {
-    req.flash("error", "Pair or Date are missing.")
-    req.redirect("/username/journal/ta")
-  } else {
-    // FIXME: Get this variables from the user's session
-    var technicala = {
-      category: req.body.category,
-      pair_id: req.body.pair,
-      created_at: req.body.date,
-      user_id: 1
-    }
-    // MAP T-ELEMENT-ANALYSIS
-    // Initiate element counters
-    var counterTitle = 0;
-    var counterImg = 0;
-    var counterText = 0;
-    var counterStrategy = 0
-    // Variables for Technical Elements Analysis
-    var ta_id;
-
-    var qNewPair = 'SELECT id FROM pairs WHERE pair = ?'
-    connection.query(qNewPair, technicala.pair_id, (err, results) => {
-      if (err) throw err;
-      technicala.pair_id = results[0].id;
-      // IMPORTANT - POINT BREAKER
-      // FIXME: If there are not elements in the TA we can Exit
-      console.log(technicala);
-      // Query insert Technical Analysis
-      connection.query('INSERT INTO tanalysis SET ?', technicala, (err, checkFirst) => {
-        if (err) throw err;
-        var ta_id = checkFirst.insertId;
-        console.log(ta_id);
-        connection.query('SELECT * FROM telements', (err, printElements) => {
-          if (err) throw err;
-          console.log(printElements);
-          let etypes = new Map();
-          for (var i = 0; i < printElements.length; i++) {
-            etypes.set(printElements[i].type, printElements[i].id)
-          }
-          var data = []
-          // Case 1: Multiple Ements in the TA
-          if (Array.isArray(req.body.type)) {
-            var multipleVals = req.body.type
-            // FIXME: the Counts() for each element type are HARDCODED
-            // FIXME: IF statements are also HARDCODED
-            var titleCount = 0;
-            var imageCount = 0;
-            var textCount = 0;
-            var strategyCount = 0;
-            // Counter for the Importance and Timeframe of the Strategy
-            var stretegyTypesCount = 1;
-
-            for (var els = 0; els < multipleVals.length; els++) {
-              elsPosition = els + 1;
-              var contentVal;
-              // FIXME: It is possible to improve code
-              if (multipleVals[els] == "title") {
-                contentVal = req.body.title[titleCount];
-                titleCount += 1;
-              }
-              if (multipleVals[els] == "image") {
-                contentVal = req.body.image[imageCount];
-                imageCount += 1;
-              }
-              if (multipleVals[els] == "text") {
-                contentVal = req.body.text[textCount];
-                textCount += 1;
-              }
-              if (multipleVals[els] == "strategy") {
-                var importance = "strategy_I_" + stretegyTypesCount;
-                var timeframe = "strategy_timeframes_" + stretegyTypesCount;
-                contentVal = req.body.strategy[strategyCount] + "$" + req.body[importance] + "$" + req.body[timeframe];
-                strategyCount += 1;
-                stretegyTypesCount += 1;
-              }
-              data.push([ta_id, elsPosition, etypes.get(multipleVals[els]), contentVal])
-            }
-
-          // Case 2: Single Element TA
-          } else {
-            var singleVals = req.body.type
-            if (singleVals == "strategy") {
-              req.body.strategy = singleVals + "$" + req.body.strategy_I_1 + "$" + req.body.strategy_timeframes_1
-            }
-            data.push([ta_id, 1, etypes.get(singleVals), req.body[singleVals]]);
-          }
-          console.log(data);
-          connection.query('INSERT INTO telementanalysis (ta_id, order_at, element_id, content) VALUES ?', [data], (err, finalized) => {
-            if (err) throw err;
-            console.log(technicala);
-            console.log(req.body.strategy);
-            res.redirect("/username/journal");
-          })
-        })
-      })
-    })
-  }
+  // if (req.body.pair == "" || req.body.date == "") {
+  //   req.flash("error", "Pair or Date are missing.")
+  //   req.redirect("/username/journal/ta")
+  // } else {
+  //   // FIXME: Get this variables from the user's session
+  //   var technicala = {
+  //     category: req.body.category,
+  //     pair_id: req.body.pair,
+  //     created_at: req.body.date,
+  //     user_id: 1
+  //   }
+  //   // MAP T-ELEMENT-ANALYSIS
+  //   // Initiate element counters
+  //   var counterTitle = 0;
+  //   var counterImg = 0;
+  //   var counterText = 0;
+  //   var counterStrategy = 0
+  //   // Variables for Technical Elements Analysis
+  //   var ta_id;
+  //
+  //   var qNewPair = 'SELECT id FROM pairs WHERE pair = ?'
+  //   connection.query(qNewPair, technicala.pair_id, (err, results) => {
+  //     if (err) throw err;
+  //     technicala.pair_id = results[0].id;
+  //     // IMPORTANT - POINT BREAKER
+  //     // FIXME: If there are not elements in the TA we can Exit
+  //     console.log(technicala);
+  //     // Query insert Technical Analysis
+  //     connection.query('INSERT INTO tanalysis SET ?', technicala, (err, checkFirst) => {
+  //       if (err) throw err;
+  //       var ta_id = checkFirst.insertId;
+  //       console.log(ta_id);
+  //       connection.query('SELECT * FROM telements', (err, printElements) => {
+  //         if (err) throw err;
+  //         console.log(printElements);
+  //         let etypes = new Map();
+  //         for (var i = 0; i < printElements.length; i++) {
+  //           etypes.set(printElements[i].type, printElements[i].id)
+  //         }
+  //         var data = []
+  //         // Case 1: Multiple Ements in the TA
+  //         if (Array.isArray(req.body.type)) {
+  //           var multipleVals = req.body.type
+  //           // FIXME: the Counts() for each element type are HARDCODED
+  //           // FIXME: IF statements are also HARDCODED
+  //           var titleCount = 0;
+  //           var imageCount = 0;
+  //           var textCount = 0;
+  //           var strategyCount = 0;
+  //           // Counter for the Importance and Timeframe of the Strategy
+  //           var stretegyTypesCount = 1;
+  //
+  //           for (var els = 0; els < multipleVals.length; els++) {
+  //             elsPosition = els + 1;
+  //             var contentVal;
+  //             // FIXME: It is possible to improve code
+  //             if (multipleVals[els] == "title") {
+  //               contentVal = req.body.title[titleCount];
+  //               titleCount += 1;
+  //             }
+  //             if (multipleVals[els] == "image") {
+  //               contentVal = req.body.image[imageCount];
+  //               imageCount += 1;
+  //             }
+  //             if (multipleVals[els] == "text") {
+  //               contentVal = req.body.text[textCount];
+  //               textCount += 1;
+  //             }
+  //             if (multipleVals[els] == "strategy") {
+  //               var importance = "strategy_I_" + stretegyTypesCount;
+  //               var timeframe = "strategy_timeframes_" + stretegyTypesCount;
+  //               contentVal = req.body.strategy[strategyCount] + "$" + req.body[importance] + "$" + req.body[timeframe];
+  //               strategyCount += 1;
+  //               stretegyTypesCount += 1;
+  //             }
+  //             data.push([ta_id, elsPosition, etypes.get(multipleVals[els]), contentVal])
+  //           }
+  //
+  //         // Case 2: Single Element TA
+  //         } else {
+  //           var singleVals = req.body.type
+  //           if (singleVals == "strategy") {
+  //             req.body.strategy = singleVals + "$" + req.body.strategy_I_1 + "$" + req.body.strategy_timeframes_1
+  //           }
+  //           data.push([ta_id, 1, etypes.get(singleVals), req.body[singleVals]]);
+  //         }
+  //         console.log(data);
+  //         connection.query('INSERT INTO telementanalysis (ta_id, order_at, element_id, content) VALUES ?', [data], (err, finalized) => {
+  //           if (err) throw err;
+  //           console.log(technicala);
+  //           console.log(req.body.strategy);
+  //           res.redirect("/username/journal");
+  //         })
+  //       })
+  //     })
+  //   })
+  // }
 })
 
 // SHOW TECHNICAL ANALYSIS ROUTE

@@ -35,7 +35,7 @@ router.get("/journal", isLoggedIn, (req,res) => {
   var selectEntrys = 'SELECT entries.id AS identifier, DATE_FORMAT(entry_dt, "%d de %M %Y") AS entry_dt, pair FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 7';
   var selectComments = 'SELECT id, DATE_FORMAT(created_at, "%d/%m/%y") AS title, comment FROM comments WHERE user_id = ? ORDER BY created_at DESC LIMIT 7';
   // Defines the max. # of characters allowed when displaying comments
-  var commentsLength = 75
+  var commentsLength = 45
   connection.query(selectTAs, req.user.id, (err, getTas) => {
     if (err) throw err;
     // Object to store the TAs
@@ -70,11 +70,8 @@ router.get("/journal", isLoggedIn, (req,res) => {
           commentsLimited.id.push(result.id)
           commentsLimited.date.push(result.title)
           // FIXME: this function doesn't work
-          // trim the comment is its too large
           if (result.comment.length > commentsLength) {
-            var trimmedComment = result.comment.substring(0, (commentsLength - 4)) + "...";
-            // console.log('This is the trimmed comment');
-            // console.log(trimmedComment);
+            var trimmedComment = result.comment.substring(0, (commentsLength - 4)) + " ...";
             commentsLimited.content.push(trimmedComment)
 
           } else {
