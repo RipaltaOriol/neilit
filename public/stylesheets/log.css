@@ -19,6 +19,15 @@
     background-color: #f7f7f7;
   }
 
+/* || JQuery UI class */
+.ui-datepicker {
+  background: ;
+}
+
+.ui-datepicker-next {
+  color: red!important;
+}
+
 .date-badge {
   display: block;
   color: #ff8818;

@@ -6,7 +6,7 @@ var imageHtml = `
     <div class="px-2">
       <span class="client-image">
         <label class="mb-0">Subir una image</label>
-        <input type="file" name="image" class="file" accept="image/*">
+        <input type="file" class="file" accept="image/*">
         <span class=" mx-1"><strong>o</strong></span>
         <label class="mb-0">Insertar URL</label>
         <input type="text" name="image" placeholder="www.image.com" class="url px-2">

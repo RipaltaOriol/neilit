@@ -14,7 +14,7 @@ function strategyHtml(strategies){
 
 
   return `
-  <span class="d-flex py-2 mb-2 strategy ta-element">
+    <span class="d-flex py-2 mb-2 strategy ta-element">
       <input type="text" name="type" value="strategy" class="d-none">
       <div class="strategy-option w-50 d-flex flex-column px-2">
         <h5 class="mb-1">Strategy:</h5>
@@ -29,8 +29,8 @@ function strategyHtml(strategies){
           `
         </select>
         <div class="d-flex">
-          <button type="button" class="general btn-neilit mr-2" onclick="isGeneral(this)">General</button>
-          <button type="button" class="trigger btn-neilit mr-2" onclick="isTrigger(this)">Desencadenante</button>
+          <button type="button" class="general btn-neilit mr-2" onclick="isImportance(this, 'general')">General</button>
+          <button type="button" class="trigger btn-neilit mr-2" onclick="isImportance(this, 'trigger')">Desencadenante</button>
         </div>
       </div>
       <div class="widget-trigger px-2 d-none">

@@ -21,13 +21,13 @@ var connection = mysql.createConnection({
 
 // NEW TECHNICAL ANALYSIS ROUTE
 router.get("/new", isLoggedIn, (req, res) => {
+  // loads the technical analysis elements to an object
   var elements = {
     title: titleTA.html,
     text: textTA.html,
     image: imageTA.html,
     strategy: strategyTA.html(userStrategies)
   }
-
   res.render("user/journal/ta/new",
     {
       currencies:pairs,
@@ -41,182 +41,207 @@ router.get("/new", isLoggedIn, (req, res) => {
 
 // NEW TECHNICAL ANALYSIS LOGIC
 router.post("/", isLoggedIn, (req, res) => {
-  console.log('This is the pair: ' + req.body.pair);
-  console.log('And this is the date: ' + req.body.date);
-  console.log('THIS IS THE BODY:');
-  console.log(req.body);
-  // check that the inputs provided are valid/correct
-  // if (req.body.pair == "" || req.body.date == "") {
-  //   req.flash("error", "Pair or Date are missing.")
-  //   req.redirect("/username/journal/ta")
-  // } else {
-  //   // FIXME: Get this variables from the user's session
-  //   var technicala = {
-  //     category: req.body.category,
-  //     pair_id: req.body.pair,
-  //     created_at: req.body.date,
-  //     user_id: 1
-  //   }
-  //   // MAP T-ELEMENT-ANALYSIS
-  //   // Initiate element counters
-  //   var counterTitle = 0;
-  //   var counterImg = 0;
-  //   var counterText = 0;
-  //   var counterStrategy = 0
-  //   // Variables for Technical Elements Analysis
-  //   var ta_id;
-  //
-  //   var qNewPair = 'SELECT id FROM pairs WHERE pair = ?'
-  //   connection.query(qNewPair, technicala.pair_id, (err, results) => {
-  //     if (err) throw err;
-  //     technicala.pair_id = results[0].id;
-  //     // IMPORTANT - POINT BREAKER
-  //     // FIXME: If there are not elements in the TA we can Exit
-  //     console.log(technicala);
-  //     // Query insert Technical Analysis
-  //     connection.query('INSERT INTO tanalysis SET ?', technicala, (err, checkFirst) => {
-  //       if (err) throw err;
-  //       var ta_id = checkFirst.insertId;
-  //       console.log(ta_id);
-  //       connection.query('SELECT * FROM telements', (err, printElements) => {
-  //         if (err) throw err;
-  //         console.log(printElements);
-  //         let etypes = new Map();
-  //         for (var i = 0; i < printElements.length; i++) {
-  //           etypes.set(printElements[i].type, printElements[i].id)
-  //         }
-  //         var data = []
-  //         // Case 1: Multiple Ements in the TA
-  //         if (Array.isArray(req.body.type)) {
-  //           var multipleVals = req.body.type
-  //           // FIXME: the Counts() for each element type are HARDCODED
-  //           // FIXME: IF statements are also HARDCODED
-  //           var titleCount = 0;
-  //           var imageCount = 0;
-  //           var textCount = 0;
-  //           var strategyCount = 0;
-  //           // Counter for the Importance and Timeframe of the Strategy
-  //           var stretegyTypesCount = 1;
-  //
-  //           for (var els = 0; els < multipleVals.length; els++) {
-  //             elsPosition = els + 1;
-  //             var contentVal;
-  //             // FIXME: It is possible to improve code
-  //             if (multipleVals[els] == "title") {
-  //               contentVal = req.body.title[titleCount];
-  //               titleCount += 1;
-  //             }
-  //             if (multipleVals[els] == "image") {
-  //               contentVal = req.body.image[imageCount];
-  //               imageCount += 1;
-  //             }
-  //             if (multipleVals[els] == "text") {
-  //               contentVal = req.body.text[textCount];
-  //               textCount += 1;
-  //             }
-  //             if (multipleVals[els] == "strategy") {
-  //               var importance = "strategy_I_" + stretegyTypesCount;
-  //               var timeframe = "strategy_timeframes_" + stretegyTypesCount;
-  //               contentVal = req.body.strategy[strategyCount] + "$" + req.body[importance] + "$" + req.body[timeframe];
-  //               strategyCount += 1;
-  //               stretegyTypesCount += 1;
-  //             }
-  //             data.push([ta_id, elsPosition, etypes.get(multipleVals[els]), contentVal])
-  //           }
-  //
-  //         // Case 2: Single Element TA
-  //         } else {
-  //           var singleVals = req.body.type
-  //           if (singleVals == "strategy") {
-  //             req.body.strategy = singleVals + "$" + req.body.strategy_I_1 + "$" + req.body.strategy_timeframes_1
-  //           }
-  //           data.push([ta_id, 1, etypes.get(singleVals), req.body[singleVals]]);
-  //         }
-  //         console.log(data);
-  //         connection.query('INSERT INTO telementanalysis (ta_id, order_at, element_id, content) VALUES ?', [data], (err, finalized) => {
-  //           if (err) throw err;
-  //           console.log(technicala);
-  //           console.log(req.body.strategy);
-  //           res.redirect("/username/journal");
-  //         })
-  //       })
-  //     })
-  //   })
-  // }
-})
-
-// SHOW TECHNICAL ANALYSIS ROUTE
-router.get("/:id", isLoggedIn, (req, res) => {
-  // Get the ID from the TA to dipslay:
-  var ta2Display = req.params.id
-  // Define Queries
-  // FIXME: two of this queries can be combined into one (currentTA and askTATitle)
-  var currentTA = 'SELECT pair, tanalysis.category, DATE_FORMAT(created_at, "%d/%m/%Y") AS created_at FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE tanalysis.id = ?';
-  // FIXME: You can order by the order the elements appear in the page
-  var elementsTA = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ?';
-  var askTATitle = 'SELECT pair, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE tanalysis.id = ?';
-
-  var taObjectCur = {
-    pair: '',
-    category: '',
-    date: '',
-    type: [],
-    imageVal: [],
-    titleVal: [],
-    textVal: [],
-    strategyVal: [],
-    strategyImp: [],
-    strategyTime: [],
+  // checks that date is valid
+  if (req.body.date == "") {
+    req.flash("error", "Date cannot be blank.")
+    res.redirect("/" + req.user.username + "/journal/ta/new")
   }
-  connection.query(currentTA, ta2Display, (err, getCurrentTA) => {
-    if (err) throw err;
-    taObjectCur.pair = getCurrentTA[0].pair
-    taObjectCur.category = getCurrentTA[0].category
-    taObjectCur.date = getCurrentTA[0].created_at
-    connection.query(elementsTA, ta2Display, (err, getElemtsTA) => {
+  // creates an object with the new technical analysis variables
+  else {
+    var newTa = {
+      pair_id: Number(req.body.pair) + 1,
+      category: req.body.category,
+      created_at: req.body.date,
+      user_id: req.user.id
+    }
+
+    // store the constant technical analysis variables into the DB
+    connection.query('INSERT INTO tanalysis SET ?', newTa, (err, taId) => {
       if (err) throw err;
-      getElemtsTA.forEach((result) => {
-        taObjectCur.type.push(result.type);
-        if (result.type == 'title') {
-          taObjectCur.titleVal.push(result.content)
+      var ta_id = taId.insertId;
+
+      // gets all the element types from the DB and maps them in a hash
+      connection.query('SELECT * FROM telements', (err, allElements) => {
+        if (err) throw err;
+        let aElements = new Map();
+        for (var i = 0; i < allElements.length; i++) {
+          aElements.set(allElements[i].type, allElements[i].id)
         }
-        if (result.type == 'image') {
-          taObjectCur.imageVal.push(result.content)
-        }
-        if (result.type == 'text') {
-          // FIXME: Reformat the text string before insert it on the DB
-          taObjectCur.textVal.push(result.content)
-        }
-        if (result.type == 'strategy') {
-          var strategyVanilla = result.content;
-          function truncateStrategy(compStragegy) {
-            var pointer1;
-            var pointer2;
-            for (var i = 0; i < compStragegy.length; i++) {
-              if (compStragegy.charAt(i) == "$") {
-                if (pointer1 === undefined) {
-                  pointer1 = i;
-                } else {
-                  pointer2 = i;
-                }
+        // stores the TA elements before sending them to the DB
+        var data = []
+        // case 1 -> multiple elments in a technical analysis
+        if (Array.isArray(req.body.type)) {
+
+          var elementsList = req.body.type
+          // counters for each element type
+          // NOTE: all the counters are HARDCODED
+          var counterTitle = 0;
+          var counterImage = 0;
+          var counterText = 0;
+          var counterStrategy = 0;
+          var elementPosition = 1;
+          // NOTE: all 'if' statements are HARDCODED
+          for (var i = 0; i < elementsList.length; i++) {
+            // title elements
+            if (elementsList[i] == "title") {
+              // checks if there are multiple title elements
+              if (Array.isArray(req.body.title)) {
+                var currentElement = req.body.title[counterTitle];
+                counterTitle += 1;
+              } else {
+                var currentElement = req.body.title;
               }
             }
-            taObjectCur.strategyVal.push(strategyVanilla.substring(0, pointer1));
-            taObjectCur.strategyImp.push(strategyVanilla.substring(pointer1 + 1, pointer2));
-            taObjectCur.strategyTime.push(strategyVanilla.substring(pointer2 + 1, strategyVanilla.length));
+            // text elements
+            if (elementsList[i] == "text") {
+              // checks if there are multiple text elements
+              if (Array.isArray(req.body.text)) {
+                var currentElement = req.body.text[counterText];
+                counterText += 1;
+              } else {
+                var currentElement = req.body.text;
+              }
+            }
+            // image elements
+            if (elementsList[i] == "image") {
+              // checks if there are multiple image elements
+              if (Array.isArray(req.body.image)) {
+                var currentElement = req.body.image[counterImage];
+                counterImage += 1;
+              } else {
+                var currentElement = req.body.image
+              }
+            }
+            // strategy elements
+            if (elementsList[i] == "strategy") {
+              // checks if there are multiple straegy elements
+              if (Array.isArray(req.body.strategy)) {
+                var indexStrategy = userIdStrategies[req.body.strategy[counterStrategy]];
+                var indexTimeframe = Number(req.body.timeframe[counterStrategy]) + 1;
+                var currentElement = indexStrategy + "$" + req.body.importance[counterStrategy] + "$" + indexTimeframe;
+                counterStrategy += 1;
+              } else {
+                var indexStrategy = userIdStrategies[req.body.strategy];
+                var indexTimeframe = Number(req.body.timeframe) + 1;
+                var currentElement = indexStrategy + "$" + req.body.importance + "$" + indexTimeframe;
+              }
+            }
+            // pushes each elments to the list of TA elements
+            data.push([ta_id, elementPosition, aElements.get(elementsList[i]), currentElement])
+            elementPosition++;
           }
-          truncateStrategy(strategyVanilla);
+        }
+        // case 2 -> single element in a technical analysis
+        else {
+          var singleElement = req.body.type
+          // slight adjustment for straegy element
+          if (singleElement == "strategy") {
+            var indexStrategy = userIdStrategies[req.body.straegy]
+            var indexTimeframe = Number(req.body.timeframe[counterStrategy]) + 1;
+            req.body.strategy = singleVals + "$" + req.body.importance + "$" + indexTimeframe;
+          }
+          data.push([ta_id, 1, aElements.get(singleElement), req.body[singleElement]]);
+        }
+        console.log('It gets here w/ problem');
+        // stores the TA elements into the DB
+        connection.query('INSERT INTO telementanalysis (ta_id, order_at, element_id, content) VALUES ?', [data], (err, complete) => {
+          if (err) throw err;
+          res.redirect("/" + req.user.username + "/journal");
+        })
+      })
+    })
+  }
+})
+
+
+// SHOW COMMENT ROUTE
+router.get("/:id", isLoggedIn, (req, res) => {
+  // insert queries to a varialbe - too long
+  var getTa = 'SELECT pair_id, category, tanalysis.category, DATE_FORMAT(created_at, "%d/%m/%Y") AS created_short, DATE_FORMAT(created_at, "%d de %M %Y") AS created_long FROM tanalysis WHERE id = ?';
+  // OPTIMIZE: could another type of JOIN improve the query?
+  var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
+  // object where the technical analysis information will be stored
+  var taInfo = {}
+  connection.query(getTa, req.params.id, (err, results) => {
+    if (err) throw err;
+    taInfo.title = pairs[Number(results[0].pair_id) - 1].created_long + ', ' + results[0].created_long;
+    taInfo.pair = results[0].pair_id) - 1;
+    taInfo.category = results[0].category;
+    taInfo.date = results[0].created_short;
+    // creates variable to concatenate the HTML of the technical analysis elements
+    var elementsHtml = ``;
+    // loads the technical analysis elements
+    connection.query(getElementsTa, req.params.id, (err, elementsTa) => {
+      if (err) throw err;
+      elementsTa.forEach((element) => {
+        var appendHtml;
+        // title element
+        if (element.type = 'title') {
+          appendHtml = titleTA.generate(element.content);
+          elementsHtml += appendHtml;
+        }
+        // text element
+        if (element.type = 'text') {
+          appendHtml = textTA.generate(element.content);
+          elementsHtml += appendHtml;
+        }
+        // image element
+        if (element.type = 'image') {
+          appendHtml = imageTA.generate(element.content);
+          elementsHtml += appendHtml;
+        }
+        // strategy element
+        if (element.type = 'strategy') {
+          // FIXME: this function should have more than one parameter
+          appendHtml = strategyTA.generate(element.content);
+          elementsHtml += appendHtml;
         }
       })
-      connection.query(askTATitle, ta2Display, (err, getTATitle) => {
-        if (err) throw err;
-        var taTitle = getTATitle[0].pair + ", " + getTATitle[0].created_at;
-        // FIXME: construct an object to pass the variables all in one go!
-        res.render("user/entries/showTaTemplate", {user:userUsername, currencies:userPairs, strategies:userStrategies, timeframes:userTimeframes, taTitle:taTitle, taInfo:taObjectCur, thisTaID:ta2Display})
-      })
+      taInfo.content = elementsHtml;
+
+      console.log('Status: ');
+      console.log(taInfo);
+      res.send('provisional page')
     })
   })
 })
+
+//   var askTATitle = 'SELECT pair, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE tanalysis.id = ?';
+//
+//   // FIXME: You can order by the order the elements appear in the page
+//   // Get the ID from the TA to dipslay:
+//   // not necessary
+//   // var ta2Display = req.params.id
+//
+//
+//   // object wher the technical analysis information will be stored
+//   var taInfo = {
+//     pair: '',
+//     category: '',
+//     date: '',
+//     html: ' ', // display the HTML here
+//     // from here it should be able to generated w/ the models
+//     type: [],
+//     imageVal: [],
+//     titleVal: [],
+//     textVal: [],
+//     strategyVal: [],
+//     strategyImp: [],
+//     strategyTime: [],
+//   }
+//
+
+//
+
+//       connection.query(askTATitle, ta2Display, (err, getTATitle) => {
+//         if (err) throw err;
+//         var taTitle = getTATitle[0].pair + ", " + getTATitle[0].created_at;
+//         // FIXME: construct an object to pass the variables all in one go!
+//         res.render("user/entries/showTaTemplate", {user:userUsername, currencies:userPairs, strategies:userStrategies, timeframes:userTimeframes, taTitle:taTitle, taInfo:taObjectCur, thisTaID:ta2Display})
+//       })
+//     })
+//   })
+// })
 
 // UPDATE TECHNICAL ANALYSIS ROUTE
 router.get("/:id/edit", isLoggedIn, (req, res) => {

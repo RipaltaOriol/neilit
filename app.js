@@ -62,7 +62,9 @@ let timeframes = require("./models/timeframes");
 let categories = require("./models/categoriesPairs");
 let strategies = require("./models/strategies")
 // Store user strategies
-global.userStrategies = []
+// FIXME: merge these two lists into an object
+global.userStrategies = [];
+global.userIdStrategies = [];
 
 
 // #### MIDDLEWARES ####

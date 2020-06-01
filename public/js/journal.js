@@ -12,5 +12,4 @@ function taPair() {
   window.localStorage.setItem('ta-pair', taPair.value)
 }
 
-
 // Stores pre-information for entries

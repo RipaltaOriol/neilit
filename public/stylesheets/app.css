@@ -710,8 +710,6 @@ nav {
   background-color: #FFCF18;
 }
 
-/* datepicker w/ Safari support [from jquery] */
-.ui-datepicker { background: #eb4034; }
 
 #new-ta {
   width: 100%;

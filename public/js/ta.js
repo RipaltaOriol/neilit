@@ -43,6 +43,7 @@ function loadImage(id) {
   var current = imagesList.index(id);
   var allFile = $('.file');
   var currentLoad = allFile[current];
+  // image from a machine upload
   if (currentLoad.files && currentLoad.files[0]) {
     var reader = new FileReader();
     reader.onload = function(e) {
@@ -50,8 +51,16 @@ function loadImage(id) {
       var currentWidget = allWidget[current];
       currentWidget.setAttribute("src", e.target.result);
     }
-    reader.readAsDataURL(currentLoad.files[0])
-  } else {
+    var allUrl = $('.url');
+    var currentUrl = allUrl[current];
+    reader.onloadend = () => {
+      // sets the base64 image econding into the text input
+      currentUrl.value = reader.result.split(',')[1];
+    }
+    reader.readAsDataURL(currentLoad.files[0]);
+  }
+  // image from a web url
+  else {
     var allUrl = $('.url');
     var currentLoad = allUrl[current];
     var currentSrc = currentLoad.value;
@@ -68,13 +77,23 @@ function loadImage(id) {
 }
 
 // Allows for sorting and draggind elements in the TA
-$('#ta-content').on('mousedown', () => {
+$('#ta-content').on('mouseup', () => {
   $("#ta-content").sortable({
       axis: 'y',
       cursor: 'move',
-      containment: "#ta-content"
+      containment: "#ta-content",
+      cancel: 'input, select, [contenteditable]'
   })
 })
+
+// Generates the datepicker for the TA
+$("input[type=date]").datepicker({
+  dateFormat: 'yy-mm-dd'
+});
+// prevent the classic datepicker from loading
+$("input[type=date]").on('click', function() {
+  return false;
+});
 
 // Deletes the corresponding elmenet in the TA
 function whatIndex(id) {
@@ -108,18 +127,17 @@ jQuery(function($){
   });
 });
 
-// FIXME: too much repeated code between the 'isTrigger' & 'isGeneral' function - merge them into one!
-// Creates strategy user widget for TRIGGER strategies
-function isTrigger(id) {
-  var triggerslist = $('.trigger');
+// Creates strategy user widget for TRIGGER or GENERAL strategies
+function isImportance(id, importance) {
+  var triggerslist = $('.' + importance);
   var current = triggerslist.index(id);
-  var all = $('.widget-trigger');
+  var all = $('.widget-' + importance + '');
   // adds visibility to display after selecting the element
   all[current].classList.remove('d-none');
   var selectStrategies = document.getElementsByName('strategy');
   var selectTimeframes = document.getElementsByName('timeframe');
-  var holderStrategies = $('.strategy-trigger')
-  var holderTimeframes = $('.timeframe-trigger')
+  var holderStrategies = $('.strategy-' + importance)
+  var holderTimeframes = $('.timeframe-' + importance)
   // gets the corresponding select html element
   var currentStrategy = selectStrategies[current];
   var currentTimeframe = selectTimeframes[current];
@@ -130,29 +148,9 @@ function isTrigger(id) {
   $('.strategy-option')[current].classList.add('d-none')
   $('.strategy-option')[current].classList.remove('d-flex')
   $('.strategy-option')[current].classList.remove('flex-column')
-}
-
-// Creates strategy user widget for GENERAL strategies
-function isGeneral(id) {
-  var triggerslist = $('.general');
-  var current = triggerslist.index(id);
-  var all = $('.widget-general');
-  // adds visibility to display after selecting the element
-  all[current].classList.remove('d-none');
-  var selectStrategies = document.getElementsByName('strategy');
-  var selectTimeframes = document.getElementsByName('timeframe');
-  var holderStrategies = $('.strategy-general')
-  var holderTimeframes = $('.timeframe-general')
-  // gets the corresponding select html element
-  var currentStrategy = selectStrategies[current];
-  var currentTimeframe = selectTimeframes[current];
-  // adds the text inside the select html elment to the widget for the user
-  holderStrategies[current].innerHTML = currentStrategy.options[currentStrategy.selectedIndex].text;
-  holderTimeframes[current].innerHTML = currentTimeframe.options[currentTimeframe.selectedIndex].text;
-  // adds display none to strategy options
-  $('.strategy-option')[current].classList.add('d-none')
-  $('.strategy-option')[current].classList.remove('d-flex')
-  $('.strategy-option')[current].classList.remove('flex-column')
+  // sends the importance type to the input
+  var importanceList = document.getElementsByName('importance');
+  importanceList[current].value = importance;
 }
 
 // Runs before making the POST request

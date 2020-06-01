@@ -10,12 +10,15 @@ var connection = mysql.createConnection({
 
 function getStrategies(id) {
   var strategies = []
-  connection.query("SELECT strategy FROM strategies WHERE user_id = ?", id, (err, results) => {
+  var idStrategies = []
+  connection.query("SELECT id, strategy FROM strategies WHERE user_id = ?", id, (err, results) => {
     if (err) throw err;
-    results.forEach((strategy) => {
+    results.forEach((strategy, i) => {
       strategies.push(strategy.strategy)
+      idStrategies.push(results[i].id)
     });
-    userStrategies = strategies
+    userStrategies = strategies;
+    userIdStrategies = idStrategies;
   });
 }
 
