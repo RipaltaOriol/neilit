@@ -4,6 +4,7 @@ $(document).ready(function() {
 });
 
 // Stores pre-information for technical analysis
+// -- PAIR
 // -> Default
 window.localStorage.setItem('ta-pair', 0)
 // -> Function
@@ -13,3 +14,18 @@ function taPair() {
 }
 
 // Stores pre-information for entries
+// -- PAIR
+// -> Default
+window.localStorage.setItem('entry-pair', 0)
+// -> Function
+function entryPair() {
+  var entryPair = document.getElementById('entry-pair');
+  window.localStorage.setItem('entry-pair', entryPair.value)
+}
+// -- DIRECTION
+// -> Default
+window.localStorage.setItem('entry-direction', 0)
+// -> Function
+function entryDirection(direction) {
+  window.localStorage.setItem('entry-direction', direction);
+}

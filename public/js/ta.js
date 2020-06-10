@@ -2,8 +2,11 @@ var storeTa = document.getElementById("submit-ta");
 
 // Gets the pair information from the JOURNAL route
 if (window.localStorage.getItem('ta-pair') != null) {
-  document.getElementById('ta-pair').value = window.localStorage.getItem('ta-pair');
-  taCategory();
+  // prevents the pair from chading on the edit route
+  if (!($('.edit').length > 0)) {
+    document.getElementById('ta-pair').value = window.localStorage.getItem('ta-pair');
+    taCategory();
+  }
 }
 
 // Sets the category that corresponds to the selected pair
@@ -90,7 +93,7 @@ $('#ta-content').on('mouseup', () => {
 $("input[type=date]").datepicker({
   dateFormat: 'yy-mm-dd'
 });
-// prevent the classic datepicker from loading
+// prevents the classic datepicker from loading
 $("input[type=date]").on('click', function() {
   return false;
 });

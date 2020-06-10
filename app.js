@@ -14,7 +14,7 @@ let indexRoutes     = require('./routes/index'),
     menuRoutes      = require('./routes/menu'),
     commentRoutes   = require('./routes/comments'),
     entryRoutes     = require('./routes/entries'),
-    taRoutes        = require('./routes/ta');
+    taRoutes        = require('./routes/tas');
 
 // Configuration
 app.set("view engine", "ejs");

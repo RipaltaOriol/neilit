@@ -1,5 +1,6 @@
 
 // Technical Analysis Element: TITLE
+// -- CREATE
 var titleHtml = `
   <span class="d-flex mb-2 ta-element">
     <input type="text" name="type" value="title" class="d-none">
@@ -10,8 +11,16 @@ var titleHtml = `
     </span>
   </span>
   `;
-
+// -- DISPLAY
 function generateTitle(input) {
+  return `
+    <span class="d-flex mb-2 ta-element">
+      <input type="text" class="title px-2 mr-2" placeholder="Título" value="` + input + `" readonly>
+    </span>
+    `;
+}
+// -- EDIT
+function editTitle(input) {
   return `
     <span class="d-flex mb-2 ta-element">
       <input type="text" name="type" value="title" class="d-none">
@@ -26,5 +35,6 @@ function generateTitle(input) {
 
 module.exports = {
   html: titleHtml,
-  generate: generateTitle
+  generate: generateTitle,
+  edit: editTitle
 };

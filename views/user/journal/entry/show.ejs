@@ -1,129 +1,132 @@
-<%- include("../../partials/header-sub") %>
+<%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div id="initial-user-screen" class="mt-3 mx-4">
-
-    <!-- NEW ENTRY -->
-    <div id="new" class="journal-box my-4">
-      <form action="/username/journal/ta/<%= entry.entryId %>?_method=DELETE" method="POST">
-        <h5><%= entry.entryPair %>: <%= entry.entryTitle %></h5>
+  <div class="container mt-3 mb-5 mx-auto">
+    <div class="journal-box px-0">
+      <!-- fix: the path is not good just yet -->
+      <form action="/<%= currentUser.username %>/journal/ta/<%= entry.id %>?_method=DELETE" method="POST">
+        <h3 class="mx-3"><%= entry.title %></h3>
         <hr>
-        <div class="row">
-          <div class="col-4">
-            <h6>General</h6>
-            <div class="mb-2">
-              <label class="my-0 mr-1">Activo</label>
-              <input id="" type="text" class="field-input" value="<%= entry.entryPair %>" readonly>
+        <div class="row mx-3">
+          <div class="col-6">
+            <!-- GENERAL ENTRY INFORMATION -->
+            <h5>General</h5>
+            <div>
+              <label>Activo</label>
+              <input type="text" class="bg-hover orange px-2" value="<%= currencies[entry.pair] %>" readonly>
             </div>
-            <div class="mb-2">
-              <label for="catetory" class="my-0 mr-1">Categoría</label>
-              <input id="entry-category" type="text" class="field-input" value="<%= entry.entryCategory %>" readonly>
-            </div>
-            <div class="mb-2">
-              <label class="my-0 mr-1">Dirección</label>
-              <% if (entry.entryDirection == 'long') { %>
-                <input id="" type="text" class="field-input" value="Compra" readonly>
+            <span>
+              <label>Categoría</label>
+              <input type="text" class="bg-hover orange px-2" value="<%= entry.category %>" readonly>
+            </span>
+            <div>
+              <label>Dirección</label>
+              <% if (entry.direction == 'long') { %>
+                <input type="text" class="bg-hover orange px-2" value="Compra" readonly>
               <% } else { %>
-                <input id="" type="text" class="field-input" value="Venta" readonly>
+                <input type="text" class="bg-hover orange px-2" value="Venta" readonly>
               <% } %>
             </div>
-            <div class="mb-2">
-              <label class="my-0 mr-1">Fecha de entrada</label>
-              <input id="" type="text" class="field-input" value="<%= entry.entryDate %>" readonly>
+            <div>
+              <label>Fecha de entrada</label>
+              <input type="text" class="bg-hover orange px-2" value="<%= entry.entryDate %>" readonly>
             </div>
-            <% if (!(entry.exitDate == null)) { %>
-              <div class="mb-2">
-                <label class="my-0 mr-1">Fecha de salida</label>
-                <input id="" type="text" class="field-input" value="<%= entry.exitDate %>" readonly>
+            <% if ('entryTime' in entry) { %>
+              <div>
+                <label>Hora de entrada</label>
+                <input type="text" class="bg-hover orange px-2" value="<%= entry.entryTime %>" readonly>
               </div>
             <% } %>
           </div>
-          <div class="col-4">
-            <h6>Específica</h6>
-            <div class="mb-2">
-              <label class="my-0 mr-1">Tamaño</label>
-              <input id="" type="text" class="field-input" value="<%= entry.entrySize %>" readonly>
+          <!-- SPECIFIC ENTRY INFORMATION -->
+          <div class="col-6">
+            <h5>Específica</h5>
+            <div>
+              <label>Tamaño</label>
+              <input type="text" class="bg-hover orange px-2" value="<%= entry.size %>" readonly>
             </div>
-            <div class="mb-2">
-              <label class="my-0 mr-1">Strategy</label>
-              <input id="" type="text" class="field-input" value="<%= entry.entryStrategy %>" readonly>
+            <div>
+              <label>Estrategia</label>
+              <input type="text" class="bg-hover orange px-2" value="<%= strategies[entry.strategy] %>" readonly>
             </div>
-            <div class="mb-2">
-              <label class="my-0 mr-1">Entrada</label>
-              <input id="" type="text" class="field-input" value="<%= entry.entryPrice %>" readonly>
+            <div>
+              <label>Timeframe de Anclaje</label>
+              <input type="text" class="bg-hover orange px-2" value="<%= timeframes[entry.timeframe] %>" readonly>
             </div>
-            <div class="mb-2">
-              <label class="my-0 mr-1">Stop Loss</label>
-              <input id="" type="text" class="field-input" value="<%= entry.stopLoss %>" readonly>
+            <div>
+              <label>Entrada</label>
+              <input type="text" class="bg-hover orange px-2" value="<%= entry.entryPrice %>" readonly>
             </div>
-            <div class="mb-2">
-              <label class="my-0 mr-1">Take Profit</label>
-              <input id="" type="text" class="field-input" value="<%= entry.takeProfit %>" readonly>
-            </div>
-            <% if (!(entry.exitPrice == null)) { %>
-              <div class="mb-2">
-                <label class="my-0 mr-1">Salida</label>
-                <input id="" type="text" class="field-input" value="<%= entry.exitPrice %>" readonly>
+            <% if ('stopLoss' in entry) { %>
+              <div>
+                <label>Stop Loss</label>
+                <input type="text" class="bg-hover orange px-2" value="<%= entry.stopLoss %>" readonly>
+              </div>
+            <% } %>
+            <% if ('takeProfit' in entry) { %>
+              <div>
+                <label>Take Profit</label>
+                <input type="text" class="bg-hover orange px-2" value="<%= entry.takeProfit %>" readonly>
               </div>
             <% } %>
           </div>
-          <% if (!(entry.entryResult == null)) { %>
-            <div class="col-3">
-              <h6>Cierre</h6>
-              <div class="mb-2">
-                <label class="my-0 mr-1">Resultado</label>
-                <input id="" type="text" class="field-input" value="<%= entry.entryResult.toUpperCase(); %>" readonly>
-              </div>
-              <div class="mb-2">
-                <label class="my-0 mr-1">Salida</label>
-                <input id="" type="text" class="field-input" value="<%= entry.exitPrice %>" readonly>
-              </div>
-            </div>
-          <% } %>
         </div>
-        <br>
-        <h5>Comentarios</h5>
-        <hr>
-        <div class="entry-comments mb-3">
-          <div id="entry-comment"><%= entry.entryComment %></div>
-        </div>
-        <br>
-        <% if (!(typeof ta == 'undefined')) { %>
-          <h5>Análisis Técnico</h5>
-          <hr>
-          <div class="d-flex justify-content-between mb-3">
-            <div id="date-entry-ta" class="mb-2 d-none">
-              <label class="my-0 mr-1">Creación de TA</label>
-              <input id="" type="text" class="field-input" value="<%= ta.taDate %>" readonly>
+        <% if (entry.status != 0 && 'exitPrice' in entry) { %>
+          <div class="row mx-3">
+            <div class="col-6">
+              <h5>Resultado</h5>
+              <div>
+                <label>Salida</label>
+                <input type="text" class="bg-hover orange px-2" value="<%= entry.exitPrice %>" readonly>
+              </div>
+              <% if ('exitDate' in entry) { %>
+                <div>
+                  <label>Fecha de salida</label>
+                  <input type="text" class="bg-hover orange px-2" value="<%= entry.exitDate %>" readonly>
+                </div>
+              <% } %>
+              <div>
+                <label>Resultado</label>
+                <input type="text" class="bg-hover orange px-2" value="<%= entry.result.toUpperCase() %>" readonly>
+              </div>
             </div>
-            <span class="ml-auto">
-              <a id="show-entry-ta" href="#!">show</a>
-              <a id="hide-entry-ta" class="d-none" href="#!">hide</a>
-            </span>
           </div>
-          <div id="load-entry-ta" class="d-none">
-            <% for (var i = 0; i < ta.taElements.length; i++) { %>
-              <%- ta.taElements[i] %>
-            <% } %>
-          </div>
-          <br>
         <% } %>
-        <div class="d-flex justify-content-end">
-          <a href="javascript:history.back()" class="ml-2 px-3 py-2 default-btn"> Cancelar</a>
-          <% if (entry.entryResult == null) { %>
-            <a href="#" class="ml-2 px-3 py-2 default-btn"> Cerrar</a>
+        <br>
+        <h3 class="mx-3">Comentarios</h3>
+        <hr>
+        <div class="mx-3">
+          <% if ('comment' in entry) { %>
+            <div><%= entry.comment %></div>
           <% } %>
-          <a href="/username/journal/entry/<%= entry.entryId %>/edit" class="ml-2 px-3 py-2 invert-btn">Modificar</a>
-          <button type="submit" class="ml-2 px-3 py-2 invert-btn">Eliminar</button>
+        </div>
+        <br>
+        <h3 class="mx-3">Análisis Técnico</h3>
+        <hr>
+        <span class="mx-3">
+          <label><strong>Ir al análisis técnico asociado:</strong></label>
+          <a href="/<%= currentUser.username %>/journal/ta/<%= entry.taId %>" class="text-decoration-none">
+            <span class="bg-hover orange px-2">Click</span>
+          </a>
+        </span>
+        <div class="d-flex justify-content-end mx-3">
+          <a href="javascript:history.back()" class="btn-neilit ml-2"> Cancelar</a>
+          <a href="/<%= currentUser.username %>/journal/entry/<%= entry.id %>/edit" class="btn-inverted ml-2">Modificar</a>
+          <button type="submit" class="btn-neilit ml-2">Eliminar</button>
         </div>
       </form>
     </div>
-
   </div>
 
 <!-- <section> is inside partials -->
 </section>
 
+<!-- JQUERY -->
+<script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
+<!-- LOCAL SCRIPTS -->
+<script type="text/javascript" src="/js/ta.js"></script>
 
-
-<%- include("../../partials/footer-sub") %>
+<%- include("../../../partials/footer-log") %>

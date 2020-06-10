@@ -1,9 +1,10 @@
-DELETE FROM entries;
 DELETE FROM telementanalysis;
-DELETE FROM strategies_timeframes;
-DELETE FROM strategies;
-DELETE FROM tanalysis;
 DELETE FROM telements;
+DELETE FROM tanalysis;
 DELETE FROM pairs;
 DELETE FROM comments;
+DELETE FROM strategies;
+DELETE FROM timeframes;
+DELETE FROM entries;
+DELETE FROM roles;
 DELETE FROM users;

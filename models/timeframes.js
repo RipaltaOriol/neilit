@@ -13,7 +13,7 @@ var connection = mysql.createConnection({
 // Create the variable that will be returned
 var timeframesList = [];
 // Query to the DB
-connection.query("SELECT timeframe FROM strategies_timeframes", (err, results) => {
+connection.query("SELECT timeframe FROM timeframes", (err, results) => {
   if (err) throw err;
   results.forEach((result) => {
     timeframesList.push(result.timeframe)

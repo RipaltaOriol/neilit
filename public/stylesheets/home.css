@@ -78,6 +78,16 @@ form input {
 }
 
 /* || Bootstrap class */
+.modal-body { }
+  .modal-body a {
+    cursor: pointer;
+  }
+    .modal-body a:hover {
+      background-color: #f7f7f7;
+      border-radius: .25rem;
+    }
+
+/* || Bootstrap class */
 .badge {
   font-size: 15px;
   color: white;

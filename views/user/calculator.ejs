@@ -5,18 +5,31 @@
     <section id="calculator">
       <div class="container">
         <h2>Calculadora de Riesgo</h2>
-        <h3 class="line-across mt-3"><span>Información de la cuenta:</span></h3>
-        <input id="account-size" class="d-block ml-2 rounded my-2 pl-1" type="number" min="0" placeholder="Tamaño de la cuenta">
-        <input id="ops-risk" class="d-block ml-2 rounded my-2 pl-1" type="number" min="0" placeholder="Riesgo de la cuenta en %">
-        <div class="separator ml-2">or</div>
-        <input id="trade-size" class="d-block ml-2 rounded my-2 pl-1" type="number" min="0" placeholder="Tamaño de la operación">
-        <h3 class="line-across mt-3"><span>Información de la operación:</span></h3>
-        <input id="sl-per" class="d-block ml-2 rounded my-2 pl-1" type="number" min="0" placeholder="Tamaño de Stop-Loss en %">
-        <h3 class="line-across mt-3"><span>Resultado:</span></h3>
-        <div class="ml-2">
-          <label>Tamaño de la operacion en lotes:</label>
-          <strong><span id="ops-size"></span></strong>
-          <button class="btn btn-neilit d-block" onclick="calcRisk()">CALCULAR</button>
+        <div class="journal-box px-0 w-50">
+          <h3 class="mx-3">Información de la cuenta</h3>
+          <hr>
+          <div class="mx-3">
+            <input id="account-size" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de la cuenta">
+            <input id="ops-risk" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Riesgo de la cuenta en %">
+            <div class="separator">or</div>
+            <input id="trade-size" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de la operación">
+          </div>
+          <br>
+          <h3 class="mx-3">Información de la operación</h3>
+          <hr>
+          <div class="mx-3">
+            <input id="sl-per" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de Stop-Loss en %">
+          </div>
+          <br>
+          <h3 class="mx-3">Resultado</h3>
+          <hr>
+          <div class="mx-3">
+            <p class="d-inline">Tamaño de la operacion en lotes:</p>
+            <strong><span id="ops-size" class="bg-grey orange px-2"></span></strong>
+          </div>
+          <div class="d-flex justify-content-end mx-3">
+            <button class="btn-neilit" onclick="calcRisk()">CALCULAR</button>
+          </div>
         </div>
       </div>
     </section>

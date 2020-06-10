@@ -1,3 +1,7 @@
+span .checkbox-orange {
+  font-size: 18px;
+}
+
 .journal-box .btn-neilit {
   color: white;
 }
@@ -11,6 +15,11 @@
       color: white;
     }
 
+.info-box {
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+}
+
 /* || Utility */
 .bg-hover {
   border-radius: .25rem;
@@ -18,6 +27,11 @@
   .bg-hover:hover {
     background-color: #f7f7f7;
   }
+
+/* || Utility */
+.mandatory {
+  font-weight: bold
+}
 
 /* || JQuery UI class */
 .ui-datepicker {
@@ -54,6 +68,21 @@
 .widget-general { }
   .widget-general span {
     font-weight: bold;
+  }
+
+.tag {
+  color: white;
+  padding: 0 20px 0 20px;
+  border-radius: .25rem;
+}
+  .tag.win {
+    background: #10C0008B 0% 0% no-repeat padding-box;
+  }
+  .tag.loss {
+    background: #FF000080 0% 0% no-repeat padding-box;
+  }
+  .tag.be {
+    background: #FFCF18A6 0% 0% no-repeat padding-box;
   }
 
 #client-comment {
@@ -130,7 +159,9 @@
     }
   #ta-content .move{
     display: inline;
+    cursor: pointer;
   }
   #ta-content .drop {
     display: inline;
+    cursor: pointer;
   }

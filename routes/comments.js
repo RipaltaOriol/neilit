@@ -1,6 +1,15 @@
 var express = require('express');
 var router = express.Router({mergeParams: true});
 
+// Connect to DB
+var connection = mysql.createConnection({
+  host    : 'localhost',
+  user    : 'root',
+  password: 'ripaltus',
+  database: 'neilit_db',
+  multipleStatements: true
+});
+
 // INDEX COMMENTS ROUTE
 // FIXME: How to optmize when loading a large sample (LOAD AS YOU GO)
 router.get("/", isLoggedIn, (req, res) => {

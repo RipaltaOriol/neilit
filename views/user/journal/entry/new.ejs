@@ -1,155 +1,218 @@
-<%- include("../../partials/header-sub") %>
+<%- include("../../../partials/header-log") %>
 
+
+  <div id="local-alert" class="container d-none">
+    <div class="alert alert-danger mt-2" role="alert">
+      Entry time does not follow the correct format. Time has to be typed in 24-hour clock. For instance, 13:55.
+    </div>
+  </div>
   <!-- CONTENT -->
-  <div id="initial-user-screen" class="mt-3 mx-4">
-
-    <!-- NEW ENTRY -->
-    <div id="new" class="journal-box my-4">
-      <form action="/username/journal/entry" method="POST">
-        <h5>Crear Entrada</h5>
+  <div class="container mt-3 mb-5 mx-auto">
+    <div class="journal-box px-0">
+      <form action="/<%= currentUser.username %>/journal/entry" method="POST" onsubmit="event.preventDefault(); return checkTime(this);">
+        <h3 class="mx-3">Crear Entrada</h3>
         <hr>
-        <div class="d-flex flex-wrap">
-          <input id="pair-entry" type="text" name="pair" list="pairsntickers" class="entry-pair custom-select py-1 mx-4 my-1" placeholder="PAIRS" onchange="setCategory()">
-            <datalist id="pairsntickers">
-              <% for (var c = 0; c < currencies.length; c++) { %>
-                <option value="<%= currencies[c] %>">
-              <% } %>
-            </datalist>
-          <div class="entry-category mx-4 my-1">
-            <label for="catetory" class="my-0 mr-1">Categoría</label>
-            <input id="entry-category" type="text" class="field-input" name="category" readonly>
-          </div>
-          <div class="entry-size mx-4 my-1">
-            <label for="size" class="my-0 mr-1">Tamaño</label>
-            <input type="number" class="entry-size field-input" name="size" min="0" step="0.1">
-          </div>
-          <select class="entry-strategy custom-select py-1 mx-4 my-1" name="strategy">
-            <option value="default" selected>Estrategia</option>
-            <% for (var s = 0; s < strategies.length; s++) { %>
-              <option value="<%= strategies[s] %>" class="valid"><%= strategies[s] %></option>
+        <div class="mb-2 mx-3">
+          <select id="entry-pair" name="pair" class="custom-select p-1" onchange="entryCategory();">
+            <% for (var i = 0; i < currencies.length; i++) { %>
+              <option value="<%= i %>"><%= currencies[i] %></option>
             <% } %>
           </select>
-          <div class="entry-date mx-4 my-1">
-            <label for="date" class="my-0 mr-1">Entrada</label>
-            <input type="date" class="field-input" name="entryDate">
-          </div>
-          <div class="entry-time mx-4 my-1">
-            <label for="time" class="my-0 mr-2">Hora</label>
-            <input id="time-input" type="text" class="field-input" name="time" onkeydown="checkTime(event)">
-          </div>
-          <div class="entry-direction mx-4 my-1">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="entryDirection" id="create-entry-buy" value="long">
-              <label class="form-check-label" for="create-entry-buy">Compra</label>
+          <div class="d-flex flex-column mt-2 info-box p-2">
+            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Específicos</h5>
+            <div class="info-fields mt-2">
+              <span class="mb-2">
+                <label>Categoría
+                  <span class="mandatory">*</span>
+                </label>
+                <input id="entry-category" type="text" class="bg-hover orange px-2" name="category" readonly>
+              </span>
+              <span class="input-group mb-2">
+                <label class="my-auto">Estrategia
+                  <span class="mandatory">*</span>
+                </label>
+                <select class="custom-select p-1" name="strategy">
+                  <% for (var i = 0; i < strategies.length; i++) { %>
+                    <option value="<%= i %>" ><%= strategies[i] %></option>
+                  <% } %>
+                </select>
+              </span>
+              <span class="input-group">
+                <label class="my-auto">Timeframe de Anclaje
+                  <span class="mandatory">*</span>
+                </label>
+                <select class="custom-select p-1" name="timeframe">
+                  <% for (var i = 0; i < timeframes.length; i++) { %>
+                    <option value="<%= i %>" ><%= timeframes[i] %></option>
+                  <% } %>
+                </select>
+              </span>
             </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="entryDirection" id="create-entry-sell" value="short">
-              <label class="form-check-label" for="create-entry-sell">Venta</label>
+          </div>
+          <div class="d-flex flex-column mt-2 info-box p-2">
+            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Finanzas</h5>
+            <div class="info-fields mt-2">
+              <span class="input-group">
+                <label class="my-auto">Tamaño
+                  <span class="mandatory">*</span>
+                </label>
+                <input type="number" class="bg-hover form-control px-2" name="size" min="0" step="0.1">
+              </span>
+              <span class="input-group">
+                <label class="my-auto">Precio de Entrada
+                  <span class="mandatory">*</span>
+                </label>
+                <input type="number" class="bg-hover form-control px-2" name="entryPrice" min="0" step="0.00001">
+              </span>
+              <span class="input-group">
+                <label class="my-auto">Stop Loss</label>
+                <input type="number" class="bg-hover form-control px-2" name="stopLoss" min="0" step="0.00001">
+              </span>
+              <span class="input-group">
+                <label class="my-auto">Take Profit</label>
+                <input type="number" class="bg-hover form-control px-2" name="takeProfit" min="0" step="0.00001">
+              </span>
             </div>
           </div>
-          <div class="entry-price mx-4 my-1">
-            <label for="entry-price" class="my-0 mr-2">Precio</label>
-            <input type="number" min="0" step="0.00001" class="entry-price field-input" name="entryPrice">
-          </div>
-          <div class="entry-stoploss mx-4 my-1">
-            <label for="stop-loss" class="my-0 mr-2">SL</label>
-            <input type="number" min="0" step="0.00001" class="entry-sl field-input" name="stopLoss">
-          </div>
-          <div class="entry-takeprofits mx-4 my-1">
-            <label for="take-profit" class="my-0 mr-2">TP</label>
-            <input type="number" min="0" step="0.00001" class="entry-tp field-input" name="takeProfit">
+          <div class="d-flex flex-column mt-2 info-box p-2">
+            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Logística</h5>
+            <div class="info-fields mt-2">
+              <span class="input-group">
+                <label class="my-auto">Fecha de Entrada
+                  <span class="mandatory">*</span>
+                </label>
+                <input type="date" class="bg-hover form-control px-2" name="entryDate">
+              </span>
+              <span class="input-group mb-1">
+                <label class="my-auto">Hora de Entrada</label>
+                <input id="entry-time" type="text" class="bg-hover form-control px-2" name="entryTime">
+              </span>
+              <span class="mb-2">
+                <div class="form-check form-check-inline">
+                  <label class="checkbox-orange mb-0">
+                    Compra
+                    <input type="radio" name="direction" value="1">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="checkbox-orange mb-0">
+                    Venta
+                    <input type="radio" name="direction" value="-1">
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </span>
+            </div>
           </div>
         </div>
         <br>
-        <h5>Análisis técnico</h5>
+        <h3 class="mx-3">Asociar Análisis Técnico</h3>
         <hr>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="entryTA" id="existingTA" value="existing" onclick="addingTA(this)">
-          <label class="form-check-label" for="existingTA">
-            Conectar a análisis técnico
-          </label>
+        <div class="mx-3">
+          <span class="d-block">
+            <label class="checkbox-orange mb-0">
+              Entrada sin análisis técnico
+              <input id="noneTa" type="radio" name="selectTa" value="none" checked>
+              <span class="checkmark"></span>
+            </label>
+          </span>
+          <span class="d-block">
+            <label class="checkbox-orange mb-0">
+              Conectar a análisis técnico
+              <input id="selectTa" type="radio" name="selectTa" value="select" data-toggle="modal" data-target=".modal-ta">
+              <span class="checkmark"></span>
+            </label>
+          </span>
+          <span id="entry-ta" class="d-none">
+            <label class="mt-2 mb-0"><strong>Entrada connectada a:</strong></label>
+            <p id="connect-ta" class="d-inline bg-hover orange px-2"></p>
+            <input id="ta" type="text" name="entryTa" class="d-none">
+          </span>
         </div>
-        <!-- BTN input to pass the TA id to connect the entyr with -->
-        <input id="infoTa" type="text" class="d-none" name="taId">
-        <div id="selectTa" class="dropdown d-none">
-          <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Selecciona el análisis técnico que quieras adjuntar:
-          </button>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-            <% for (var i = 0; i < tanalysis.ta_id.length; i++) { %>
-              <a class="dropdown-item" onclick="passTaId('<%= tanalysis.ta_id[i] %>', '<%= tanalysis.ta_title[i] %>')"><%= tanalysis.ta_title[i] %></a>
-            <% } %>
+        <!-- technical analysis modal -->
+        <div class="modal modal-ta fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content text-center">
+              <div class="modal-header">
+                <h5 class="modal-title mx-auto">Seleccione un <span class="orange">análisis técnico</span> para conectar a esta entrada</h5>
+              </div>
+              <div class="modal-body d-flex flex-column">
+                <% tas.title.forEach((ta, i) => { %>
+                  <a class="mt-2 bg-hover" data-dismiss="modal" onclick="connectTa(<%= i %>);"><%= ta %></a>
+                <% }); %>
+              </div>
+            </div>
           </div>
-          <p>TA seleccionado: <strong id="show-selectedTA"></strong></p>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="entryTA" id="offlineTA" value="offline" onclick="addingTA(this)">
-          <label class="form-check-label" for="offlineTA">
-            Análisis técnico offline
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="entryTA" id="noneTA" value="none" onclick="addingTA(this)">
-          <label class="form-check-label" for="noneTA">
-            Entrada sin análisis técnico
-          </label>
         </div>
         <br>
-        <h5>Comentarios</h5>
+        <h3 class="mx-3">Comentarios</h3>
         <hr>
-        <div class="entry-comments mb-3">
-          <div id="entry-comment" contenteditable="true">Utilice este espacio para escribir algún comentario adicional</div>
+        <div class="mx-3">
+          <div id="client-comment" placeholder="Utilice este espacio para escribir algún comentario adicional" contenteditable="true"></div>
         </div>
-        <textarea id="comment-input" name="comment" class="d-none"></textarea>
+        <textarea id="server-comment" name="comment" class="d-none"></textarea>
         <br>
-        <h5>Cerrar Entrada</h5>
+        <h3 class="mx-3">Cerrar Entrada</h3>
         <hr>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="status" id="open-entry" value="0" onclick="displayClose(this.value)">
-          <label class="form-check-label" for="open-entry">
-            La entrada permanece abierta
-          </label>
+        <div class="mx-3 mb-3">
+          <span class="d-block">
+            <label class="checkbox-orange mb-0 font-18">
+              La entrada continua abierta
+              <input id="entry-open" type="radio" name="status" value="0" onclick="displayClose(this.value)" checked>
+              <span class="checkmark"></span>
+            </label>
+          </span>
+          <span class="d-block">
+            <label class="checkbox-orange mb-0">
+              La entrada esta cerrada
+              <input id="entry-close" type="radio" name="status" value="1" onclick="displayClose(this.value)">
+              <span class="checkmark"></span>
+            </label>
+          </span>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="status" id="close-entry" value="1" onclick="displayClose(this.value)">
-          <label class="form-check-label" for="close-entry">
-            La entrada esta cerrada
-          </label>
-        </div>
-        <div class="close-fields d-none">
-          <div class="entry-exit-date my-2">
-            <label for="exit" class="my-0 mr-2">Salida</label>
-            <input type="date" class="field-input" name="exitDate">
-          </div>
-          <div class="my-2">
-            <label for="close-price" class="my-0 mr-2">Precio</label>
-            <input type="number" min="0" step="0.00001" class="field-input" name="closePrice">
-          </div>
-          <div class="form-group">
-            <label for="entry-result">Resultado</label>
-            <select id="entry-result" name="result">
+        <div id="entry-closure" class="flex-column mx-3 w-50 d-none">
+          <span class="mb-2">
+            <label class="mb-0">Fecha de Salida</label>
+            <input type="date" class="bg-hover orange px-2" name="exitDate">
+          </span>
+          <span class="mb-2">
+            <label class="mb-0">Precio de Salida</label>
+            <input type="number" class="bg-hover orange px-2" name="closePrice" min="0" step="0.00001">
+          </span>
+          <span class="mb-2">
+            <label class="mb-0">Resultado</label>
+            <select id="entry-result" name="result" class="custom-select p-1 w-auto">
               <option value="win">Win</option>
-              <option value="break even">Break Even</option>
+              <option value="be">Break Even</option>
               <option value="loss">Loss</option>
             </select>
-          </div>
+          </span>
         </div>
-        <div class="d-flex justify-content-around">
-          <button id="create-entry" type="submit" class="px-3 py-2 journal-button">Crear</button>
+        <div class="d-flex justify-content-end mx-3">
+          <button id="submit-entry" type="submit" class="btn-neilit">Crear</button>
         </div>
       </form>
     </div>
-
   </div>
-
-<!-- <section> is inside partials -->
-</section>
 
 <script type="text/javascript">
   var currencies = <%- JSON.stringify(currencies) %>;
   var categories = <%- JSON.stringify(categories) %>;
   var strategies = <%- JSON.stringify(strategies) %>;
-  var entry = null;
+  var tas = <%- JSON.stringify(tas) %>;
 </script>
 
-<%- include("../../partials/footer-sub") %>
+<!-- <section> is inside partials -->
+</section>
+
+<!-- JQUERY -->
+<script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
+<!-- LOCAL SCRIPTS -->
+<script type="text/javascript" src="/js/entry.js"></script>
+
+
+<%- include("../../../partials/footer-log") %>

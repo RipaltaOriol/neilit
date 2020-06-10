@@ -3,20 +3,40 @@
   <!-- CONTENT -->
   <div class="container mt-3 mx-auto">
     <div class="journal-box px-0">
-      <form>
-        <h3 class="mx-3">Historial de Comentarios</h3>
-        <hr>
-        <!-- FIXME: Problem sorting times -->
-        <% var indexE = 0; %>
-        <% var indexC = 0; %>
-        <% while(indexC < historyComment.date.length || indexE < historyEntry.date.length) { %>
-          <% if (indexE == historyEntry.date.length) { %>
+      <h3 class="mx-3">Historial de Comentarios</h3>
+      <hr>
+      <!-- FIXME: Problem sorting times -->
+      <% var indexE = 0; %>
+      <% var indexC = 0; %>
+      <% while(indexC < historyComment.date.length || indexE < historyEntry.date.length) { %>
+        <% if (indexE == historyEntry.date.length) { %>
+          <div class="bg-grey mx-3 p-2 mb-3 rounded">
+            <span class="orange"><%= historyComment.date[indexC] %></span>
+            <p class="mb-0"><%= historyComment.content[indexC] %></p>
+          </div>
+          <% indexC++; %>
+        <% } else if (indexC == historyComment.date.length) { %>
+          <div class="comment-entry ml-auto mr-3 mb-3 journal-box w-75 d-none">
+            <span class="orange float-right"><%= historyEntry.date[indexE] %></span>
+            <h5><%= historyEntry.content[indexE] %></h5>
+            <p class="card-text">
+              Este texto incluirá información de la entrada para que el
+              usuario pueda orientarse en cuanto al tipo de operación.
+              Por ejemplo, dirección, reusltado y estrategia.
+            </p>
+            <a href="#!" class="btn-neilit">Go to entry</a>
+          </div>
+          <% indexE++; %>
+        <% } else { %>
+          <% var dateC = new Date(historyComment.date[indexC]); %>
+          <% var dateE = new Date(historyEntry.date[indexE]); %>
+          <% if (dateC < dateE) { %>
             <div class="bg-grey mx-3 p-2 mb-3 rounded">
               <span class="orange"><%= historyComment.date[indexC] %></span>
               <p class="mb-0"><%= historyComment.content[indexC] %></p>
             </div>
             <% indexC++; %>
-          <% } else if (indexC == historyComment.date.length) { %>
+          <% } else { %>
             <div class="comment-entry ml-auto mr-3 mb-3 journal-box w-75 d-none">
               <span class="orange float-right"><%= historyEntry.date[indexE] %></span>
               <h5><%= historyEntry.content[indexE] %></h5>
@@ -28,38 +48,16 @@
               <a href="#!" class="btn-neilit">Go to entry</a>
             </div>
             <% indexE++; %>
-          <% } else { %>
-            <% var dateC = new Date(historyComment.date[indexC]); %>
-            <% var dateE = new Date(historyEntry.date[indexE]); %>
-            <% if (dateC < dateE) { %>
-              <div class="bg-grey mx-3 p-2 mb-3 rounded">
-                <span class="orange"><%= historyComment.date[indexC] %></span>
-                <p class="mb-0"><%= historyComment.content[indexC] %></p>
-              </div>
-              <% indexC++; %>
-            <% } else { %>
-              <div class="comment-entry ml-auto mr-3 mb-3 journal-box w-75 d-none">
-                <span class="orange float-right"><%= historyEntry.date[indexE] %></span>
-                <h5><%= historyEntry.content[indexE] %></h5>
-                <p class="card-text">
-                  Este texto incluirá información de la entrada para que el
-                  usuario pueda orientarse en cuanto al tipo de operación.
-                  Por ejemplo, dirección, reusltado y estrategia.
-                </p>
-                <a href="#!" class="btn-neilit">Go to entry</a>
-              </div>
-              <% indexE++; %>
-            <% } %>
           <% } %>
         <% } %>
+      <% } %>
 
-        <div class="mx-3 text-right">
-          <button type="button" class="btn-neilit ml-2">Añadir TAs</button>
-          <button id="remove-entries" type="button" class="btn-inverted ml-2 d-none" onclick="noneEntries()">Quitar Entradas</button>
-          <button id="show-entries" type="button" class="btn-neilit ml-2" onclick="showEntries()">Añadir Entradas</button>
-          <a href="javascript:history.back()" class="btn-neilit ml-2">Atrás</a>
-        </div>
-      </form>
+      <div class="mx-3 text-right">
+        <button type="button" class="btn-neilit ml-2">Añadir TAs</button>
+        <button id="remove-entries" type="button" class="btn-inverted ml-2 d-none" onclick="noneEntries()">Quitar Entradas</button>
+        <button id="show-entries" type="button" class="btn-neilit ml-2" onclick="showEntries()">Añadir Entradas</button>
+        <a href="javascript:history.back()" class="btn-neilit ml-2">Atrás</a>
+      </div>
     </div>
   </div>
 

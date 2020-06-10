@@ -101,15 +101,6 @@ function matchIndex(currency) {
 //   entryPair.value = currencies.findIndex(matchIndex) + 1;
 // })
 
-// Dispaly inputs for entry close
-function displayClose(close) {
-  if (close == 0) {
-    closeFields.classList.add("d-none");
-  } else {
-    closeFields.classList.remove("d-none");
-  }
-}
-
 var createTA = document.getElementById("create-ta");
 if (createTA != null) {
   createTA.addEventListener("click", () => {

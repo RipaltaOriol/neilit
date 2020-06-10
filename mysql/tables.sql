@@ -1,19 +1,26 @@
 -- Learn how to drop tables simultaneously
 -- Involving foreign refrences
 SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS telementanalysis;
 DROP TABLE IF EXISTS telements;
 DROP TABLE IF EXISTS pairs;
 DROP TABLE IF EXISTS strategies;
-DROP TABLE IF EXISTS strategies_timeframes;
 DROP TABLE IF EXISTS tanalysis;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS entries;
 DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS timeframes;
+DROP TABLE IF EXISTS roles;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-
+-- DB Tables
+CREATE TABLE roles
+  (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    role VARCHAR(40) NOT NULL
+  );
 
 CREATE TABLE users
   (
@@ -22,8 +29,10 @@ CREATE TABLE users
     email VARCHAR(40) NOT NULL,
     name VARCHAR(40) NOT NULL,
     surname VARCHAR(40) NOT NULL,
+    role_id INT NOT NULL,
     password VARCHAR(4000) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (role_id) REFERENCES roles(id)
   );
 
 CREATE TABLE pairs
@@ -44,7 +53,7 @@ CREATE TABLE strategies
 -- missing/not taking into account the strategy importance
 -- only 2 values are possible
 
-CREATE TABLE strategies_timeframes
+CREATE TABLE timeframes
 (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   timeframe VARCHAR (10) NOT NULL
@@ -73,8 +82,13 @@ CREATE TABLE telementanalysis
   order_at INT NOT NULL,
   element_id INT NOT NULL,
   content VARCHAR(4000),
+  file BLOB,
+  strategy_id INT,
+  timeframe_id INT,
   FOREIGN KEY (ta_id) REFERENCES tanalysis(id),
-  FOREIGN KEY (element_id) REFERENCES telements(id)
+  FOREIGN KEY (element_id) REFERENCES telements(id),
+  FOREIGN KEY (strategy_id) REFERENCES strategies(id),
+  FOREIGN KEY (timeframe_id) REFERENCES timeframes(id)
 );
 
 CREATE TABLE entries
@@ -85,17 +99,18 @@ CREATE TABLE entries
   category VARCHAR(20) NOT NULL,
   size DOUBLE NOT NULL,
   strategy_id INT NOT NULL,
+  timeframe_id INT NOT NULL,
   entry_dt TIMESTAMP NOT NULL DEFAULT NOW(),
   exit_dt TIMESTAMP,
-  direction VARCHAR(5) NOT NULL, -- this column might not be necessary
+  direction ENUM('long', 'short') NOT NULL, -- this column might not be necessary
   entry_price DECIMAL(8,5) NOT NULL,
-  stop_loss DECIMAL(8,5) NOT NULL,
-  take_profit DECIMAL(8,5) NOT NULL,
+  stop_loss DECIMAL(8,5),
+  take_profit DECIMAL(8,5),
   exit_price DECIMAL(8,5),
   ta_id INT,
-  status BOOLEAN DEFAULT false,
+  status BOOLEAN DEFAULT false NOT NULL,
   comment VARCHAR(4000),
-  result VARCHAR(10),
+  result ENUM('win', 'loss', 'be'),
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (pair_id) REFERENCES pairs(id),
   FOREIGN KEY (strategy_id) REFERENCES strategies(id),
@@ -107,6 +122,6 @@ CREATE TABLE comments
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   user_id INT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  comment VARCHAR(4000) NOT NULL,
+  comment VARCHAR(4000),
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
