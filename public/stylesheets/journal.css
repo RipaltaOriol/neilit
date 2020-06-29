@@ -3,6 +3,10 @@
   max-width: 1025px;
 }
 
+.backtest {
+  max-width: 90%;
+}
+
 /* || Bootstrap class */
 .input-group .custom-select:not(:first-child){
   border-radius: .25rem!important;

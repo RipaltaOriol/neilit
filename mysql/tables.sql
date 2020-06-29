@@ -2,6 +2,10 @@
 -- Involving foreign refrences
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS backtest_addons_data;
+DROP TABLE IF EXISTS backtest_data;
+DROP TABLE IF EXISTS backtest_addons;
+DROP TABLE IF EXISTS backtest;
 DROP TABLE IF EXISTS telementanalysis;
 DROP TABLE IF EXISTS telements;
 DROP TABLE IF EXISTS pairs;
@@ -32,6 +36,8 @@ CREATE TABLE users
     role_id INT NOT NULL,
     password VARCHAR(4000) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    -- FIX: change base currency to an ID
+    base_currency VARCHAR(3),
     FOREIGN KEY (role_id) REFERENCES roles(id)
   );
 
@@ -124,4 +130,59 @@ CREATE TABLE comments
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   comment VARCHAR(4000),
   FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE backtest
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  pair_id INT,
+  direction ENUM('long', 'short'),
+  result ENUM('%', 'R'),
+  strategy_id INT,
+  timeframe_id INT,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (pair_id) REFERENCES pairs(id),
+  FOREIGN KEY (strategy_id) REFERENCES strategies(id),
+  FOREIGN KEY (timeframe_id) REFERENCES timeframes(id)
+);
+
+CREATE TABLE backtest_addons
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  backtest_id INT NOT NULL,
+  description VARCHAR(1000) NOT NULL,
+  is_integers BOOLEAN DEFAULT false NOT NULL,
+  option1 VARCHAR(1000),
+  option2 VARCHAR(1000),
+  option3 VARCHAR(1000),
+  option4 VARCHAR(1000),
+  option5 VARCHAR(1000),
+  option6 VARCHAR(1000),
+  FOREIGN KEY (backtest_id) REFERENCES backtest(id)
+);
+
+CREATE TABLE backtest_data
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  backtest_id INT NOT NULL,
+  direction ENUM('long', 'short'),
+  result FLOAT NOT NULL,
+  pair_id INT,
+  strategy_id INT,
+  timeframe_id INT,
+  FOREIGN KEY (backtest_id) REFERENCES backtest(id),
+  FOREIGN KEY (pair_id) REFERENCES pairs(id),
+  FOREIGN KEY (strategy_id) REFERENCES strategies(id),
+  FOREIGN KEY (timeframe_id) REFERENCES timeframes(id)
+);
+
+CREATE TABLE backtest_addons_data
+(
+  backtest_data_id INT NOT NULL,
+  backtest_addons_id INT NOT NULL,
+  addon_value FLOAT, -- it can be a integer value or an option value
+  FOREIGN KEY (backtest_data_id) REFERENCES backtest_data(id),
+  FOREIGN KEY (backtest_addons_id) REFERENCES backtest_addons(id)
 );

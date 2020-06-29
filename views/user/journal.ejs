@@ -138,9 +138,17 @@
                 </div>
               </div>
               <hr class="mb-2">
-              <p class="mx-3">Conoce el comportamiento de los activos.</p>
+              <div class="mx-3">
+                <% if (backtest.title.length < 1) { %>
+                  <p>Conoce el comportamiento de los activos y pon a prueba tus estrategias.</p>
+                <% } else { %>
+                  <% backtest.title.forEach((test, i) => { %>
+                    <a class="journal-link" href="/<%= currentUser.username %>/journal/backtest/<%= backtest.id[i] %>"><%= test %></a>
+                  <% }); %>
+                <% } %>
+              </div>
               <br>
-              <form class="d-flex justify-content-center mx-3">
+              <form class="d-flex justify-content-center mx-3" action="/<%= currentUser.username %>/journal/backtest/new">
                 <input type="submit" class="btn-neilit" value="Continuar">
                 <input type="button" class="btn-inverted mx-2" value="Ver todo">
               </form>

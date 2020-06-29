@@ -1,0 +1,33 @@
+<%- include("../../../partials/header-log") %>
+
+  <!-- CONTENT -->
+  <div class="container mt-3 mb-5 mx-auto">
+  <div class="journal-box px-0">
+    <form action="" method="POST">
+      <h3 class="mx-3">Something Random</h3>
+      <hr>
+      <div class="mx-3">
+
+      </div>
+      <br>
+      <div class="d-flex justify-content-end mx-3">
+        <a href="javascript:history.back()" class="btn-neilit ml-2">Cancelar</a>
+        <a href="/<%= currentUser.username %>/journal/backtest/id/edit" class="btn-inverted ml-2">Modificar</a>
+        <button type="submit" class="btn-neilit ml-2">Eliminar</button>
+      </div>
+    </form>
+  </div>
+  </div>
+
+<!-- <section> is inside partials -->
+</section>
+
+<!-- JQUERY -->
+<script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
+<!-- LOCAL SCRIPTS -->
+<script type="text/javascript" src="/js/backtest.js"></script>
+
+<%- include("../../../partials/footer-log") %>

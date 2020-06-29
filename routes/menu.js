@@ -26,14 +26,18 @@ router.get("/settings", isLoggedIn, (req, res) => {
 
 // RISK CALCULATOR ROUTE
 router.get("/calculator", isLoggedIn, (req, res) => {
-  res.render("user/calculator");
+  res.render("user/calculator", {currencies:pairs});
 })
 
 // JOURNAL ROUTE
+// BUG: problem with so many connections - create a pool - run by JORDI
 router.get("/journal", isLoggedIn, (req,res) => {
+  // FIXME: table not optimized - JOIN pairs is unecessary
   var selectTAs = 'SELECT tanalysis.id AS identifier, pair, DATE_FORMAT(tanalysis.created_at, "%d de %M %Y") AS created_at FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY tanalysis.created_at DESC LIMIT 7';
+  // FIXME: table not optimized - JOIN pairs is unecessary
   var selectEntrys = 'SELECT entries.id AS identifier, DATE_FORMAT(entry_dt, "%d de %M %Y") AS entry_dt, pair FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 7';
   var selectComments = 'SELECT id, DATE_FORMAT(created_at, "%d/%m/%y") AS title, comment FROM comments WHERE user_id = ? ORDER BY created_at DESC LIMIT 7';
+  var selectBacktest = 'SELECT id, DATE_FORMAT(created_at, "%d de %M %Y") AS title, result FROM backtest WHERE user_id = ? ORDER BY created_at DESC LIMIT 7;'
   // Defines the max. # of characters allowed when displaying comments
   var commentsLength = 45
   connection.query(selectTAs, req.user.id, (err, getTas) => {
@@ -77,8 +81,28 @@ router.get("/journal", isLoggedIn, (req,res) => {
           } else {
             commentsLimited.content.push(result.comment)
           }
-        });
-        res.render("user/journal", {entries:entriesLimited, tas:tasLimited, comments:commentsLimited, pairs:pairs});
+        })
+        connection.query(selectBacktest, req.user.id, (err, getBacktest) => {
+          if (err) throw err;
+          // Object to store the BACKTESTS
+          var backtestLimited = {
+            title: [],
+            id: []
+          }
+          getBacktest.forEach((result) => {
+            backtestLimited.title.push(result.title + " in " + result.result)
+            backtestLimited.id.push(result.id)
+          });
+          res.render("user/journal",
+            {
+              entries:entriesLimited,
+              tas:tasLimited,
+              comments:commentsLimited,
+              backtest:backtestLimited,
+              pairs:pairs
+            }
+          );
+        })
       })
     })
   })

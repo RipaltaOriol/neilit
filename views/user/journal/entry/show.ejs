@@ -3,7 +3,6 @@
   <!-- CONTENT -->
   <div class="container mt-3 mb-5 mx-auto">
     <div class="journal-box px-0">
-      <!-- fix: the path is not good just yet -->
       <form action="/<%= currentUser.username %>/journal/ta/<%= entry.id %>?_method=DELETE" method="POST">
         <h3 class="mx-3"><%= entry.title %></h3>
         <hr>
@@ -110,7 +109,7 @@
           </a>
         </span>
         <div class="d-flex justify-content-end mx-3">
-          <a href="javascript:history.back()" class="btn-neilit ml-2"> Cancelar</a>
+          <a href="javascript:history.back()" class="btn-neilit ml-2">Cancelar</a>
           <a href="/<%= currentUser.username %>/journal/entry/<%= entry.id %>/edit" class="btn-inverted ml-2">Modificar</a>
           <button type="submit" class="btn-neilit ml-2">Eliminar</button>
         </div>

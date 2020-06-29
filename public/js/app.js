@@ -16,3 +16,7 @@ toggleOpen.addEventListener("click", () => {
   content.style.marginLeft = "250px";
   toggleOpen.classList.add("d-none");
 }, false);
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

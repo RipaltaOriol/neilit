@@ -1,3 +1,56 @@
+/* || General styles */
+table input[type=text] {
+  width: 4rem;
+}
+
+table {
+  position: relative;
+  border-collapse: collapse;
+}
+
+table th {
+  border: 1px solid #ff8818;
+}
+
+table th:nth-child(1){
+  border-radius: .25rem 0 0 0;
+}
+
+table th:nth-last-child(1){
+  border-radius: 0 .25rem 0 0;
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 0 .3rem;
+}
+
+table .custom-select {
+  border: none;
+}
+
+.custom-select option[value="default"] {
+  color: red;
+}
+
+tr th {
+  text-align: center;
+  background-color: #ff8818;
+}
+
+table > thead > tr > th{
+  border: none;
+}
+
+table > tbody > tr > td{
+  border: 1px solid #ff8818;
+}
+
+th {
+  position: sticky;
+  top: 0;
+}
+
 span .checkbox-orange {
   font-size: 18px;
 }
@@ -85,6 +138,14 @@ span .checkbox-orange {
     background: #FFCF18A6 0% 0% no-repeat padding-box;
   }
 
+.option-list {
+  background-color: #f7f7f7;
+  border-radius: .25rem;
+}
+  .option-list:read-only {
+    text-decoration: line-through;
+  }
+
 #client-comment {
   color: black;
 }
@@ -164,4 +225,24 @@ span .checkbox-orange {
   #ta-content .drop {
     display: inline;
     cursor: pointer;
+  }
+
+#addons { }
+  #addons label {
+    font-size: 18px;
+  }
+
+#addon {
+  font-size: 18px;
+  background: none;
+  border: none;
+}
+  #addon:active {
+    color: black;
+  }
+  #addon:focus {
+    outline: none;
+  }
+  #addon img {
+    width: 1.5em;
   }

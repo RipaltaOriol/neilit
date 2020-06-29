@@ -1,3 +1,17 @@
+/* || General styles */
+button:disabled {
+  opacity: .75;
+}
+
+/* || Bootstrap class */
+.custom-select {
+  color: #ff8818;
+}
+  .custom-select:focus {
+    border-color: #ced4da;
+    box-shadow: none;
+  }
+
 .journal-box {
   padding: 15px 20px;
   border-radius: 5pt;
@@ -21,6 +35,7 @@
     display: flex;
     align-items: center;
     text-align: center;
+    opacity: .75;
 }
   .separator::before, .separator::after {
       content: '';
@@ -42,7 +57,7 @@
     border-radius: .25rem;
   }
 
-#ops-size {
+#lots-size, #units-size {
   font-family: RobotoMono;
-  font-size: 20px;
+  font-size: 18px;
 }

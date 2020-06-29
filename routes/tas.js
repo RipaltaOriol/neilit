@@ -34,7 +34,7 @@ router.get("/new", isLoggedIn, (req, res) => {
       categories:categories,
       strategies:userStrategies,
       timeframes:timeframes,
-      elements: elements
+      elements:elements
     }
   );
 });

@@ -5,10 +5,18 @@
     <section id="calculator">
       <div class="container">
         <h2>Calculadora de Riesgo</h2>
+        <% if (currentUser.base_currency == null) { %>
+          <div id="local-alert">
+            <div class="alert alert-danger mt-2" role="alert">
+              Para utilizar la calculadora de riesgo primero debe seleccionar su divisa de cuenta en ajustes.
+            </div>
+          </div>
+        <% } %>
         <div class="journal-box px-0 w-50">
           <h3 class="mx-3">Información de la cuenta</h3>
           <hr>
           <div class="mx-3">
+            <input id="base" type="text" value="<%= currentUser.base_currency %>" class="d-none">
             <input id="account-size" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de la cuenta">
             <input id="ops-risk" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Riesgo de la cuenta en %">
             <div class="separator">or</div>
@@ -18,24 +26,46 @@
           <h3 class="mx-3">Información de la operación</h3>
           <hr>
           <div class="mx-3">
-            <input id="sl-per" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de Stop-Loss en %">
+            <input id="sl-pip" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de Stop-Loss en Pips">
+          </div>
+          <br>
+          <h3 class="mx-3">Par de Divisas</h3>
+          <hr>
+          <div class="mx-3">
+            <select id="exchange-pair" class="custom-select p-1">
+              <% for (var i = 0; i < currencies.length; i++) { %>
+                <option value="<%= i %>"><%= currencies[i] %></option>
+              <% } %>
+            </select>
           </div>
           <br>
           <h3 class="mx-3">Resultado</h3>
           <hr>
           <div class="mx-3">
             <p class="d-inline">Tamaño de la operacion en lotes:</p>
-            <strong><span id="ops-size" class="bg-grey orange px-2"></span></strong>
+            <strong><span id="lots-size" class="bg-grey orange px-2"></span></strong>
           </div>
-          <div class="d-flex justify-content-end mx-3">
-            <button class="btn-neilit" onclick="calcRisk()">CALCULAR</button>
+          <div class="mx-3">
+            <p class="d-inline">Tamaño de la operacion en unidades:</p>
+            <strong><span id="units-size" class="bg-grey orange px-2"></span></strong>
+          </div>
+          <div class="d-flex justify-content-end mx-3 mt-2">
+            <% if (currentUser.base_currency == null) { %>
+              <button class="btn-neilit" disabled>CALCULAR</button>
+            <% } else { %>
+              <button class="btn-neilit" onclick="calcRisk()">CALCULAR</button>
+            <% } %>
           </div>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- <section> is inside partials -->
-  </section>
+<script type="text/javascript">
+  var currencies = <%- JSON.stringify(currencies) %>;
+</script>
+
+<!-- <section> is inside partials -->
+</section>
 
 <%- include("../partials/footer-calculator") %>
