@@ -23,18 +23,13 @@ router.get("/", isLoggedIn, (req, res) => {
     strategy: [],
     status: []
   }
-
   connection.query(getAllEntries, (err, results) => {
     if (err) throw err;
     results.forEach((result) => {
       listEntries.id.push(result.id);
       listEntries.title.push(pairs[Number(result.pair_id) - 1] + ", " + result.created_long);
       listEntries.result.push(result.result);
-      console.log('This are all the strategies: ');
-      console.log(userIdStrategies);
-      console.log('This is the ID from strategies: ' + result.strategy_id);
       var strategyIndex = userIdStrategies.findIndex(strategy => strategy == result.strategy_id);
-      console.log('And this is the INDEX of the strategy: ' + result.strategyIndex);
       listEntries.strategy.push(userStrategies[strategyIndex]);
       listEntries.status.push(result.status);
     })

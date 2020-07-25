@@ -29,6 +29,11 @@ router.get("/calculator", isLoggedIn, (req, res) => {
   res.render("user/calculator", {currencies:pairs});
 })
 
+// TRADING PLAN ROUTE
+router.get("/plan", isLoggedIn, (req, res) => {
+  res.render("user/plan");
+})
+
 // JOURNAL ROUTE
 // BUG: problem with so many connections - create a pool - run by JORDI
 router.get("/journal", isLoggedIn, (req,res) => {
@@ -90,7 +95,7 @@ router.get("/journal", isLoggedIn, (req,res) => {
             id: []
           }
           getBacktest.forEach((result) => {
-            backtestLimited.title.push(result.title + " in " + result.result)
+            backtestLimited.title.push(result.title + " [" + result.result + "]")
             backtestLimited.id.push(result.id)
           });
           res.render("user/journal",

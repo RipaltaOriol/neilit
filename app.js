@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // app.use(express.static('public'));
 app.use(methodOverride('_method'));
 app.use(express.static(__dirname + "/public"))
+app.use(express.json({ limit: '1mb' }));
 app.use(flash());
 // Configuration for AUTHENTICATION
 app.use(expressSession({
