@@ -30,9 +30,10 @@ app.use(expressSession({
   secret: 'neilit is the key to trading success',
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   cookie: {
      secure: false,
-     expires: false,
+     maxAge: 12 * 30 * 24 * 60 * 60 * 1000
  }
 }))
 app.use(passport.initialize());
