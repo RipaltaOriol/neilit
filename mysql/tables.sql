@@ -139,7 +139,7 @@ CREATE TABLE backtest
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   pair_id INT,
   direction ENUM('long', 'short'),
-  result ENUM('%', 'R'),
+  result ENUM('%', 'R') NOT NULL,
   strategy_id INT,
   timeframe_id INT,
   FOREIGN KEY (user_id) REFERENCES users(id),
@@ -165,7 +165,7 @@ CREATE TABLE backtest_addons
 
 CREATE TABLE backtest_data
 (
-  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  identifier INT NOT NULL,
   backtest_id INT NOT NULL,
   direction ENUM('long', 'short'),
   result FLOAT NOT NULL,
@@ -180,9 +180,10 @@ CREATE TABLE backtest_data
 
 CREATE TABLE backtest_addons_data
 (
+  backtest_id INT NOT NULL,
   backtest_data_id INT NOT NULL,
   backtest_addons_id INT NOT NULL,
   addon_value FLOAT, -- it can be a integer value or an option value
-  FOREIGN KEY (backtest_data_id) REFERENCES backtest_data(id),
+  FOREIGN KEY (backtest_id) REFERENCES backtest(id),
   FOREIGN KEY (backtest_addons_id) REFERENCES backtest_addons(id)
 );

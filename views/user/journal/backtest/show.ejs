@@ -1,22 +1,83 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mt-3 mb-5 mx-auto">
-  <div class="journal-box px-0">
-    <form action="" method="POST">
-      <h3 class="mx-3">Something Random</h3>
-      <hr>
-      <div class="mx-3">
-
-      </div>
-      <br>
-      <div class="d-flex justify-content-end mx-3">
-        <a href="javascript:history.back()" class="btn-neilit ml-2">Cancelar</a>
-        <a href="/<%= currentUser.username %>/journal/backtest/id/edit" class="btn-inverted ml-2">Modificar</a>
-        <button type="submit" class="btn-neilit ml-2">Eliminar</button>
-      </div>
-    </form>
-  </div>
+  <div class="backtest mt-3 mb-5 mx-auto">
+    <div class="journal-box px-0">
+      <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=DELETE" method="POST">
+        <h3 class="mx-3"><%= backtest.title %></h3>
+        <hr>
+        <div class="mx-3">
+          <div class="table-responsive-md">
+            <table id="backtest-table" class="table table-sm mx-auto">
+              <thead>
+                <tr class="table-header">
+                  <th scope="col">#</th>
+                  <th scope="col">Direction</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Pair</th>
+                  <th scope="col">Strategy</th>
+                  <th scope="col">Timeframe</th>
+                  <% if ('addons' in backtest) { %>
+                    <% backtest.addons.forEach((addon, i) => { %>
+                      <th scope="col" class="non-wrap" data-toggle="tooltip" data-placement="top" title="<%= addon %>">Addon <%= i + 1 %></th>
+                    <% }) %>
+                  <% } %>
+                </tr>
+              </thead>
+              <tbody>
+                <% data[1].forEach((result, i) => { %>
+                  <tr>
+                    <td class="table-index"><%= i + 1 %></td>
+                    <td>
+                      <% if ('direction' in backtest) { %>
+                        <%= backtest.direction %>
+                      <% } else { %>
+                        <%= data[0][i] %>
+                      <% } %>
+                    </td>
+                    <td class="text-right"><%= result %></td>
+                    <td>
+                      <% if ('pair' in backtest) { %>
+                        <%= backtest.pair %>
+                      <% } else { %>
+                        <%= data[2][i] %>
+                      <% } %>
+                    </td>
+                    <td class="non-wrap">
+                      <% if ('strategy' in backtest) { %>
+                        <%= backtest.strategy %>
+                      <% } else { %>
+                        <%= data[3][i] %>
+                      <% } %>
+                    </td>
+                    <td>
+                      <% if ('timeframe' in backtest) { %>
+                        <%= backtest.timeframe %>
+                      <% } else { %>
+                        <%= data[4][i] %>
+                      <% } %>
+                    </td>
+                    <% if ('addons' in backtest) { %>
+                      <% backtest.addons.forEach((col, n) => { %>
+                        <td class="text-right">
+                          <%= data[n + 5][i] %>
+                        </td>
+                      <% }) %>
+                    <% } %>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br>
+        <div class="d-flex justify-content-end mx-3">
+          <a href="javascript:history.back()" class="btn-neilit ml-2">Cancelar</a>
+          <a href="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>/edit" class="btn-inverted ml-2">Modificar</a>
+          <button type="submit" class="btn-neilit ml-2">Eliminar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
 <!-- <section> is inside partials -->

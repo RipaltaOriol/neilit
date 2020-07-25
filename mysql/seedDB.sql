@@ -72,23 +72,23 @@ VALUES
   (1, 'Is RSI on overbought, oversold, or N/A?', false, 'Overbought', 'Oversold', 'N/A', NULL, NULL, NULL),
   (1, 'What is the ADX value on entry?', true, NULL, NULL, NULL, NULL, NULL, NULL);
 
-INSERT INTO backtest_data (backtest_id, direction, result, pair_id, strategy_id, timeframe_id)
+INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id)
 VALUES
-  (1, 'long', 1, NULL, NULL, 1),
-  (1, 'short', -1, NULL, NULL, 1),
-  (1, 'short', -1, NULL, NULL, 1),
-  (1, 'long', 0.5, NULL, NULL, 1),
-  (1, 'long', 2.5, NULL, NULL, 1);
+  (1, 1, 'long', 1, NULL, NULL, 1),
+  (2, 1, 'short', -1, NULL, NULL, 1),
+  (3, 1, 'short', -1, NULL, NULL, 1),
+  (4, 1, 'long', 0.5, NULL, NULL, 1),
+  (5, 1, 'long', 2.5, NULL, NULL, 1);
 
-INSERT INTO backtest_addons_data (backtest_data_id, backtest_addons_id, addon_value)
+INSERT INTO backtest_addons_data (backtest_id, backtest_data_id, backtest_addons_id, addon_value)
 VALUES
-(1, 1, 1),
-(1, 2, 14.3),
-(2, 1, 3),
-(2, 2, 22.5),
-(3, 1, 2),
-(3, 2, 21.8),
-(4, 1, 2),
-(4, 2, 54.2),
-(5, 1, 1),
-(5, 2, 60.9);
+(1, 1, 1, 1),
+(1, 1, 2, 14.3),
+(1, 2, 1, 3),
+(1, 2, 2, 22.5),
+(1, 3, 1, 2),
+(1, 3, 2, 21.8),
+(1, 4, 1, 2),
+(1, 4, 2, 54.2),
+(1, 5, 1, 1),
+(1, 5, 2, 60.9);

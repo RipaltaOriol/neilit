@@ -9,8 +9,7 @@
       <link rel="stylesheet" href="/utilities/bootstrap/css/bootstrap.min.css">
       <!-- CSS -->
       <link rel="stylesheet" href="/stylesheets/app.css">
-      <link rel="stylesheet" href="/stylesheets/journal.css">
-      <link rel="stylesheet" href="/stylesheets/log.css">
+      <link rel="stylesheet" href="/stylesheets/plan.css">
 
       <title>Neilit || <%= currentUser.username %></title>
     </head>
@@ -83,19 +82,3 @@
             </a>
           </div>
         </div>
-
-        <!-- flash messages -->
-        <% if (error && error.length > 0) { %>
-          <div id="flash-alert" class="container">
-            <div class="alert alert-danger mt-2" role="alert">
-              <%= error %>
-            </div>
-          </div>
-        <% } %>
-        <% if (success && success.length > 0) { %>
-          <div id="flash-alert" class="container">
-            <div class="alert alert-success mt-2" role="alert">
-              <%= success %>
-            </div>
-          </div>
-        <% } %>
