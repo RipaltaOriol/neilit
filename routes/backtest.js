@@ -76,7 +76,7 @@ router.post("/", isLoggedIn, (req, res) => {
     if (err) throw err;
     var backtest_id = backtestId.insertId;
     if ('varName' in req.body) {
-      var addAddons = 'INSERT INTO backtest_addons (backtest_id, description, is_integers, option1, option2, option3, option4, option5, option6)'
+      var addAddons = 'INSERT INTO backtest_addons (backtest_id, description, is_integers, option1, option2, option3, option4, option5, option6) VALUES ?'
       // creates an object with the new backtest addons variables
       var newAddons = []
       var counterAddon = 0;

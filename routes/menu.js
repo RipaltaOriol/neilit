@@ -21,7 +21,7 @@ router.get("", isLoggedIn, (req, res) => {
 
 // SETTINGS ROUTE
 router.get("/settings", isLoggedIn, (req, res) => {
-  res.render("user/settings");
+  res.render("user/settings", {strategies:userStrategies});
 })
 
 // RISK CALCULATOR ROUTE

@@ -72,8 +72,8 @@
             </div>
 
           </div>
-          <div class="d-flex justify-content-center mb-3">
-            <a href="/logout" class="btn btn-outline-danger">Sign off</a>
+          <div class="text-center">
+            <a href="/logout" class="btn btn-outline-danger mb-3">Sign off</a>
           </div>
         </div>
       </div>
@@ -184,61 +184,72 @@
 
       <!-- settings -->
       <div role="tabpanel" class="tab-box tab-pane" id="settings">
-        <div class="d-flex justify-content-between">
-          <div class="text-left w-50 mx-5 my-4">
-            <h4 class="pb-1 mb-3">Configuración de Balance</h4>
-            <div class="d-flex align-items-center">
-              <h5 class="mb-0 mr-2">Account Currency</h5>
-              <p class="mb-0">< dropdown ></p>
+        <form action="/<%= currentUser.username %>/settings/saveSettings" method="POST">
+          <div class="d-flex justify-content-between">
+            <div class="text-left w-50 mx-5 my-4">
+              <h4 class="pb-1 mb-3">Configuración de Balance</h4>
+              <div class="d-flex align-items-center">
+                <h5 class="mb-0 mr-2">Account Currency</h5>
+                <p class="mb-0">< dropdown ></p>
+              </div>
+              <div class="d-flex align-items-center">
+                <h5 class="mb-0 mr-2">Balance Inicial</h5>
+                <p class="mb-0">25.000</p>
+              </div>
+              <!-- dark mode -->
+              <div class="d-flex align-items-center">
+                <h5 class="mb-0 mr-2">Dark mode</h5>
+                <label class="switch mb-0">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <!-- sound -->
+              <div class="d-flex align-items-center">
+                <h5 class="mb-0 mr-2">Enable sound</h5>
+                <label class="switch mb-0">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+              </div>
             </div>
-            <div class="d-flex align-items-center">
-              <h5 class="mb-0 mr-2">Balance Inicial</h5>
-              <p class="mb-0">25.000</p>
-            </div>
-            <!-- dark mode -->
-            <div class="d-flex align-items-center">
-              <h5 class="mb-0 mr-2">Dark mode</h5>
-              <label class="switch mb-0">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-            <!-- sound -->
-            <div class="d-flex align-items-center">
-              <h5 class="mb-0 mr-2">Enable sound Inicial</h5>
-              <label class="switch mb-0">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
 
-          <div class="text-left w-50 mx-5 my-4">
-            <div class="mb-3">
-              <h4 class="pb-1 mb-2">
-                Current Goals
-                <a href="#!" class="mb-0 float-right">Add Goal</a>
-              </h4>
-              <p class="mt-0 mb-1">+5% semanal</p>
-              <p class="mt-0 mb-1">Escribir en el journal a diario</p>
-              <p class="mt-0 mb-1">Backtest all USD/JPY</p>
-              <p class="mt-0 mb-1">Launch Neilit!</p>
-            </div>
-            <div class="">
-              <h4 class="pb-1 mb-3">
-                Strategies
-                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create a new strategy to add to on your TA">
-              </h4>
-              <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100">
-              <!-- all strategies -->
-              <a href="#!" id="">
+            <div class="text-left w-50 mx-5 my-4">
+              <div class="mb-3">
+                <h4 class="pb-1 mb-2">
+                  Current Goals
+                  <a href="#!" class="mb-0 float-right">Add Goal</a>
+                </h4>
+                <p class="mt-0 mb-1">+5% semanal</p>
+                <p class="mt-0 mb-1">Escribir en el journal a diario</p>
+                <p class="mt-0 mb-1">Backtest all USD/JPY</p>
+                <p class="mt-0 mb-1">Launch Neilit!</p>
+              </div>
+              <div>
+                <h4 class="pb-1 mb-3">
+                  Strategies
+                  <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create create a new strategy to use in your journal. Strategies are NOT case sensitive.">
+                </h4>
+                <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100">
+                <!-- strategies -->
                 <ul id="listStrategy" class="pl-0">
-
+                  <% strategies.forEach((strategy, i) => { %>
+                    <li class="mt-2 py-0">
+                      <input type="text" name="strategy" value="<%= strategy %>" class="strategy">
+                      <input type="number" name="map" value="0" class="map d-none">
+                      <button type="button" class="float-right" onclick="deleteStrategy(<%= i %>)">
+                        <img class="icon-20" src="/imgs/icons/delete.svg">
+                      </button>
+                    </li>
+                  <% }); %>
                 </ul>
-              </a>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-outline-primary mb-3">Save</button>
+          </div>
+        </form>
       </div>
 
       <!-- customization -->
@@ -296,5 +307,9 @@
       </div>
     </div>
   </div>
+
+<script type="text/javascript">
+  var strategies = <%- JSON.stringify(strategies) %>;
+</script>
 
 <%- include("../partials/footer-settings") %>

@@ -8,16 +8,15 @@ h4 {
   font-size: 20px;
   border-bottom: 2px solid #EEEEEE;
 }
-h4 a{
-  font-size: 14px;
-  color: #7b7b7b;
-  transition-duration: .25s;
-}
-
-h4 a:hover{
-  color: black;
-  transition-duration: .25s;
-}
+  h4 a {
+    font-size: 14px;
+    color: #7b7b7b;
+    transition-duration: .25s;
+  }
+  h4 a:hover{
+    color: black;
+    transition-duration: .25s;
+  }
 
 h5 {
   font-size: 18px;
@@ -217,3 +216,19 @@ input {
   .slider.round:before {
     border-radius: 50%;
   }
+
+#listStrategy { }
+  #listStrategy li {
+    border-radius: .25rem;
+  }
+  #listStrategy button {
+    background: none;
+    border: none;
+  }
+  #listStrategy input {
+    color: #7b7b7b;
+    background: none;
+  }
+    #listStrategy input:focus {
+      color: #000000;
+    }

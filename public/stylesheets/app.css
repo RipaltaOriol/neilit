@@ -66,6 +66,13 @@ input[type=search] {
 }
 
 /* || Utility */
+.icon-20 {
+  height: 20px;
+  max-width: 20px;
+  margin-right: 0;
+}
+
+/* || Utility */
 .orange {
   color: #ff8818;
 }
