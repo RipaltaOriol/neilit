@@ -1,27 +1,20 @@
-var express = require('express');
-var router = express.Router({mergeParams: true});
-let pairs = require("../models/pairs");
-let timeframes = require("../models/timeframes");
+let express = require('express');
+let router = express.Router({mergeParams: true});
+let pairs = require('../models/pairs');
+let timeframes = require('../models/timeframes');
+let middleware = require('../middleware')
+let connection = require('../models/connectDB');
 
 // Backtest Addon Options
-var addonBacktest = require("../models/elements/backtest");
-
-// Connect to DB
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    : 'root',
-  password: 'ripaltus',
-  database: 'neilit_db',
-  multipleStatements: true
-});
+var addonBacktest = require('../models/elements/backtest');
 
 // INDEX BACKTEST ROUTE
-router.get("/", isLoggedIn, (req, res) => {
+router.get("/", middleware.isLoggedIn, (req, res) => {
   res.send('You have reached the INDEX ROUTE for BACKTEST');
 })
 
 // NEW BACKTEST ROUTE
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
   // loads the backtest addons to an object
   var addons = {
     list: addonBacktest.htmlList,
@@ -38,7 +31,7 @@ router.get("/new", isLoggedIn, (req, res) => {
 })
 
 // NEW BACKTEST LOGIC
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
   console.log(req.body);
   // creates an object with the new backtest main variables
   var newBacktest = {
@@ -112,7 +105,7 @@ router.post("/", isLoggedIn, (req, res) => {
 })
 
 // SHOW BACKTEST ROUTE
-router.get("/:id", isLoggedIn, (req, res) => {
+router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
   var getBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at FROM backtest WHERE id = ?;'
   var getAddons = 'SELECT description FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
@@ -188,7 +181,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
 })
 
 // UPDATE BACKTEST ROUTE
-router.get("/:id/edit", isLoggedIn, (req, res) => {
+router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
   var getBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at FROM backtest WHERE id = ?;'
   var getAddons = 'SELECT description, is_integers, option1, option2, option3, option4, option5, option6 FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
@@ -280,7 +273,7 @@ router.get("/:id/edit", isLoggedIn, (req, res) => {
 })
 
 // UPDATE BACKTEST LOGIC
-router.put("/:id", isLoggedIn, (req, res) => {
+router.put("/:id", middleware.isLoggedIn, (req, res) => {
   // FIXME: the data from the 'req.body' could already be ready for storage, instead of refactoring
   // FIXME: the backtest id can be extracted thruogh 'req.params.id' (easier way)
   var parseData = JSON.parse(req.body.serverData);
@@ -350,7 +343,7 @@ router.put("/:id", isLoggedIn, (req, res) => {
 })
 
 // DELETE BACKTEST ROUTE
-router.delete("/:id", isLoggedIn, (req, res) => {
+router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteAddonsData = 'DELETE FROM backtest_addons_data WHERE backtest_id = ?'
   var deleteBacktestData = 'DELETE FROM backtest_data WHERE backtest_id = ?'
   var deleteAddons = 'DELETE FROM backtest_addons WHERE backtest_id = ?'
@@ -373,20 +366,5 @@ router.delete("/:id", isLoggedIn, (req, res) => {
     })
   })
 })
-
-// AUTHENTICATION MIDDLEWARE
-function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
-    if (req.user.username === req.params.profile) {
-      return next();
-    } else {
-      // FIXME: so it doesn't freeze and return to previous ROUTE
-      return false;
-    }
-  } else {
-    req.flash("error", "Please, login first!")
-    res.redirect("/login");
-  }
-}
 
 module.exports = router;

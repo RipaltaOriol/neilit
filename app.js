@@ -92,5 +92,5 @@ app.use("/:profile/journal/backtest", backtestRoutes);
 // PORT LISTENING
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
-  console.log('Server Has Started!');
+  console.log('Server has Started!');
 })

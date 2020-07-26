@@ -370,15 +370,13 @@ form input {
 }
 
 @keyframes animacionCirculo{
-  0%{
+  0% {
     opacity: 0;
   }
-
-  50%{
+  50% {
     opacity: .7;
   }
-
-  100%{
+  100% {
     opacity: 0;
     transform: scale(2);
   }

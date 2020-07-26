@@ -1,26 +1,19 @@
-var express = require('express');
-var router = express.Router({mergeParams: true});
-let pairs = require("../models/pairs");
-let timeframes = require("../models/timeframes");
-let categories = require("../models/categoriesPairs");
+let express = require('express');
+let router = express.Router({mergeParams: true});
+let pairs = require('../models/pairs');
+let timeframes = require('../models/timeframes');
+let categories = require('../models/categoriesPairs');
+let middleware = require('../middleware');
+let connection = require('../models/connectDB');
 
 // Technical Analysis Elements
-var titleTA = require("../models/elements/title");
-var textTA = require("../models/elements/text");
-var imageTA = require("../models/elements/image");
-var strategyTA = require("../models/elements/strategy");
-
-// Connect to DB
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    : 'root',
-  password: 'ripaltus',
-  database: 'neilit_db',
-  multipleStatements: true
-});
+var titleTA = require('../models/elements/title');
+var textTA = require('../models/elements/text');
+var imageTA = require('../models/elements/image');
+var strategyTA = require('../models/elements/strategy');
 
 // NEW TECHNICAL ANALYSIS ROUTE
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
   // loads the technical analysis elements to an object
   var elements = {
     title: titleTA.html,
@@ -40,7 +33,7 @@ router.get("/new", isLoggedIn, (req, res) => {
 });
 
 // NEW TECHNICAL ANALYSIS LOGIC
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
   // checks if date is valid
   if (req.body.date == "") {
     req.flash("error", "Date cannot be blank.")
@@ -189,7 +182,7 @@ router.post("/", isLoggedIn, (req, res) => {
 
 
 // SHOW TECHNICAL ANALYSIS ROUTE
-router.get("/:id", isLoggedIn, (req, res) => {
+router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a varialbe - too long
   var getTa = 'SELECT id, pair_id, category, tanalysis.category, DATE_FORMAT(created_at, "%Y-%m-%d") AS created_short, DATE_FORMAT(created_at, "%d de %M %Y") AS created_long FROM tanalysis WHERE id = ?';
   // OPTIMIZE: could another type of JOIN improve the query?
@@ -250,7 +243,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
 })
 
 // UPDATE TECHNICAL ANALYSIS ROUTE
-router.get("/:id/edit", isLoggedIn, (req, res) => {
+router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // loads the technical analysis elements to an object
   var elements = {
     title: titleTA.html,
@@ -319,7 +312,7 @@ router.get("/:id/edit", isLoggedIn, (req, res) => {
 })
 
 // UPDATE TECHNICAL ANALYSIS LOGIC
-router.put("/:id", isLoggedIn, (req, res) => {
+router.put("/:id", middleware.isLoggedIn, (req, res) => {
   // checks if date is valid
   if (req.body.date == "") {
     req.flash("error", "Date cannot be blank.")
@@ -473,7 +466,7 @@ router.put("/:id", isLoggedIn, (req, res) => {
 })
 
 // DELETE TECHNICAL ANALYSIS ROUTE
-router.delete("/:id", isLoggedIn, (req, res) => {
+router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteElementsTa = 'DELETE FROM telementanalysis WHERE ta_id = ?'
   var deleteTa = 'DELETE FROM tanalysis WHERE id = ?'
   // deletes the technical analysis elements from the DB
@@ -486,20 +479,5 @@ router.delete("/:id", isLoggedIn, (req, res) => {
     })
   })
 })
-
-// AUTHENTICATION MIDDLEWARE
-function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
-    if (req.user.username === req.params.profile) {
-      return next();
-    } else {
-      // FIXME: so it doesn't freeze and return to previous ROUTE
-      return false;
-    }
-  } else {
-    req.flash("error", "Please, login first!")
-    res.redirect("/login");
-  }
-}
 
 module.exports = router;
