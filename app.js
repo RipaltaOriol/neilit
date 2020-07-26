@@ -12,6 +12,7 @@ let express         = require('express'),
 // Routes Dependencies
 let indexRoutes     = require('./routes/index'),
     menuRoutes      = require('./routes/menu'),
+    settingsRoutes  = require('./routes/settings')
     commentRoutes   = require('./routes/comments'),
     entryRoutes     = require('./routes/entries'),
     taRoutes        = require('./routes/tas'),
@@ -51,6 +52,7 @@ var connection = mysql.createConnection({
 
 // Set DB language to Spanish
 // FIXME: how can you change DB on region/language
+// FIXME: change DB language when changing Neilit language
 var sqlToES = 'SET lc_time_names = "es_ES"';
 connection.query(sqlToES, function(err) {
   if (err) throw err;
@@ -81,6 +83,7 @@ app.use((req, res, next) => {
 
 app.use("/", indexRoutes);
 app.use("/:profile", menuRoutes);
+app.use("/:profile/settings", settingsRoutes);
 app.use("/:profile/journal/comment", commentRoutes);
 app.use("/:profile/journal/entry", entryRoutes);
 app.use("/:profile/journal/ta", taRoutes);
