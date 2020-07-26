@@ -1,8 +1,3 @@
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Regular.ttf");}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Light.ttf"); font-weight: lighter;}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-SemiBold.ttf"); font-weight: 500;}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
-
 /* || General styles */
 h4 {
   font-size: 20px;
