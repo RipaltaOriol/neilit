@@ -1,37 +1,35 @@
-var express = require('express');
-var router = express.Router({mergeParams: true});
-let pairs = require("../models/pairs");
-let timeframes = require("../models/timeframes");
-let categories = require("../models/categoriesPairs");
-
-// Connect to DB
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    : 'root',
-  password: 'ripaltus',
-  database: 'neilit_db',
-  multipleStatements: true
-});
+let express = require('express');
+let router = express.Router({mergeParams: true});
+let pairs = require('../models/pairs');
+let timeframes = require('../models/timeframes');
+let categories = require('../models/categoriesPairs');
+let middleware = require('../middleware');
+let connection = require('../models/connectDB');
 
 // DASHBOARD USER ROUTE
-router.get("", isLoggedIn, (req, res) => {
+router.get("", middleware.isLoggedIn, (req, res) => {
   // FIXME: make this await function + only perform is userStrategies is null
   res.render("user/user");
 })
 
 // SETTINGS ROUTE
-router.get("/settings", isLoggedIn, (req, res) => {
-  res.render("user/settings");
+router.get("/settings", middleware.isLoggedIn, (req, res) => {
+  res.render("user/settings", {strategies:userStrategies});
 })
 
 // RISK CALCULATOR ROUTE
-router.get("/calculator", isLoggedIn, (req, res) => {
+router.get("/calculator", middleware.isLoggedIn, (req, res) => {
   res.render("user/calculator", {currencies:pairs});
+})
+
+// TRADING PLAN ROUTE
+router.get("/plan", middleware.isLoggedIn, (req, res) => {
+  res.render("user/plan");
 })
 
 // JOURNAL ROUTE
 // BUG: problem with so many connections - create a pool - run by JORDI
-router.get("/journal", isLoggedIn, (req,res) => {
+router.get("/journal", middleware.isLoggedIn, (req,res) => {
   // FIXME: table not optimized - JOIN pairs is unecessary
   var selectTAs = 'SELECT tanalysis.id AS identifier, pair, DATE_FORMAT(tanalysis.created_at, "%d de %M %Y") AS created_at FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY tanalysis.created_at DESC LIMIT 7';
   // FIXME: table not optimized - JOIN pairs is unecessary
@@ -90,7 +88,7 @@ router.get("/journal", isLoggedIn, (req,res) => {
             id: []
           }
           getBacktest.forEach((result) => {
-            backtestLimited.title.push(result.title + " in " + result.result)
+            backtestLimited.title.push(result.title + " [" + result.result + "]")
             backtestLimited.id.push(result.id)
           });
           res.render("user/journal",
@@ -107,20 +105,5 @@ router.get("/journal", isLoggedIn, (req,res) => {
     })
   })
 })
-
-// AUTHENTICATION MIDDLEWARE
-function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
-    if (req.user.username === req.params.profile) {
-      return next();
-    } else {
-      // FIXME: so it doesn't freeze and return to previous ROUTE
-      return false;
-    }
-  } else {
-    req.flash("error", "Please, login first!")
-    res.redirect("/login");
-  }
-}
 
 module.exports = router;

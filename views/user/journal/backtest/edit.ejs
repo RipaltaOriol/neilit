@@ -3,305 +3,189 @@
   <!-- CONTENT -->
   <div class="backtest mt-3 mb-5 mx-auto">
     <div class="journal-box px-0">
-      <form action="" method="POST">
-        <h3 class="mx-3">Seomthing Random</h3>
+      <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=PUT" method="POST">
+        <input type="hidden" id="obj" name="serverData">
+        <h3 class="mx-3"><%= backtest.title %></h3>
+        <hr>
+        <div class="form-row mx-3">
+          <div class="col-auto mr-3">
+            <label class="mb-0">Número de operación</label>
+            <h5 id="row-index" class="text-right p-2 bg-hover">
+              <%= data[0].length + 1 %>
+            </h5>
+          </div>
+          <div class="col-auto mr-3">
+            <label class="mb-0">Direction</label>
+            <select id="row-direction" class="custom-select">
+              <% if ('direction' in backtest) { %>
+                <option><%= backtest.direction %></option>
+              <% } else { %>
+                <option value="long">LONG</option>
+                <option value="short">SHORT</option>
+              <% } %>
+            </select>
+          </div>
+          <div class="col-auto mr-3">
+            <label class="mb-0">Pair</label>
+            <select id="row-pair" class="custom-select">
+            <% if ('pair' in backtest) { %>
+              <option><%= currencies[Number(backtest.pair) - 1] %></option>
+            <% } else { %>
+              <% for (var i = 0; i < currencies.length; i++) { %>
+                <option><%= currencies[i] %></option>
+              <% } %>
+            <% } %>
+            </select>
+          </div>
+          <div class="col-auto">
+            <label class="mb-0">Resultado</label>
+            <input type="number" id="row-result" class="d-block bg-hover p-2">
+          </div>
+        </div>
+        <div class="form-row mx-3">
+          <div class="col-auto mr-3">
+            <label class="mb-0">Strategies</label>
+            <select id="row-strategy" class="custom-select">
+            <% if ('strategy' in backtest) { %>
+              <option><%= backtest.strategy %></option>
+            <% } else { %>
+              <% for (var i = 0; i < strategies.length; i++) { %>
+                <option><%= strategies[i] %></option>
+              <% } %>
+            <% } %>
+            </select>
+          </div>
+          <div class="col-auto mr-3">
+            <label class="mb-0">Timeframe</label>
+            <select id="row-timeframe"  class="custom-select">
+            <% if ('timeframe' in backtest) { %>
+              <option><%= timeframes[Number(backtest.timeframe) - 1] %></option>
+            <% } else { %>
+              <% for (var i = 0; i < timeframes.length; i++) { %>
+                <option><%= timeframes[i] %></option>
+              <% } %>
+            <% } %>
+            </select>
+          </div>
+          <div class="col-auto mt-auto">
+            <button id="update-row" type="button" class="btn-neilit mb-0 d-none" onclick="updateRow()">Modificar</button>
+            <button id="new-row" type="button" class="btn-inverted mb-0 d-none" onclick="newRow(1)">New</button>
+            <button id="create-row" type="button" class="btn-neilit mb-0 d-inline" onclick="createRow()">Create</button>
+          </div>
+        </div>
+        <% if ('addons' in backtest) { %>
+          <div class="form-row mx-3 mt-3">
+            <% for (var i = 0; i < backtest.addons.length; i++) { %>
+              <div class="col-auto mr-3">
+                <label class="mb-0"><%= backtest.addons[i] %></label>
+                <% if (backtest.addonsType[i] == 1) { %>
+                  <input type="number" class="d-block bg-hover p-2 addon-edit">
+                <% } else { %>
+                  <select class="custom-select addon-edit">
+                    <% for (var o = 0; o < 6; o++) { %>
+                      <% if (backtest.addonsOptions[i][o] != null) { %>
+                        <option><%= backtest.addonsOptions[i][o] %></option>
+                      <% } %>
+                    <% } %>
+                  </select>
+                <% } %>
+              </div>
+            <% } %>
+          </div>
+        <% } %>
+        <br>
+        <h3 class="mx-3">Backtest Table</h3>
         <hr>
         <div class="mx-3">
-          <table class="table table-sm">
-            <thead>
-              <tr class="table-header">
-                <th scope="col">#</th>
-                <th scope="col">Direction</th>
-                <th scope="col">Result</th>
-                <th scope="col">Pair</th>
-                <th scope="col">Strategy</th>
-                <th scope="col">Timeframe</th>
-                <th scope="col">Addon 1</th>
-                <th scope="col" data-toggle="tooltip" data-placement="bottom" title="Tooltip on top">Addon 2</th>
-                <th scope="col">Addon 3</th>
-                <th scope="col">Addon 4</th>
-                <th scope="col">Addon 5</th>
-                <th scope="col">Addon 6</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <select class="custom-select">
-                    <option selected></option>
-                    <option value="long">Long</option>
-                    <option value="short">Short</option>
-                  </select>
-                </td>
-                <td>
-                  <input type="text" value="12,34">
-                </td>
-                <td>
-                  <input type="text" value="XBTEUR">
-                </td>
-                <td>
-                  <select class="custom-select">
-                    <option selected></option>
-                    <option value="1">Head</option>
-                    <option value="0">Dinosaur Pattern</option>
-                  </select>
-                </td>
-                <td>
-                  <select class="custom-select">
-                    <option selected></option>
-                    <option value="1">1H</option>
-                    <option value="0">3MIN</option>
-                  </select>
-                </td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>something</td>
-                <td>random</td>
-                <td>goes</td>
-                <td>@here</td>
-                <td>NO</td>
-                <td>N/A</td>
-                <td>Head & Shoulders</td>
-                <td>@YES</td>
-              </tr>
-            </tbody>
-          </table>
+          <label>Count:
+            <span id="table-count"></span>
+          </label>
+          <div class="table-responsive-md">
+            <table id="backtest-table" class="table table-sm">
+              <thead>
+                <tr class="table-header">
+                  <th scope="col">#</th>
+                  <th scope="col">Direction</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Pair</th>
+                  <th scope="col">Strategy</th>
+                  <th scope="col">Timeframe</th>
+                  <% if ('addons' in backtest) { %>
+                    <% backtest.addons.forEach((addon, i) => { %>
+                      <th scope="col" class="non-wrap" data-toggle="tooltip" data-placement="top" title="<%= addon %>">Addon <%= i + 1 %></th>
+                    <% }) %>
+                  <% } %>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% data[1].forEach((result, i) => { %>
+                  <tr>
+                    <td><%= i + 1 %></td>
+                    <td>
+                      <% if ('direction' in backtest) { %>
+                        <%= backtest.direction %>
+                      <% } else { %>
+                        <%= data[0][i] %>
+                      <% } %>
+                    </td>
+                    <td class="text-right"><%= result %></td>
+                    <td>
+                      <% if ('pair' in backtest) { %>
+                        <%= currencies[Number(backtest.pair) - 1] %>
+                      <% } else { %>
+                        <%= currencies[Number(data[2][i]) -1] %>
+                      <% } %>
+                    </td>
+                    <td class="non-wrap">
+                      <% if ('strategy' in backtest) { %>
+                        <%= backtest.strategy %>
+                      <% } else { %>
+                        <%= data[3][i] %>
+                      <% } %>
+                    </td>
+                    <td>
+                      <% if ('timeframe' in backtest) { %>
+                        <%= timeframes[Number(backtest.timeframe) - 1] %>
+                      <% } else { %>
+                        <%= timeframes[Number(data[4][i]) - 1] %>
+                      <% } %>
+                    </td>
+                    <% backtest.addons.forEach((col, n) => { %>
+                      <td class="text-right">
+                        <%= data[n + 5][i] %>
+                      </td>
+                    <% }) %>
+                    <td class="text-center">
+                      <button type="button" class="table-action delete-row" onclick="deleteRow(this)">
+                        <img src="/imgs/icons/delete.svg" alt="delete row">
+                      </button>
+                      <button type="button" class="table-action edit-row" onclick="editRow(this);">
+                        <img src="/imgs/icons/edit.svg" alt="edit row">
+                      </button>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="mx-3">
-          <input id="add-rows" type="number" class="bg-grey orange px-2 rounded" placeholder="E.g. 5">
-          <button id="addon" type="button">
-            <img src="/imgs/icons/addon.svg" alt="add rows">
-            Agregar filas de backtesting
-          </button>
-        </div>
+        <br>
         <div class="d-flex justify-content-end mx-3">
           <a href="javascript:history.back()" class="btn-inverted ml-2">Cancelar</a>
-          <button type="submit" class="btn-neilit ml-2">Guardar</button>
+          <button type="submit" id="update-backtest" class="btn-neilit ml-2">Guardar</button>
         </div>
       </form>
     </div>
   </div>
+
+<script type="text/javascript">
+  var currencies = <%- JSON.stringify(currencies) %>;
+  var timeframes = <%- JSON.stringify(timeframes) %>;
+  var strategies = <%- JSON.stringify(strategies) %>;
+  var backtest = <%- JSON.stringify(backtest) %>;
+  var data = <%- JSON.stringify(data) %>;
+</script>
 
 <!-- <section> is inside partials -->
 </section>

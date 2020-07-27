@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var passport = require('passport');
+let express = require('express');
+let router = express.Router();
+let passport = require('passport');
+
 // Global Program Variables
-let strategies = require("../models/strategies")
+let strategies = require('../models/strategies')
 
 // HOME ROUTE
 router.get("/", (req, res) => {
@@ -52,20 +53,5 @@ router.get("/logout", (req, res) => {
 router.get("/wiki", (req, res) => {
   res.send("You have reached the wiki route");
 })
-
-// AUTHENTICATION MIDDLEWARE
-function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
-    if (req.user.username === req.params.profile) {
-      return next();
-    } else {
-      // FIXME: so it doesn't freeze and return to previous ROUTE
-      return false;
-    }
-  } else {
-    req.flash("error", "Please, login first!")
-    res.redirect("/login");
-  }
-}
 
 module.exports = router;

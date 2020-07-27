@@ -232,7 +232,9 @@
 
       <!-- settings -->
       <div role="tabpanel" class="tab-box tab-pane" id="settings">
-        <div class="d-flex justify-content-between">
+        
+        <form action="/<%= currentUser.username %>/settings/saveSettings" method="POST">
+         <div class="d-flex justify-content-between">
           <div class="text-left w-50 mx-5 my-4">
             <h4 class="pb-1 mb-3">Configuración de Balance</h4>
             <div class="contianer-info-settings mb-2 containerSelectDropdown d-flex flex-row justify-content-between align-items-center">
@@ -278,7 +280,6 @@
               </label>
             </div>
           </div>
-
           <!-- Goals! -->
           <div class="text-left w-50 mx-5 my-4">
             <div class="mb-3">
@@ -306,12 +307,23 @@
               <!-- all strategies -->
               <a href="#!" id="">
                 <ul id="listStrategy" class="pl-0">
-
+                  <% strategies.forEach((strategy, i) => { %>
+                    <li class="mt-2 py-0">
+                      <input type="text" name="strategy" value="<%= strategy %>" class="strategy">
+                      <input type="number" name="map" value="0" class="map d-none">
+                      <button type="button" class="float-right" onclick="deleteStrategy(<%= i %>)">
+                        <img class="icon-20" src="/imgs/icons/delete.svg">
+                      </button>
+                    </li>
+                  <% }); %>
                 </ul>
-              </a>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-outline-primary mb-3">Save</button>
+          </div>
+        </form>
       </div>
 
       <!-- customization -->
@@ -371,5 +383,9 @@
       </div>
     </div>
   </div>
+
+<script type="text/javascript">
+  var strategies = <%- JSON.stringify(strategies) %>;
+</script>
 
 <%- include("../partials/footer-settings") %>

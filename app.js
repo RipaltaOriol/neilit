@@ -12,6 +12,7 @@ let express         = require('express'),
 // Routes Dependencies
 let indexRoutes     = require('./routes/index'),
     menuRoutes      = require('./routes/menu'),
+    settingsRoutes  = require('./routes/settings')
     commentRoutes   = require('./routes/comments'),
     entryRoutes     = require('./routes/entries'),
     taRoutes        = require('./routes/tas'),
@@ -24,15 +25,17 @@ app.use(bodyParser.urlencoded({extended: true}));
 // app.use(express.static('public'));
 app.use(methodOverride('_method'));
 app.use(express.static(__dirname + "/public"))
+app.use(express.json({ limit: '1mb' }));
 app.use(flash());
 // Configuration for AUTHENTICATION
 app.use(expressSession({
   secret: 'neilit is the key to trading success',
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   cookie: {
      secure: false,
-     expires: false,
+     maxAge: 12 * 30 * 24 * 60 * 60 * 1000
  }
 }))
 app.use(passport.initialize());
@@ -50,6 +53,7 @@ var connection = mysql.createConnection({
 
 // Set DB language to Spanish
 // FIXME: how can you change DB on region/language
+// FIXME: change DB language when changing Neilit language
 var sqlToES = 'SET lc_time_names = "es_ES"';
 connection.query(sqlToES, function(err) {
   if (err) throw err;
@@ -80,6 +84,7 @@ app.use((req, res, next) => {
 
 app.use("/", indexRoutes);
 app.use("/:profile", menuRoutes);
+app.use("/:profile/settings", settingsRoutes);
 app.use("/:profile/journal/comment", commentRoutes);
 app.use("/:profile/journal/entry", entryRoutes);
 app.use("/:profile/journal/ta", taRoutes);
@@ -90,5 +95,5 @@ app.use("/:profile/statistics", statisticsRoutes)
 // PORT LISTENING
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
-  console.log('Server Has Started!');
+  console.log('Server has Started!');
 })

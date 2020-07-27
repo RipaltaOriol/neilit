@@ -1,8 +1,3 @@
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Regular.ttf");}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Light.ttf"); font-weight: lighter;}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-SemiBold.ttf"); font-weight: 500;}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
-
 :root{
   --gris-flojo: #F7F7F7;
   --gris-medio: #EEEEEE;
@@ -16,16 +11,15 @@ h4 {
   font-size: 18px;
   border-bottom: 2px solid #EEEEEE;
 }
-h4 a{
-  font-size: 14px;
-  color: #7b7b7b;
-  transition-duration: .25s;
-}
-
-h4 a:hover{
-  color: black;
-  transition-duration: .25s;
-}
+  h4 a {
+    font-size: 14px;
+    color: #7b7b7b;
+    transition-duration: .25s;
+  }
+  h4 a:hover{
+    color: black;
+    transition-duration: .25s;
+  }
 
 h5 {
   font-size: 16px;
@@ -320,6 +314,7 @@ hr.profile{
     border-radius: 50%;
   }
 
+/* CODE: Jaume */
   .containerSelectDropdown{
     display: flex;
     flex-direction: row;
@@ -392,3 +387,20 @@ hr.profile{
 .info{
   transform: translateX(35px);
 }
+/* CODE Jaume (end) */
+
+#listStrategy { }
+  #listStrategy li {
+    border-radius: .25rem;
+  }
+  #listStrategy button {
+    background: none;
+    border: none;
+  }
+  #listStrategy input {
+    color: #7b7b7b;
+    background: none;
+  }
+    #listStrategy input:focus {
+      color: #000000;
+    }

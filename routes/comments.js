@@ -1,18 +1,11 @@
-var express = require('express');
-var router = express.Router({mergeParams: true});
-
-// Connect to DB
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    : 'root',
-  password: 'ripaltus',
-  database: 'neilit_db',
-  multipleStatements: true
-});
+let express = require('express');
+let router = express.Router({mergeParams: true});
+let middleware = require('../middleware');
+let connection = require('../models/connectDB');
 
 // INDEX COMMENTS ROUTE
 // FIXME: How to optmize when loading a large sample (LOAD AS YOU GO)
-router.get("/", isLoggedIn, (req, res) => {
+router.get("/", middleware.isLoggedIn, (req, res) => {
   var getAllComments = 'SELECT DATE_FORMAT(created_at, "%d/%m/%y %H:%i") AS created_at, comment FROM comments WHERE user_id = ?';
   var getAllEntries = 'SELECT DATE_FORMAT(entry_dt, "%d/%m/%y %H:%i") AS entry_dt, pair FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE user_id = ?';
   var listComments = {
@@ -41,12 +34,12 @@ router.get("/", isLoggedIn, (req, res) => {
 })
 
 // NEW COMMNET ROUTE
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
   res.render("user/journal/comment/new")
 })
 
 // NEW COMMENT LOGIC
-router.post("/", isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, (req, res) => {
   var commentQuery = 'INSERT INTO comments SET ?';
   // create object w/ comment info
   var newcomment = {
@@ -62,7 +55,7 @@ router.post("/", isLoggedIn, (req, res) => {
 })
 
 // SHOW COMMENT ROUTE
-router.get("/:id", isLoggedIn, (req, res) => {
+router.get("/:id", middleware.isLoggedIn, (req, res) => {
   var getComment = 'SELECT id, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at, comment FROM comments WHERE id = ?';
   connection.query(getComment, req.params.id, (err, results) => {
     if (err) throw err;
@@ -76,7 +69,7 @@ router.get("/:id", isLoggedIn, (req, res) => {
 })
 
 // UPDATE COMMENT ROUTE
-router.get("/:id/edit", isLoggedIn, (req, res) => {
+router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   var getComment = 'SELECT id, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at, comment FROM comments WHERE id = ?';
   connection.query(getComment, req.params.id, (err, results) => {
     if (err) throw err;
@@ -90,7 +83,7 @@ router.get("/:id/edit", isLoggedIn, (req, res) => {
 })
 
 // UPDATE COMMENT LOGIC
-router.put("/:id", isLoggedIn, (req, res) => {
+router.put("/:id", middleware.isLoggedIn, (req, res) => {
   console.log("Data: " + req.body.comment);
   var commentbody = {
     created_at: new Date(),
@@ -104,7 +97,7 @@ router.put("/:id", isLoggedIn, (req, res) => {
 })
 
 // DELETE COMMENT ROUTE
-router.delete("/:id", isLoggedIn, (req, res) => {
+router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var comment2Delete = req.params.id
   var deleteQuery = 'DELETE FROM comments WHERE id = ?'
   // Query to delte the entry
@@ -113,20 +106,5 @@ router.delete("/:id", isLoggedIn, (req, res) => {
     res.redirect('/' + req.user.username + '/journal');
   })
 })
-
-// AUTHENTICATION MIDDLEWARE
-function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
-    if (req.user.username === req.params.profile) {
-      return next();
-    } else {
-      // FIXME: so it doesn't freeze and return to previous ROUTE
-      return false;
-    }
-  } else {
-    req.flash("error", "Please, login first!")
-    res.redirect("/login");
-  }
-}
 
 module.exports = router;

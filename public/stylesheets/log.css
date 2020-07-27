@@ -1,55 +1,43 @@
 /* || General styles */
-table input[type=text] {
-  width: 4rem;
-}
-
 table {
   position: relative;
   border-collapse: collapse;
 }
+  table th {
+    font-weight: normal;
+    text-align: center;
+    color: white;
+    border: 1px solid #ff8818;
+    margin: auto;
+  }
+    table th:nth-child(1){
+      border-radius: .25rem 0 0 0;
+    }
+    table th:nth-last-child(1){
+      border-radius: 0 .25rem 0 0;
+    }
+  table > thead > tr > th{
+    border: none;
+  }
 
-table th {
+tr { }
+  tr th {
+    text-align: center;
+    background-color: #ff8818;
+  }
+  tr td:first-child {
+    cursor: pointer;
+    text-align: center;
+  }
+
+td {
   border: 1px solid #ff8818;
 }
 
-table th:nth-child(1){
-  border-radius: .25rem 0 0 0;
-}
-
-table th:nth-last-child(1){
-  border-radius: 0 .25rem 0 0;
-}
-
-.table td {
-  vertical-align: middle;
-  padding: 0 .3rem;
-}
-
-table .custom-select {
-  border: none;
-}
-
-.custom-select option[value="default"] {
-  color: red;
-}
-
-tr th {
-  text-align: center;
-  background-color: #ff8818;
-}
-
-table > thead > tr > th{
-  border: none;
-}
-
-table > tbody > tr > td{
-  border: 1px solid #ff8818;
-}
-
-th {
+/* th {
   position: sticky;
   top: 0;
-}
+} */
 
 span .checkbox-orange {
   font-size: 18px;
@@ -67,6 +55,11 @@ span .checkbox-orange {
     .journal-box .btn-inverted:hover {
       color: white;
     }
+
+.table { }
+  .table td {
+    vertical-align: middle;
+  }
 
 .info-box {
   border: 1px solid #ced4da;
@@ -145,6 +138,16 @@ span .checkbox-orange {
   .option-list:read-only {
     text-decoration: line-through;
   }
+
+.non-wrap {
+  white-space: nowrap;
+}
+
+.table-action {
+  background: none;
+  border: none;
+  padding: 0;
+}
 
 #client-comment {
   color: black;
@@ -233,16 +236,10 @@ span .checkbox-orange {
   }
 
 #addon {
-  font-size: 18px;
   background: none;
   border: none;
 }
-  #addon:active {
-    color: black;
-  }
-  #addon:focus {
-    outline: none;
-  }
-  #addon img {
-    width: 1.5em;
-  }
+
+#row-index {
+  min-height: 40px;
+}
