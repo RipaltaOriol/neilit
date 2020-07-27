@@ -4,6 +4,17 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-SemiBold.ttf"); font-weight: 500;}
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
+:root{
+  --amarillo: #FFCF18;
+  --naranja: #FF8818;
+  --naranja-fuerte: #f57700;
+  --verde: #4DAA57;
+  --azul-fuerte:#151B26;
+  --gris-flojo: #F7F7F7;
+  --gris: #AAAAAA;
+  --gris-texto: #7B7B7B;
+}
+
 /* || General styles */
 body {
   font-family: Nunito;
@@ -30,7 +41,7 @@ h3 {
 
 h5 {
   font-weight: lighter;
-  color: #FF8818;
+  color: var(--naranja);
 }
 
 a { }
@@ -44,17 +55,18 @@ strong {
 
 p {
   font-size: 17px;
-  color: #7b7b7b;
+  color: var(--gris-texto);
 }
 
 form input {
   height: 35px;
-  border: 1px solid #aaa;
+  border: 1px solid var(--gris);
   border-radius: 7px;
+  width: 300px;
 }
   form input:focus {
     color: black;
-    border: 1px solid #ff8818;
+    border: 1px solid var(--naranja);
     outline: none;
   }
 
@@ -73,8 +85,8 @@ form input {
 
 /* || Bootstrap class */
 .jumbotron {
-  background-color: #ffcf18;
-  background-image: linear-gradient(to left, #ffcf18, #ff8818);
+  background-color: var(--amarillo);
+  background-image: linear-gradient(to left, var(--amarillo), var(--naranja));
 }
 
 /* || Bootstrap class */
@@ -83,7 +95,7 @@ form input {
     cursor: pointer;
   }
     .modal-body a:hover {
-      background-color: #f7f7f7;
+      background-color: var(--gris-flojo);
       border-radius: .25rem;
     }
 
@@ -105,18 +117,18 @@ form input {
     color: black;
   }
     .modal-body a:hover{
-      color: #ff8818;
+      color: var(--naranja);
       text-decoration: none;
     }
 
 /* || Utility */
 .orange {
-  color: #ff8818;
+  color: var(--naranja);
 }
 
 /* || Utility */
 .bg-orange {
-  background: #FF8818;
+  background: var(--naranja);
 }
   .bg-orange a:hover {
     color: white!important;
@@ -128,9 +140,32 @@ form input {
 }
 
 /* || Utility */
+.font-16 {
+  font-size: 16px;
+}
+
+/* || Utility */
+.font-14 {
+  font-size: 14px;
+}
+
+/* || Utility */
 .font-13{
   font-size: 13px;
 }
+
+/* || Utility */
+.color-gris{
+  color: var(--gris-texto);
+}
+
+/* || Utility */
+.link-gris{
+  color: var(--gris-texto);
+}
+  .link-gris:hover{
+    color: black;
+  }
 
 .resultadoDemo{
   font-size: 25px;
@@ -154,7 +189,7 @@ form input {
 .btn-neilit {
   font-size: 17px;
   color: white;
-  background: #ff8818;
+  background: var(--naranja);
   border: none;
   border-radius: 7px;
   padding: 7px 21px;
@@ -162,22 +197,22 @@ form input {
 }
   .btn-neilit:hover {
     color: white;
-    background: #f57700;
-    transition-duration: .5s;
+    background: var(--naranja-fuerte);
+    transition-duration: .25s;
   }
 
 /* || Utility */
 .btn-inverted {
   font-size: 17px;
-  color: #ff8818;
-  border: 2px solid #ff8818;
+  color: var(--naranja);
+  border: 2px solid var(--naranja);
   border-radius: 7px;
   padding: 5px 10px;
   transition-duration: .5s;
 }
   .btn-inverted:hover {
     color: white;
-    background: #ff8818;
+    background: var(--naranja);
     transition-duration: .5s;
   }
 
@@ -191,7 +226,7 @@ form input {
   transition-duration: .5s;
 }
   .btn-white:hover {
-    color: #ff8818;
+    color: var(--naranja);
     background: white;
     transition-duration: .5s;
   }
@@ -199,16 +234,16 @@ form input {
 /* || Utility */
 .subtitle-sm {
   font-size: 20px;
-  color: #7b7b7b;
+  color: var(--gris-texto);
 }
 
 /* || Utility */
 .border-orange-r {
-  border-right: 2px solid #ff8818;
+  border-right: 2px solid var(--naranja);
 }
 /* || Utility */
 .border-orange-l {
-  border-left: 2px solid #ff8818;
+  border-left: 2px solid var(--naranja);
 }
 
 /* || Bootstrap class */
@@ -237,7 +272,7 @@ form input {
   transition-duration: .5s;
 }
   .btn-nav:hover {
-    color: #FF8818;
+    color: var(--naranja);
     text-decoration: none;
     transition-duration: .5s;
   }
@@ -260,7 +295,7 @@ form input {
 /* || Element Experiment */
 .circuloAnimado{
   padding: 10px;
-  background: #FF8818;
+  background: var(--naranja);
   border-radius: 50px;
   width: 25px;
   height: 25px;
@@ -289,10 +324,10 @@ form input {
     width: 0;
   }
     .checkbox-orange:hover input ~ .checkmark {
-      background-color: #EEEEEE;
+      background-color: var(--gris-flojo);
     }
     .checkbox-orange input:checked ~ .checkmark {
-      background-color: #FF8818;
+      background-color: var(--naranja);
     }
     .checkbox-orange input:checked ~ .checkmark:after {
       display: block;
@@ -305,7 +340,7 @@ form input {
   margin-top: 5px;
   height: 15px;
   width: 15px;
-  border: 2px solid #FF8818;
+  border: 2px solid var(--naranja);
   border-radius: 2px;
 }
   .checkmark:after {
@@ -349,7 +384,7 @@ form input {
 #neilit{
   font-size: 150px;
   font-weight: bold;
-  color: #ff8818;
+  color: var(--naranja);
   margin-top: 20vh;
 }
 
@@ -380,4 +415,65 @@ form input {
     opacity: 0;
     transform: scale(2);
   }
+}
+
+.container-steps{
+  width: 100%;
+}
+
+.progressbar{
+  counter-reset: step;
+  padding-left: 0
+}
+
+.progressbar li{
+  list-style-type: none;
+  float: left;
+  width: 33.33%;
+  position: relative;
+  text-align: center;
+  color: var(--gris-texto);
+}
+
+.progressbar li::before{
+  content: counter(step);
+  counter-increment: step;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border: 2px solid var(--naranja);
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  line-height: 28px;
+}
+
+.progressbar li::after{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: var(--naranja);
+  top: 15px;
+  left: -50%;
+  z-index: -1;
+}
+
+.progressbar li:first-child::after{
+  content: none;
+}
+
+.progressbar li.active{
+  color: var(--gris-texto);
+}
+
+.progressbar li.active::before{
+  border-color: var(--naranja);
+  background: var(--naranja);
+  color: white;
+}
+
+.progressbar li.active + li:after{
+  background-color: var(--naranja);
 }

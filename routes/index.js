@@ -49,7 +49,7 @@ router.get("/logout", (req, res) => {
   res.redirect("/")
 })
 
-// WIKK ROUTE
+// WIKI ROUTE
 router.get("/wiki", (req, res) => {
   res.send("You have reached the wiki route");
 })

@@ -2,38 +2,38 @@
 
   <div class="bg-orange py-2">
     <div class="w-100 row mx-auto d-flex align-items-center">
-      <div class="col-4">
-        <a href="javascript:history.back()" class="text-light align-baseline">
-          <img src="/imgs/icons/arrow-left.svg" class="align-middle">
-          Back
-        </a>
+      <a href="javascript:history.back()" class="text-light">
+      <div class="col-4 d-flex flex-row">
+        <img src="/imgs/icons/arrow-left.svg" class="align-middle">
+        <p class="m-0 p-0">Back</p>
       </div>
+      </a>
     </div>
   </div>
 
   <div class="w-100 d-flex justify-content-center my-3">
-    <ul class="nav">
-      <li class="nav-item mx-1">
+    <ul class="nav containerMenuSettings d-flex flex-row justify-content-center">
+      <li class="nav-item p-0">
         <a class="nav-link active" role="tab" href="#profile" data-toggle="tab">
-          Perfil
+          Profile
         </a>
       </li>
-      <li class="nav-item mx-1">
+      <li class="nav-item p-0">
         <a class="nav-link" role="tab" href="#accountBilling" data-toggle="tab">
           Account and Billing
         </a>
       </li>
-      <li class="nav-item mx-1">
+      <li class="nav-item p-0">
         <a class="nav-link" role="tab" href="#settings" data-toggle="tab">
           Settings
         </a>
       </li>
-      <li class="nav-item mx-1">
+      <li class="nav-item p-0">
         <a class="nav-link" role="tab" href="#customization" data-toggle="tab">
           Customization
         </a>
       </li>
-      <li class="nav-item mx-1">
+      <li class="nav-item p-0">
         <a class="nav-link" role="tab" href="#helpSupport" data-toggle="tab">
           Help and Support
         </a>
@@ -51,125 +51,173 @@
 
             <div class="w-50 mx-5 my-4">
               <h4 class="pb-1 mb-3">Private Information</h4>
-              <h5 class="mb-1">Email</h5>
-              <p>gelabertgalmes98@gmail.com</p>
-              <h5 class="mb-1">Name</h5>
-              <p>Jaume</p>
-              <h5 class="mb-1">Last Name</h5>
-              <p>Gelabert Galmés</p>
-              <h5 class="mb-1">Phone Number</h5>
-              <p>646985647</p>
-              <h5 class="mb-1">Password</h5>
-              <p>************</p>
+                <!-- Name -->
+                <div class="contianer-info-settings mb-2 d-flex flex-row justify-content-between align-items-baseline">
+                  <h5 class="mb-0 pb-0">First Name</h5>
+                  <p class="mb-0 pb-0 font-16">Jaume</p>
+                </div>
+                <!-- Last name -->
+                <div class="contianer-info-settings mb-2 d-flex flex-row justify-content-between align-items-baseline">
+                  <h5 class="mb-0 pb-0">Last Name</h5>
+                  <p class="mb-0 pb-0 font-16">Gelabert</p>
+                </div>
+                <!-- Email -->
+                <div class="contianer-info-settings d-flex flex-row justify-content-between align-items-baseline">
+                  <h5 class="mb-0 pb-0">Email</h5>
+                  <p class="mb-0 pb-0 font-16">gelabertgalmes98@gmail.com</p>
+                </div>
+                <div class="mb-2 d-flex flex-row justify-content-end">
+                  <a href="#" class="mb-0 pb-0 pr-2 font-14">Change email</a>
+                </div>
+                <!-- Phone number -->
+                <div class="contianer-info-settings d-flex flex-row justify-content-between align-items-baseline">
+                  <h5 class="mb-0 pb-0">Phone Number</h5>
+                  <div class="d-flex flex-row justify-content-end">
+                    <!-- dropdown con los prefijos -->
+                    <p class="mb-0 pb-0 font-16">+34</p>
+                    <!-- Poner que puedan entrar su número de teléfono -->
+                    <p class="mb-0 pb-0 font-16">646689636</p>
+                  </div>
+                </div>
+                <div class="mb-2 d-flex flex-row justify-content-end">
+                  <a href="#" class="mb-0 pb-0 pr-2 font-14">New phone number</a>
+                </div>
+                <!-- Password -->
+                <div class="contianer-info-settings mb-2 d-flex flex-row justify-content-between align-items-baseline">
+                  <h5 class="mb-0 pb-0">Password</h5>
+                  <a href="#" class="mb-0 pb-0 pr-1 font-16">Change password</a>
+                </div>
             </div>
 
             <div class="w-50 mx-5 my-4">
               <h4 class="pb-1 mb-3"> Public Information </h4>
-              <h5 class="mb-1">Profile Picture</h5>
-              <img src="/imgs/icons/face.svg" class="mb-2" alt="profile picture">
-              <h5 class="mb-1">Username</h5>
-              <p>@mmmitusss</p>
+              <!-- Profile Picture -->
+              <div class="mb-2 d-flex flex-row justify-content-center align-items-baseline">
+                <!-- // DEBUG: hacer que cuando hagas hover aparezca texto encima con un color negro al 25% para cambiar la imagen. -->
+                <a href="#">
+                  <img src="/imgs/icons/face.svg" class="profile-picture mb-2" alt="profile picture">
+                </a>
+              </div>
+              <!-- Username -->
+              <div class="contianer-info-settings mb-2 d-flex flex-row justify-content-between align-items-baseline">
+                <h5 class="mb-0 pb-0">Username</h5>
+                <p class="mb-0 pb-0 font-16">@mmmitusss</p>
+              </div>
             </div>
-
           </div>
-          <div class="text-center">
-            <a href="/logout" class="btn btn-outline-danger mb-3">Sign off</a>
+          <hr class="profile">
+          <div class="d-flex justify-content-center mt-3 mb-3">
+            <a href="/logout" class="boton-logout font-16">Sign off</a>
           </div>
         </div>
       </div>
 
       <!-- account & billing -->
       <div role="tabpanel" class="tab-box tab-pane" id="accountBilling">
-        <div class="bg-orange d-flex flex-column text-center py-5">
+        <div class="bg-orange d-flex flex-column text-center py-5 containerOferta">
           <h2 class="text-light">Get 6 months free!</h2>
           <h5 class="text-light">Switch to the annual plan and save $ 60. You will have access to exclusive features.</h5>
         </div>
         <div class="d-flex justify-content-between">
-
           <div class="w-50 mx-5 my-4">
             <h4 class="pb-1 mb-3">My Plan</h4>
-            <h5 class="mb-1">Neilit Pro <a href="#!" class="orange font-13">What does the plan include?</a></h5>
-            <p class="mb-1">Remaining days: 14 days</p>
-            <a href="#!"><p>Cancel automatic renewal</p></a>
+            <div class="contianer-info-settings d-flex flex-row justify-content-between align-items-baseline mb-2">
+              <h5 class="mb-1">Neilit Pro</h5>
+              <a href="#!" class="orange font-16">What does the plan include?</a>
+            </div>
+            <div class="contianer-info-settings d-flex flex-row justify-content-between align-items-baseline">
+              <h5 class="mb-1">Remaining days</h5>
+              <!-- Poner los dias que de verdad faltan para cada usuario -->
+              <p href="#!" class="mb-0 pb-0 font-16 grey" id="#remaining-days">14 days</p>
+            </div>
+            <div class="mb-2 d-flex flex-row justify-content-end">
+              <a href="#" class="mb-0 pb-0 pr-2 font-14">Cancel automatic renewal</a>
+            </div>
+            <div class="d-flex flex-row justify-content-center mt-4">
+              <a href="#" class="font-16 change-plan">
+                Change plan
+              </a>
+            </div>
           </div>
-
           <div class="w-50 mx-5 my-4">
             <h4 class="pb-1 mb-3">Payment method</h4>
-
-            <div class="d-flex align-items-start">
+            <div class="contianer-info-settings d-flex align-items-center">
               <img src="/imgs/icons/payment.svg" class="img-md mr-2">
-              <p class=" mr-2">*9872</p>
+              <p class="mb-0 pb-0 mr-2 font-16">*9872</p>
               <img src="/imgs/icons/lock.svg" class="img-sm mr-2" data-toggle="tooltip" data-placement="right" title="Mensaje sobre seguridad del metodo de pago">
             </div>
-            <a href="#!" class="a-sm mb-2">Change payment method</a>
-            <div class="d-flex align-items-center">
+            <div class="d-flex flex-row justify-content-end">
+              <a href="#!" class="mb-2 font-14">Change payment method</a>
+            </div>
+            <div class="contianer-info-settings d-flex align-items-center">
               <h5 class="mb-0 mr-2">Billing Interval</h5>
-              <p class="mb-0">Monthly</p>
+              <p class="mb-0 font-16">Monthly</p>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="contianer-info-settings d-flex align-items-center">
               <h5 class="mb-0 mr-2">Invoice Amount</h5>
-              <p class="mb-0">$25</p>
+              <!-- Poner el precio de cada usuario -->
+              <p class="mb-0 font-16">$25</p>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="contianer-info-settings d-flex align-items-center" data-toggle="tooltip" data-placement="right" title="Si quieres cambiar la dirección donde enviamos las facturas, dirigite a Profile">
               <h5 class="mb-0 mr-2">Email</h5>
-              <p class="mb-0">gelabertgalmes98@gmail.com</p>
+              <!-- Para cambiar el mail, debe hacerlo desde "profile". Supongo que deberíamos confirmar que el mail es bueno. -->
+              <p class="mb-0 font-16" >gelabertgalmes98@gmail.com</p>
             </div>
-
             <div class="d-flex justify-content-center mt-2">
-              <a href="#" class="orange" data-toggle="modal" data-target="#invoices"> See Invoices</a>
+              <a href="#" class="orange font-16" data-toggle="modal" data-target="#invoices"> See Invoices</a>
             </div>
 
-            <!-- invoices -->
+            <!-- modal invoices -->
             <div class="modal fade" id="invoices" tabindex="-1" role="dialog">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-body ">
                     <a href="#!" class="outline-none">
                       <div class="d-flex justify-content-between align-items-center invoice px-1">
-                        <span>10 de Septiembre 2020</span>
+                        <span class="font-16">10 de Septiembre 2020</span>
                         <div class="d-flex justify-content-end align-items-center">
-                          <span class="invoice-pending px-1 ml-3">Pending</span>
-                          <span class="ml-3">$25</span>
+                          <span class="invoice-pending px-1 ml-5 font-16">Pending</span>
+                          <span class="ml-3 font-16">$25</span>
                           <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
                         </div>
                       </div>
                     </a>
                     <a href="#!" class="outline-none">
                       <div class="d-flex justify-content-between align-items-center invoice px-1">
-                        <span>10 de Agosto 2020</span>
+                        <span class="font-16">10 de Septiembre 2020</span>
                         <div class="d-flex justify-content-end align-items-center">
-                          <span class="invoice-clear px-1 ml-3">Succesfull</span>
-                          <span class="ml-3">$25</span>
+                          <span class="invoice-clear px-1 ml-5 font-16">Succesfull</span>
+                          <span class="ml-3 font-16">$25</span>
                           <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
                         </div>
                       </div>
                     </a>
                     <a href="#!" class="outline-none">
                       <div class="d-flex justify-content-between align-items-center invoice px-1">
-                        <span>10 de Julio 2020</span>
+                        <span class="font-16">10 de Septiembre 2020</span>
                         <div class="d-flex justify-content-end align-items-center">
-                          <span class="invoice-clear px-1 ml-3">Succesfull</span>
-                          <span class="ml-3">$25</span>
+                          <span class="invoice-clear px-1 ml-5 font-16">Succesfull</span>
+                          <span class="ml-3 font-16">$25</span>
                           <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
                         </div>
                       </div>
                     </a>
                     <a href="#!" class="outline-none">
                       <div class="d-flex justify-content-between align-items-center invoice px-1">
-                        <span>10 de Junio 2020</span>
+                        <span class="font-16">10 de Septiembre 2020</span>
                         <div class="d-flex justify-content-end align-items-center">
-                          <span class="invoice-clear px-1 ml-3">Succesfull</span>
-                          <span class="ml-3">$25</span>
+                          <span class="invoice-clear px-1 ml-5 font-16">Succesfull</span>
+                          <span class="ml-3 font-16">$25</span>
                           <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
                         </div>
                       </div>
                     </a>
                     <a href="#!" class="outline-none">
                       <div class="d-flex justify-content-between align-items-center invoice px-1">
-                        <span>10 de May 2020</span>
+                        <span class="font-16">10 de Septiembre 2020</span>
                         <div class="d-flex justify-content-end align-items-center">
-                          <span class="invoice-clear px-1 ml-3">Succesfull</span>
-                          <span class="ml-3">$25</span>
+                          <span class="invoice-clear px-1 ml-5 font-16">Succesfull</span>
+                          <span class="ml-3 font-16">$25</span>
                           <img src="/imgs/icons/download.svg" class="ml-3" alt="download invoice">
                         </div>
                       </div>
@@ -184,54 +232,80 @@
 
       <!-- settings -->
       <div role="tabpanel" class="tab-box tab-pane" id="settings">
+        
         <form action="/<%= currentUser.username %>/settings/saveSettings" method="POST">
-          <div class="d-flex justify-content-between">
-            <div class="text-left w-50 mx-5 my-4">
-              <h4 class="pb-1 mb-3">Configuración de Balance</h4>
-              <div class="d-flex align-items-center">
+         <div class="d-flex justify-content-between">
+          <div class="text-left w-50 mx-5 my-4">
+            <h4 class="pb-1 mb-3">Configuración de Balance</h4>
+            <div class="contianer-info-settings mb-2 containerSelectDropdown d-flex flex-row justify-content-between align-items-center">
+              <div>
                 <h5 class="mb-0 mr-2">Account Currency</h5>
-                <p class="mb-0">< dropdown ></p>
               </div>
-              <div class="d-flex align-items-center">
-                <h5 class="mb-0 mr-2">Balance Inicial</h5>
-                <p class="mb-0">25.000</p>
-              </div>
-              <!-- dark mode -->
-              <div class="d-flex align-items-center">
-                <h5 class="mb-0 mr-2">Dark mode</h5>
-                <label class="switch mb-0">
-                  <input type="checkbox">
-                  <span class="slider round"></span>
-                </label>
-              </div>
-              <!-- sound -->
-              <div class="d-flex align-items-center">
-                <h5 class="mb-0 mr-2">Enable sound</h5>
-                <label class="switch mb-0">
-                  <input type="checkbox">
-                  <span class="slider round"></span>
-                </label>
+              <!--dropdown-->
+              <div class="dropdown">
+                <button id="dLabel" class="dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select
+                </button>
+                <!-- Añadir todas las divisas necesarias y pensar si las ordenamos alfabéticamente o por orden de importancia-->
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                  <li>USD</li>
+                  <li>EUR</li>
+                  <li>GBP</li>
+                  <li>JPY</li>
+                  <li>AUD</li>
+                  <li>CAD</li>
+                </ul>
               </div>
             </div>
+            <div class="mb-2 d-flex flex-row justify-content-between align-items-center">
+              <h5 class="mb-0 mr-2 d-block">Balance Inicial</h5>
+              <!-- No se si para que realmente funcione debemos poner un "form". De momento, solo pongo el input -->
+              <!-- Hacer funcion JS que solo permita valores numéricos y que automaticamente ponga comas (1,000) y la moneda previamente seleccionada (1,000€)-->
+              <input type="text" name="" value="" placeholder="20000" id="initial-balance" class="font-16 text-right">
+            </div>
+            <!-- dark mode -->
+            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+              <h5 class="mb-0 mr-2">Dark mode</h5>
+              <label class="switch mb-0">
+                <input type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <!-- sound -->
+            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+              <h5 class="mb-0 mr-2">Enable sound</h5>
+              <label class="switch mb-0">
+                <input type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+          <!-- Goals! -->
+          <div class="text-left w-50 mx-5 my-4">
+            <div class="mb-3">
+              <h4 class="pb-1 mb-2">
+                Current Goals
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Add up to 5 goals to keep your focus. ">
+              </h4>
+              <input type="text" id="addGoal" placeholder="New Goal" class="w-100 font-16">
+              <!-- Hasta 5 objetivos -->
+              <!-- Hacer funcion que limite las entradas-->
+              <a href="#!" id="">
+                <ul id="listGoals" class="pl-0">
 
-            <div class="text-left w-50 mx-5 my-4">
-              <div class="mb-3">
-                <h4 class="pb-1 mb-2">
-                  Current Goals
-                  <a href="#!" class="mb-0 float-right">Add Goal</a>
-                </h4>
-                <p class="mt-0 mb-1">+5% semanal</p>
-                <p class="mt-0 mb-1">Escribir en el journal a diario</p>
-                <p class="mt-0 mb-1">Backtest all USD/JPY</p>
-                <p class="mt-0 mb-1">Launch Neilit!</p>
-              </div>
-              <div>
+                </ul>
+              </a>
+            </div>
+            <div class="pt-4">
+              <div class="d-block flex-row justify-content-between">
                 <h4 class="pb-1 mb-3">
                   Strategies
-                  <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create create a new strategy to use in your journal. Strategies are NOT case sensitive.">
+                  <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create a new strategy to add to on your TA">
                 </h4>
-                <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100">
-                <!-- strategies -->
+              </div>
+              <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100 font-16">
+              <!-- all strategies -->
+              <a href="#!" id="">
                 <ul id="listStrategy" class="pl-0">
                   <% strategies.forEach((strategy, i) => { %>
                     <li class="mt-2 py-0">
@@ -273,33 +347,35 @@
               <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Frequently Asked Question(s)">
             </h4>
             <div class="d-flex flex-column">
-              <a href="#!" class="FAQ mb-1">How to create an entry</a>
-              <a href="#!" class="FAQ mb-1">How to backtest</a>
-              <a href="#!" class="FAQ mb-1">Interpret statistics</a>
-              <a href="#!" class="FAQ mb-1">Upgrade your plan</a>
-              <a href="#!" class="FAQ mb-1">Random questions</a>
-              <a href="#!" class="FAQ mb-1">How to create an entry</a>
+              <a href="#!" class="FAQ mb-1 contianer-info-settings font-16">How to create an entry</a>
+              <a href="#!" class="FAQ mb-1 contianer-info-settings font-16">How to backtest</a>
+              <a href="#!" class="FAQ mb-1 contianer-info-settings font-16">Interpret statistics</a>
+              <a href="#!" class="FAQ mb-1 contianer-info-settings font-16">Upgrade your plan</a>
+              <a href="#!" class="FAQ mb-1 contianer-info-settings font-16">Random questions</a>
+              <a href="#!" class="FAQ mb-1 contianer-info-settings font-16">How to create an entry</a>
             </div>
           </div>
 
           <div class="w-50 mx-5 my-4">
             <div class="mb-4">
               <h4 class="pb-1 mb-3">Ask Us</h4>
-              <span class="grey">
+              <span class="grey font-16">
                 Send a message to
-                <a href="#" class="linkNaranja">support@neilit.com</a>
+                <a href="#">support@neilit.com</a>
                 and we will help you as soon as possible.
               </span>
             </div>
 
             <div class="">
               <h4 class="pb-1 mb-3">Wiki</h4>
-              <span class="grey">
+              <span class="grey font-16">
                 Solve all your doubts at the moment. You will
                 find most of Neilit's functions described in depth.
               </span>
-              <div class="text-center mt-3">
-                <a href="#!" class="btn-neilit">Go to Wiki</a>
+              <div class="d-flex flex-row justify-content-center mt-4">
+                <a href="#" class="font-16 change-plan">
+                  Go to Wiki
+                </a>
               </div>
             </div>
           </div>
