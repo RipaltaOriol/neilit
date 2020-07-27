@@ -30,7 +30,6 @@
   </div>
 </div>
 
-
 <div class="container mt-4">
   <!-- flash messages -->
   <% if (error && error.length > 0) { %>
@@ -45,16 +44,24 @@
   <% } %>
   <div class="row d-flex justify-content-center">
     <!-- NOTE: adjust the bootstrap class to change dimensions across different screens -->
-    <div class="col-10 col-md-8 col-lg-5 text-center">
-      <h2 class="orange">Welcome</h2>
-      <p class="border-bottom">Log in into your account</p>
-      <form class="d-flex flex-column" method="POST" action="/login">
+    <div class="col-10 col-md-8 col-lg-5 mt-5 text-center">
+      <h2 class="orange">Welcome Back</h2>
+      <p class="border-bottom pb-2 mb-3">Log in into your account</p>
+      <form class="" method="POST" action="/login">
         <!-- email -->
-        <input class="mb-2 pl-2" type="email" required="required" name="email" value="" placeholder="Email">
+        <input class="mb-3 pl-2" type="email" required="required" name="email" value="" placeholder="Email">
         <!-- password -->
         <input class="mb-2 pl-2" type="password" required="required" name="password"placeholder="Password">
-        <button class="btn-neilit" type="submit">Sign in</button>
-        <a href="#!" class="mt-1 text-dark">Forgot password?</a>
+          <a href="#!" class="font-14 link-gris d-block">Forgot your password?</a>
+        <div class="mt-2 d-flex flex-row justify-content-center">
+          <button class="btn-neilit" type="submit">Sign in</button>
+        </div>
+        <!-- Terminos y condiciones + Politica de privacidad -->
+        <div class="mt-5 font-13 color-gris">
+          By clicking “Sign in” above, you acknowledge that you have read and understood, and agree to
+          Neilit's <a href="#" class="link-gris"><ins>Terms & Conditions<ins></a> and <a href="#" class="link-gris"><ins>Privacy Policy</ins></a>.
+        </div>
+
       </form>
     </div>
   </div>

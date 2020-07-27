@@ -7,9 +7,14 @@
 
       <!-- BOOTSTRAP -->
       <link rel="stylesheet" href="/utilities/bootstrap/css/bootstrap.min.css">
+      <!-- POPPER -->
+      <link rel="stylesheet" href="https://unpkg.com/@popperjs/core@2">
       <!-- CSS -->
       <link rel="stylesheet" href="/stylesheets/app.css">
       <link rel="stylesheet" href="/stylesheets/user.css">
+      <link rel="stylesheet" href="/stylesheets/stats.css">
+      <!-- Link to charts.js -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
 
       <title>Neilit || <%= currentUser.username %></title>
     </head>
@@ -29,7 +34,7 @@
               <span class="pl-2">Home</span>
             </div>
           </a>
-          <a href="/<%= currentUser.username %>/statistics">
+          <a href="#!">
             <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
               <img src="/imgs/icons/donut.svg" alt="statistics">
               <span class="pl-2">Estadísticas</span>

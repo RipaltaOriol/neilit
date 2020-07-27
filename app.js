@@ -16,6 +16,7 @@ let indexRoutes     = require('./routes/index'),
     entryRoutes     = require('./routes/entries'),
     taRoutes        = require('./routes/tas'),
     backtestRoutes  = require('./routes/backtest');
+    statisticsRoutes  = require('./routes/statistics');
 
 // Configuration
 app.set("view engine", "ejs");
@@ -83,6 +84,8 @@ app.use("/:profile/journal/comment", commentRoutes);
 app.use("/:profile/journal/entry", entryRoutes);
 app.use("/:profile/journal/ta", taRoutes);
 app.use("/:profile/journal/backtest", backtestRoutes);
+app.use("/:profile/statistics", statisticsRoutes)
+// app.use("/:profile/details-entries", statisticsRoutes)
 
 // PORT LISTENING
 var port = process.env.PORT || 3000;

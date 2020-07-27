@@ -6,6 +6,11 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-SemiBold.ttf"); font-weight: 500;}
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
+:root{
+  --naranja: #ff8818;
+  --naranja-fuerte: #f57700;
+}
+
 /* || General styles */
 body {
   font-family: Nunito;
@@ -129,11 +134,37 @@ input[type=search] {
     transition-duration: .25s;
   }
 
+/* Boton Upgrade SideBar */
+.btn-upgrade{
+  background: white;
+  padding: 5px 10px;
+  border: none;
+  color: var(--naranja);
+  border-radius: 7px;
+  transition-duration: .25s;
+}
+
+  .btn-upgrade:hover{
+    transform: translateY(-7px);
+    transition-duration: .25s;
+    -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.3);
+    box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.3);
+  }
+
 /* || DOM selector */
-.element-menu { }
+.element-menu {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+ }
   .element-menu img {
     width: 26px;
   }
+
+  .element-menu:hover {
+    background: rgba(255,255,255,.15);
+   }
 
 .btn-top {
   width: 25px;
@@ -181,6 +212,10 @@ input[type=search] {
 
 #content-menu {
   height: calc(100% - 100px);
+}
+
+#content-menu a:hover{
+  text-decoration: none;
 }
 
 #content {
@@ -273,14 +308,11 @@ input:focus {
   object-fit: cover;
 }
 
-
-
 .initial-icons {
   width: 75px;
   height: 75px;
   object-fit: contain;
 }
-
 
 .settingsDiv {
   min-width: 100px;
@@ -534,18 +566,9 @@ nav {
   color: darkred;
 }
 
-
-
-
 .entry-size {
   text-align: right;
 }
-
-
-
-
-
-
 
 #backtesting {
   width: 100%;
@@ -577,7 +600,6 @@ nav {
 .entry-strategy {
 
 }
-
 
 .journal-box .entry-comments textarea {
   font-family: Nunito;
@@ -633,7 +655,6 @@ nav {
   color: #FF8818;
 }
 
-
 .entry-pair-invalid {
   color: #a9a9a9;
 }
@@ -682,8 +703,6 @@ nav {
   max-height: 600px;
 }
 
-
-
 .div-image {
 }
 
@@ -721,7 +740,6 @@ nav {
 .dropdown-menu a:active{
   background-color: #FFCF18;
 }
-
 
 #new-ta {
   width: 100%;
