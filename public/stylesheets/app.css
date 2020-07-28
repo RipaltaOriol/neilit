@@ -6,8 +6,8 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
 :root{
-  --naranja: #ff8818;
-  --naranja-fuerte: #f57700;
+  --orange: #ff8818;
+  --orange-fuerte: #f57700;
 }
 
 /* || General styles */
@@ -157,7 +157,7 @@ input[type=search] {
   background: white;
   padding: 5px 10px;
   border: none;
-  color: var(--naranja);
+  color: var(--orange);
   border-radius: 7px;
   transition-duration: .25s;
 }
