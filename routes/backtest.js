@@ -32,7 +32,6 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 
 // NEW BACKTEST LOGIC
 router.post("/", middleware.isLoggedIn, (req, res) => {
-  console.log(req.body);
   // creates an object with the new backtest main variables
   var newBacktest = {
     user_id: req.user.id,
