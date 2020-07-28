@@ -44,23 +44,47 @@
   <% } %>
   <div class="row d-flex justify-content-center">
     <!-- NOTE: adjust the bootstrap class to change dimensions across different screens -->
-    <div class="col-10 col-md-8 col-lg-5 text-center">
-      <h2 class="orange">Sign Up</h2>
-      <p class="border-bottom">Create a new account</p>
-      <form class="d-flex flex-column" method="POST" action="/signup">
+    <div class="col-10 col-md-8 col-lg-5 mt-5 text-center">
+      <h2 class="orange">Join Neilit</h2>
+      <p class="border-bottom pb-2 mb-3">Create a new account</p>
+      <form class="" method="POST" action="/signup">
         <!-- first name -->
-        <input class="mb-2 pl-2" type="text" required="required" name="name" value="" placeholder="First Name">
+        <input class="mb-3 pl-2" type="text" required="required" name="name" value="" placeholder="First Name">
         <!-- last name -->
-        <input class="mb-2 pl-2" type="text" required="required" name="surname"placeholder="Last Name">
+        <input class="mb-3 pl-2" type="text" required="required" name="surname"placeholder="Last Name">
         <!-- username -->
-        <input class="mb-2 pl-2" type="text" required="required" name="username" placeholder="Username">
+        <input class="mb-3 pl-2" type="text" required="required" name="username" placeholder="Username">
         <!-- email -->
-        <input class="mb-2 pl-2" type="email" required="required" name="email" placeholder="Email">
+        <input class="mb-3 pl-2" type="email" required="required" name="email" placeholder="Email">
         <!-- password -->
-        <input class="mb-2 pl-2" type="password" required="required" name="password" placeholder="Password">
+        <input class="mb-3 pl-2" type="password" required="required" name="password" placeholder="Password">
         <!-- confirm password -->
-        <input class="mb-2 pl-2" type="password" required="required" name="confirmPassword" placeholder="Cofirm Password">
-        <button class="btn-neilit" type="submit">Continuar</button>
+        <input class="mb-3 pl-2" type="password" required="required" name="confirmPassword" placeholder="Cofirm Password">
+        <a href="/login" class="font-14 link-gris d-block mb-2">Already a member? Log in</a>
+        <!-- Boton -->
+        <div class="mt-3 d-block flex-row justify-content-center">
+          <button class="btn-neilit" type="submit">Next step</button>
+        </div>
+        <div class="mt-3 font-13 color-gris">
+          By clicking “Next step” above, you acknowledge that you have read and understood, and agree to
+          Neilit's <a href="#" class="link-gris"><ins>Terms & Conditions<ins></a> and <a href="#" class="link-gris"><ins>Privacy Policy</ins></a>.
+        </div>
+        <!-- Container Progress -->
+        <div class="container-steps mt-5 mb-5 d-block">
+          <!-- Para hacer que funcione, se debe añadir la clase active a cada paso -->
+          <ul class="progressbar">
+            <li class="active">
+              Information
+            </li>
+            <li class="">
+              Choose plan
+            </li>
+            <li class="">
+              Payment
+            </li>
+
+          </ul>
+        </div>
       </form>
     </div>
   </div>

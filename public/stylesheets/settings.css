@@ -1,6 +1,14 @@
+:root{
+  --gris-flojo: #F7F7F7;
+  --gris-medio: #EEEEEE;
+  --gris-fuerte: #E5E5E5;
+  --gris-texto: #7B7B7B;
+  --rojo-fuerte: #EE0000;
+}
+
 /* || General styles */
 h4 {
-  font-size: 20px;
+  font-size: 18px;
   border-bottom: 2px solid #EEEEEE;
 }
   h4 a {
@@ -14,24 +22,39 @@ h4 {
   }
 
 h5 {
-  font-size: 18px;
+  font-size: 16px;
 }
 
-a { }
+a{
+  color: var(--naranja);
+}
   a:hover {
+    color: var(--naranja-fuerte);
     text-decoration: none;
   }
   a.nav-link {
-    color: #7B7B7B;
+    color: var(--gris-texto);
+    padding: 2px 15px 0 15px;
+    font-size: 16px;
+    border-bottom: 2px solid white;
   }
+
     a.nav-link:hover {
       color: black;
+      border-bottom: 2px solid var(--gris-fuerte);
+      background-color: white !important;
+    }
+
+    a.nav-link.active {
+      background: white;
+      color: var(--naranja);
+      border-bottom: 2px solid var(--naranja);
     }
 
 li {
   color: #7b7b7b;
   padding: 3px 5px;
-  border-radius: 7px;
+  border-radius: 0px !important;
   list-style-type: none;
 }
   li:hover{
@@ -56,10 +79,24 @@ input {
     transform: translateX(15px);
   }
 
+hr.profile{
+  background: red;
+  border: 1px solid var(--gris-medio);
+  width: 100%;
+  margin: 0;
+}
+
+#remaining-days{
+  color: var(--gris-texto) !important;
+}
+  #remaining-days:hover{
+    color: var(--naranja);
+    text-decoration: none;
+  }
+
 /* || Utility */
 .bg-orange {
   background: #FF8818;
-  border-radius: .25rem;
 }
   .bg-orange a:hover {
     color: white!important;
@@ -77,27 +114,46 @@ input {
     color: #f57700;
   }
 
+/* || Utility */
+.font-16{
+  font-size: 16px;
+}
+
+.font-14{
+  font-size: 14px;
+}
+
+.containerMenuSettings{
+  width: 100%;
+}
 
 /* || Bootstrap class */
-.nav-item a {
-  border-radius: .25rem;
+.nav-item{
+  margin: 0 3px 0 3px;
 }
+
+.contianer-info-settings{
+  padding: 2px 4px 2px 4px;
+}
+  .contianer-info-settings:hover{
+    border-radius: 7px;
+    background: var(--gris-flojo);
+  }
 
 .tab-box {
   width: 850px;
   min-width: 850px;
-  border-radius: .25rem;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+  border-radius: 7px;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
   .tab-box p{
-    color: #7b7b7b;
+    color: var(--gris-texto);
     padding: 3px 5px;
-    border-radius: 7px;
   }
     .tab-box p:hover{
-      background-color: #f7f7f7;
-      color: black;
-      cursor: pointer;
+      cursor: default;
     }
   .tab-box img {
     width: 100px;
@@ -116,12 +172,40 @@ input {
     width: auto;
   }
 
-/* || Bootstrap class */
-.btn-outline-danger {
-  border-width: 2px;
+/*Profile picture*/
+.profile-picture{
+
+}
+  .profile-picture:hover{
+
+  }
+
+/*Boton Logout*/
+.boton-logout{
+  background: white;
+  color: var(--rojo-fuerte);
+  border-radius: 7px;
+  border: 2px solid var(--rojo-fuerte);
+  padding: 3px 15px;
+}
+
+.boton-logout:hover{
+  background: var(--rojo-fuerte);
+  color: white;
+  border-radius: 7px;
+  border: 2px solid var(--rojo-fuerte);
+}
+
+.containerOferta{
+  border-radius: 7px 7px 0 0;
 }
 
 /* || Utility */
+/*
+  NOTE hecha por Jaume: He eliminado la clase del HTML en alguna ocasión, pero no la
+  he eliminado del CSS por si se fastidia algo. En caso de que no haya ningun problema,
+  la borra más adelante.
+*/
 .a-sm{
   font-size: 14px;
   color: #7b7b7b;
@@ -130,6 +214,24 @@ input {
 .a-sm:hover{
   color: black;
   text-decoration: none;
+}
+
+/* Boton Settings Change plan */
+.change-plan{
+  padding: 3px 15px;
+  border: 2px solid var(--naranja);
+  border-radius: 7px;
+  transition-duration: .25s;
+}
+  .change-plan:hover{
+    color: white;
+    border: 2px solid var(--naranja);
+    background: var(--naranja);
+    transition-duration: .25s;
+  }
+
+#initial-balance{
+  width: 150px;
 }
 
 .FAQ{
@@ -148,7 +250,7 @@ input {
     background-color: #f7f7f7;
   }
   .invoice img {
-    width: 40px;
+    width: 30px;
     opacity: .3;
     transition-duration: .25s;
   }
@@ -211,6 +313,81 @@ input {
   .slider.round:before {
     border-radius: 50%;
   }
+
+/* CODE: Jaume */
+  .containerSelectDropdown{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  /*Custom dropdown*/
+  #dLabel {
+  border-radius: 7px;
+  border: 0;
+  text-align: left;
+  background-color: inherit;
+  color: var(--gris-texto);
+  }
+
+  #dLabel:hover{
+    color: black;
+  }
+
+ .caret {
+  float: right;
+  margin-top: 9px;
+  display: block;
+}
+
+.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border-radius: 7px;
+  border: none;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+
+.dropdown button:hover, .dropdown button:focus {
+  border: none;
+  outline: 0;
+}
+
+.dropdown-menu li {
+  line-height: 1.5;
+  letter-spacing: 0.7px;
+  color: var(--gris-texto);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.dropdown-menu li:hover {
+  background-color: var(--gris-flojo);
+  color: black;
+}
+
+.container-user-goals a{
+  color: var(--gris-texto);
+}
+  .container-user-goals a:hover{
+    color: black;
+  }
+
+#listStrategy ul{
+  border-radius: 7px;
+}
+#listStrategy li{
+  font-size: 16px;
+  border-radius: 7px !important;
+}
+
+.info{
+  transform: translateX(35px);
+}
+/* CODE Jaume (end) */
 
 #listStrategy { }
   #listStrategy li {
