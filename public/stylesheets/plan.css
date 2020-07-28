@@ -28,3 +28,14 @@
   border-radius: .25rem;
   padding: .25em;
 }
+
+.scheme {
+  width: 25%;
+  max-width: 300px;
+}
+
+#title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+}
