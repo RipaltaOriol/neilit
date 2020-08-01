@@ -17,7 +17,7 @@ h4 {
     color: #7b7b7b;
     transition-duration: .25s;
   }
-  h4 a:hover{
+  h4 a:hover {
     color: black;
     transition-duration: .25s;
   }
@@ -26,7 +26,7 @@ h5 {
   font-size: 16px;
 }
 
-a{
+a {
   color: var(--orange);
 }
   a:hover {
@@ -80,7 +80,7 @@ input {
     transform: translateX(15px);
   }
 
-hr.profile{
+hr.profile {
   background: red;
   border: 1px solid var(--grey-medio);
   width: 100%;
@@ -111,32 +111,23 @@ hr.profile{
   .grey a {
     color: #ff8818;
   }
-  .grey a:hover{
+  .grey a:hover {
     color: #f57700;
   }
 
-/* || Utility */
-.font-16{
-  font-size: 16px;
-}
-
-.font-14{
-  font-size: 14px;
-}
-
-.containerMenuSettings{
+.containerMenuSettings {
   width: 100%;
 }
 
 /* || Bootstrap class */
-.nav-item{
+.nav-item {
   margin: 0 3px 0 3px;
 }
 
-.container-info-settings{
+.container-info-settings {
   padding: 2px 4px 2px 4px;
 }
-  .container-info-settings:hover{
+  .container-info-settings:hover {
     border-radius: 7px;
     background: var(--grey-flojo);
   }
@@ -149,11 +140,11 @@ hr.profile{
   -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
-  .tab-box p{
+  .tab-box p {
     color: var(--grey-texto);
     padding: 3px 5px;
   }
-    .tab-box p:hover{
+    .tab-box p:hover {
       cursor: default;
     }
   .tab-box img {
@@ -164,7 +155,7 @@ hr.profile{
     opacity: 0.5;
     transition-duration: 0.25s;
   }
-    .tab-box .img-sm:hover{
+    .tab-box .img-sm:hover {
       opacity: 1;
       transition-duration: 0.25s;
     }
@@ -173,16 +164,16 @@ hr.profile{
     width: auto;
   }
 
-/*Profile picture*/
-.profile-picture{
+/* || Profile picture */
+.profile-picture {
 
 }
-  .profile-picture:hover{
+  .profile-picture:hover {
 
   }
 
-/*Boton Logout*/
-.btn-logout{
+/* || Boton Logout */
+.btn-logout {
   background: white;
   color: var(--red-fuerte);
   border-radius: 7px;
@@ -190,42 +181,41 @@ hr.profile{
   padding: 3px 15px;
 }
 
-.btn-logout:hover{
+.btn-logout:hover {
   background: var(--red-fuerte);
   color: white;
   border-radius: 7px;
   border: 2px solid var(--red-fuerte);
 }
 
-.containerOferta{
+.containerOferta {
   border-radius: 7px 7px 0 0;
 }
 
-/* Boton Settings Change plan */
-.change-plan{
+/* || Boton Settings Change plan */
+.change-plan {
   padding: 3px 15px;
   border: 2px solid var(--orange);
   border-radius: 7px;
   transition-duration: .25s;
 }
-  .change-plan:hover{
+  .change-plan:hover {
     color: white;
     border: 2px solid var(--orange);
     background: var(--orange);
     transition-duration: .25s;
   }
 
-#initial-balance{
+#initial-balance {
   width: 150px;
 }
 
-.FAQ{
+.FAQ {
   color: #7b7b7b;
 }
-
-.FAQ:hover{
-  color: black;
-}
+  .FAQ:hover {
+    color: black;
+  }
 
 .invoice {
   color: #212529;
@@ -239,18 +229,18 @@ hr.profile{
     opacity: .3;
     transition-duration: .25s;
   }
-    .invoice img:hover{
+    .invoice img:hover {
       opacity: .8;
       transition-duration: .25s;
     }
 
-.invoice-clear{
+.invoice-clear {
   background: #cbf6e5;
   color: #45d69e;
   border-radius: .25rem;
 }
 
-.invoice-pending{
+.invoice-pending {
   background: #fce6e5;
   color: #fd5e74;
   border-radius: .25rem;
@@ -328,7 +318,7 @@ hr.profile{
   color: black;
 }
 
-.info{
+.info {
   transform: translateX(35px);
 }
 
@@ -336,7 +326,7 @@ hr.profile{
   #listStrategy ul{
     border-radius: 7px;
   }
-  #listStrategy li{
+  #listStrategy li {
     font-size: 16px;
     border-radius: 7px;
   }

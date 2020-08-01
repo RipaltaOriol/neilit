@@ -2,41 +2,236 @@
 
   <!-- CONTENT -->
   <section id="new-plan">
-    <div class="container mt-3 mx-auto">
+    <div class="container mt-3 mb-5 mx-auto">
       <div class="journal-box px-0">
         <form action="" method="POST">
           <input id="title" class="mx-3" type="text" name="title" placeholder="Title for the Trading Plan">
           <hr>
           <div class="d-flex justify-content-between mx-3">
-            <div class="">
-              <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
-                <h4 id="item-1">Item 1</h4>
-                <p>...</p>
-                <h5 id="item-1-1">Item 1-1</h5>
-                <p>...</p>
-                <h5 id="item-1-2">Item 1-2</h5>
-                <p>...</p>
-                <h4 id="item-2">Item 2</h4>
-                <p>...</p>
-                <h4 id="item-3">Item 3</h4>
-                <p>...</p>
-                <h5 id="item-3-1">Item 3-1</h5>
-                <p>...</p>
-                <h5 id="item-3-2">Item 3-2</h5>
-                <p>...</p>
+            <div id="document" class="w-75" data-spy="scroll" data-target="#scheme" data-offset="0" class="scrollspy-example">
+
+              <!-- General Information -->
+              <h4 id="genral">General Information:</h4>
+              <div class="mb-4">
+                <div class="d-flex">
+                  <label class="checkbox-orange font-20 mr-2 my-auto">
+                    Broker
+                    <input id="entry-open" type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                  <input type="text" class="bg-hover p-2 w-75" name="broker" placeholder="Name of your broker">
+                </div>
+                <div class="d-flex">
+                  <label class="checkbox-orange font-20 mr-2 my-auto">
+                    Charts
+                    <input id="entry-open" type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                  <input type="text" class="bg-hover p-2 w-75" name="charts" placeholder="What charts do you use?">
+                </div>
+                <div class="d-flex mb-2">
+                  <label class="checkbox-orange font-20 mr-2 my-auto">
+                    Trading Capital
+                    <input id="entry-open" type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                  <input type="text" class="bg-hover p-2 w-75" name="capital" placeholder="Trading capital available (in account base currency)">
+                </div>
+                <div>
+                  <label class="checkbox-orange font-20 my-auto">
+                    Business Routine
+                    <input id="entry-open" type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                  <div id="routine" class="diveditable bg-hover p-2 w-75" placeholder="Explain your business routine" contenteditable="true"></div>
+                </div>
+              </div>
+
+              <!-- Strategies -->
+              <h4 id="strategy" class="mb-3">Strategies</h4>
+              <div class="dropright mb-4">
+                <a class="btn-neilit dropdown-toggle py-2" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Add a Strategy to the plan:
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" href="#!">Strategy 1</a>
+                  <a class="dropdown-item" href="#!">Strategy 2</a>
+                  <a class="dropdown-item" href="#!">Strategy 3</a>
+                </div>
+              </div>
+              <div class="mb-4">
+
+                <!-- Strategy Setup -->
+                <h5 id="setup">Setup</h5>
+                <div class="mb-3">
+                  <div>
+                    <label class="font-18 my-auto">
+                      About
+                    </label>
+                    <div class="diveditable bg-hover p-2 w-75" placeholder="What is this strategy about?" contenteditable="true"></div>
+                  </div>
+                  <div>
+                    <label class="font-18 my-auto">
+                      How to use
+                    </label>
+                    <div class="diveditable bg-hover p-2 w-75" placeholder="How do you use this strategy?" contenteditable="true"></div>
+                  </div>
+                  <div>
+                    <label class="font-18 my-auto">
+                      Key Notes
+                    </label>
+                    <div class="diveditable bg-hover p-2 w-75" placeholder="Any additional description?" contenteditable="true"></div>
+                  </div>
+                  <div class="d-flex">
+                    <label class="checkbox-orange font-18 mr-2 my-auto">
+                      Timeframe/s
+                      <input id="entry-open" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+                    <span class="bg-hover p-2 w-75">Dropdown</span>
+                  </div>
+                  <div class="d-flex">
+                    <label class="checkbox-orange font-18 mr-2 my-auto">
+                      Asset/s
+                      <input id="entry-open" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+                    <span class="bg-hover p-2 w-75">Dropdown</span>
+                  </div>
+                  <div class="d-flex">
+                    <label class="checkbox-orange font-18 mr-2 my-auto">
+                      Risk Tolerance [%]
+                      <input id="entry-open" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+                    <input type="number" class="bg-hover p-2 w-75" name="risk" placeholder="What is you risk per operation in %?" min="0" max="100">
+                  </div>
+                  <div class="mt-2">
+                    <button class="btn-inverted" type="button">Connect to Backtest item</button>
+                  </div>
+                </div>
+
+                <!-- Strategy Positioning -->
+                <h5 id="position">Positioning</h5>
+                <div class="mb-3">
+                  <div class="dropright mb-3">
+                    <a class="btn-neilit dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Add positioning item
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <a class="dropdown-item" href="#!">Take Profit (Profits)</a>
+                      <a class="dropdown-item" href="#!">Stop Loss (Loss)</a>
+                    </div>
+                  </div>
+                  <hr class="m-2">
+                  <input class="font-20 w-75 bg-hover p-2 mb-2" type="text" name="position-title" placeholder="Title for the positioning rule">
+                  <div class="">
+                    <select class="form-control w-75 mb-2" name="amount-type">
+                      <option value="">Scalling In/Out (Partial)</option>
+                      <option value="">Full Amount</option>
+                    </select>
+                    <div>
+                      <label class="font-18 mr-2">Scalling In/Out amount:</label>
+                      <input class="bg-hover p-2 w-75" type="number" name="amount" placeholder="What is the amount for your partial order (%)?">
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <label class="checkbox-orange font-18 mr-2 my-auto">
+                      Order Type
+                      <input id="entry-open" type="checkbox">
+                      <span class="checkmark"></span>
+                    </label>
+                    <span class="bg-hover p-2 w-75">Dropdown</span>
+                  </div>
+                  <div>
+                    <label class="font-18 my-auto">
+                      Description
+                    </label>
+                    <div class="diveditable bg-hover p-2 w-75" placeholder="Any additional notes for this rule?" contenteditable="true"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Psychology -->
+              <h4 id="psychology">Psychology</h4>
+              <p>...</p>
+
+              <!-- Journaling -->
+              <h4 id="journal">Journaling</h4>
+              <div class="mb-4">
+                <div class="mb-2">
+                  <label class="font-18 my-auto">
+                    Journaling Process
+                  </label>
+                  <div class="diveditable bg-hover p-2 w-75" placeholder="How do you plan to journal?" contenteditable="true"></div>
+                </div>
+                <div>
+                  <label class="font-18 my-auto d-flex align-items-center mb-2">
+                    Journaling Checklist
+                    <img class="info ml-2" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="What items do you want to keep track of in your journal">
+                  </label>
+                  <input id="addTrack" class="bg-hover p-2 w-75" type="text" name="journal-checklits" placeholder="Add something to include in you jouranl entries">
+                  <ul id="listJournalItems" class="pl-0 mb-2">
+
+                  </ul>
+                  <button class="btn-inverted" type="button">Reset checklist</button>
+                </div>
+              </div>
+
+              <!-- Objectives -->
+              <h4 id="goals">Objectives</h4>
+              <div class="mb-4">
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control bg-hover" aria-label="Choose an objective type" placeholder="New Objective">
+                  <div class="input-group-append">
+                    <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+                    <div class="dropdown-menu py-0">
+                      <a class="dropdown-item py-2" href="#!">Account Goal</a>
+                      <div role="separator" class="dropdown-divider"></div>
+                      <a class="dropdown-item py-2" href="#!">Financial Goal</a>
+                      <div role="separator" class="dropdown-divider"></div>
+                      <a class="dropdown-item py-2" href="#!">Non-Financial Goal</a>
+                    </div>
+                  </div>
+                </div>
+                <h5>Account Objectives (max. 5)</h5>
+                <div class="mb-3">
+                  <ul class="pl-0">
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                  </ul>
+                </div>
+                <h5>Non-Financial Objectives</h5>
+                <div class="mb-3">
+                  <ul class="pl-0">
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                  </ul>
+                </div>
+                <h5>Financial Objectives</h5>
+                <div class="mb-3">
+                  <ul class="pl-0">
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+                  </ul>
+                </div>
               </div>
             </div>
-            <div class="scheme">
-              <div id="list-example" class="list-group">
-                <a class="list-group-item list-group-item-action" href="#list-item-1">Item 1</a>
-                <a class="list-group-item list-group-item-action" href="#list-item-2">Item 2</a>
-                <a class="list-group-item list-group-item-action" href="#list-item-3">Item 3</a>
-                <a class="list-group-item list-group-item-action" href="#list-item-4">Item 4</a>
-              </div>
+            <div id="scheme" class="list-group">
+              <a class="list-group-item list-group-item-action" href="#general">General Info</a>
+              <span class="list-group-item">Strategies</span>
+              <a class="list-group-item list-group-item-action pl-5" href="#setup">Setup</a>
+              <a class="list-group-item list-group-item-action pl-5" href="#position">Positioning</a>
+              <a class="list-group-item list-group-item-action" href="#psychology">Psychology</a>
+              <a class="list-group-item list-group-item-action" href="#journal">Journaling</a>
+              <a class="list-group-item list-group-item-action" href="#goals">Objectives</a>
             </div>
           </div>
-          <div class="d-flex mx-3 mt-3">
-            <a class="btn btn-danger">Some Btn</a>
+          <div class="d-flex justify-content-end mx-3">
+            <button id="submit-plan" type="submit" class="btn-neilit">Crear</button>
           </div>
         </form>
       </div>

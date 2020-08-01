@@ -4,8 +4,8 @@ $(document).ready(function() {
 });
 
 // Goals
-$("#addGoal").keypress(function(event){
-  if(event.which === 13){
+$("#addGoal").keypress(function(event) {
+  if(event.which === 13) {
     // get the user's input
     var newGoal = $(this).val();
     $(this).val("");
