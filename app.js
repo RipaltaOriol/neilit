@@ -10,13 +10,14 @@ let express         = require('express'),
     mysql           = require('mysql');
 
 // Routes Dependencies
-let indexRoutes     = require('./routes/index'),
-    menuRoutes      = require('./routes/menu'),
-    settingsRoutes  = require('./routes/settings')
-    commentRoutes   = require('./routes/comments'),
-    entryRoutes     = require('./routes/entries'),
-    taRoutes        = require('./routes/tas'),
-    backtestRoutes  = require('./routes/backtest');
+let indexRoutes       = require('./routes/index'),
+    menuRoutes        = require('./routes/menu'),
+    settingsRoutes    = require('./routes/settings')
+    commentRoutes     = require('./routes/comments'),
+    entryRoutes       = require('./routes/entries'),
+    taRoutes          = require('./routes/tas'),
+    backtestRoutes    = require('./routes/backtest'),
+    planRoutes        = require('./routes/plan'),
     statisticsRoutes  = require('./routes/statistics');
 
 // Configuration
@@ -89,7 +90,8 @@ app.use("/:profile/journal/comment", commentRoutes);
 app.use("/:profile/journal/entry", entryRoutes);
 app.use("/:profile/journal/ta", taRoutes);
 app.use("/:profile/journal/backtest", backtestRoutes);
-app.use("/:profile/statistics", statisticsRoutes)
+app.use("/:profile/statistics", statisticsRoutes);
+app.use("/:profile/plan", planRoutes);
 // app.use("/:profile/details-entries", statisticsRoutes)
 
 // PORT LISTENING
