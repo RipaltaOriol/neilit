@@ -6,8 +6,12 @@ let categories = require("../models/categoriesPairs");
 let middleware = require('../middleware');
 
 // NEW PLAN ROUTE
+router.get("/components", middleware.isLoggedIn, (req, res) => {
+  res.render("user/plan/components", {strategies:userStrategies});
+});
+
+// NEW PLAN ROUTE
 router.get("/new", middleware.isLoggedIn, (req, res) => {
-  // FIXME: change the file organisation
   res.render("user/plan/new");
 });
 

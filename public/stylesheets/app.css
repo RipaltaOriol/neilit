@@ -95,6 +95,12 @@ input[type=search] {
     background-color: #f7f7f7;
   }
 
+/* || Utility */
+.bg-none {
+  background: none;
+  border: none;
+}
+
 /* || Bootstrap class */
 .modal-body { }
   .modal-body a {

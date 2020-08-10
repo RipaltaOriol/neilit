@@ -58,20 +58,6 @@ input { }
   padding: .25em;
 }
 
-/* || Bootstrap class */
-.list-group .list-group-item {
-  color: #000;
-  border-color: #ff8818;
-}
-.list-group .list-group-item.active {
-  color: #fff!important;
-  background-color: #ff8818!important;
-}
-  .list-group .list-group-item:hover {
-    color: #000;
-    background-color: #f7f7f7;
-  }
-
 /* || Custom checkbox */
 .checkbox-orange {
   display: block;
@@ -132,6 +118,7 @@ input { }
 /* || Bootstrap class */
 .input-group-append { }
   .input-group-append button {
+    font-size: 16px;
     color: #fff;
     background-color: #ff8818;
     border: 1px solid #ff8818;
@@ -156,9 +143,15 @@ input { }
     content: "";
   }
 
+.strategy-title {
+  color: #ff8818;
+  border: 1px solid #ff8818;
+  border-radius: .25rem;
+  padding: 0.25rem 0.5rem;
+}
 
 #title {
-  font-size: 26px;
+  font-size: 1.4rem;
   font-weight: 500;
   color: #000;
 }

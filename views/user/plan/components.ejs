@@ -1,0 +1,213 @@
+<%- include("../../partials/header-plan") %>
+
+  <!-- CONTENT -->
+  <section id="new-plan">
+    <div class="container mt-3 mb-5 mx-auto">
+      <div class="journal-box px-0">
+        <form action="/<%= currentUser.username %>/plan/new" method="GET">
+          <h3 class="mx-3">Trading plan components</h3>
+          <hr>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-4 px-3 mb-3">
+                <!-- General Information -->
+                <h5 class="mb-2">General Information</h5>
+                <label class="checkbox-orange font-20 my-1">
+                  Broker
+                  <input id="broker" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Charts
+                  <input id="charts" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Trading Capital
+                  <input id="capital" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Business Routine
+                  <input id="routine" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div class="col-4 px-3 mb-3">
+                <!-- Strategies -->
+                <h5 class="mb-2">Strategies</h5>
+                <div class="dropright mb-2">
+                  <a class="btn-neilit dropdown-toggle py-1" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add you strategies
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <% strategies.forEach((strategy, i) => { %>
+                      <a class="dropdown-item" href="#!" onclick="addStrategy(<%= i %>)"><%= strategy %></a>
+                    <% }) %>
+                  </div>
+                </div>
+                <div id="plan-strategies">
+
+                </div>
+                <label class="checkbox-orange font-20 my-1">
+                  About
+                  <input id="about" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  How to use
+                  <input id="howto" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Key Notes
+                  <input id="strategy-notes" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Timeframes
+                  <input id="timeframe" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Assets
+                  <input id="assets" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Risk Tolerance
+                  <input id="risk" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Connet with backtest
+                  <input id="backtest" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div class="col-4 px-3 mb-3">
+                <!-- Positioning -->
+                <h5 class="mb-2">Positioning</h5>
+                <label class="checkbox-orange font-20 my-1">
+                  Add positioning rules to strategies (SL/TP)
+                  <input id="rules" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Positioning rule title
+                  <input id="title" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Positioning type (full/partial position)
+                  <input id="type" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Amount
+                  <input id="amount" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Order type
+                  <input id="order-type" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Description
+                  <input id="description" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div class="col-4 px-3 mb-3">
+                <!-- Psychology -->
+                <h5 class="mb-2">Psychology</h5>
+                <label class="checkbox-orange font-20 my-1">
+                  Add Notes
+                  <input id="psychology-notes" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Generate standard trading psychology tips
+                  <input id="tips" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div class="col-4 px-3 mb-3">
+                <!-- Journaling -->
+                <h5 class="mb-2">Journaling</h5>
+                <label class="checkbox-orange font-20 my-1">
+                  Write journaling process
+                  <input id="journaling" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-auto">
+                  Add a checklist for the journaling process
+                  <input id="checklist" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div class="col-4 px-3 mb-3">
+                <!-- Objectives -->
+                <h5 class="mb-2">Objectives</h5>
+                <label class="checkbox-orange font-20 my-1">
+                  Include account goals
+                  <input id="account" type="checkbox" checked>
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Add non-financial objectives
+                  <input id="non-financial" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Add financial objectives
+                  <input id="financial" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <div class="col-4 px-3 mb-3">
+                <!-- Others -->
+                <h5 class="mb-2">Others</h5>
+                <label class="checkbox-orange font-20 my-1">
+                  Add strategy revision rules/notes
+                  <input id="journal-revision" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Add journal revision rules/notes
+                  <input id="strategy-revision" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-orange font-20 my-1">
+                  Add trading plan revision rules/notes
+                  <input id="plan-revision" type="checkbox">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mx-3">
+            <button type="submit" class="btn-neilit" onclick="storeComponents();">Crear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+<script type="text/javascript">
+  var strategies = <%- JSON.stringify(strategies) %>;
+</script>
+
+<!-- <section> is inside partials -->
+</section>
+
+<%- include("../../partials/footer-plan") %>
