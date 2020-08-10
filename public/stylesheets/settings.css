@@ -4,7 +4,7 @@
   --grey-fuerte: #E5E5E5;
   --grey-texto: #7B7B7B;
   --red-fuerte: #EE0000;
-  --
+  --blue-primario: #007BFF;
 }
 
 /* || General styles */
@@ -214,6 +214,23 @@ hr.profile{
     background: var(--orange);
     transition-duration: .25s;
   }
+
+/* ||Utility Boton Save */
+.boton-save{
+  padding: 3px 15px;
+  border: 2px solid var(--azul-primario);
+  border-radius: 7px;
+  transition-duration: .25s;
+  background: white;
+  color: var(--azul-primario);
+}
+  .boton-save:hover{
+    color: white;
+    border: 2px solid var(--azul-primario);;
+    background: var(--azul-primario);
+    transition-duration: .25s;
+  }
+
 
 #initial-balance{
   width: 150px;
