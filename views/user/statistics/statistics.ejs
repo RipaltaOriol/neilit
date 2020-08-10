@@ -207,8 +207,8 @@
         <div class="superior-widget d-flex flex-row justify-content-between mt-2">
           <!--Superior Izquierda Widget-->
           <div class="d-flex flex-row align-items-center">
-            <img src="../../imgs/icons/timeframes.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
-            <h5 class="mb-0 py-1">Timeframes and results</h5>
+            <img src="../../imgs/icons/patrones.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Paterns and results</h5>
           </div>
           <!--Superior Derecha Widget-->
           <div class="d-flex flex-row justify-content-center align-items-center">
@@ -238,6 +238,9 @@
           <a href="#">
             <!-- Al hacer click, añadir la clase "active-change" en el div. -->
             <!-- Cuando este activado, en lugar de ver los datos en forma de tabla, lo veremos como gráfico. Es posible que se pueda hacer con pills? -->
+            <!-- Una vez este hecha la funcionalidad, añadiremos el gráfico donde corresponda. -->
+            <!-- Estaría bien tener logos como los de TradingView para cada activo -->
+            <!-- En futuras actualizaciones, al hacer click, que salga una página con todos los detalles de cada activo-->
             <div class="d-flex flex-row justify-content-center align-items-center mr-2 mb-1 background-change">
               <img src="../../imgs/icons/bar-chart.svg" class="mx-2 py-1 imagen-widget-change" alt="profits">
             </div>
@@ -248,11 +251,10 @@
         <!--PARTE CENTRAL DEL WIDGET-->
           <div class="mb-2 mt-3 w-100">
             <div class="parte-central">
-              <!-- Cambiar el color al hacer hover por nuestro gris flojo -->
               <table class="table table-hover table-borderless font-16 text-center">
                 <thead>
                   <tr class="pb-4">
-                    <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los timeframes de las operaciones que se han llevado a cabo.">Timeframe</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los activos con almenos una operación cerrada">Paterns</th>
                     <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Entries</th>
                     <!--El Avg Return mejor en % que en moneda-->
                     <th scope="col" data-toggle="tooltip" data-placement="top" title="Resultado medio en cada timeframe">Avg. return</th>
@@ -263,7 +265,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row" class="align-middle">5 min</th>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Double top</a></th>
                     <td>0</td>
                     <td>0</td>
                     <td>0</td>
@@ -271,16 +273,15 @@
                     <td>0</td>
                   </tr>
                   <tr>
-                    <th scope="row" class="align-middle">15 min</th>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Trendline brake</a></th>
                     <td>5</td>
-                    <!-- -->
                     <td><p class="mb-0 pill pill-verde">3.45%</p></td>
                     <td>3</td>
                     <td>1</td>
                     <td>1</td>
                   </tr>
                   <tr>
-                    <th scope="row" class="align-middle">1 hour</th>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">False breakout</a></th>
                     <td>2</td>
                     <td><p class="mb-0 pill pill-roja">-2%</p></td>
                     <td>0</td>
@@ -288,7 +289,7 @@
                     <td>1</td>
                   </tr>
                   <tr>
-                    <th scope="row" class="align-middle">4 hours</th>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Resistance test</a></th>
                     <td>21</td>
                     <td><p class="pill pill-verde mb-0">2.32%</p></td>
                     <td>15</td>
@@ -326,7 +327,563 @@
       </div>
     </div>
     <div class="d-flex flex-row justify-content-between">
-      <!--PRIMER WIDGET CUARTA LINEA || DIRECCIÓN--> <!-- Mover más abajo una vez tengamos más widgets creados. -->
+      <!--ÚNICO WIDGET TERCERA LINEA || TIMEFRAMES--> <!-- Mover más abajo una vez tengamos más widgets creados. -->
+      <!-- ESCRITO POR JAUME: Mi idea es que automaticamente Neilit añada los Timeframes de las entradas. Es decir, que el usuario no tenga que seleccionar nada en este widget a parte del periodo de tiempo-->
+      <div class="widget-100 mx-3 mt-4">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <img src="../../imgs/icons/flag.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Assets and results</h5>
+          </div>
+          <!--Superior Derecha Widget-->
+          <div class="d-flex flex-row justify-content-center align-items-center">
+          <div class="d-flex flex-row">
+            <a href="#" class="mr-2">
+              <div class="grey font-16 mb-0">
+                <!--Dropdown temporalidad widget-->
+                <div class="dropdown">
+                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Current week
+                  </button>
+                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
+                  <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li>Today</li>
+                    <li>Current week</li>
+                    <li>Last week</li>
+                    <li>Current month</li>
+                    <li>Last month</li>
+                    <li>Current semester</li>
+                    <li>Last semester</li>
+                    <li>Custom period</li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+          <a href="#">
+            <!-- Al hacer click, añadir la clase "active-change" en el div. -->
+            <!-- Cuando este activado, en lugar de ver los datos en forma de tabla, lo veremos como gráfico. Es posible que se pueda hacer con pills? -->
+            <!-- Una vez este hecha la funcionalidad, añadiremos el gráfico donde corresponda. -->
+            <!-- Estaría bien tener logos como los de TradingView para cada activo -->
+            <!-- En futuras actualizaciones, al hacer click, que salga una página con todos los detalles de cada activo-->
+            <div class="d-flex flex-row justify-content-center align-items-center mr-2 mb-1 background-change">
+              <img src="../../imgs/icons/bar-chart.svg" class="mx-2 py-1 imagen-widget-change" alt="profits">
+            </div>
+          </a>
+          </div>
+
+        </div>
+        <!--PARTE CENTRAL DEL WIDGET-->
+          <div class="mb-2 mt-3 w-100">
+            <div class="parte-central">
+              <table class="table table-hover table-borderless font-16 text-center">
+                <thead>
+                  <tr class="pb-4">
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los activos con almenos una operación cerrada">Assets</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Entries</th>
+                    <!--El Avg Return mejor en % que en moneda-->
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Resultado medio en cada timeframe">Avg. return</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones ganadoras">Winners</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones en Break even">Break evens</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones perdidas">Loosers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">EURUSD</a></th>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">GBPUSD</a></th>
+                    <td>5</td>
+                    <td><p class="mb-0 pill pill-verde">3.45%</p></td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">USD/JPY</a></th>
+                    <td>2</td>
+                    <td><p class="mb-0 pill pill-roja">-2%</p></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">EURCAD</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">AUDCAD</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">NZDCAD</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">EURCHF</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <a href="#">
+                <p class="pill font-16 grey mb-0">See more details</p>
+              </a>
+            </div>
+          </div>
+
+        <!--PARTE INFERIOR DEL WIDGET-->
+        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+          <div class="grey">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+              <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+            </div>
+          </a>
+          </div>
+          <div class="">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row justify-content-between">
+      <!--ÚNICO WIDGET TERCERA LINEA || ACTIVOS Y RENTABILIDAD
+      <!-- ESCRITO POR JAUME: Mi idea es que automaticamente Neilit añada los Timeframes de las entradas. Es decir, que el usuario no tenga que seleccionar nada en este widget a parte del periodo de tiempo-->
+      <div class="widget-100 mx-3 mt-4">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <img src="../../imgs/icons/timeframes.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Timeframes and results</h5>
+          </div>
+          <!--Superior Derecha Widget-->
+          <div class="d-flex flex-row justify-content-center align-items-center">
+          <div class="d-flex flex-row">
+            <a href="#" class="mr-2">
+              <div class="grey font-16 mb-0">
+                <!--Dropdown temporalidad widget-->
+                <div class="dropdown">
+                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Current week
+                  </button>
+                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
+                  <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li>Today</li>
+                    <li>Current week</li>
+                    <li>Last week</li>
+                    <li>Current month</li>
+                    <li>Last month</li>
+                    <li>Current semester</li>
+                    <li>Last semester</li>
+                    <li>Custom period</li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+          <a href="#">
+            <!-- Al hacer click, añadir la clase "active-change" en el div. -->
+            <!-- Cuando este activado, en lugar de ver los datos en forma de tabla, lo veremos como gráfico. Es posible que se pueda hacer con pills? -->
+            <!-- Una vez este hecha la funcionalidad, añadiremos el gráfico donde corresponda. -->
+            <div class="d-flex flex-row justify-content-center align-items-center mr-2 mb-1 background-change">
+              <img src="../../imgs/icons/bar-chart.svg" class="mx-2 py-1 imagen-widget-change" alt="profits">
+            </div>
+          </a>
+          </div>
+
+        </div>
+        <!--PARTE CENTRAL DEL WIDGET-->
+          <div class="mb-2 mt-3 w-100">
+            <div class="parte-central">
+              <!-- Cambiar el color al hacer hover por nuestro gris flojo -->
+              <table class="table table-hover table-borderless font-16 text-center">
+                <thead>
+                  <tr class="pb-4">
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los timeframes de las operaciones que se han llevado a cabo.">Timeframe</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Entries</th>
+                    <!--El Avg Return mejor en % que en moneda-->
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Resultado medio en cada timeframe">Avg. return</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones ganadoras">Winners</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones en Break even">Break evens</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones perdidas">Loosers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">5 min</a></th>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">15 min</a></th>
+                    <td>5</td>
+                    <!-- -->
+                    <td><p class="mb-0 pill pill-verde">3.45%</p></td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">1 hour</a></th>
+                    <td>2</td>
+                    <td><p class="mb-0 pill pill-roja">-2%</p></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">4 hours</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <a href="#">
+                <p class="pill font-16 grey mb-0">See more details</p>
+              </a>
+            </div>
+          </div>
+
+        <!--PARTE INFERIOR DEL WIDGET-->
+        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+          <div class="grey">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+              <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+            </div>
+          </a>
+          </div>
+          <div class="">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row justify-content-between">
+      <!--ÚNICO WIDGET TERCERA LINEA || ACTIVOS Y RENTABILIDAD
+      <!-- ESCRITO POR JAUME: Mi idea es que automaticamente Neilit añada los Timeframes de las entradas. Es decir, que el usuario no tenga que seleccionar nada en este widget a parte del periodo de tiempo-->
+      <div class="widget-100 mx-3 mt-4">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <img src="../../imgs/icons/today.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Days and results</h5>
+          </div>
+          <!--Superior Derecha Widget-->
+          <div class="d-flex flex-row justify-content-center align-items-center">
+          <div class="d-flex flex-row">
+            <a href="#" class="mr-2">
+              <div class="grey font-16 mb-0">
+                <!--Dropdown temporalidad widget-->
+                <div class="dropdown">
+                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Current week
+                  </button>
+                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
+                  <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li>Today</li>
+                    <li>Current week</li>
+                    <li>Last week</li>
+                    <li>Current month</li>
+                    <li>Last month</li>
+                    <li>Current semester</li>
+                    <li>Last semester</li>
+                    <li>Custom period</li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+          <a href="#">
+            <!-- Al hacer click, añadir la clase "active-change" en el div. -->
+            <!-- Cuando este activado, en lugar de ver los datos en forma de tabla, lo veremos como gráfico. Es posible que se pueda hacer con pills? -->
+            <!-- Una vez este hecha la funcionalidad, añadiremos el gráfico donde corresponda. -->
+            <div class="d-flex flex-row justify-content-center align-items-center mr-2 mb-1 background-change">
+              <img src="../../imgs/icons/bar-chart.svg" class="mx-2 py-1 imagen-widget-change" alt="profits">
+            </div>
+          </a>
+          </div>
+
+        </div>
+        <!--PARTE CENTRAL DEL WIDGET-->
+          <div class="mb-2 mt-3 w-100">
+            <div class="parte-central">
+              <!-- Cambiar el color al hacer hover por nuestro gris flojo -->
+              <table class="table table-hover table-borderless font-16 text-center">
+                <thead>
+                  <tr class="pb-4">
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los timeframes de las operaciones que se han llevado a cabo.">Day of the week</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Entries</th>
+                    <!--El Avg Return mejor en % que en moneda-->
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Resultado medio en cada timeframe">Avg. return</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones ganadoras">Winners</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones en Break even">Break evens</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones perdidas">Loosers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Monday</a></th>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Tuesday</a></th>
+                    <td>5</td>
+                    <!-- -->
+                    <td><p class="mb-0 pill pill-verde">3.45%</p></td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Weed-day</a></th>
+                    <td>2</td>
+                    <td><p class="mb-0 pill pill-roja">-2%</p></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Thursday</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Free-day</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Saturday</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Sunday</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <a href="#">
+                <p class="pill font-16 grey mb-0">See more details</p>
+              </a>
+            </div>
+          </div>
+
+        <!--PARTE INFERIOR DEL WIDGET-->
+        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+          <div class="grey">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+              <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+            </div>
+          </a>
+          </div>
+          <div class="">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row justify-content-between">
+      <!--ÚNICO WIDGET TERCERA LINEA || ACTIVOS Y RENTABILIDAD
+      <!-- ESCRITO POR JAUME: Mi idea es que automaticamente Neilit añada los Timeframes de las entradas. Es decir, que el usuario no tenga que seleccionar nada en este widget a parte del periodo de tiempo-->
+      <div class="widget-100 mx-3 mt-4">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <img src="../../imgs/icons/indicator.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Indicators and results</h5>
+          </div>
+          <!--Superior Derecha Widget-->
+          <div class="d-flex flex-row justify-content-center align-items-center">
+          <div class="d-flex flex-row">
+            <a href="#" class="mr-2">
+              <div class="grey font-16 mb-0">
+                <!--Dropdown temporalidad widget-->
+                <div class="dropdown">
+                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Current week
+                  </button>
+                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
+                  <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li>Today</li>
+                    <li>Current week</li>
+                    <li>Last week</li>
+                    <li>Current month</li>
+                    <li>Last month</li>
+                    <li>Current semester</li>
+                    <li>Last semester</li>
+                    <li>Custom period</li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+          <a href="#">
+            <!-- Al hacer click, añadir la clase "active-change" en el div. -->
+            <!-- Cuando este activado, en lugar de ver los datos en forma de tabla, lo veremos como gráfico. Es posible que se pueda hacer con pills? -->
+            <!-- Una vez este hecha la funcionalidad, añadiremos el gráfico donde corresponda. -->
+            <div class="d-flex flex-row justify-content-center align-items-center mr-2 mb-1 background-change">
+              <img src="../../imgs/icons/bar-chart.svg" class="mx-2 py-1 imagen-widget-change" alt="profits">
+            </div>
+          </a>
+          </div>
+
+        </div>
+        <!--PARTE CENTRAL DEL WIDGET-->
+          <div class="mb-2 mt-3 w-100">
+            <div class="parte-central">
+              <!-- Cambiar el color al hacer hover por nuestro gris flojo -->
+              <table class="table table-hover table-borderless font-16 text-center">
+                <thead>
+                  <tr class="pb-4">
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los timeframes de las operaciones que se han llevado a cabo.">Indicator name</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Entries</th>
+                    <!--El Avg Return mejor en % que en moneda-->
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Resultado medio en cada timeframe">Avg. return</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones ganadoras">Winners</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones en Break even">Break evens</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones perdidas">Loosers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">RSI</a></th>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">MACD</a></th>
+                    <td>5</td>
+                    <!-- -->
+                    <td><p class="mb-0 pill pill-verde">3.45%</p></td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">Moving Avg. 200</a></th>
+                    <td>2</td>
+                    <td><p class="mb-0 pill pill-roja">-2%</p></td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#" class="grey">EMA</a></th>
+                    <td>21</td>
+                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
+                    <td>15</td>
+                    <td>2</td>
+                    <td>4</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <a href="#">
+                <p class="pill font-16 grey mb-0">See more details</p>
+              </a>
+            </div>
+          </div>
+
+        <!--PARTE INFERIOR DEL WIDGET-->
+        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+          <div class="grey">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+              <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+            </div>
+          </a>
+          </div>
+          <div class="">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row justify-content-between">
+      <!--PRIMER WIDGET QUINTA LINEA || DIRECCIÓN--> <!-- Mover más abajo una vez tengamos más widgets creados. -->
       <!-- ESCRITO POR JAUME: Mi idea es que automaticamente Neilit añada los Timeframes de las entradas. Es decir, que el usuario no tenga que seleccionar nada en este widget a parte del periodo de tiempo-->
       <div class="widget-tercio mx-3 mt-4">
         <!--PARTE SUPERIOR DEL WIDGET-->
@@ -434,6 +991,50 @@
               <!-- Cambiar el color al hacer hover por nuestro gris flojo -->
 
               <canvas id="orderDirectionResults" width="100" height="100"></canvas>
+            </div>
+          </div>
+
+        <!--PARTE INFERIOR DEL WIDGET-->
+        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+          <div class="grey">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+              <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+            </div>
+          </a>
+          </div>
+          <div class="">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row justify-content-between">
+      <!--ÚNICO WIDGET TERCERA LINEA || ACTIVOS Y RENTABILIDAD
+      <!-- ESCRITO POR JAUME: Mi idea es que automaticamente Neilit añada los Timeframes de las entradas. Es decir, que el usuario no tenga que seleccionar nada en este widget a parte del periodo de tiempo-->
+      <div class="widget-100 mx-3 mt-4 mb-4">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <img src="../../imgs/icons/custom.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Custom Statistics</h5>
+          </div>
+        </div>
+        <!--PARTE CENTRAL DEL WIDGET-->
+          <div class="w-100">
+            <div class="custom-stats-soon d-flex flex-row justify-content-center align-content-center">
+              <div>
+                <p class="mb-0">We are currently working on this feature. </p>
+              </div>
+              <div>
+              <p class="mb-0">If you want to know more about our Custom Stats, read this article.</p>
+              </div>
             </div>
           </div>
 
