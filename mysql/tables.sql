@@ -36,6 +36,7 @@ CREATE TABLE users
     role_id INT NOT NULL,
     password VARCHAR(4000) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    expiration TIMESTAMP DEFAULT NULL,
     -- FIX: change base currency to an ID
     base_currency VARCHAR(3),
     FOREIGN KEY (role_id) REFERENCES roles(id)

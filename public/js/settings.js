@@ -15,56 +15,60 @@ $("#addGoal").keypress(function(event) {
     if (countGoals < 5) {
       $("#listGoals").append('<li class="mt-2 font-16">' + newGoal + '</li>')
     }
-    // prevents the form from submitting
-    event.preventDefault();
-    return false;
+    // adds the goal to the DB
+    // COMBAK:
   }
 });
 
 // stores the strategy's HTML to a variable
-var frontStrategy = `<li class="mt-2 py-0">
-    <input type="text" name="strategy" value="`;
-var midStrategy = `" class="strategy">
-    <button type="button" class="float-right" onclick="deleteStrategy(`;
-
-var backStrategy = `)">
-        <img class="icon-20" src="/imgs/icons/delete.svg">
-      </button>
-    </li>`;
+var begStrategy = `<li class="mt-2 py-0 strategy-li">
+    <input type="text" class="strategy" value="
+  `;
+var endStrategy = `" class="strategy">
+    <button type="button" class="float-right delete" onclick="deleteStrategy(this)">
+      <img class="icon-20" src="/imgs/icons/delete.svg">
+    </button>
+  </li>
+  `;
 
 // deletes a strategy
-function deleteStrategy(index) {
-  var strategyList = document.getElementById('listStrategy');
-  var currentStrategy = strategyList.getElementsByTagName('li')[index];
-  var currentName = currentStrategy.getElementsByClassName('strategy')[0];
-  var currentBtn = currentStrategy.getElementsByTagName('button')[0];
-  currentName.remove();
-  currentBtn.remove();
-  // maps if existing strategies have been errased
-  if (index < strategies.length) {
-    currentStrategy.getElementsByClassName('map')[0].value = 1;
-  }
+function deleteStrategy(id) {
+  var deleteList = $('.delete');
+  var current = deleteList.index(id);
+  var deleteStrategy = $('.strategy-li')[current]
+  var currentStrategy = $('.strategy')[current].value
+  // deletes the strategy from the server
+  var data = {strategy: currentStrategy}
+  $.post('/' + currentUser.username + '/settings/deleteStrategy', data)
+    .done((data) => {
+    // deletes the strategy from the client
+    deleteStrategy.remove();
+  })
+    .fail(() => {
+    // error
+  })
 };
 
-// Estrategias
+// adds a strategy
 $("#addStrategy").keypress(function(event){
   if(event.which === 13){
     // gets the user input
     var newStrategy = $(this).val();
     $(this).val("");
-    // gets the number of strategies and sets the new index
-    var strategiesList = document.getElementById('listStrategy');
-    var countStrategies = strategiesList.getElementsByTagName('li').length;
-    // adds a new strategy
-    $("#listStrategy").append(frontStrategy + newStrategy +
-      midStrategy +  countStrategies + backStrategy);
-    // prevents the form from submitting
-    event.preventDefault();
-    return false;
+    // adds the new strategy to the server
+    var data = {strategy: newStrategy}
+    $.post('/' + currentUser.username + '/settings/newStrategy', data)
+      .done((data) => {
+      // adds the new strategy to the client
+      $("#listStrategy").append(begStrategy + newStrategy + endStrategy);
+    })
+      .fail(() => {
+      // error
+    })
   }
 });
 
-//Para seleccionar la moneda base de la cuenta
+// Para seleccionar la moneda base de la cuenta
 $('.dropdown-menu li').on('click', function() {
   var getValue = $(this).text();
   $('.dropdown-select').text(getValue);

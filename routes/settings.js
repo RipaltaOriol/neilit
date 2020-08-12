@@ -11,37 +11,28 @@ let strategies = require('../models/strategies');
 
 
 
-// SETTINGS LOGIC - saves the strategies to the DB
-router.post("/saveSettings", middleware.isLoggedIn, (req, res) => {
-  // FIXME: allow errasing and renaming strategies (learn about pool queries)
-  var strategiesList = req.body.strategy;
-  var newStrategies = []
-  // checks for any errased or renamed strategies
-  for (var i = 0; i < userStrategies.length; i++) {
-    // strategy has been errased
-    if (req.body.map[i] != 0) {
+// NEW STRATEGY ROUTE
+router.post("/newStrategy", middleware.isLoggedIn, (req, res) => {
+  // creates an object with the new strategy
+  var newStrategy = {
+    strategy: req.body.strategy,
+    user_id: req.user.id
+  }
+  // saves the strategy to the DB
+  connection.query('INSERT INTO strategies SET ?', newStrategy, (err, done) => {
+    if (err) throw err;
+    res.end();
+  })
+})
 
-    }
-    // strategy has been renamed
-    else if (userStrategies[i] != strategiesList[i]) {
-
-    }
-  }
-  // stores the new strategies to the DB
-  for (var y = userStrategies.length; y < strategiesList.length; y++) {
-    newStrategies.push([strategiesList[y], req.user.id])
-  }
-  if (newStrategies.length > 0) {
-    // inserts the user's strategies from the DB into the 'userStrategies'
-    connection.query('INSERT INTO strategies (strategy, user_id) VALUES ?', [newStrategies], (err) => {
-      if (err) throw err;
-      // gets all the (new) user strategies to the local variable
-      strategies(req.user.id);
-      res.redirect('/' + req.user.username + '/settings');
-    })
-  } else {
-    res.redirect('/' + req.user.username + '/settings');
-  }
+// DELETE STRATEGY ROUTE
+router.post("/deleteStrategy", middleware.isLoggedIn, (req, res) => {
+  var deleteStrategy = 'DELETE FROM strategies WHERE strategy = ?'
+  // deletes the strategy from the DB
+  connection.query(deleteStrategy, req.body.strategy, (err) => {
+    if (err) throw err;
+    res.end();
+  })
 })
 
 module.exports = router;

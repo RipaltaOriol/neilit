@@ -177,7 +177,7 @@ hr.profile {
   background: white;
   color: var(--red-fuerte);
   border-radius: 7px;
-  border: 2px solid var(--red-fuerte);
+  border: 1px solid var(--red-fuerte);
   padding: 3px 15px;
 }
 
@@ -205,26 +205,6 @@ hr.profile {
     background: var(--orange);
     transition-duration: .25s;
   }
-
-/* ||Utility Boton Save */
-.boton-save{
-  padding: 3px 15px;
-  border: 2px solid var(--azul-primario);
-  border-radius: 7px;
-  transition-duration: .25s;
-  background: white;
-  color: var(--azul-primario);
-}
-  .boton-save:hover{
-    color: white;
-    border: 2px solid var(--azul-primario);;
-    background: var(--azul-primario);
-    transition-duration: .25s;
-  }
-
-#initial-balance{
-  width: 150px;
-}
 
 .FAQ {
   color: #7b7b7b;
@@ -358,14 +338,33 @@ hr.profile {
       color: #000000;
     }
 
-  /*Custom dropdown*/
-  #dLabel {
-  border-radius: 7px;
-  border: 0;
-  text-align: left;
-  background-color: inherit;
-  color: var(--grey-texto);
+/*Custom dropdown*/
+#dLabel {
+border-radius: 7px;
+border: 0;
+text-align: left;
+background-color: inherit;
+color: var(--grey-texto);
+}
+  #dLabel:hover {
+    color: black;
   }
-    #dLabel:hover {
-      color: black;
-    }
+
+#save {
+  padding: 3px 15px;
+  border: 2px solid var(--blue-primario);
+  border-radius: 7px;
+  transition-duration: .25s;
+  background: white;
+  color: var(--blue-primario);
+}
+  #save:hover {
+    color: white;
+    border: 2px solid var(--blue-primario);;
+    background: var(--blue-primario);
+    transition-duration: .25s;
+  }
+
+#initial-balance{
+  width: 150px;
+}

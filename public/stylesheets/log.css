@@ -192,12 +192,12 @@ span .checkbox-orange {
     #ta-content .text:hover {
       background-color: #f7f7f7;
     }
-  #ta-content .image {
-    border-radius: .25rem;
-  }
-    #ta-content .image:hover {
-      background-color: #f7f7f7;
+    #ta-content .image div {
+      border-radius: .25rem;
     }
+      #ta-content .image div:hover {
+        background-color: #f7f7f7;
+      }
     #ta-content .image input {
       max-width: 300px;
       border: 2px solid #ff8818;
@@ -207,10 +207,10 @@ span .checkbox-orange {
     max-width: 100%;
     max-height: 600px;
   }
-  #ta-content .strategy {
+  #ta-content .strategy div {
     border-radius: .25rem;
   }
-    #ta-content .strategy:hover {
+    #ta-content .strategy div:hover {
       background-color: #f7f7f7;
     }
   #ta-content .move{

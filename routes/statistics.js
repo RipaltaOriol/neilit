@@ -5,11 +5,8 @@ let timeframes = require("../models/timeframes");
 let categories = require("../models/categoriesPairs");
 let middleware = require('../middleware');
 
-
-// STATISTICS ROUTE
-router.get("/", middleware.isLoggedIn, (req, res) => {
-  // FIXME: change the file organisation
-  res.render("user/statistics/statistics");
-});
+router.get("/whatev", middleware.isLoggedIn, (req, res) => {
+  res.render("user/statistics/details-assets")
+})
 
 module.exports = router;

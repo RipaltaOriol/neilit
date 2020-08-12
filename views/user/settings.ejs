@@ -54,17 +54,17 @@
                 <!-- Name -->
                 <div class="container-info-settings mb-2 d-flex flex-row justify-content-between align-items-baseline">
                   <h5 class="mb-0 pb-0">First Name</h5>
-                  <p class="mb-0 pb-0 font-16">Jaume</p>
+                  <p class="mb-0 pb-0 font-16"><%= currentUser.name %></p>
                 </div>
                 <!-- Last name -->
                 <div class="container-info-settings mb-2 d-flex flex-row justify-content-between align-items-baseline">
                   <h5 class="mb-0 pb-0">Last Name</h5>
-                  <p class="mb-0 pb-0 font-16">Gelabert</p>
+                  <p class="mb-0 pb-0 font-16"><%= currentUser.surname %></p>
                 </div>
                 <!-- Email -->
                 <div class="container-info-settings d-flex flex-row justify-content-between align-items-baseline">
                   <h5 class="mb-0 pb-0">Email</h5>
-                  <p class="mb-0 pb-0 font-16">gelabertgalmes98@gmail.com</p>
+                  <p class="mb-0 pb-0 font-16"><%= currentUser.email %></p>
                 </div>
                 <div class="mb-2 d-flex flex-row justify-content-end">
                   <a href="#" class="mb-0 pb-0 pr-2 font-14">Change email</a>
@@ -101,7 +101,7 @@
               <!-- Username -->
               <div class="container-info-settings mb-2 d-flex flex-row justify-content-between align-items-baseline">
                 <h5 class="mb-0 pb-0">Username</h5>
-                <p class="mb-0 pb-0 font-16">@mmmitusss</p>
+                <p class="mb-0 pb-0 font-16">@<%= currentUser.username %></p>
               </div>
             </div>
           </div>
@@ -232,100 +232,95 @@
 
       <!-- settings -->
       <div role="tabpanel" class="tab-box tab-pane" id="settings">
-
-        <form action="/<%= currentUser.username %>/settings/saveSettings" method="POST">
-         <div class="d-flex justify-content-between">
-          <div class="text-left w-50 mx-5 my-4">
-            <h4 class="pb-1 mb-3">Configuración de Balance</h4>
-            <div class="container-info-settings d-flex flex-row justify-content-between align-items-center mb-2">
-              <div>
-                <h5 class="mb-0 mr-2">Account Currency</h5>
-              </div>
-              <!--dropdown-->
-              <div class="dropdown">
-                <button id="dLabel" class="dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Select
-                </button>
-                <!-- Añadir todas las divisas necesarias y pensar si las ordenamos alfabéticamente o por orden de importancia-->
-                <ul class="dropdown-menu" aria-labelledby="dLabel">
-                  <li>USD</li>
-                  <li>EUR</li>
-                  <li>GBP</li>
-                  <li>JPY</li>
-                  <li>AUD</li>
-                  <li>CAD</li>
-                </ul>
-              </div>
+       <div class="d-flex justify-content-between">
+        <div class="text-left w-50 mx-5 my-4">
+          <h4 class="pb-1 mb-3">Configuración de Balance</h4>
+          <div class="container-info-settings d-flex flex-row justify-content-between align-items-center mb-2">
+            <div>
+              <h5 class="mb-0 mr-2">Account Currency</h5>
             </div>
-            <div class="mb-2 d-flex flex-row justify-content-between align-items-center">
-              <h5 class="mb-0 mr-2 d-block">Balance Inicial</h5>
-              <!-- No se si para que realmente funcione debemos poner un "form". De momento, solo pongo el input -->
-              <!-- Hacer funcion JS que solo permita valores numéricos y que automaticamente ponga comas (1,000) y la moneda previamente seleccionada (1,000€)-->
-              <input type="text" name="" value="" placeholder="20000" id="initial-balance" class="font-16 text-right">
-            </div>
-            <!-- dark mode -->
-            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-              <h5 class="mb-0 mr-2">Dark mode</h5>
-              <label class="switch mb-0">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
-            </div>
-            <!-- sound -->
-            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-              <h5 class="mb-0 mr-2">Enable sound</h5>
-              <label class="switch mb-0">
-                <input type="checkbox">
-                <span class="slider round"></span>
-              </label>
+            <!--dropdown-->
+            <div class="dropdown">
+              <button id="dLabel" class="dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select
+              </button>
+              <!-- Añadir todas las divisas necesarias y pensar si las ordenamos alfabéticamente o por orden de importancia-->
+              <ul class="dropdown-menu" aria-labelledby="dLabel">
+                <li>USD</li>
+                <li>EUR</li>
+                <li>GBP</li>
+                <li>JPY</li>
+                <li>AUD</li>
+                <li>CAD</li>
+              </ul>
             </div>
           </div>
-          <!-- Goals! -->
-          <div class="text-left w-50 mx-5 my-4">
-            <div class="mb-3">
-              <h4 class="pb-1 mb-2">
-                Current Goals
-                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Add up to 5 goals to focus on">
+          <div class="mb-2 d-flex flex-row justify-content-between align-items-center">
+            <h5 class="mb-0 mr-2 d-block">Balance Inicial</h5>
+            <!-- No se si para que realmente funcione debemos poner un "form". De momento, solo pongo el input -->
+            <!-- Hacer funcion JS que solo permita valores numéricos y que automaticamente ponga comas (1,000) y la moneda previamente seleccionada (1,000€)-->
+            <input type="text" name="" value="" placeholder="20000" id="initial-balance" class="font-16 text-right">
+          </div>
+          <!-- dark mode -->
+          <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+            <h5 class="mb-0 mr-2">Dark mode</h5>
+            <label class="switch mb-0">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <!-- sound -->
+          <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+            <h5 class="mb-0 mr-2">Enable sound</h5>
+            <label class="switch mb-0">
+              <input type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+        <!-- Goals! -->
+        <div class="text-left w-50 mx-5 my-4">
+          <div class="mb-3">
+            <h4 class="pb-1 mb-2">
+              Current Goals
+              <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Add up to 5 goals to focus on">
+            </h4>
+            <input type="text" id="addGoal" placeholder="New Goal" class="w-100 font-16">
+            <!-- Up to 5 goals -->
+            <a href="#!" id="">
+              <ul id="listGoals" class="pl-0">
+
+              </ul>
+            </a>
+          </div>
+          <div class="pt-4">
+            <div class="d-block flex-row justify-content-between">
+              <h4 class="pb-1 mb-3">
+                Strategies
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create a new strategy to add to on your TA">
               </h4>
-              <input type="text" id="addGoal" placeholder="New Goal" class="w-100 font-16">
-              <!-- Up to 5 goals -->
-              <a href="#!" id="">
-                <ul id="listGoals" class="pl-0">
-
-                </ul>
-              </a>
             </div>
-            <div class="pt-4">
-              <div class="d-block flex-row justify-content-between">
-                <h4 class="pb-1 mb-3">
-                  Strategies
-                  <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create a new strategy to add to on your TA">
-                </h4>
-              </div>
-              <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100 font-16">
-              <!-- all strategies -->
-              <a href="#!" id="">
-                <ul id="listStrategy" class="pl-0">
-                  <% strategies.forEach((strategy, i) => { %>
-                    <li class="mt-2 py-0">
-                      <input type="text" name="strategy" value="<%= strategy %>" class="strategy">
-                      <input type="number" name="map" value="0" class="map d-none">
-                      <button type="button" class="float-right" onclick="deleteStrategy(<%= i %>)">
-                        <img class="icon-20" src="/imgs/icons/delete.svg">
-                      </button>
-                    </li>
-                  <% }); %>
-                </ul>
-              </div>
+            <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100 font-16">
+            <!-- all strategies -->
+            <a href="#!" id="">
+              <ul id="listStrategy" class="pl-0">
+                <% strategies.forEach((strategy) => { %>
+                  <li class="mt-2 py-0 strategy-li">
+                    <input type="text" class="strategy" value="<%= strategy %>">
+                    <button type="button" class="float-right delete" onclick="deleteStrategy(this)">
+                      <img class="icon-20" src="/imgs/icons/delete.svg">
+                    </button>
+                  </li>
+                <% }); %>
+              </ul>
             </div>
           </div>
-          <hr class="profile">
-          <div class="text-center mt-3 mb-3">
-            <button type="submit" class="font-16 mb-3 boton-save">Save</button>
-          </div>
-        </form>
+        </div>
+        <hr class="profile">
+        <div class="text-center mt-3 mb-3">
+          <button id="save" class="font-16 mb-3">Save</button>
+        </div>
       </div>
-
       <!-- customization -->
       <div role="tabpanel" class="tab-box tab-pane" id="customization">
         <div class="d-flex flex-column py-5 text-center">
@@ -385,6 +380,7 @@
   </div>
 
 <script type="text/javascript">
+  var currentUser = <%- JSON.stringify(currentUser) %>
   var strategies = <%- JSON.stringify(strategies) %>;
 </script>
 

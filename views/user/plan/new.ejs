@@ -74,11 +74,11 @@
                   <div class="input-group-append">
                     <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
                     <div class="dropdown-menu py-0">
-                      <a id="accountBtn" class="dropdown-item py-1" onclick="goalAccount()" href="#!">Account Goal</a>
+                      <a id="accountBtn" class="dropdown-item py-1" onclick="addGoal('objectiveAccount')" href="#!">Account Goal</a>
                       <div role="separator" class="dropdown-divider"></div>
-                      <a id="nonFinancialBtn" class="dropdown-item py-1" onclick="goalNonfin()" href="#!">Financial Goal</a>
+                      <a id="nonFinancialBtn" class="dropdown-item py-1" onclick="addGoal('objectiveNonfin')" href="#!">Financial Goal</a>
                       <div role="separator" class="dropdown-divider"></div>
-                      <a id="financialBtn" class="dropdown-item py-1" onclick="goalFin()" href="#!">Non-Financial Goal</a>
+                      <a id="financialBtn" class="dropdown-item py-1" onclick="addGoal('objectiveFin')" href="#!">Non-Financial Goal</a>
                     </div>
                   </div>
                 </div>
@@ -87,9 +87,7 @@
                     <strong>Account Objectives (max. 5)</strong>
                   </p>
                   <ul id="objectiveAccount" class="pl-0">
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+
                   </ul>
                 </div>
                 <div id="nonFinancialGoals">
@@ -97,9 +95,7 @@
                     <strong>Non-Financial Objectives</strong>
                   </p>
                   <ul id="objectiveNonfin" class="pl-0">
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+
                   </ul>
                 </div>
                 <div id="financialGoals">
@@ -107,9 +103,7 @@
                     <strong>Financial Objectives</strong>
                   </p>
                   <ul id="objectiveFin" class="pl-0">
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+
                   </ul>
                 </div>
               </div>
@@ -149,6 +143,10 @@
       </div>
     </div>
   </section>
+
+<script type="text/javascript">
+  var elements = <%- JSON.stringify(elements) %>;
+</script>
 
 <!-- <section> is inside partials -->
 </section>

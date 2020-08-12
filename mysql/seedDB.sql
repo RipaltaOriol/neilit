@@ -1,7 +1,8 @@
 INSERT INTO roles (role)
 VALUES
   ('free'),
-  ('premium');
+  ('premium'),
+  ('unlimited');
 
 INSERT INTO timeframes (timeframe)
 VALUES
@@ -10,8 +11,8 @@ VALUES
 
 INSERT INTO users (username, email, name, surname, role_id, password, base_currency)
 VALUES
-  ('shyvama', 'oriolripaltaimaso@gmail.com', 'Oriol', 'Ripalta Maso', 2, '$2b$10$.4zYMyUWYKogR.zubtywO.xXh5QpCnSozdlNM6epLlZe7xcCFgRoq', 'USD'),
-  ('mmmitusss', 'gelabertgalmes98@gmail.com', 'Jaume', 'Gelabert Galmes', 2, '$2b$10$3zqVeJt9UlMAK6zonCrEcexMPqw0GXatlxH059gbvFQB5DJAGI5uW', NULL);
+  ('shyvama', 'oriolripaltaimaso@gmail.com', 'Oriol', 'Ripalta Maso', 3, '$2b$10$.4zYMyUWYKogR.zubtywO.xXh5QpCnSozdlNM6epLlZe7xcCFgRoq', 'USD'),
+  ('mmmitusss', 'gelabertgalmes98@gmail.com', 'Jaume', 'Gelabert Galmes', 3, '$2b$10$3zqVeJt9UlMAK6zonCrEcexMPqw0GXatlxH059gbvFQB5DJAGI5uW', NULL);
 
 INSERT INTO strategies (strategy, user_id)
 VALUES

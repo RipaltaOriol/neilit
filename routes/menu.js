@@ -6,25 +6,53 @@ let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware');
 let connection = require('../models/connectDB');
 
+// SETTINGS ROUTE
+router.get("/settings", middleware.isLoggedIn, (req, res) => {
+  res.render("user/settings",
+    {
+      strategies:userStrategies
+    }
+  );
+})
+
 // DASHBOARD USER ROUTE
 router.get("", middleware.isLoggedIn, (req, res) => {
   // FIXME: make this await function + only perform is userStrategies is null
   res.render("user/user");
 })
 
-// SETTINGS ROUTE
-router.get("/settings", middleware.isLoggedIn, (req, res) => {
-  res.render("user/settings", {strategies:userStrategies});
+// STATISTICS ROUTE
+router.get("/statistics", middleware.isLoggedIn, (req, res) => {
+  // FIXME: only filter the ones for the current user
+  // NOTE: maybe you want ot have this queries defiened in the route
+  var countWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND user_id = ?';
+  var countLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND user_id = ?';
+  var countBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND user_id = ?';
+  var countStrategy = 'SELECT COUNT(*) FROM entries WHERE strategy_id = ? AND user_id = ?;';
+  var countStrategyWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND strategy_id = ? AND user_id = ?;';
+  var countStrategyLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND strategy_id = ? AND user_id = ?;';
+  var countStrategyBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND strategy_id = ? AND user_id = ?;';
+  var countAsset = 'SELECT COUNT(*) FROM entries WHERE pair_id = ? AND user_id = ?;';
+  var countAssetWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND pair_id = ? AND user_id = ?;';
+  var countAssetLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND pair_id = ? AND user_id = ?;';
+  var countAssetBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND pair_id = ? AND user_id = ?;';
+  var countTimeframe = 'SELECT COUNT(*) FROM entries WHERE timeframe_id = ? AND user_id = ?;';
+  var countTimeframeWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND timeframe_id = ? AND user_id = ?;';
+  var countTimeframeLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND timeframe_id = ? AND user_id = ?;';
+  var countTimeframeBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND timeframe_id = ? AND user_id = ?;';
+  var countLong = 'SELECT COUNT(*) FROM entries WHERE direction = "long" AND user_id = ?';
+  var countShort = 'SELECT COUNT(*) FROM entries WHERE direction = "short" AND user_id = ?';
+  res.render("user/statistics");
+});
+
+// TRADING PLAN ROUTE
+router.get("/plan", middleware.isLoggedIn, (req, res) => {
+  res.render("user/plan");
 })
 
 // RISK CALCULATOR ROUTE
 router.get("/calculator", middleware.isLoggedIn, (req, res) => {
   res.render("user/calculator", {currencies:pairs});
-})
-
-// TRADING PLAN ROUTE
-router.get("/plan", middleware.isLoggedIn, (req, res) => {
-  res.render("user/plan");
 })
 
 // JOURNAL ROUTE
