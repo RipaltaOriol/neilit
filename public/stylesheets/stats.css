@@ -197,19 +197,6 @@ a:hover {
     background-color: var(--grey-flojo);
   }
 
-/* Custom dropdown */
-#dLabel {
-border-radius: 7px;
-border: 0;
-text-align: left;
-background-color: inherit;
-color: var(--grey-texto);
-}
-
-#dLabel:hover {
-  color: black;
-}
-
 .caret {
 float: right;
 margin-top: 9px;
@@ -217,32 +204,32 @@ display: block;
 }
 
 .dropdown-menu {
-padding: 0;
-margin: 0;
-border-radius: 7px;
-border: none;
--webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
--moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  padding: 0;
+  margin: 0;
+  border-radius: 7px;
+  border: none;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
 .dropdown button:hover, .dropdown button:focus {
-border: none;
-outline: 0;
+  border: none;
+  outline: 0;
 }
 
 .dropdown-menu li {
-line-height: 1.5;
-letter-spacing: 0.7px;
-color: var(--grey-texto);
-font-size: 16px;
-cursor: pointer;
-padding: 5px 10px;
+  line-height: 1.5;
+  letter-spacing: 0.7px;
+  color: var(--grey-texto);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 10px;
 }
 
 .dropdown-menu li:hover {
-background-color: var(--grey-flojo);
-color: black;
+  background-color: var(--grey-flojo);
+  color: black;
 }
 
 .container-user-goals a {
@@ -259,5 +246,17 @@ color: black;
 }
 
 .custom-stats-soon{
-  
+
 }
+
+/* Custom dropdown */
+#dLabel {
+border-radius: 7px;
+border: 0;
+text-align: left;
+background-color: inherit;
+color: var(--grey-texto);
+}
+  #dLabel:hover {
+    color: black;
+  }

@@ -1,5 +1,5 @@
 // This file contains/calls global variables.
-// Calls: all PAIRS available
+// Calls: all CURRENCIES available
 // Connect to DB
 var mysql = require('mysql');
 var connection = mysql.createConnection({
@@ -11,13 +11,13 @@ var connection = mysql.createConnection({
 });
 
 // Create the variable that will be returned
-var pairsList = [];
+var currenciesList = [];
 // Query to the DB
-connection.query("SELECT pair FROM pairs", (err, results) => {
+connection.query("SELECT currency FROM currencies", (err, results) => {
   if (err) throw err;
   results.forEach((result) => {
-    pairsList.push(result.pair);
+    currenciesList.push(result.currency);
   });
 })
 
-module.exports = pairsList;
+module.exports = currenciesList;

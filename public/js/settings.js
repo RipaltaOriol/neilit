@@ -3,29 +3,63 @@ $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });
 
-// Goals
+// stores the goals's HTML to a variable
+var begGoal = `<li class="mt-2 py-0 font-16 goal-li">
+    <input type="text" value="`;
+var endGoal = `" class="goal">
+    <button type="button" class="float-right goal-delete" onclick="deleteGoal(this)">
+      <img class="icon-20" src="/imgs/icons/delete.svg">
+    </button>
+  </li>
+  `;
+
+// deletes a goal
+function deleteGoal(id) {
+  var deleteList = $('.goal-delete');
+  var current = deleteList.index(id);
+  var deleteGoal = $('.goal-li')[current]
+  var currentGoal = $('.goal')[current].value
+  // deletes the goal from the server
+  var data = {goal: currentGoal}
+  $.post('/' + currentUser.username + '/settings/deleteGoal', data)
+    .done((data) => {
+    // deletes the goal from the client
+    deleteGoal.remove();
+  })
+    .fail(() => {
+    // error
+  })
+};
+
+
+// adds a goal
 $("#addGoal").keypress(function(event) {
   if(event.which === 13) {
     // get the user's input
     var newGoal = $(this).val();
     $(this).val("");
-    var listGoals = document.getElementById('listGoals');
-    var countGoals = listGoals.getElementsByTagName('li').length;
-    // creates a new goad if there are less than five objectives
-    if (countGoals < 5) {
-      $("#listGoals").append('<li class="mt-2 font-16">' + newGoal + '</li>')
+    // creates a new goal if there are less than five objectives
+    if ($('#listGoals li').length < 5) {
+      // adds goal to the server
+      var data = {goal: newGoal}
+      $.post('/' + currentUser.username + '/settings/newGoal', data)
+        .done((data) => {
+        // adds the goal to the client
+        $("#listGoals").append(begGoal + newGoal + endGoal)
+      })
+        .fail(() => {
+        // error
+      })
     }
-    // adds the goal to the DB
-    // COMBAK:
   }
 });
 
 // stores the strategy's HTML to a variable
 var begStrategy = `<li class="mt-2 py-0 strategy-li">
-    <input type="text" class="strategy" value="
+    <input type="text" value="
   `;
 var endStrategy = `" class="strategy">
-    <button type="button" class="float-right delete" onclick="deleteStrategy(this)">
+    <button type="button" class="float-right strategy-delete" onclick="deleteStrategy(this)">
       <img class="icon-20" src="/imgs/icons/delete.svg">
     </button>
   </li>
@@ -33,7 +67,7 @@ var endStrategy = `" class="strategy">
 
 // deletes a strategy
 function deleteStrategy(id) {
-  var deleteList = $('.delete');
+  var deleteList = $('.strategy-delete');
   var current = deleteList.index(id);
   var deleteStrategy = $('.strategy-li')[current]
   var currentStrategy = $('.strategy')[current].value
@@ -52,7 +86,7 @@ function deleteStrategy(id) {
 // adds a strategy
 $("#addStrategy").keypress(function(event){
   if(event.which === 13){
-    // gets the user input
+    // gets the user's input
     var newStrategy = $(this).val();
     $(this).val("");
     // adds the new strategy to the server
@@ -68,8 +102,46 @@ $("#addStrategy").keypress(function(event){
   }
 });
 
-// Para seleccionar la moneda base de la cuenta
+// changes the account's base currency
 $('.dropdown-menu li').on('click', function() {
-  var getValue = $(this).text();
-  $('.dropdown-select').text(getValue);
+  var changeCurrency = $(this).text();
+  // adds currency changes to the server
+  var data = {currency: changeCurrency}
+  $.post('/' + currentUser.username + '/settings/changeCurrency', data)
+    .done((data) => {
+    // adds currency changes to the client
+    $('.dropdown-select').text(changeCurrency);
+  })
+    .fail(() => {
+    // error
+  })
+});
+
+
+// changes dark mode preference
+$('#dark').change(() => {
+  var changeMode = $('#dark').is(':checked') ? '1' : '0'
+  // adds mode changes to the server
+  var data = {mode: changeMode}
+  $.post('/' + currentUser.username + '/settings/changeMode', data)
+    .done((data) => {
+    // success
+  })
+    .fail(() => {
+    // error
+  })
+});
+
+// changes sound preference
+$('#sound').change(() => {
+  var changeSound = $('#sound').is(':checked') ? '1' : '0'
+  // adds sound changes to the server
+  var data = {sound: changeSound}
+  $.post('/' + currentUser.username + '/settings/changeSound', data)
+    .done((data) => {
+    // success
+  })
+    .fail(() => {
+    // error
+  })
 });

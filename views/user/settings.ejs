@@ -242,16 +242,12 @@
             <!--dropdown-->
             <div class="dropdown">
               <button id="dLabel" class="dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Select
+                <%= currencies[currentUser.currency_id - 1] %>
               </button>
-              <!-- Añadir todas las divisas necesarias y pensar si las ordenamos alfabéticamente o por orden de importancia-->
               <ul class="dropdown-menu" aria-labelledby="dLabel">
-                <li>USD</li>
-                <li>EUR</li>
-                <li>GBP</li>
-                <li>JPY</li>
-                <li>AUD</li>
-                <li>CAD</li>
+                <% currencies.forEach((currency) => { %>
+                  <li><%= currency %></li>
+                <% }) %>
               </ul>
             </div>
           </div>
@@ -259,13 +255,17 @@
             <h5 class="mb-0 mr-2 d-block">Balance Inicial</h5>
             <!-- No se si para que realmente funcione debemos poner un "form". De momento, solo pongo el input -->
             <!-- Hacer funcion JS que solo permita valores numéricos y que automaticamente ponga comas (1,000) y la moneda previamente seleccionada (1,000€)-->
-            <input type="text" name="" value="" placeholder="20000" id="initial-balance" class="font-16 text-right">
+            <input type="text" id="initial-balance" class="font-16 text-right" value="<%= currentUser.balance %>" readonly>
           </div>
           <!-- dark mode -->
           <div class="d-flex flex-row justify-content-between align-items-center mb-2">
             <h5 class="mb-0 mr-2">Dark mode</h5>
             <label class="switch mb-0">
-              <input type="checkbox">
+              <input id="dark" type="checkbox"
+              <% if (currentUser.dark_mode) { %>
+                checked
+              <% } %>
+              >
               <span class="slider round"></span>
             </label>
           </div>
@@ -273,7 +273,11 @@
           <div class="d-flex flex-row justify-content-between align-items-center mb-2">
             <h5 class="mb-0 mr-2">Enable sound</h5>
             <label class="switch mb-0">
-              <input type="checkbox">
+              <input id="sound" type="checkbox"
+              <% if (currentUser.sound) { %>
+                checked
+              <% } %>
+              >
               <span class="slider round"></span>
             </label>
           </div>
@@ -289,7 +293,14 @@
             <!-- Up to 5 goals -->
             <a href="#!" id="">
               <ul id="listGoals" class="pl-0">
-
+                <% goals.forEach((goal) => { %>
+                  <li class="mt-2 py-0 font-16 goal-li">
+                    <input type="text" value="<%= goal %>" class="goal">
+                    <button type="button" class="float-right goal-delete" onclick="deleteGoal(this)">
+                      <img class="icon-20" src="/imgs/icons/delete.svg">
+                    </button>
+                  </li>
+                <% }); %>
               </ul>
             </a>
           </div>
@@ -297,7 +308,7 @@
             <div class="d-block flex-row justify-content-between">
               <h4 class="pb-1 mb-3">
                 Strategies
-                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create a new strategy to add to on your TA">
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create a new strategy to add to your TA">
               </h4>
             </div>
             <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100 font-16">
@@ -307,7 +318,7 @@
                 <% strategies.forEach((strategy) => { %>
                   <li class="mt-2 py-0 strategy-li">
                     <input type="text" class="strategy" value="<%= strategy %>">
-                    <button type="button" class="float-right delete" onclick="deleteStrategy(this)">
+                    <button type="button" class="float-right strategy-delete" onclick="deleteStrategy(this)">
                       <img class="icon-20" src="/imgs/icons/delete.svg">
                     </button>
                   </li>
@@ -315,10 +326,6 @@
               </ul>
             </div>
           </div>
-        </div>
-        <hr class="profile">
-        <div class="text-center mt-3 mb-3">
-          <button id="save" class="font-16 mb-3">Save</button>
         </div>
       </div>
       <!-- customization -->

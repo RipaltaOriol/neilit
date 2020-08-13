@@ -4,15 +4,29 @@ VALUES
   ('premium'),
   ('unlimited');
 
+INSERT INTO currencies (currency)
+VALUES
+  ('USD'),
+  ('EUR'),
+  ('CAD'),
+  ('JPY'),
+  ('GBP'),
+  ('CHF'),
+  ('AUD');
+
 INSERT INTO timeframes (timeframe)
 VALUES
   ("1 minute"), ("3 minutes"), ("5 minutes"), ("15 minutes"), ("30 minutes"), ("45 minute"), ("1 hour"),
   ("2 hours"), ("3 hours"), ("4 hours"), ("12 hours"), ("1 day"), ("1 week"), ("1 month");
 
-INSERT INTO users (username, email, name, surname, role_id, password, base_currency)
+INSERT INTO users (username, email, name, surname, role_id, password, currency_id, balance)
 VALUES
-  ('shyvama', 'oriolripaltaimaso@gmail.com', 'Oriol', 'Ripalta Maso', 3, '$2b$10$.4zYMyUWYKogR.zubtywO.xXh5QpCnSozdlNM6epLlZe7xcCFgRoq', 'USD'),
-  ('mmmitusss', 'gelabertgalmes98@gmail.com', 'Jaume', 'Gelabert Galmes', 3, '$2b$10$3zqVeJt9UlMAK6zonCrEcexMPqw0GXatlxH059gbvFQB5DJAGI5uW', NULL);
+  ('shyvama', 'oriolripaltaimaso@gmail.com', 'Oriol', 'Ripalta Maso', 3, '$2b$10$.4zYMyUWYKogR.zubtywO.xXh5QpCnSozdlNM6epLlZe7xcCFgRoq', 2, 10000),
+  ('mmmitusss', 'gelabertgalmes98@gmail.com', 'Jaume', 'Gelabert Galmes', 3, '$2b$10$3zqVeJt9UlMAK6zonCrEcexMPqw0GXatlxH059gbvFQB5DJAGI5uW', 2, 0);
+
+INSERT INTO goals (goal, user_id)
+VALUES
+  ('Finish Neilit', 1);
 
 INSERT INTO strategies (strategy, user_id)
 VALUES

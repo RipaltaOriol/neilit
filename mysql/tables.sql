@@ -11,10 +11,12 @@ DROP TABLE IF EXISTS telements;
 DROP TABLE IF EXISTS pairs;
 DROP TABLE IF EXISTS strategies;
 DROP TABLE IF EXISTS tanalysis;
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS entries;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS timeframes;
+DROP TABLE IF EXISTS goals;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS currencies;
 DROP TABLE IF EXISTS roles;
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -24,6 +26,12 @@ CREATE TABLE roles
   (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     role VARCHAR(40) NOT NULL
+  );
+
+CREATE TABLE currencies
+  (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    currency VARCHAR(3) NOT NULL
   );
 
 CREATE TABLE users
@@ -37,9 +45,12 @@ CREATE TABLE users
     password VARCHAR(4000) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     expiration TIMESTAMP DEFAULT NULL,
-    -- FIX: change base currency to an ID
-    base_currency VARCHAR(3),
-    FOREIGN KEY (role_id) REFERENCES roles(id)
+    currency_id INT NOT NULL,
+    balance DECIMAL(10,4) NOT NULL,
+    dark_mode BOOLEAN DEFAULT false NOT NULL,
+    sound BOOLEAN DEFAULT false NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES roles(id),
+    FOREIGN KEY (currency_id) REFERENCES currencies(id)
   );
 
 CREATE TABLE pairs
@@ -59,6 +70,14 @@ CREATE TABLE strategies
 
 -- missing/not taking into account the strategy importance
 -- only 2 values are possible
+
+CREATE TABLE goals
+  (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    goal VARCHAR(100) NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
 
 CREATE TABLE timeframes
 (

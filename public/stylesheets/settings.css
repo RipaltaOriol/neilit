@@ -338,31 +338,36 @@ hr.profile {
       color: #000000;
     }
 
+#listGoals { }
+  #listStrategy ul{
+    border-radius: 7px;
+  }
+  #listGoals li {
+    font-size: 16px;
+    border-radius: 7px;
+  }
+  #listGoals button {
+    background: none;
+    border: none;
+  }
+  #listGoals input {
+    color: #7b7b7b;
+    background: none;
+  }
+    #listGoals input:focus {
+      color: #000000;
+    }
+
 /*Custom dropdown*/
 #dLabel {
-border-radius: 7px;
-border: 0;
-text-align: left;
-background-color: inherit;
-color: var(--grey-texto);
+  border-radius: 7px;
+  border: 0;
+  text-align: left;
+  background-color: inherit;
+  color: var(--grey-texto);
 }
   #dLabel:hover {
     color: black;
-  }
-
-#save {
-  padding: 3px 15px;
-  border: 2px solid var(--blue-primario);
-  border-radius: 7px;
-  transition-duration: .25s;
-  background: white;
-  color: var(--blue-primario);
-}
-  #save:hover {
-    color: white;
-    border: 2px solid var(--blue-primario);;
-    background: var(--blue-primario);
-    transition-duration: .25s;
   }
 
 #initial-balance{

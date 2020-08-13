@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
+let currencies = require('../models/currencies');
 let timeframes = require('../models/timeframes');
 let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware');
@@ -8,11 +9,20 @@ let connection = require('../models/connectDB');
 
 // SETTINGS ROUTE
 router.get("/settings", middleware.isLoggedIn, (req, res) => {
-  res.render("user/settings",
-    {
-      strategies:userStrategies
-    }
-  );
+  var selectGoals = 'SELECT goal FROM goals WHERE user_id = ?';
+  var goals = []
+  connection.query(selectGoals, req.user.id, (err, getGoals) => {
+    getGoals.forEach((result) => {
+      goals.push(result.goal)
+    });
+    res.render("user/settings",
+      {
+        strategies:userStrategies,
+        currencies: currencies,
+        goals: goals
+      }
+    );
+  })
 })
 
 // DASHBOARD USER ROUTE
