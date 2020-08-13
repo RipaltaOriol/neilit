@@ -1,3 +1,12 @@
+:root{
+  --gris-flojo: #F7F7F7;
+  --gris-medio: #EEEEEE;
+  --gris-fuerte: #E5E5E5;
+  --gris-texto: #7B7B7B;
+  --rojo-fuerte: #EE0000;
+  --azul-primario: #007BFF;
+}
+
 /* || General styles */
 table {
   position: relative;
@@ -23,16 +32,30 @@ table {
 tr { }
   tr th {
     text-align: center;
-    background-color: #ff8818;
+    background-color: white;
+    color: grey;
+    width: 40px;
+    border: 1px solid #ff8818;
   }
-  tr td:first-child {
+  tr td{
     cursor: pointer;
     text-align: center;
+
   }
 
-td {
-  border: 1px solid #ff8818;
+td{
+  border-radius: 7px;
 }
+  td:hover{
+    background: var(--gris-medio);
+  }
+    td a{
+      color: black;
+    }
+      td a:hover{
+        text-decoration: none;
+        color: black;
+      }
 
 /* th {
   position: sticky;
@@ -81,12 +104,41 @@ span .checkbox-orange {
 
 /* || JQuery UI class */
 .ui-datepicker {
-  background: ;
+  background: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+  /* FIXME: When we put padding, something strange appears at the bottom of the screen. */
+  padding: 5px;
 }
 
-.ui-datepicker-next {
-  color: red!important;
+.ui-datepicker-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
 }
+  .ui-datepicker-prev {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+  }
+    .ui-datepicker-prev:hover {
+      background: var(--gris-medio);
+      cursor: pointer;
+    }
+
+  .ui-datepicker-next {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+    .ui-datepicker-next:hover {
+      background: var(--gris-medio);
+      cursor: pointer;
+    }
 
 .date-badge {
   display: block;
