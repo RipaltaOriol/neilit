@@ -8,7 +8,7 @@ let middleware = require('../middleware');
 // Trading Plan Elements
 var strategyPlan = require('../models/elements/plan');
 
-// NEW PLAN ROUTE
+// COMPONENTS PLAN ROUTE
 router.get("/components", middleware.isLoggedIn, (req, res) => {
   // loads the trading plan elements to an object
   var elements = {
@@ -36,5 +36,29 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     }
   );
 });
+
+// NEW PLAN LOGIC
+router.post("/", middleware.isLoggedIn, (req, res) => {
+  var planQuery = '...'
+  // continue
+  res.redirect('/' + req.user.username + '/plan');
+})
+
+// SHOW PLAN ROUTE
+router.get("/id", middleware.isLoggedIn, (req, res) => {
+  var getPlan ='...'
+  // continue
+  res.render('user/plan/show')
+})
+
+// UPDATE PLAN ROUTE
+
+// DELETE PLAN ROUTE
+router.delete("/:id", middleware.isLoggedIn, (req, res) => {
+  var plan2Delete = req.params.id
+  var deleteQuery = '...'
+  // continue
+  res.redirect('/' + req.user.username + '/plan');
+})
 
 module.exports = router;

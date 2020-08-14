@@ -62,7 +62,16 @@ router.get("/plan", middleware.isLoggedIn, (req, res) => {
 
 // RISK CALCULATOR ROUTE
 router.get("/calculator", middleware.isLoggedIn, (req, res) => {
-  res.render("user/calculator", {currencies:pairs});
+  connection.query('SELECT currency_id FROM users WHERE id = ?', req.user.id, (err, getCurrency) => {
+    if (err) throw err;
+    var currency = currencies[getCurrency[0].currency_id - 1]
+    res.render("user/calculator",
+      {
+        currencies:pairs,
+        currency: currency
+      }
+    );
+  })
 })
 
 // JOURNAL ROUTE

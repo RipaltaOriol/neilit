@@ -5,7 +5,7 @@
     <section id="calculator">
       <div class="container">
         <h2>Calculadora de Riesgo</h2>
-        <% if (currentUser.base_currency == null) { %>
+        <% if (currentUser.currency_id == null) { %>
           <div id="local-alert">
             <div class="alert alert-danger mt-2" role="alert">
               Para utilizar la calculadora de riesgo primero debe seleccionar su divisa de cuenta en ajustes.
@@ -16,7 +16,7 @@
           <h3 class="mx-3">Información de la cuenta</h3>
           <hr>
           <div class="mx-3">
-            <input id="base" type="text" value="<%= currentUser.base_currency %>" class="d-none">
+            <input id="base" type="text" value="<%= currency %>" class="d-none">
             <input id="account-size" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de la cuenta">
             <input id="ops-risk" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Riesgo de la cuenta en %">
             <div class="separator">or</div>
@@ -50,7 +50,7 @@
             <strong><span id="units-size" class="bg-grey orange px-2"></span></strong>
           </div>
           <div class="d-flex justify-content-end mx-3 mt-2">
-            <% if (currentUser.base_currency == null) { %>
+            <% if (currentUser.currency_id == null) { %>
               <button class="btn-neilit" disabled>CALCULAR</button>
             <% } else { %>
               <button class="btn-neilit" onclick="calcRisk()">CALCULAR</button>
