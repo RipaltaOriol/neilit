@@ -1,0 +1,80 @@
+/* FIXME: It's possible to clean the CSS code from this line till line number:  ________ */
+:root{
+  --gris-flojo: #F7F7F7;
+  --gris-medio: #EEEEEE;
+  --gris-fuerte: #E5E5E5;
+  --gris-texto: #7B7B7B;
+  --rojo-fuerte: #EE0000;
+  --azul-primario: #007BFF;
+  --naranja: #ff8818;
+  --naranja-fuerte: #f57700;
+}
+
+/* || Utility */
+.font-16{
+  font-size: 16px;
+}
+
+/* || Utility */
+.white{
+  color: white;
+}
+
+/* || Utility */
+.container-global{
+  max-width: 1000px;
+  /* background: red; */
+}
+
+.container-updates{
+  background: var(--naranja);
+}
+  .container-updates h5{
+    color: white;
+  }
+
+.widget-100{
+  width: 100%;
+  border-radius: 7px;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+
+.features-text{
+  color: white;
+  font-size: 16px;
+}
+
+.btn{
+  padding: 3px 15px;
+  border: 2px solid var(--naranja);
+  border-radius: 7px;
+  transition-duration: .25s;
+  background: white;
+  color: var(--naranja);
+}
+  .btn:hover{
+    color: white;
+    border: 2px solid var(--naranja);
+    background: var(--naranja);
+    transition-duration: .25s;
+  }
+
+.btn-second{
+  padding: 3px 15px;
+  border: 2px solid var(--naranja);
+  border-radius: 7px;
+  transition-duration: .25s;
+  color: white;
+}
+  .btn-second:hover{
+    color: var(--gris-medio);
+    border: 2px solid var(--naranja);
+    text-decoration: underline;
+    transition-duration: .25s;
+  }
+
+.container-graph{
+  
+}
