@@ -4,14 +4,14 @@
   <!-- First widget has to be shown just once. It's a "what's new". The user must be able to close this widget.-->
   <div class="d-flex flex-row justify-content-center">
     <div class="container-global mt-2 mx-4 w-100">
-      <div class="mt-2 mx-2">
+      <div class="d-flex flex-row justify-content-between">
         <!-- Second Widget on dashboard//home-->
         <div class="widget-100 container-updates ">
           <!--PARTE SUPERIOR DEL WIDGET-->
           <div class=" d-flex flex-row justify-content-between mt-2 pt-1">
             <!--Superior Izquierda Widget-->
             <div class="d-flex flex-row align-items-center">
-              <h5 class="mb-0 py-1 ml-3">What's new?</h5>
+              <h5 class="mb-0 py-1 ml-3 mt-2">What's new?</h5>
             </div>
             <!--IMPORTANT: by clicking on the  img above, the user must be able to close the widget-->
             <a href="#" class="mr-2">
@@ -83,6 +83,331 @@
       </div>
     </div>
   </div>
+
+  <div class="d-flex flex-row justify-content-center">
+    <div class="container-global mt-2 mx-4 w-100">
+      <div class="mt-2 mx-2">
+        <!-- Third Widget on dashboard//home-->
+        <div class="widget-100">
+          <!--PARTE SUPERIOR DEL WIDGET-->
+          <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
+            <!--Superior Izquierda Widget-->
+            <div class="d-flex flex-row align-items-center">
+                <img src="../../imgs/icons/open-ops.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
+              <h5 class="mb-0 py-1">Open positions</h5>
+            </div>
+          </div>
+          <div class="">
+            <div class="mb-2 mt-3 w-100">
+              <div class="parte-central">
+                <!-- Every row of the table must be linked to the details of that operation.  -->
+                <!-- IMPORTANT: The user must be able to sort and order the open positions by every column -->
+                <table class="table table-hover table-borderless font-16 text-center">
+                  <thead>
+                    <tr class="pb-4">
+                      <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los activos con almenos una operación cerrada">Asset</th>
+                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Lots</th>
+                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Direction</th>
+                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Resultado medio en cada timeframe">Entry date</th>
+                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones ganadoras">Entry price</th>
+                      <!-- CURRENT PRICE | Check price with API -->
+                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Check those numbers with your broker">Current price</th>
+                      <!-- OPEN RESULT | Check price with API -->
+                      <!-- SPANISH: Supongo que API proporcionará un cierto formato. Forzar al usuario a utilizar ese mismo formato para que podamos realizar comparaciones. -->
+                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Check those numbers with your broker.">Open result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <!-- All the info must be taken from the user entry -->
+                      <th scope="row" class="align-middle">EURUSD</th>
+                      <!-- Lots -->
+                      <td>1.23</td>
+                      <!-- Direction -->
+                      <!-- SPANISH: Me gustarí que dependiendo de la dirección, apareciera un pill personalizado como los que hacemos manualmente ahora. Debe poner el color y la dirección de la flecha -->
+                      <td>
+                        <div class=" d-flex flex-row justify-content-center">
+                          <p class="mb-0 pill pill-verde pill-direction">
+                            <img src="../../imgs/icons/trending-up-green.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
+                            Long
+                          </p>
+                        </div>
+
+                      </td>
+                      <!-- Entry date -->
+                      <td>17/08/19</td>
+                      <!-- Entry price -->
+                      <td>1,25487</td>
+                      <!-- Current price -->
+                      <td>1,25978</td>
+                      <!-- Open result -->
+                      <!-- SPANISH: El usuario debe ser capaz de cambiar el formato de los datos, MONEDA-PIPS-PORCENTAJErespecto a su cuenta -->
+                      <td>
+                        <div class=" d-flex flex-row justify-content-center">
+                          <p class="mb-0 pill pill-verde pill-direction">
+                            $87
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="align-middle">USDJPY</th>
+                      <!-- Lots -->
+                      <td>2.03</td>
+                      <!-- Direction -->
+                      <!-- SPANISH: Me gustarí que dependiendo de la dirección, apareciera un pill personalizado como los que hacemos manualmente ahora. Debe poner el color y la dirección de la flecha -->
+                      <td>
+                        <div class=" d-flex flex-row justify-content-center">
+                          <p class="mb-0 pill pill-roja pill-direction">
+                            <img src="../../imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
+                            Short
+                          </p>
+                        </div>
+                      </td>
+                      <!-- Entry date -->
+                      <td>05/12/19</td>
+                      <!-- Entry price -->
+                      <td>1,47892</td>
+                      <!-- Current price -->
+                      <td>1,47814</td>
+                      <!-- Open result -->
+                      <td>
+                        <div class=" d-flex flex-row justify-content-center">
+                          <p class="mb-0 pill pill-roja pill-direction">
+                            -$45
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="align-middle">XAUUSD</th>
+                      <!-- Lots -->
+                      <td>0.71</td>
+                      <!-- Direction -->
+                      <!-- SPANISH: Me gustarí que dependiendo de la dirección, apareciera un pill personalizado como los que hacemos manualmente ahora. Debe poner el color y la dirección de la flecha -->
+                      <td>
+                        <div class=" d-flex flex-row justify-content-center">
+                          <p class="mb-0 pill pill-roja pill-direction">
+                            <img src="../../imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
+                            Short
+                          </p>
+                        </div>
+                      </td>
+                      <!-- Entry date -->
+                      <td>12/05/01</td>
+                      <!-- Entry price -->
+                      <td>2.000</td>
+                      <!-- Current price -->
+                      <td>1.987</td>
+                      <!-- Open result -->
+                      <td>
+                        <div class=" d-flex flex-row justify-content-center">
+                          <p class="mb-0 pill pill-verde pill-direction">
+                            $874
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="d-flex flex-row justify-content-center align-items-center pb-2">
+                <a href="#">
+                  <p class="pill font-16 grey mb-0">See more details</p>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <!-- Poner un boton que lleve a una página con más detalles de las operaciones -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-row justify-content-center mb-4">
+    <div class="container-global mt-2 mx-4 w-100">
+      <div class="d-flex flex-row justify-content-between">
+        <!--PRIMER WIDGET PRIMERA LINEA || PROFITS-->
+        <div class="widget-tercio mx-3">
+          <!--PARTE SUPERIOR DEL WIDGET-->
+          <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+            <!--Superior Izquierda Widget-->
+            <div class="d-flex flex-row align-items-center">
+              <img src="../../imgs/icons/profits.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+              <h5 class="mb-0 py-1">Current Balance</h5>
+            </div>
+            <!--Superior Derecha Widget-->
+            <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+          </div>
+          <!--PARTE CENTRAL DEL WIDGET-->
+          <a href="#" class="">
+            <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
+              <div class="parte-central">
+                <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
+                <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
+                <h1 class="black-h1"><span>$</span>20.478</h1>
+              </div>
+              <div class="">
+                <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
+                <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
+                <p class="pill pill-verde font-16"><img src="../../imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2" alt="">560€</p>
+              </div>
+            </div>
+          </a>
+          <!--PARTE INFERIOR DEL WIDGET-->
+          <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+            <div class="grey">
+            <a href="#">
+              <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+                <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+                <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+              </div>
+            </a>
+            </div>
+            <div class="">
+            <a href="#">
+              <div class="d-flex flex-row justify-content-center align-items-center">
+                <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+              </div>
+            </a>
+            </div>
+          </div>
+        </div>
+        <div class="widget-tercio mx-3">
+          <!--PARTE SUPERIOR DEL WIDGET-->
+          <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+            <!--Superior Izquierda Widget-->
+            <div class="d-flex flex-row align-items-center">
+              <img src="../../imgs/icons/profits.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+              <h5 class="mb-0 py-1">Profits</h5>
+            </div>
+            <!--Superior Derecha Widget-->
+            <a href="#" class="mr-2">
+              <div class="grey font-16 mb-0">
+                <!--Dropdown temporalidad widget-->
+                <div class="dropdown">
+                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Current week
+                  </button>
+                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
+                  <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li>Today</li>
+                    <li>Current week</li>
+                    <li>Last week</li>
+                    <li>Current month</li>
+                    <li>Last month</li>
+                    <li>Current semester</li>
+                    <li>Last semester</li>
+                    <li>Custom period</li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+          <!--PARTE CENTRAL DEL WIDGET-->
+          <a href="#" class="">
+            <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
+              <div class="parte-central">
+                <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
+                <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
+                <h1 class="black-h1">3.85%</h1>
+              </div>
+              <div class="">
+                <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
+                <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
+                <p class="pill pill-verde font-16"><img src="../../imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2" alt="">560€</p>
+              </div>
+            </div>
+          </a>
+          <!--PARTE INFERIOR DEL WIDGET-->
+          <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+            <div class="grey">
+            <a href="#">
+              <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+                <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+                <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+              </div>
+            </a>
+            </div>
+            <div class="">
+            <a href="#">
+              <div class="d-flex flex-row justify-content-center align-items-center">
+                <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+              </div>
+            </a>
+            </div>
+          </div>
+        </div>
+        <div class="widget-tercio mx-3">
+          <!--PARTE SUPERIOR DEL WIDGET-->
+          <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+            <!--Superior Izquierda Widget-->
+            <div class="d-flex flex-row align-items-center">
+              <img src="../../imgs/icons/profits.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+              <h5 class="mb-0 py-1">Profits</h5>
+            </div>
+            <!--Superior Derecha Widget-->
+            <a href="#" class="mr-2">
+              <div class="grey font-16 mb-0">
+                <!--Dropdown temporalidad widget-->
+                <div class="dropdown">
+                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Current week
+                  </button>
+                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
+                  <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li>Today</li>
+                    <li>Current week</li>
+                    <li>Last week</li>
+                    <li>Current month</li>
+                    <li>Last month</li>
+                    <li>Current semester</li>
+                    <li>Last semester</li>
+                    <li>Custom period</li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+          <!--PARTE CENTRAL DEL WIDGET-->
+          <a href="#" class="">
+            <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
+              <div class="parte-central">
+                <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
+                <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
+                <h1 class="black-h1">3.85%</h1>
+              </div>
+              <div class="">
+                <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
+                <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
+                <p class="pill pill-verde font-16"><img src="../../imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2" alt="">560€</p>
+              </div>
+            </div>
+          </a>
+          <!--PARTE INFERIOR DEL WIDGET-->
+          <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+            <div class="grey">
+            <a href="#">
+              <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+                <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+                <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+              </div>
+            </a>
+            </div>
+            <div class="">
+            <a href="#">
+              <div class="d-flex flex-row justify-content-center align-items-center">
+                <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+              </div>
+            </a>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+        </div>
 
 <!-- <section> is inside partials -->
 </section>

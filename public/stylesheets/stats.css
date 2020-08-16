@@ -142,6 +142,14 @@ a:hover{
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
+.widget-50-px{
+  width: 450px;
+  border-radius: 7px;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+
 .widget-dos-tercios{
   width: 66.66%;
   border-radius: 7px;
@@ -267,5 +275,5 @@ color: var(--gris-texto);
 }
 
 .custom-stats-soon{
-  
+
 }
