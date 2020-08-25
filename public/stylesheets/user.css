@@ -78,3 +78,7 @@
 .pill-direction{
   width: 100px;
 }
+
+.progress-bar-orange{
+  background-color: var(--naranja);
+}
