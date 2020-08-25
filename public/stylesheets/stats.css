@@ -1,41 +1,34 @@
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Regular.ttf");}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Light.ttf"); font-weight: lighter;}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-SemiBold.ttf"); font-weight: 500;}
-@font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
-
-:root{
-  --gris-flojo: #F7F7F7;
-  --gris-medio: #EEEEEE;
-  --gris-fuerte: #E5E5E5;
-  --gris-texto: #7B7B7B;
-  --rojo-flojo: #FDDFDD;
-  --rojo-fuerte: #EE0000;
-  --verde-flojo: #CBF6E5;
+:root {
+  --grey-flojo: #F7F7F7;
+  --grey-medio: #EEEEEE;
+  --grey-fuerte: #E5E5E5;
+  --grey-texto: #7B7B7B;
+  --red-flojo: #FDDFDD;
+  --red-fuerte: #EE0000;
+  --green-flojo: #CBF6E5;
 }
 
 /* || Utility */
-button{
+button {
   background: none;
   border: none;
 }
 
 /* || Tables utilities */
-table{
+table{ }
 
-}
-
-tr{
+tr {
   padding-bottom: 5px!important;
 }
 
-th{
+th {
   padding: 0!important;
 }
-  th:hover{
+  th:hover {
     cursor: default;
   }
 
-td{
+td {
   padding: 5px!important;
 }
 
@@ -43,27 +36,27 @@ td{
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: var(--gris-flojo);
 }
-  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th td{
+  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th td {
     color: black;
   }
 
 /* || Utility */
-a:hover{
+a:hover {
   text-decoration: none;
 }
 
 /* || Utility */
-/* canvas{
+/* canvas {
   border-radius: 7px;
   transition-duration: .25s;
 }
-  canvas:hover{
+  canvas:hover {
     background-color: var(--gris-flojo);
     transition-duration: .25s;
   } */
 
 /* || Utility */
-.black-h1{
+.black-h1 {
   color: black;
   font-weight: 500!important;
 }
@@ -72,7 +65,7 @@ a:hover{
 .grey {
   color: #7b7b7b;
 }
-  .grey:hover{
+  .grey:hover {
       background-color:  var(--gris-flojo);
       border-radius: 7px;
       color: black;
@@ -101,32 +94,31 @@ a:hover{
 }
 
 /* || Utility */
-.pill{
+.pill {
   padding: 1px 10px;
   border-radius: 7px;
 }
-  .pill-verde{
-    background: var(--verde-flojo);
-    color: green;
-  }
-  .pill-amarilla{
 
-  }
-  .pill-roja{
-    background: var(--rojo-flojo);
-    color: red;
+.pill-verde {
+  background: var(--green-flojo);
+  color: green;
+}
 
-  }
-  .pill-activo{
+.pill-amarilla { }
 
-  }
+.pill-roja {
+  background: var(--red-flojo);
+  color: red;
+}
 
-.container-global{
+.pill-activo { }
+
+.container-global {
   max-width: 1000px;
   /* background: red; */
 }
 
-.widget-tercio{
+.widget-tercio {
   width: 33.33%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -134,11 +126,15 @@ a:hover{
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
+<<<<<<< HEAD
 .w-33{
   width: 33%;
 }
 
 .widget-50{
+=======
+.widget-50 {
+>>>>>>> 4cb8915a38520e6f920af1056aa47418b2779b52
   width: 50%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -146,6 +142,7 @@ a:hover{
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
+<<<<<<< HEAD
 .widget-50-px{
   width: 450px;
   border-radius: 7px;
@@ -155,6 +152,9 @@ a:hover{
 }
 
 .widget-dos-tercios{
+=======
+.widget-dos-tercios {
+>>>>>>> 4cb8915a38520e6f920af1056aa47418b2779b52
   width: 66.66%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -162,7 +162,7 @@ a:hover{
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
-.widget-100{
+.widget-100 {
   width: 100%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -170,63 +170,63 @@ a:hover{
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
-.superior-widget{
-  border-bottom: 1px solid var(--gris-medio);
+.superior-widget {
+  border-bottom: 1px solid var(--gret-medio);
 }
-  .superior-widget h5{
+  .superior-widget h5 {
     font-size: 20px;
   }
 
-.imagen-widget{
+.imagen-widget {
   width: 20px;
   height: auto;
   opacity: .6;
 }
 
-.imagen-widget-change{
+.imagen-widget-change {
   width: 25px;
   height: auto;
   opacity: .6;
   border-radius: 7px;
   transition-duration: .25s;
 }
-  .imagen-widget-change:hover{
+  .imagen-widget-change:hover {
     opacity: 1;
     transition-duration: .25s;
     cursor: pointer;
   }
-  .active-change{
-    background: var(--gris-flojo);
+  .active-change {
+    background: var(--grey-flojo);
   }
-    .active-change img{
+    .active-change img {
       opacity: 1!important;
     }
 
-.imagen-widget-grande{
+.imagen-widget-grande {
   width: 25px;
 }
 
-.opacity-1{
+.opacity-1 {
   opacity: 1;
 }
 
-.background-change{
+.background-change {
   border-radius: 7px;
 }
-  .background-change:hover{
-    background-color: var(--gris-flojo);
+  .background-change:hover {
+    background-color: var(--grey-flojo);
   }
 
-/*Custom dropdown*/
+/* Custom dropdown */
 #dLabel {
 border-radius: 7px;
 border: 0;
 text-align: left;
 background-color: inherit;
-color: var(--gris-texto);
+color: var(--grey-texto);
 }
 
-#dLabel:hover{
+#dLabel:hover {
   color: black;
 }
 
@@ -254,26 +254,26 @@ outline: 0;
 .dropdown-menu li {
 line-height: 1.5;
 letter-spacing: 0.7px;
-color: var(--gris-texto);
+color: var(--grey-texto);
 font-size: 16px;
 cursor: pointer;
 padding: 5px 10px;
 }
 
 .dropdown-menu li:hover {
-background-color: var(--gris-flojo);
+background-color: var(--grey-flojo);
 color: black;
 }
 
-.container-user-goals a{
-color: var(--gris-texto);
+.container-user-goals a {
+  color: var(--grey-texto);
 }
-.container-user-goals a:hover{
+.container-user-goals a:hover {
   color: black;
 }
 
-.inferior-widget{
-  border-top: 1px solid var(--gris-medio);
+.inferior-widget {
+  border-top: 1px solid var(--grey-medio);
   position: relative;
   bottom: 0px;
 }

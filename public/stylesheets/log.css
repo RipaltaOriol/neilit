@@ -90,14 +90,6 @@ span .checkbox-orange {
 }
 
 /* || Utility */
-.bg-hover {
-  border-radius: .25rem;
-}
-  .bg-hover:hover {
-    background-color: #f7f7f7;
-  }
-
-/* || Utility */
 .mandatory {
   font-weight: bold
 }
@@ -231,7 +223,7 @@ span .checkbox-orange {
     box-shadow: none;
   }
 
-/* || Technical Analysis Elments */
+/* || Technical Analysis Elements */
 /* FIXME: refactor unecessary specification */
 #ta-content { }
   #ta-content .title {

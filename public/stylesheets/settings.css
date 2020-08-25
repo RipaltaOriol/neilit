@@ -1,10 +1,10 @@
 :root{
-  --gris-flojo: #F7F7F7;
-  --gris-medio: #EEEEEE;
-  --gris-fuerte: #E5E5E5;
-  --gris-texto: #7B7B7B;
-  --rojo-fuerte: #EE0000;
-  --azul-primario: #007BFF;
+  --grey-flojo: #F7F7F7;
+  --grey-medio: #EEEEEE;
+  --grey-fuerte: #E5E5E5;
+  --grey-texto: #7B7B7B;
+  --red-fuerte: #EE0000;
+  --blue-primario: #007BFF;
 }
 
 /* || General styles */
@@ -17,7 +17,7 @@ h4 {
     color: #7b7b7b;
     transition-duration: .25s;
   }
-  h4 a:hover{
+  h4 a:hover {
     color: black;
     transition-duration: .25s;
   }
@@ -26,15 +26,15 @@ h5 {
   font-size: 16px;
 }
 
-a{
-  color: var(--naranja);
+a {
+  color: var(--orange);
 }
   a:hover {
-    color: var(--naranja-fuerte);
+    color: var(--orange-fuerte);
     text-decoration: none;
   }
   a.nav-link {
-    color: var(--gris-texto);
+    color: var(--grey-texto);
     padding: 2px 15px 0 15px;
     font-size: 16px;
     border-bottom: 2px solid white;
@@ -42,14 +42,14 @@ a{
 
     a.nav-link:hover {
       color: black;
-      border-bottom: 2px solid var(--gris-fuerte);
+      border-bottom: 2px solid var(--grey-fuerte);
       background-color: white !important;
     }
 
     a.nav-link.active {
       background: white;
-      color: var(--naranja);
-      border-bottom: 2px solid var(--naranja);
+      color: var(--orange);
+      border-bottom: 2px solid var(--orange);
     }
 
 li {
@@ -80,18 +80,18 @@ input {
     transform: translateX(15px);
   }
 
-hr.profile{
+hr.profile {
   background: red;
-  border: 1px solid var(--gris-medio);
+  border: 1px solid var(--grey-medio);
   width: 100%;
   margin: 0;
 }
 
 #remaining-days{
-  color: var(--gris-texto) !important;
+  color: var(--grey-texto) !important;
 }
   #remaining-days:hover{
-    color: var(--naranja);
+    color: var(--orange);
     text-decoration: none;
   }
 
@@ -111,34 +111,25 @@ hr.profile{
   .grey a {
     color: #ff8818;
   }
-  .grey a:hover{
+  .grey a:hover {
     color: #f57700;
   }
 
-/* || Utility */
-.font-16{
-  font-size: 16px;
-}
-
-.font-14{
-  font-size: 14px;
-}
-
-.containerMenuSettings{
+.containerMenuSettings {
   width: 100%;
 }
 
 /* || Bootstrap class */
-.nav-item{
+.nav-item {
   margin: 0 3px 0 3px;
 }
 
-.contianer-info-settings{
+.container-info-settings {
   padding: 2px 4px 2px 4px;
 }
-  .contianer-info-settings:hover{
+  .container-info-settings:hover {
     border-radius: 7px;
-    background: var(--gris-flojo);
+    background: var(--grey-flojo);
   }
 
 .tab-box {
@@ -149,11 +140,11 @@ hr.profile{
   -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
-  .tab-box p{
-    color: var(--gris-texto);
+  .tab-box p {
+    color: var(--grey-texto);
     padding: 3px 5px;
   }
-    .tab-box p:hover{
+    .tab-box p:hover {
       cursor: default;
     }
   .tab-box img {
@@ -164,7 +155,7 @@ hr.profile{
     opacity: 0.5;
     transition-duration: 0.25s;
   }
-    .tab-box .img-sm:hover{
+    .tab-box .img-sm:hover {
       opacity: 1;
       transition-duration: 0.25s;
     }
@@ -173,61 +164,45 @@ hr.profile{
     width: auto;
   }
 
-/*Profile picture*/
-.profile-picture{
+/* || Profile picture */
+.profile-picture {
 
 }
-  .profile-picture:hover{
+  .profile-picture:hover {
 
   }
 
-/*Boton Logout*/
-.boton-logout{
+/* || Boton Logout */
+.btn-logout {
   background: white;
-  color: var(--rojo-fuerte);
+  color: var(--red-fuerte);
   border-radius: 7px;
-  border: 2px solid var(--rojo-fuerte);
+  border: 2px solid var(--red-fuerte);
   padding: 3px 15px;
 }
 
-.boton-logout:hover{
-  background: var(--rojo-fuerte);
+.btn-logout:hover {
+  background: var(--red-fuerte);
   color: white;
   border-radius: 7px;
-  border: 2px solid var(--rojo-fuerte);
+  border: 2px solid var(--red-fuerte);
 }
 
-.containerOferta{
+.containerOferta {
   border-radius: 7px 7px 0 0;
 }
 
-/* || Utility */
-/*
-  NOTE hecha por Jaume: He eliminado la clase del HTML en alguna ocasión, pero no la
-  he eliminado del CSS por si se fastidia algo. En caso de que no haya ningun problema,
-  la borra más adelante.
-*/
-.a-sm{
-  font-size: 14px;
-  color: #7b7b7b;
-}
-
-.a-sm:hover{
-  color: black;
-  text-decoration: none;
-}
-
-/* Boton Settings Change plan */
-.change-plan{
+/* || Boton Settings Change plan */
+.change-plan {
   padding: 3px 15px;
-  border: 2px solid var(--naranja);
+  border: 2px solid var(--orange);
   border-radius: 7px;
   transition-duration: .25s;
 }
-  .change-plan:hover{
+  .change-plan:hover {
     color: white;
-    border: 2px solid var(--naranja);
-    background: var(--naranja);
+    border: 2px solid var(--orange);
+    background: var(--orange);
     transition-duration: .25s;
   }
 
@@ -247,18 +222,16 @@ hr.profile{
     transition-duration: .25s;
   }
 
-
 #initial-balance{
   width: 150px;
 }
 
-.FAQ{
+.FAQ {
   color: #7b7b7b;
 }
-
-.FAQ:hover{
-  color: black;
-}
+  .FAQ:hover {
+    color: black;
+  }
 
 .invoice {
   color: #212529;
@@ -272,18 +245,18 @@ hr.profile{
     opacity: .3;
     transition-duration: .25s;
   }
-    .invoice img:hover{
+    .invoice img:hover {
       opacity: .8;
       transition-duration: .25s;
     }
 
-.invoice-clear{
+.invoice-clear {
   background: #cbf6e5;
   color: #45d69e;
   border-radius: .25rem;
 }
 
-.invoice-pending{
+.invoice-pending {
   background: #fce6e5;
   color: #fd5e74;
   border-radius: .25rem;
@@ -332,32 +305,6 @@ hr.profile{
     border-radius: 50%;
   }
 
-/* CODE: Jaume */
-  .containerSelectDropdown{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  /*Custom dropdown*/
-  #dLabel {
-  border-radius: 7px;
-  border: 0;
-  text-align: left;
-  background-color: inherit;
-  color: var(--gris-texto);
-  }
-
-  #dLabel:hover{
-    color: black;
-  }
-
- .caret {
-  float: right;
-  margin-top: 9px;
-  display: block;
-}
-
 .dropdown-menu {
   padding: 0;
   margin: 0;
@@ -376,40 +323,28 @@ hr.profile{
 .dropdown-menu li {
   line-height: 1.5;
   letter-spacing: 0.7px;
-  color: var(--gris-texto);
+  color: var(--grey-texto);
   font-size: 16px;
   cursor: pointer;
   padding: 5px 10px;
 }
 
 .dropdown-menu li:hover {
-  background-color: var(--gris-flojo);
+  background-color: var(--grey-flojo);
   color: black;
 }
 
-.container-user-goals a{
-  color: var(--gris-texto);
-}
-  .container-user-goals a:hover{
-    color: black;
-  }
-
-#listStrategy ul{
-  border-radius: 7px;
-}
-#listStrategy li{
-  font-size: 16px;
-  border-radius: 7px !important;
-}
-
-.info{
+.info {
   transform: translateX(35px);
 }
-/* CODE Jaume (end) */
 
 #listStrategy { }
+  #listStrategy ul{
+    border-radius: 7px;
+  }
   #listStrategy li {
-    border-radius: .25rem;
+    font-size: 16px;
+    border-radius: 7px;
   }
   #listStrategy button {
     background: none;
@@ -421,4 +356,16 @@ hr.profile{
   }
     #listStrategy input:focus {
       color: #000000;
+    }
+
+  /*Custom dropdown*/
+  #dLabel {
+  border-radius: 7px;
+  border: 0;
+  text-align: left;
+  background-color: inherit;
+  color: var(--grey-texto);
+  }
+    #dLabel:hover {
+      color: black;
     }

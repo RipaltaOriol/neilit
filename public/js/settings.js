@@ -4,15 +4,20 @@ $(document).ready(function() {
 });
 
 // Goals
-$("#addGoal").keypress(function(event){
-  if(event.which === 13){
-
-    //Cogemos el input del usuario
+$("#addGoal").keypress(function(event) {
+  if(event.which === 13) {
+    // get the user's input
     var newGoal = $(this).val();
     $(this).val("");
-    //Creamos un nuevo objetivo
-    $("#listGoals").append('<li class="mt-2 font-16">' + newGoal + '</li>')
-
+    var listGoals = document.getElementById('listGoals');
+    var countGoals = listGoals.getElementsByTagName('li').length;
+    // creates a new goad if there are less than five objectives
+    if (countGoals < 5) {
+      $("#listGoals").append('<li class="mt-2 font-16">' + newGoal + '</li>')
+    }
+    // prevents the form from submitting
+    event.preventDefault();
+    return false;
   }
 });
 
