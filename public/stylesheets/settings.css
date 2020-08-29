@@ -165,12 +165,8 @@ hr.profile {
   }
 
 /* || Profile picture */
-.profile-picture {
-
-}
-  .profile-picture:hover {
-
-  }
+.profile-picture { }
+  .profile-picture:hover { }
 
 /* || Boton Logout */
 .btn-logout {
@@ -285,6 +281,12 @@ hr.profile {
     border-radius: 50%;
   }
 
+.dropdown { }
+  .dropdown button:hover, .dropdown button:focus {
+    border: none;
+    outline: 0;
+  }
+
 .dropdown-menu {
   padding: 0;
   margin: 0;
@@ -294,25 +296,18 @@ hr.profile {
   -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
-
-.dropdown button:hover, .dropdown button:focus {
-  border: none;
-  outline: 0;
-}
-
-.dropdown-menu li {
-  line-height: 1.5;
-  letter-spacing: 0.7px;
-  color: var(--grey-texto);
-  font-size: 16px;
-  cursor: pointer;
-  padding: 5px 10px;
-}
-
-.dropdown-menu li:hover {
-  background-color: var(--grey-flojo);
-  color: black;
-}
+  .dropdown-menu li {
+    line-height: 1.5;
+    letter-spacing: 0.7px;
+    color: var(--grey-texto);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+  .dropdown-menu li:hover {
+    background-color: var(--grey-flojo);
+    color: black;
+  }
 
 .info {
   transform: translateX(35px);

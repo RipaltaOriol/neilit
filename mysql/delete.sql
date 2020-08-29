@@ -1,3 +1,8 @@
+DELETE FROM checklists;
+DELETE FROM objectives;
+DELETE FROM pln_positions;
+DELETE FROM pln_strategies;
+DELETE FROM plans;
 DELETE FROM comments;
 DELETE FROM telementanalysis;
 DELETE FROM telements;

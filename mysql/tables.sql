@@ -2,6 +2,11 @@
 -- Involving foreign refrences
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS checklists;
+DROP TABLE IF EXISTS objectives;
+DROP TABLE IF EXISTS pln_positions;
+DROP TABLE IF EXISTS pln_strategies;
+DROP TABLE IF EXISTS plans;
 DROP TABLE IF EXISTS backtest_addons_data;
 DROP TABLE IF EXISTS backtest_data;
 DROP TABLE IF EXISTS backtest_addons;
@@ -206,4 +211,78 @@ CREATE TABLE backtest_addons_data
   addon_value FLOAT, -- it can be a integer value or an option value
   FOREIGN KEY (backtest_id) REFERENCES backtest(id),
   FOREIGN KEY (backtest_addons_id) REFERENCES backtest_addons(id)
+);
+
+CREATE TABLE plans
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  title VARCHAR(100),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  -- General Info
+  broker VARCHAR(100),
+  charts VARCHAR(100),
+  capital VARCHAR(100),
+  routine VARCHAR(1000),
+  -- Psychology
+  psy_notes VARCHAR(1000),
+  psy_tips BOOLEAN DEFAULT false NOT NULL,
+  -- Journaling
+  jrn_process VARCHAR(1000),
+  -- Others
+  str_revision VARCHAR(1000),
+  jrn_revision VARCHAR(1000),
+  pln_revision VARCHAR(1000),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE pln_strategies
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  plan_id INT NOT NULL,
+  strategy_id INT NOT NULL,
+  about VARCHAR(1000),
+  howto VARCHAR(1000),
+  kynotes VARCHAR(1000),
+  timeframe_id INT,
+  pair_id INT,
+  risk DECIMAL(4,2),
+  backtest_id INT,
+  FOREIGN KEY (plan_id) REFERENCES plans(id),
+  FOREIGN KEY (strategy_id) REFERENCES strategies(id),
+  FOREIGN KEY (timeframe_id) REFERENCES timeframes(id),
+  FOREIGN KEY (pair_id) REFERENCES pairs(id),
+  FOREIGN KEY (backtest_id) REFERENCES backtest(id)
+);
+
+CREATE TABLE pln_positions
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  plan_id INT NOT NULL,
+  pln_str_id INT NOT NULL,
+  strategy_id INT NOT NULL,
+  title VARCHAR(100),
+  rule_type ENUM('tp', 'sl'),
+  position_type BOOLEAN NOT NULL,
+  amount DECIMAL(4, 2),
+  order_type ENUM('market', 'limit'),
+  description VARCHAR(1000),
+  FOREIGN KEY (plan_id) REFERENCES plans(id),
+  FOREIGN KEY (pln_str_id) REFERENCES pln_strategies(id),
+  FOREIGN KEY (strategy_id) REFERENCES strategies(id)
+);
+
+CREATE TABLE objectives
+(
+  plan_id INT NOT NULL,
+  type ENUM('fin', 'nonfin'),
+  objective VARCHAR(100),
+  FOREIGN KEY (plan_id) REFERENCES plans(id)
+);
+
+CREATE TABLE checklists
+(
+  plan_id INT NOT NULL,
+  checklist VARCHAR(100),
+  FOREIGN KEY (plan_id) REFERENCES plans(id)
 );

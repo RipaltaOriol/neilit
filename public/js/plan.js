@@ -1,3 +1,16 @@
+var clientRoutine = document.getElementById("client-routine");
+var serverRoutine = document.getElementById("server-routine");
+var clientPsychology = document.getElementById("client-psychology");
+var serverPsychology = document.getElementById("server-psychology");
+var clientJournaling = document.getElementById("client-journaling");
+var serverJournaling = document.getElementById("server-journaling");
+var clientRStrategy = document.getElementById("client-rstrategy");
+var serverRStrategy = document.getElementById("server-rstrategy");
+var clientRJournal = document.getElementById("client-rjournal");
+var serverRJournal = document.getElementById("server-rjournal");
+var clientRPlan = document.getElementById("client-rplan");
+var serverRPlan = document.getElementById("server-rplan");
+
 // stores the strategies to include in the trading plan
 var strategyArray = []
 
@@ -7,6 +20,18 @@ function addStrategy(index) {
   strategyArray.push(strategies[index])
 }
 
+// ensures the behavior of the positioning components
+var rules = document.getElementById('rules')
+if (rules != null) {
+  rules.addEventListener('change', () => {
+    $('#title').prop('checked', rules.checked);
+    $('#type').prop('checked', rules.checked);
+    $('#amount').prop('checked', rules.checked);
+    $('#order-type').prop('checked', rules.checked);
+    $('#description').prop('checked', rules.checked);
+  })
+}
+
 // deltes a strategy to be included in the trading plan
 function deleteStrategy(element) {
   var strategyList = $('.strategy-del');
@@ -14,6 +39,7 @@ function deleteStrategy(element) {
   var strategyDiv = document.getElementById('plan-strategies');
   var strategySpan = strategyDiv.getElementsByClassName('strategy-id')
   strategySpan[current].remove();
+  strategyArray.splice(current, 1)
 }
 
 // stores the user preferences into local storage
@@ -37,11 +63,10 @@ function storeComponents() {
     amount: $('#amount').is(':checked') ? 'block' : 'none',
     orderType: $('#order-type').is(':checked') ? 'block' : 'none',
     description: $('#description').is(':checked') ? 'block' : 'none',
-    psychologyNotes: $('#psychology-note').is(':checked') ? 'block' : 'none',
-    tips: $('#tips').is(':checked') ? 'block' : 'none',
+    psychologyNotes: $('#psychology-notes').is(':checked') ? 'block' : 'none',
+    tips: $('#tips').is(':checked') ? 'true' : 'false',
     journaling: $('#journaling').is(':checked') ? 'block' : 'none',
     checklist: $('#checklist').is(':checked') ? 'block' : 'none',
-    account: $('#account').is(':checked') ? 'block' : 'none',
     nonFinancial: $('#non-financial').is(':checked') ? 'block' : 'none',
     financial: $('#financial').is(':checked') ? 'block' : 'none',
     journalRevision: $('#journal-revision').is(':checked') ? 'block' : 'none',
@@ -67,7 +92,7 @@ $('#addTrack').keypress(function(event) {
     // gets the user's input
     var newItem = $(this).val();
     $(this).val("");
-    $("#listJournalItems").append('<li class="bg-hover mt-1 px-2">' + newItem + '</li>')
+    $("#listJournalItems").append('<input type="text" name="checklist" class="d-block bg-hover mt-1 px-2" value="' + newItem + '">')
     // prevents the form from submitting
     event.preventDefault();
     return false;
@@ -78,21 +103,16 @@ $('#addTrack').keypress(function(event) {
 function resetChecklist() {
   var checklist = document.getElementById('listJournalItems');
   var itemsChecklist = checklist.getElementsByTagName('li');
-  for (var i = 0; i < itemsChecklist.length; i++) {
+  var checklistLength = itemsChecklist.length;
+  for (var i = checklistLength - 1; i >= 0; i--) {
     itemsChecklist[i].remove();
   }
 }
 
-// adds a goal to the trading plan accord to its type
+// adds a goal to the trading plan according to its type
 function addGoal(type) {
-  var accountCount = document.getElementById('objectiveAccount').childElementCount;
-  if (type == 'objectiveAccount' && accountCount < 5) {
-    $('#objectiveAccount').append('<li class="bh-hover mt-1 px-2">' + $('#objective').val() + '</li>')
-  }
-  if (type != 'objectiveAccount') {
-    $('#' + type).append('<li class="bh-hover mt-1 px-2">' + $('#objective').val() + '</li>')
-  }
-  $('#objective').val('')
+  $('#' + type).append('<input type="text" class="d-block bg-hover mt-1 px-2" name="' + type + '" value="' + $('#objective').val() + '" readonly>');
+  $('#objective').val('');
 }
 
 // displays the corresponding plan sections according to components
@@ -113,14 +133,27 @@ if (window.localStorage.getItem('components') != null) {
     preferences.strategies.forEach((strategy, i) => {
       $('#strategy').append(elements.newStrategy)
       $('.strategy-title')[i].innerHTML = strategy
-      document.getElementById('about').style.display = preferences.about;
-      document.getElementById('howto').style.display = preferences.howto;
-      document.getElementById('strategyNote').style.display = preferences.strategyNote;
-      document.getElementById('timeframe').style.display = preferences.timeframe;
-      document.getElementById('assets').style.display = preferences.assets;
-      document.getElementById('risk').style.display = preferences.risk;
-      document.getElementById('backtest').style.display = preferences.backtest;
-      document.getElementById('rules').style.display = preferences.rules;
+      $('.strategy-input')[i].value = strategy
+      document.getElementsByClassName('about')[i].style.display = preferences.about;
+      document.getElementsByClassName('howto')[i].style.display = preferences.howto;
+      document.getElementsByClassName('strategyNote')[i].style.display = preferences.strategyNote;
+      document.getElementsByClassName('timeframe')[i].style.display = preferences.timeframe;
+      document.getElementsByClassName('assets')[i].style.display = preferences.assets;
+      document.getElementsByClassName('risk')[i].style.display = preferences.risk;
+      document.getElementsByClassName('backtest')[i].style.display = preferences.backtest;
+      document.getElementsByClassName('rules')[i].style.display = preferences.rules;
+      // sets the input's value of the timeframe and pair to be send to the sever
+      // in case they are left out of the plan
+      if (preferences.timeframe == 'none') {
+        document.getElementsByClassName('input-tfs')[i].value = ''
+      } else {
+        document.getElementsByClassName('input-tfs')[i].value = document.getElementsByClassName('dd-tfs')[i].innerText
+      }
+      if (preferences.assets == 'none') {
+        document.getElementsByClassName('input-pairs')[i].value = ''
+      } else {
+        document.getElementsByClassName('input-pairs')[i].value = document.getElementsByClassName('dd-pairs')[i].innerText
+      }
     });
   } else {
     $('#strategy').hide()
@@ -128,6 +161,7 @@ if (window.localStorage.getItem('components') != null) {
   // psychology section
   if (preferences.psychologyNotes == 'block') {
     document.getElementById('psychology-notes').style.display = preferences.psychologyNotes;
+    document.getElementById('tips').value = preferences.tips;
   } else {
     $('#psychology').hide()
   }
@@ -141,9 +175,7 @@ if (window.localStorage.getItem('components') != null) {
   }
   // goals section
   if ($.inArray('block',
-    [preferences.account, preferences.nonFinancial, preferences.financial]) >= 0) {
-    document.getElementById('accountGoals').style.display = preferences.account;
-    document.getElementById('accountBtn').style.display = preferences.account;
+    [preferences.nonFinancial, preferences.financial]) >= 0) {
     document.getElementById('nonFinancialGoals').style.display = preferences.nonFinancial;
     document.getElementById('nonFinancialBtn').style.display = preferences.nonFinancial;
     document.getElementById('financialGoals').style.display = preferences.financial;
@@ -166,6 +198,7 @@ if (window.localStorage.getItem('components') != null) {
 function addRule(type, id) {
   var rulesBtnsList = $('.rulesBtns');
   var current = rulesBtnsList.index(id)
+  var currentRule = $('.positioning').length;
   var begDirectionTemplate = `
     <input type="text" name="direction" value="
   `
@@ -174,9 +207,49 @@ function addRule(type, id) {
   `
   $('.rules').eq(current).append(elements.newPosition + begDirectionTemplate
     + type + endDirectionTemplate)
+  document.getElementsByClassName('position-title')[currentRule].style.display = preferences.title;
+  document.getElementsByClassName('position-type')[currentRule].style.display = preferences.type;
+  document.getElementsByClassName('position-amount')[currentRule].style.display = preferences.amount;
+  document.getElementsByClassName('order-type')[currentRule].style.display = preferences.orderType;
+  document.getElementsByClassName('description')[currentRule].style.display = preferences.description;
+}
+
+// allows changes on the timeframes of a strategy
+function changeTF(timeframe, id) {
+  var tfsList = $('.list-tfs')
+  var current = tfsList.index(id.parentNode)
+  $('.dd-tfs')[current].innerHTML = timeframe;
+  document.getElementsByClassName('input-tfs')[current].value = timeframe;
+}
+
+// allows changes on the pairs of a strategy
+function changePair(pair, id) {
+  var pairList = $('.list-pairs')
+  var current = pairList.index(id.parentNode)
+  $('.dd-pairs')[current].innerHTML = pair;
+  document.getElementsByClassName('input-pairs')[current].value = pair;
 }
 
 // deletes the local storage when submitting plan
 $('#submit-plan').click(() => {
   window.localStorage.removeItem('components');
+  // sends the contenteditable's text to the server
+  serverRoutine.value     = clientRoutine.textContent     || clientRoutine.innerText;
+  serverPsychology.value  = clientPsychology.textContent  || clientPsychology.innerText;
+  serverJournaling.value  = clientJournaling.textContent  || clientJournaling.innerText;
+  serverRStrategy.value   = clientRStrategy.textContent   || clientRStrategy.innerText;
+  serverRJournal.value    = clientRJournal.textContent    || clientRJournal.innerText;
+  serverRPlan.value       = clientRPlan.textContent       || clientRPlan.innerText;
+  // sends the Strategies' content to the server
+  var clientAbout = document.getElementsByClassName("client-about")
+  var serverAbout = document.getElementsByClassName("server-about");
+  var clientHowto = document.getElementsByClassName("client-howto");
+  var serverHowto = document.getElementsByClassName("server-howto");
+  var clientKeyNotes = document.getElementsByClassName("client-keynotes");
+  var serverKeyNotes = document.getElementsByClassName("server-keynotes");
+  for (var i = 0; i < clientAbout.length; i++) {
+    serverAbout[i].value    = clientAbout[i].textContent    || clientAbout[i].innerText;
+    serverHowto[i].value    = clientHowto[i].textContent    || clientHowto[i].innerText;
+    serverKeyNotes[i].value = clientKeyNotes[i].textContent || clientKeyNotes[i].innerText;
+  };
 })

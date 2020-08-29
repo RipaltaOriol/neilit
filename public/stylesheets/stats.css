@@ -113,11 +113,6 @@ a:hover {
 
 .pill-activo { }
 
-.container-global {
-  max-width: 1000px;
-  /* background: red; */
-}
-
 .widget-tercio {
   width: 33.33%;
   border-radius: 7px;

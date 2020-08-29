@@ -35,9 +35,22 @@ router.get("", middleware.isLoggedIn, (req, res) => {
 router.get("/statistics", middleware.isLoggedIn, (req, res) => {
   // FIXME: only filter the ones for the current user
   // NOTE: maybe you want ot have this queries defiened in the route
-  var countWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND user_id = ?';
-  var countLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND user_id = ?';
-  var countBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND user_id = ?';
+  var countResult = `
+  SELECT
+    (SELECT COUNT(*) FROM entries WHERE result = 'win' AND user_id = ?) AS WinCount,
+    (SELECT COUNT(*) FROM entries WHERE result = 'loss' AND user_id = ?) AS LossCount,
+    (SELECT COUNT(*) FROM entries WHERE result = "be" AND user_id = ?) AS BECount
+  FROM entries;
+  `;
+  var countDirection = `
+  SELECT
+    (SELECT COUNT(*) FROM entries WHERE direction = "long" AND user_id = ?) AS LongCount,
+    (SELECT COUNT(*) FROM entries WHERE direction = "short" AND user_id = ?) AS ShortCount
+  FROM entries;
+  `
+  var placeholderResult = [req.user.id, req.user.id, req.user.id]
+  var placeholderDirection = [req.user.id, req.user.id]
+
   var countStrategy = 'SELECT COUNT(*) FROM entries WHERE strategy_id = ? AND user_id = ?;';
   var countStrategyWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND strategy_id = ? AND user_id = ?;';
   var countStrategyLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND strategy_id = ? AND user_id = ?;';
@@ -50,14 +63,42 @@ router.get("/statistics", middleware.isLoggedIn, (req, res) => {
   var countTimeframeWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND timeframe_id = ? AND user_id = ?;';
   var countTimeframeLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND timeframe_id = ? AND user_id = ?;';
   var countTimeframeBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND timeframe_id = ? AND user_id = ?;';
-  var countLong = 'SELECT COUNT(*) FROM entries WHERE direction = "long" AND user_id = ?';
-  var countShort = 'SELECT COUNT(*) FROM entries WHERE direction = "short" AND user_id = ?';
-  res.render("user/statistics");
+
+  connection.query(countResult, placeholderResult, (err, result) => {
+    if (err) throw err;
+    var statsResult = result[0]
+    connection.query(countDirection, placeholderDirection, (err, direction) => {
+      if (err) throw err;
+      var statsDirection = direction[0]
+      res.render("user/statistics",
+        {
+          statsResult:statsResult,
+          statsDirection:statsDirection
+        }
+      );
+    })
+  })
 });
 
 // TRADING PLAN ROUTE
 router.get("/plan", middleware.isLoggedIn, (req, res) => {
-  res.render("user/plan");
+  // COMBAK: ensure that order is descending in terms of created_at
+  var selectPlans = 'SELECT id, title, DATE_FORMAT(created_at, "%d/%m/%Y") AS date FROM plans WHERE user_id = ?';
+  connection.query(selectPlans, req.user.id, (err, getPlans) => {
+    if (err) throw err;
+    // Object to store the Plans
+    var plans = {
+      id: [],
+      title: [],
+      date: []
+    }
+    getPlans.forEach((result) => {
+      plans.id.push(result.id);
+      plans.title.push(result.title);
+      plans.date.push(result.date);
+    });
+    res.render("user/plan", {plans:plans});
+  })
 })
 
 // RISK CALCULATOR ROUTE
@@ -68,7 +109,7 @@ router.get("/calculator", middleware.isLoggedIn, (req, res) => {
     res.render("user/calculator",
       {
         currencies:pairs,
-        currency: currency
+        currency:currency
       }
     );
   })
