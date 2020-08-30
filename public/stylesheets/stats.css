@@ -126,7 +126,15 @@ a:hover {
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
+<<<<<<< HEAD
+.w-33{
+  width: 33%;
+}
+
+.widget-50{
+=======
 .widget-50 {
+>>>>>>> 4cb8915a38520e6f920af1056aa47418b2779b52
   width: 50%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -134,7 +142,19 @@ a:hover {
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
+<<<<<<< HEAD
+.widget-50-px{
+  width: 450px;
+  border-radius: 7px;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+
+.widget-dos-tercios{
+=======
 .widget-dos-tercios {
+>>>>>>> 4cb8915a38520e6f920af1056aa47418b2779b52
   width: 66.66%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -259,5 +279,5 @@ color: black;
 }
 
 .custom-stats-soon{
-  
+
 }
