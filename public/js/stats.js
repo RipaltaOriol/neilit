@@ -1,8 +1,10 @@
 //Para seleccionar la temporalidad que se muestra en los widgets de estadísticas
 // FIXME: hacer cada dropdown independiente
 $('.dropdown-menu li').on('click', function() {
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
   var getValue = $(this).text();
-  $('.dropdown-select').text(getValue);
+  $('.dropdown-select')[current].innerHTML = getValue;
 });
 
 //Tooltips

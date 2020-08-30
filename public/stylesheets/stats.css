@@ -240,18 +240,9 @@ display: block;
   bottom: 0px;
 }
 
-.custom-stats-soon{
+.custom-stats-soon { }
 
-}
-
-/* Custom dropdown */
-#dLabel {
-border-radius: 7px;
-border: 0;
-text-align: left;
-background-color: inherit;
-color: var(--grey-texto);
-}
+#dLabel { }
   #dLabel:hover {
     color: black;
   }
