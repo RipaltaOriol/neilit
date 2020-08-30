@@ -113,11 +113,6 @@ a:hover {
 
 .pill-activo { }
 
-.container-global {
-  max-width: 1000px;
-  /* background: red; */
-}
-
 .widget-tercio {
   width: 33.33%;
   border-radius: 7px;
@@ -126,15 +121,7 @@ a:hover {
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
-<<<<<<< HEAD
-.w-33{
-  width: 33%;
-}
-
-.widget-50{
-=======
 .widget-50 {
->>>>>>> 4cb8915a38520e6f920af1056aa47418b2779b52
   width: 50%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -142,19 +129,7 @@ a:hover {
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
-<<<<<<< HEAD
-.widget-50-px{
-  width: 450px;
-  border-radius: 7px;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-}
-
-.widget-dos-tercios{
-=======
 .widget-dos-tercios {
->>>>>>> 4cb8915a38520e6f920af1056aa47418b2779b52
   width: 66.66%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -217,19 +192,6 @@ a:hover {
     background-color: var(--grey-flojo);
   }
 
-/* Custom dropdown */
-#dLabel {
-border-radius: 7px;
-border: 0;
-text-align: left;
-background-color: inherit;
-color: var(--grey-texto);
-}
-
-#dLabel:hover {
-  color: black;
-}
-
 .caret {
 float: right;
 margin-top: 9px;
@@ -237,32 +199,32 @@ display: block;
 }
 
 .dropdown-menu {
-padding: 0;
-margin: 0;
-border-radius: 7px;
-border: none;
--webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
--moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  padding: 0;
+  margin: 0;
+  border-radius: 7px;
+  border: none;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
 .dropdown button:hover, .dropdown button:focus {
-border: none;
-outline: 0;
+  border: none;
+  outline: 0;
 }
 
 .dropdown-menu li {
-line-height: 1.5;
-letter-spacing: 0.7px;
-color: var(--grey-texto);
-font-size: 16px;
-cursor: pointer;
-padding: 5px 10px;
+  line-height: 1.5;
+  letter-spacing: 0.7px;
+  color: var(--grey-texto);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 10px;
 }
 
 .dropdown-menu li:hover {
-background-color: var(--grey-flojo);
-color: black;
+  background-color: var(--grey-flojo);
+  color: black;
 }
 
 .container-user-goals a {
@@ -278,6 +240,9 @@ color: black;
   bottom: 0px;
 }
 
-.custom-stats-soon{
+.custom-stats-soon { }
 
-}
+#dLabel { }
+  #dLabel:hover {
+    color: black;
+  }

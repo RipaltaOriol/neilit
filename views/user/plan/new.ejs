@@ -27,8 +27,9 @@
                 </div>
                 <div id="routine">
                   <span>Business Routine</span>
-                  <div id="routine" class="diveditable bg-hover w-75 p-1" placeholder="Explain your business routine" contenteditable="true"></div>
+                  <div id="client-routine" class="diveditable bg-hover w-75 p-1" placeholder="Explain your business routine" contenteditable="true"></div>
                 </div>
+                <textarea id="server-routine" name="routine" class="d-none"></textarea>
               </div>
 
               <!-- Strategies -->
@@ -36,14 +37,31 @@
                 <h5>Strategies</h5>
 
               </div>
+              <!-- backtest modal -->
+              <div class="modal modal-backtest fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content text-center">
+                    <div class="modal-header">
+                      <h5 class="modal-title mx-auto">Seleccione un <span class="orange">backtest</span> para conectar a esta estrategia</h5>
+                    </div>
+                    <div class="modal-body d-flex flex-column">
+                      <% backtests.title.forEach((backtest, i) => { %>
+                        <a class="mt-2 bg-hover" data-dismiss="modal" onclick=""><%= backtest %></a>
+                      <% }); %>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <!-- Psychology -->
               <div id="psychology" class="mb-4">
                 <h5>Psychology</h5>
                 <div id="psychology-notes">
                   <span>Notes</span>
-                  <div class="diveditable bg-hover w-75 p-1" placeholder="Any additional notes on trading psychology?" contenteditable="true"></div>
+                  <div id="client-psychology" class="diveditable bg-hover w-75 p-1" placeholder="Any additional notes on trading psychology?" contenteditable="true"></div>
                 </div>
+                <textarea id="server-psychology" name="psychology" class="d-none"></textarea>
+                <input id="tips" type="checkbox" name="tips" value="false" class="d-none" checked>
               </div>
 
               <!-- Journaling -->
@@ -51,14 +69,15 @@
                 <h5>Journaling</h5>
                 <div id="journaling">
                   <span>Journaling Process</span>
-                  <div class="diveditable bg-hover w-75 p-1" placeholder="How do you plan to journal?" contenteditable="true"></div>
+                  <div id="client-journaling" class="diveditable bg-hover w-75 p-1" placeholder="How do you plan to journal?" contenteditable="true"></div>
                 </div>
+                <textarea id="server-journaling" name="journaling" class="d-none"></textarea>
                 <div id="checklist">
                   <span class="d-flex align-items-center">
                     Journaling Checklist
                     <img class="info ml-2" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="What items do you want to keep track of in your journal">
                   </span>
-                  <input id="addTrack" class="bg-hover w-75 p-1" type="text" name="journal-checklits" placeholder="Add something to include in you jouranl entries">
+                  <input id="addTrack" class="bg-hover w-75 p-1" type="text" name="journalChecklits" placeholder="Add something to include in you jouranl entries">
                   <ul id="listJournalItems" class="pl-0 mb-2">
 
                   </ul>
@@ -74,32 +93,18 @@
                   <div class="input-group-append">
                     <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
                     <div class="dropdown-menu py-0">
-                      <a id="accountBtn" class="dropdown-item py-1" onclick="goalAccount()" href="#!">Account Goal</a>
+                      <a id="nonFinancialBtn" class="dropdown-item py-1" onclick="addGoal('objectiveNonfin')" href="#!">Financial Goal</a>
                       <div role="separator" class="dropdown-divider"></div>
-                      <a id="nonFinancialBtn" class="dropdown-item py-1" onclick="goalNonfin()" href="#!">Financial Goal</a>
-                      <div role="separator" class="dropdown-divider"></div>
-                      <a id="financialBtn" class="dropdown-item py-1" onclick="goalFin()" href="#!">Non-Financial Goal</a>
+                      <a id="financialBtn" class="dropdown-item py-1" onclick="addGoal('objectiveFin')" href="#!">Non-Financial Goal</a>
                     </div>
                   </div>
-                </div>
-                <div id="accountGoals">
-                  <p class="mb-1">
-                    <strong>Account Objectives (max. 5)</strong>
-                  </p>
-                  <ul id="objectiveAccount" class="pl-0">
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                  </ul>
                 </div>
                 <div id="nonFinancialGoals">
                   <p class="mb-1">
                     <strong>Non-Financial Objectives</strong>
                   </p>
                   <ul id="objectiveNonfin" class="pl-0">
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+
                   </ul>
                 </div>
                 <div id="financialGoals">
@@ -107,9 +112,7 @@
                     <strong>Financial Objectives</strong>
                   </p>
                   <ul id="objectiveFin" class="pl-0">
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
-                    <li class="bg-hover mt-1 px-2">Sample Goals</li>
+
                   </ul>
                 </div>
               </div>
@@ -119,16 +122,19 @@
                 <h5>Others</h5>
                 <div id="strategy-revision">
                   <span>Strategy Revision</span>
-                  <div class="diveditable bg-hover w-75 p-1" placeholder="Notes on the strategy revision process" contenteditable="true"></div>
+                  <div id="client-rstrategy" class="diveditable bg-hover w-75 p-1" placeholder="Notes on the strategy revision process" contenteditable="true"></div>
                 </div>
+                <textarea id="server-rstrategy" name="revisionStrategy" class="d-none"></textarea>
                 <div id="journal-revision">
                   <span>Journal Revision</span>
-                  <div class="diveditable bg-hover w-75 p-1" placeholder="Notes on the journal revision process" contenteditable="true"></div>
+                  <div id="client-rjournal" class="diveditable bg-hover w-75 p-1" placeholder="Notes on the journal revision process" contenteditable="true"></div>
                 </div>
+                <textarea id="server-rjournal" name="revisionJournal" class="d-none"></textarea>
                 <div id="plan-revision">
                   <span>Trading Plan Revision</span>
-                  <div class="diveditable bg-hover w-75 p-1" placeholder="Notes on the trading plan revision process" contenteditable="true"></div>
+                  <div id="client-rplan" class="diveditable bg-hover w-75 p-1" placeholder="Notes on the trading plan revision process" contenteditable="true"></div>
                 </div>
+                <textarea id="server-rplan" name="revisionPlan" class="d-none"></textarea>
               </div>
 
             </div>
@@ -149,6 +155,10 @@
       </div>
     </div>
   </section>
+
+<script type="text/javascript">
+  var elements = <%- JSON.stringify(elements) %>;
+</script>
 
 <!-- <section> is inside partials -->
 </section>

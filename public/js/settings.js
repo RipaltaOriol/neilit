@@ -3,69 +3,145 @@ $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });
 
-// Goals
+// stores the goals's HTML to a variable
+var begGoal = `<li class="mt-2 py-0 font-16 goal-li">
+    <input type="text" value="`;
+var endGoal = `" class="goal">
+    <button type="button" class="float-right goal-delete" onclick="deleteGoal(this)">
+      <img class="icon-20" src="/imgs/icons/delete.svg">
+    </button>
+  </li>
+  `;
+
+// deletes a goal
+function deleteGoal(id) {
+  var deleteList = $('.goal-delete');
+  var current = deleteList.index(id);
+  var deleteGoal = $('.goal-li')[current]
+  var currentGoal = $('.goal')[current].value
+  // deletes the goal from the server
+  var data = {goal: currentGoal}
+  $.post('/' + currentUser.username + '/settings/deleteGoal', data)
+    .done((data) => {
+    // deletes the goal from the client
+    deleteGoal.remove();
+  })
+    .fail(() => {
+    // error
+  })
+};
+
+
+// adds a goal
 $("#addGoal").keypress(function(event) {
   if(event.which === 13) {
     // get the user's input
     var newGoal = $(this).val();
     $(this).val("");
-    var listGoals = document.getElementById('listGoals');
-    var countGoals = listGoals.getElementsByTagName('li').length;
-    // creates a new goad if there are less than five objectives
-    if (countGoals < 5) {
-      $("#listGoals").append('<li class="mt-2 font-16">' + newGoal + '</li>')
+    // creates a new goal if there are less than five objectives
+    if ($('#listGoals li').length < 5) {
+      // adds goal to the server
+      var data = {goal: newGoal}
+      $.post('/' + currentUser.username + '/settings/newGoal', data)
+        .done((data) => {
+        // adds the goal to the client
+        $("#listGoals").append(begGoal + newGoal + endGoal)
+      })
+        .fail(() => {
+        // error
+      })
     }
-    // prevents the form from submitting
-    event.preventDefault();
-    return false;
   }
 });
 
 // stores the strategy's HTML to a variable
-var frontStrategy = `<li class="mt-2 py-0">
-    <input type="text" name="strategy" value="`;
-var midStrategy = `" class="strategy">
-    <button type="button" class="float-right" onclick="deleteStrategy(`;
-
-var backStrategy = `)">
-        <img class="icon-20" src="/imgs/icons/delete.svg">
-      </button>
-    </li>`;
+var begStrategy = `<li class="mt-2 py-0 strategy-li">
+    <input type="text" value="
+  `;
+var endStrategy = `" class="strategy">
+    <button type="button" class="float-right strategy-delete" onclick="deleteStrategy(this)">
+      <img class="icon-20" src="/imgs/icons/delete.svg">
+    </button>
+  </li>
+  `;
 
 // deletes a strategy
-function deleteStrategy(index) {
-  var strategyList = document.getElementById('listStrategy');
-  var currentStrategy = strategyList.getElementsByTagName('li')[index];
-  var currentName = currentStrategy.getElementsByClassName('strategy')[0];
-  var currentBtn = currentStrategy.getElementsByTagName('button')[0];
-  currentName.remove();
-  currentBtn.remove();
-  // maps if existing strategies have been errased
-  if (index < strategies.length) {
-    currentStrategy.getElementsByClassName('map')[0].value = 1;
-  }
+function deleteStrategy(id) {
+  var deleteList = $('.strategy-delete');
+  var current = deleteList.index(id);
+  var deleteStrategy = $('.strategy-li')[current]
+  var currentStrategy = $('.strategy')[current].value
+  // deletes the strategy from the server
+  var data = {strategy: currentStrategy}
+  $.post('/' + currentUser.username + '/settings/deleteStrategy', data)
+    .done((data) => {
+    // deletes the strategy from the client
+    deleteStrategy.remove();
+  })
+    .fail(() => {
+    // error
+  })
 };
 
-// Estrategias
+// adds a strategy
 $("#addStrategy").keypress(function(event){
   if(event.which === 13){
-    // gets the user input
+    // gets the user's input
     var newStrategy = $(this).val();
     $(this).val("");
-    // gets the number of strategies and sets the new index
-    var strategiesList = document.getElementById('listStrategy');
-    var countStrategies = strategiesList.getElementsByTagName('li').length;
-    // adds a new strategy
-    $("#listStrategy").append(frontStrategy + newStrategy +
-      midStrategy +  countStrategies + backStrategy);
-    // prevents the form from submitting
-    event.preventDefault();
-    return false;
+    // adds the new strategy to the server
+    var data = {strategy: newStrategy}
+    $.post('/' + currentUser.username + '/settings/newStrategy', data)
+      .done((data) => {
+      // adds the new strategy to the client
+      $("#listStrategy").append(begStrategy + newStrategy + endStrategy);
+    })
+      .fail(() => {
+      // error
+    })
   }
 });
 
-//Para seleccionar la moneda base de la cuenta
+// changes the account's base currency
 $('.dropdown-menu li').on('click', function() {
-  var getValue = $(this).text();
-  $('.dropdown-select').text(getValue);
+  var changeCurrency = $(this).text();
+  // adds currency changes to the server
+  var data = {currency: changeCurrency}
+  $.post('/' + currentUser.username + '/settings/changeCurrency', data)
+    .done((data) => {
+    // adds currency changes to the client
+    $('.dropdown-select').text(changeCurrency);
+  })
+    .fail(() => {
+    // error
+  })
+});
+
+
+// changes dark mode preference
+$('#dark').change(() => {
+  var changeMode = $('#dark').is(':checked') ? '1' : '0'
+  // adds mode changes to the server
+  var data = {mode: changeMode}
+  $.post('/' + currentUser.username + '/settings/changeMode', data)
+    .done((data) => {
+    // success
+  })
+    .fail(() => {
+    // error
+  })
+});
+
+// changes sound preference
+$('#sound').change(() => {
+  var changeSound = $('#sound').is(':checked') ? '1' : '0'
+  // adds sound changes to the server
+  var data = {sound: changeSound}
+  $.post('/' + currentUser.username + '/settings/changeSound', data)
+    .done((data) => {
+    // success
+  })
+    .fail(() => {
+    // error
+  })
 });

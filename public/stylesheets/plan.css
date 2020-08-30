@@ -15,6 +15,15 @@ input { }
       border-color: #f7f7f7;
     }
 
+button.dropdown-select {
+  border: 0;
+  background-color: inherit;
+  color: #7b7b7b;
+}
+  button.dropdown-select:hover {
+    color: black;
+  }
+
 .journal-box {
   padding: 15px 20px;
   border-radius: 5pt;
@@ -88,6 +97,34 @@ input { }
       display: block;
     }
 
+.dropdown { }
+  .dropdown button:hover, .dropdown button:focus {
+    border: none;
+    outline: 0;
+  }
+
+.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+  .dropdown-menu li {
+    line-height: 1.5;
+    letter-spacing: 0.7px;
+    color: #7b7b7b;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+
+  .dropdown-menu li:hover {
+    background-color: #f7f7f7;
+    color: black;
+  }
+
 .checkmark {
   position: absolute;
   top: 0;
@@ -149,6 +186,23 @@ input { }
   border-radius: .25rem;
   padding: 0.25rem 0.5rem;
 }
+
+/* || Show plan highlight */
+.user-field {
+  padding: 0.15em 0.25em;
+}
+  .user-field:hover {
+    background-color: #f5bc87;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+
+.modal-body a {
+  color: #000000;
+}
+  .modal-body a:hover {
+    color: #ff8818;
+  }
 
 #title {
   font-size: 1.4rem;

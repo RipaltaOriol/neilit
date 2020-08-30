@@ -1,3 +1,8 @@
+DELETE FROM checklists;
+DELETE FROM objectives;
+DELETE FROM pln_positions;
+DELETE FROM pln_strategies;
+DELETE FROM plans;
 DELETE FROM comments;
 DELETE FROM telementanalysis;
 DELETE FROM telements;
@@ -8,7 +13,9 @@ DELETE FROM backtest_addons;
 DELETE FROM backtest;
 DELETE FROM entries;
 DELETE FROM timeframes;
+DELETE FROM goals;
 DELETE FROM strategies;
 DELETE FROM users;
 DELETE FROM pairs;
+DELETE FROM currencies;
 DELETE FROM roles;

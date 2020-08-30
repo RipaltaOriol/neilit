@@ -165,19 +165,15 @@ hr.profile {
   }
 
 /* || Profile picture */
-.profile-picture {
-
-}
-  .profile-picture:hover {
-
-  }
+.profile-picture { }
+  .profile-picture:hover { }
 
 /* || Boton Logout */
 .btn-logout {
   background: white;
   color: var(--red-fuerte);
   border-radius: 7px;
-  border: 2px solid var(--red-fuerte);
+  border: 1px solid var(--red-fuerte);
   padding: 3px 15px;
 }
 
@@ -205,26 +201,6 @@ hr.profile {
     background: var(--orange);
     transition-duration: .25s;
   }
-
-/* ||Utility Boton Save */
-.boton-save{
-  padding: 3px 15px;
-  border: 2px solid var(--azul-primario);
-  border-radius: 7px;
-  transition-duration: .25s;
-  background: white;
-  color: var(--azul-primario);
-}
-  .boton-save:hover{
-    color: white;
-    border: 2px solid var(--azul-primario);;
-    background: var(--azul-primario);
-    transition-duration: .25s;
-  }
-
-#initial-balance{
-  width: 150px;
-}
 
 .FAQ {
   color: #7b7b7b;
@@ -305,6 +281,12 @@ hr.profile {
     border-radius: 50%;
   }
 
+.dropdown { }
+  .dropdown button:hover, .dropdown button:focus {
+    border: none;
+    outline: 0;
+  }
+
 .dropdown-menu {
   padding: 0;
   margin: 0;
@@ -314,25 +296,18 @@ hr.profile {
   -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
-
-.dropdown button:hover, .dropdown button:focus {
-  border: none;
-  outline: 0;
-}
-
-.dropdown-menu li {
-  line-height: 1.5;
-  letter-spacing: 0.7px;
-  color: var(--grey-texto);
-  font-size: 16px;
-  cursor: pointer;
-  padding: 5px 10px;
-}
-
-.dropdown-menu li:hover {
-  background-color: var(--grey-flojo);
-  color: black;
-}
+  .dropdown-menu li {
+    line-height: 1.5;
+    letter-spacing: 0.7px;
+    color: var(--grey-texto);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+  .dropdown-menu li:hover {
+    background-color: var(--grey-flojo);
+    color: black;
+  }
 
 .info {
   transform: translateX(35px);
@@ -358,14 +333,38 @@ hr.profile {
       color: #000000;
     }
 
-  /*Custom dropdown*/
-  #dLabel {
+#listGoals { }
+  #listStrategy ul{
+    border-radius: 7px;
+  }
+  #listGoals li {
+    font-size: 16px;
+    border-radius: 7px;
+  }
+  #listGoals button {
+    background: none;
+    border: none;
+  }
+  #listGoals input {
+    color: #7b7b7b;
+    background: none;
+  }
+    #listGoals input:focus {
+      color: #000000;
+    }
+
+/*Custom dropdown*/
+#dLabel {
   border-radius: 7px;
   border: 0;
   text-align: left;
   background-color: inherit;
   color: var(--grey-texto);
+}
+  #dLabel:hover {
+    color: black;
   }
-    #dLabel:hover {
-      color: black;
-    }
+
+#initial-balance{
+  width: 150px;
+}

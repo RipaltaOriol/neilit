@@ -35,7 +35,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
   var selectTas = 'SELECT id, pair_id, DATE_FORMAT(created_at, "%d de %M %Y") AS created_long FROM tanalysis WHERE user_id = ?;'
   var allTas = {
     id: [],
-    title: [],
+    title: []
   }
   connection.query(selectTas, req.user.id, (err, results) => {
     if (err) throw err;

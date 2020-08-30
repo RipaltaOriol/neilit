@@ -16,7 +16,7 @@ function strategyHtml(strategies){
   return `
     <span class="d-flex py-2 mb-2 strategy ta-element">
       <input type="text" name="type" value="strategy" class="d-none">
-      <div class="strategy-option w-50 d-flex flex-column px-2">
+      <div class="strategy-option w-50 d-flex flex-column px-2 mr-auto">
         <h5 class="mb-1">Strategy:</h5>
         <select class="custom-select py-1 mb-2" name="strategy">
           `
@@ -33,7 +33,7 @@ function strategyHtml(strategies){
           <button type="button" class="trigger btn-neilit mr-2" onclick="isImportance(this, 'trigger')">Desencadenante</button>
         </div>
       </div>
-      <div class="widget-trigger px-2 d-none">
+      <div class="widget-trigger px-2 d-none w-100">
         <h5 class="mb-0">Strategy - Desencadenante</h5>
         <p class="mb-0">
           A
@@ -42,7 +42,7 @@ function strategyHtml(strategies){
           <span class="timeframe-trigger px-1"></span>
         </p>
       </div>
-      <div class="widget-general px-2 d-none">
+      <div class="widget-general px-2 d-none w-100">
         <p class="mb-0">
           Strategy - General: a
           <span class="strategy-general px-1"></span>
@@ -51,7 +51,7 @@ function strategyHtml(strategies){
         </p>
       </div>
       <input type="text" name="importance" class="d-none">
-      <span class="d-flex ml-auto">
+      <span class="d-flex">
         <img src="/imgs/icons/move.svg" alt="move" class="move">
         <img src="/imgs/icons/delete.svg" alt="delete" class="drop" onclick="whatIndex(this)">
       </span>
@@ -115,7 +115,7 @@ function editStrategy(strategies, st, tf) {
   return `
     <span class="d-flex py-2 mb-2 strategy ta-element">
       <input type="text" name="type" value="strategy" class="d-none">
-      <div class="strategy-option w-50 d-flex flex-column px-2">
+      <div class="strategy-option w-50 d-flex flex-column px-2 mr-auto">
         <h5 class="mb-1">Strategy:</h5>
         <select class="custom-select py-1 mb-2" name="strategy">
           `
@@ -132,7 +132,7 @@ function editStrategy(strategies, st, tf) {
           <button type="button" class="trigger btn-neilit mr-2" onclick="isImportance(this, 'trigger')">Desencadenante</button>
         </div>
       </div>
-      <div class="widget-trigger px-2 d-none">
+      <div class="widget-trigger px-2 d-none w-100">
         <h5 class="mb-0">Strategy - Desencadenante</h5>
         <p class="mb-0">
           A
@@ -141,7 +141,7 @@ function editStrategy(strategies, st, tf) {
           <span class="timeframe-trigger px-1"></span>
         </p>
       </div>
-      <div class="widget-general px-2 d-none">
+      <div class="widget-general px-2 d-none w-100">
         <p class="mb-0">
           Strategy - General: a
           <span class="strategy-general px-1"></span>
@@ -150,7 +150,7 @@ function editStrategy(strategies, st, tf) {
         </p>
       </div>
       <input type="text" name="importance" class="d-none">
-      <span class="d-flex ml-auto">
+      <span class="d-flex">
         <img src="/imgs/icons/move.svg" alt="move" class="move">
         <img src="/imgs/icons/delete.svg" alt="delete" class="drop" onclick="whatIndex(this)">
       </span>

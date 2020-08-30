@@ -1,10 +1,29 @@
 let express = require('express');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
+let currencies = require('../models/currencies');
 let timeframes = require('../models/timeframes');
 let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware');
 let connection = require('../models/connectDB');
+
+// SETTINGS ROUTE
+router.get("/settings", middleware.isLoggedIn, (req, res) => {
+  var selectGoals = 'SELECT goal FROM goals WHERE user_id = ?';
+  var goals = []
+  connection.query(selectGoals, req.user.id, (err, getGoals) => {
+    getGoals.forEach((result) => {
+      goals.push(result.goal)
+    });
+    res.render("user/settings",
+      {
+        strategies:userStrategies,
+        currencies: currencies,
+        goals: goals
+      }
+    );
+  })
+})
 
 // DASHBOARD USER ROUTE
 router.get("", middleware.isLoggedIn, (req, res) => {
@@ -12,19 +31,88 @@ router.get("", middleware.isLoggedIn, (req, res) => {
   res.render("user/user");
 })
 
-// SETTINGS ROUTE
-router.get("/settings", middleware.isLoggedIn, (req, res) => {
-  res.render("user/settings", {strategies:userStrategies});
+// STATISTICS ROUTE
+router.get("/statistics", middleware.isLoggedIn, (req, res) => {
+  // FIXME: only filter the ones for the current user
+  // NOTE: maybe you want ot have this queries defiened in the route
+  var countResult = `
+  SELECT
+    (SELECT COUNT(*) FROM entries WHERE result = 'win' AND user_id = ?) AS WinCount,
+    (SELECT COUNT(*) FROM entries WHERE result = 'loss' AND user_id = ?) AS LossCount,
+    (SELECT COUNT(*) FROM entries WHERE result = "be" AND user_id = ?) AS BECount
+  FROM entries;
+  `;
+  var countDirection = `
+  SELECT
+    (SELECT COUNT(*) FROM entries WHERE direction = "long" AND user_id = ?) AS LongCount,
+    (SELECT COUNT(*) FROM entries WHERE direction = "short" AND user_id = ?) AS ShortCount
+  FROM entries;
+  `
+  var placeholderResult = [req.user.id, req.user.id, req.user.id]
+  var placeholderDirection = [req.user.id, req.user.id]
+
+  var countStrategy = 'SELECT COUNT(*) FROM entries WHERE strategy_id = ? AND user_id = ?;';
+  var countStrategyWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND strategy_id = ? AND user_id = ?;';
+  var countStrategyLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND strategy_id = ? AND user_id = ?;';
+  var countStrategyBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND strategy_id = ? AND user_id = ?;';
+  var countAsset = 'SELECT COUNT(*) FROM entries WHERE pair_id = ? AND user_id = ?;';
+  var countAssetWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND pair_id = ? AND user_id = ?;';
+  var countAssetLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND pair_id = ? AND user_id = ?;';
+  var countAssetBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND pair_id = ? AND user_id = ?;';
+  var countTimeframe = 'SELECT COUNT(*) FROM entries WHERE timeframe_id = ? AND user_id = ?;';
+  var countTimeframeWin = 'SELECT COUNT(*) FROM entries WHERE result = "win" AND timeframe_id = ? AND user_id = ?;';
+  var countTimeframeLoss = 'SELECT COUNT(*) FROM entries WHERE result = "loss" AND timeframe_id = ? AND user_id = ?;';
+  var countTimeframeBe = 'SELECT COUNT(*) FROM entries WHERE result = "be" AND timeframe_id = ? AND user_id = ?;';
+
+  connection.query(countResult, placeholderResult, (err, result) => {
+    if (err) throw err;
+    var statsResult = result[0]
+    connection.query(countDirection, placeholderDirection, (err, direction) => {
+      if (err) throw err;
+      var statsDirection = direction[0]
+      res.render("user/statistics",
+        {
+          statsResult:statsResult,
+          statsDirection:statsDirection
+        }
+      );
+    })
+  })
+});
+
+// TRADING PLAN ROUTE
+router.get("/plan", middleware.isLoggedIn, (req, res) => {
+  // COMBAK: ensure that order is descending in terms of created_at
+  var selectPlans = 'SELECT id, title, DATE_FORMAT(created_at, "%d/%m/%Y") AS date FROM plans WHERE user_id = ?';
+  connection.query(selectPlans, req.user.id, (err, getPlans) => {
+    if (err) throw err;
+    // Object to store the Plans
+    var plans = {
+      id: [],
+      title: [],
+      date: []
+    }
+    getPlans.forEach((result) => {
+      plans.id.push(result.id);
+      plans.title.push(result.title);
+      plans.date.push(result.date);
+    });
+    res.render("user/plan", {plans:plans});
+  })
 })
 
 // RISK CALCULATOR ROUTE
 router.get("/calculator", middleware.isLoggedIn, (req, res) => {
-  res.render("user/calculator", {currencies:pairs});
-})
-
-// TRADING PLAN ROUTE
-router.get("/plan", middleware.isLoggedIn, (req, res) => {
-  res.render("user/plan");
+  connection.query('SELECT currency_id FROM users WHERE id = ?', req.user.id, (err, getCurrency) => {
+    if (err) throw err;
+    var currency = currencies[getCurrency[0].currency_id - 1]
+    res.render("user/calculator",
+      {
+        currencies:pairs,
+        currency:currency
+      }
+    );
+  })
 })
 
 // JOURNAL ROUTE
