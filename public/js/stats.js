@@ -24,7 +24,7 @@ var popularAssetsChart = new Chart(donutChartWidgetTradesWinBELoss,{
     labels:['Win', 'Break Even', 'Loss'],
     datasets:[{
       label:'LABEL',
-      data:[statsResult.WinCount, statsResult.BECount, statsResult.LossCount],
+      data:[counter.counterWin, counter.counterBE, counter.counterLoss],
       //Se dibujará debajo el gráfico que tenga menor orden. Si es el más pequeño, será el del fondo.
       order:2,
       backgroundColor:[
@@ -77,7 +77,7 @@ var orderDirection = new Chart(orderDirection,{
       //Este sería el título de la gráfica, pero lo hemos ocultado con legend>display>false.Es lo que se ve al hacer hover.
       label:'LABEL',
       //Número de operaciones que se han realizado. Siguiente orden: [WIN, BE, LOSS]
-      data:[statsDirection.LongCount, statsDirection.ShortCount],
+      data:[counter.counterLong, counter.counterShort],
       //Se dibujará debajo el gráfico que tenga menor orden. Si es el más pequeño, será el del fondo.
       order:2,
       //Seleccionamos el color de cada barra en rgb.
