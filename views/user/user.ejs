@@ -15,7 +15,7 @@
             </div>
             <!--IMPORTANT: by clicking on the  img above, the user must be able to close the widget-->
             <a href="#" class="mr-2">
-              <img src="../../imgs/icons/close-white.svg" class="py-1 imagen-widget opacity-1" alt="Close">
+              <img src="/imgs/icons/close-white.svg" class="py-1 imagen-widget opacity-1" alt="Close">
             </a>
           </div>
           <!-- Content of "Whats new" goes here!-->
@@ -48,11 +48,11 @@
           <div class="superior-widget d-flex flex-row justify-content-between mt-2">
             <!--Superior Izquierda Widget-->
             <div class="d-flex flex-row align-items-center">
-              <img src="../../imgs/icons/profits.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+              <img src="/imgs/icons/profits.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
               <h5 class="mb-0 py-1">Current Balance</h5>
             </div>
             <!--Superior Derecha Widget-->
-            <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
           </div>
           <!--PARTE CENTRAL DEL WIDGET-->
           <a href="#" class="">
@@ -60,12 +60,15 @@
               <div class="parte-central">
                 <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
                 <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-                <h1 class="black-h1"><span>$</span>20.478</h1>
+                <h1 class="black-h1"><%= dashboardData.currentAmount%> <%=dashboardData.base%></h1>
               </div>
               <div class="">
-                <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
-                <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
-                <p class="pill pill-verde font-16"><img src="../../imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2" alt="">21.78%</p>
+                <% if (dashboardData.currentPercent >= 0) { %>
+                  <p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">
+                <% } else { %>
+                  <p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2">
+                <% } %>
+                  <%= dashboardData.currentPercent %></p>
               </div>
             </div>
           </a>
@@ -75,14 +78,14 @@
             <a href="#">
               <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
                 <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-                <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+                <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
               </div>
             </a>
             </div>
             <div class="">
             <a href="#">
               <div class="d-flex flex-row justify-content-center align-items-center">
-                <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+                <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
               </div>
             </a>
             </div>
@@ -93,7 +96,7 @@
           <div class="superior-widget d-flex flex-row justify-content-between mt-2">
             <!--Superior Izquierda Widget-->
             <div class="d-flex flex-row align-items-center">
-              <img src="../../imgs/icons/star.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+              <img src="/imgs/icons/star.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
               <h5 class="mb-0 py-1">Biggest Trade</h5>
             </div>
             <!--Superior Derecha Widget-->
@@ -102,18 +105,17 @@
                 <!--Dropdown temporalidad widget-->
                 <div class="dropdown">
                   <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Current week
+                    All
                   </button>
-                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
-                    <li>Custom period</li>
+                    <li onclick="getBiggest('today')">Today</li>
+                    <li onclick="getBiggest('cweek')">Current week</li>
+                    <li onclick="getBiggest('lweek')">Last week</li>
+                    <li onclick="getBiggest('cmonth')">Current month</li>
+                    <li onclick="getBiggest('lmonth')">Last month</li>
+                    <li onclick="getBiggest('cquarter')">Current quarter</li>
+                    <li onclick="getBiggest('lquarter')">Last quarter</li>
+                    <li onclick="getBiggest('all')">All</li>
                   </ul>
                 </div>
               </div>
@@ -125,12 +127,10 @@
               <div class="parte-central">
                 <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
                 <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-                <h1 class="black-h1">EURUSD</h1>
+                <h1 class="black-h1"><%= dashboardData.biggestPair %></h1>
               </div>
               <div class="">
-                <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
-                <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
-                <p class="pill pill-verde font-16"><img src="../../imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2" alt="">9.57%</p>
+                <p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2"><%= dashboardData.biggestPercent %>%</p>
               </div>
             </div>
           </a>
@@ -140,14 +140,14 @@
             <a href="#">
               <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
                 <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-                <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+                <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
               </div>
             </a>
             </div>
             <div class="">
             <a href="#">
               <div class="d-flex flex-row justify-content-center align-items-center">
-                <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+                <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
               </div>
             </a>
             </div>
@@ -158,7 +158,7 @@
           <div class="superior-widget d-flex flex-row justify-content-between mt-2">
             <!--Superior Izquierda Widget-->
             <div class="d-flex flex-row align-items-center">
-              <img src="../../imgs/icons/folder.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+              <img src="/imgs/icons/folder.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
               <h5 class="mb-0 py-1">Total Entries</h5>
             </div>
             <!--Superior Derecha Widget-->
@@ -167,18 +167,18 @@
                 <!--Dropdown temporalidad widget-->
                 <div class="dropdown">
                   <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Current week
+                    All
                   </button>
                   <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
-                    <li>Custom period</li>
+                    <li onclick="getTotal('today')">Today</li>
+                    <li onclick="getTotal('cweek')">Current week</li>
+                    <li onclick="getTotal('lweek')">Last week</li>
+                    <li onclick="getTotal('cmonth')">Current month</li>
+                    <li onclick="getTotal('lmonth')">Last month</li>
+                    <li onclick="getTotal('cquarter')">Current quarter</li>
+                    <li onclick="getTotal('lquarter')">Last quarter</li>
+                    <li onclick="getTotal('all')">All</li>
                   </ul>
                 </div>
               </div>
@@ -190,12 +190,15 @@
               <div class="parte-central">
                 <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
                 <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-                <h1 class="black-h1">7</h1>
+                <h1 class="black-h1"><%= dashboardData.total %></h1>
               </div>
               <div class="">
-                <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
-                <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
-                <p class="pill pill-verde font-16"><img src="../../imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2" alt="">60% wins</p>
+              <% if (dashboardData.rate > 10) { %>
+                <p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">
+              <% } else { %>
+                <p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2">
+              <% } %>
+                <%= dashboardData.rate %>% wins</p>
               </div>
             </div>
           </a>
@@ -205,14 +208,14 @@
             <a href="#">
               <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
                 <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-                <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+                <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
               </div>
             </a>
             </div>
             <div class="">
             <a href="#">
               <div class="d-flex flex-row justify-content-center align-items-center">
-                <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+                <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
               </div>
             </a>
             </div>
@@ -231,7 +234,7 @@
           <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
             <!--Superior Izquierda Widget-->
             <div class="d-flex flex-row align-items-center">
-                <img src="../../imgs/icons/wallet.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
+                <img src="/imgs/icons/wallet.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
               <h5 class="mb-0 py-1">Outcome</h5>
             </div>
             <!--Superior Derecha Widget-->
@@ -240,7 +243,7 @@
                 <!--Dropdown temporalidad widget-->
                 <div class="dropdown">
                   <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Current week
+                    All
                   </button>
                   <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -249,9 +252,9 @@
                     <li>Last week</li>
                     <li>Current month</li>
                     <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
-                    <li>Custom period</li>
+                    <li>Current quarter</li>
+                    <li>Last quarter</li>
+                    <li>All</li>
                   </ul>
                 </div>
               </div>
@@ -276,7 +279,7 @@
           <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
             <!--Superior Izquierda Widget-->
             <div class="d-flex flex-row align-items-center">
-                <img src="../../imgs/icons/open-ops.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
+                <img src="/imgs/icons/open-ops.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
               <h5 class="mb-0 py-1">Open positions</h5>
             </div>
           </div>
@@ -311,7 +314,7 @@
                       <td>
                         <div class=" d-flex flex-row justify-content-center">
                           <p class="mb-0 pill pill-verde pill-direction">
-                            <img src="../../imgs/icons/trending-up-green.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
+                            <img src="/imgs/icons/trending-up-green.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
                             Long
                           </p>
                         </div>
@@ -342,7 +345,7 @@
                       <td>
                         <div class=" d-flex flex-row justify-content-center">
                           <p class="mb-0 pill pill-roja pill-direction">
-                            <img src="../../imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
+                            <img src="/imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
                             Short
                           </p>
                         </div>
@@ -371,7 +374,7 @@
                       <td>
                         <div class=" d-flex flex-row justify-content-center">
                           <p class="mb-0 pill pill-roja pill-direction">
-                            <img src="../../imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
+                            <img src="/imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
                             Short
                           </p>
                         </div>
@@ -419,7 +422,7 @@
                 <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
                   <!--Superior Izquierda Widget-->
                   <div class="d-flex flex-row align-items-center">
-                      <img src="../../imgs/icons/flag.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
+                      <img src="/imgs/icons/flag.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
                     <h5 class="mb-0 py-1">Goals</h5>
                   </div>
                 </div>

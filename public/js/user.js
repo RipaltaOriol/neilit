@@ -1,3 +1,21 @@
+// dropdown to select a time period for statistics
+$('.dropdown-menu li').on('click', function() {
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  $('.dropdown-select')[current].innerHTML = getValue;
+});
+
+// retrieves the biggest trade from the selected time period
+function getBiggest(period) {
+  console.log(period);
+}
+
+// retrieves the total entries from the selected time period
+function getTotal(period) {
+  console.log(period);
+}
+
 const ctx = document.getElementById('resultsChart');
 if (ctx != null) {
   ctx.getContext('2d');
