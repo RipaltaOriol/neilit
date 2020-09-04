@@ -23,14 +23,14 @@
                 </button>
                 <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                 <ul class="dropdown-menu" aria-labelledby="dLabel">
-                  <li>Today</li>
-                  <li>Current week</li>
-                  <li>Last week</li>
-                  <li>Current month</li>
-                  <li>Last month</li>
-                  <li>Current semester</li>
-                  <li>Last semester</li>
-                  <li>All</li>
+                  <li onclick="getProfits('today')">Today</li>
+                  <li onclick="getProfits('cweek')">Current week</li>
+                  <li onclick="getProfits('lweek')">Last week</li>
+                  <li onclick="getProfits('cmonth')">Current month</li>
+                  <li onclick="getProfits('lmonth')">Last month</li>
+                  <li onclick="getProfits('cquarter')">Current quarter</li>
+                  <li onclick="getProfits('lquarter')">Last quarter</li>
+                  <li onclick="getProfits('all')">All</li>
                   <li>Custom period</li>
                 </ul>
               </div>
@@ -43,12 +43,16 @@
             <div class="parte-central">
               <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
               <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-              <h1 class="black-h1">--%</h1>
+              <h1 id="profits-percent" class="black-h1"><%= counter.profitsPer %>%</h1>
             </div>
-            <div class="">
-              <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
-              <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
-              <p class="pill pill-verde font-16"><img src="../../imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2" alt="">--[currency]</p>
+            <div id="profits-amount">
+              <% if (counter.profitsAmt >= 0) { %>
+                <p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">
+              <% } else { %>
+                <p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2">
+              <% } %>
+                <%= (Math.round((counter.profitsAmt + Number.EPSILON) * 100) / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> <%= userBase %>
+              </p>
             </div>
           </div>
         </a>
@@ -58,14 +62,14 @@
           <a href="#">
             <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
               <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="../../imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
             </div>
           </a>
           </div>
           <div class="">
           <a href="#">
             <div class="d-flex flex-row justify-content-center align-items-center">
-              <img src="../../imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+              <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
           </div>
@@ -88,17 +92,15 @@
                 <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   All
                 </button>
-                <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                 <ul class="dropdown-menu" aria-labelledby="dLabel">
-                  <li>Today</li>
-                  <li>Current week</li>
-                  <li>Last week</li>
-                  <li>Current month</li>
-                  <li>Last month</li>
-                  <li>Current semester</li>
-                  <li>Last semester</li>
-                  <li>All</li>
-                  <li>Custom period</li>
+                  <li onclick="getEntries('today')">Today</li>
+                  <li onclick="getEntries('cweek')">Current week</li>
+                  <li onclick="getEntries('lweek')">Last week</li>
+                  <li onclick="getEntries('cmonth')">Current month</li>
+                  <li onclick="getEntries('lmonth')">Last month</li>
+                  <li onclick="getEntries('cquarter')">Current quarter</li>
+                  <li onclick="getEntries('lquarter')">Last quarter</li>
+                  <li onclick="getEntries('all')">All</li>
                 </ul>
               </div>
             </div>
@@ -146,17 +148,15 @@
                 <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   All
                 </button>
-                <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                 <ul class="dropdown-menu" aria-labelledby="dLabel">
-                  <li>Today</li>
-                  <li>Current week</li>
-                  <li>Last week</li>
-                  <li>Current month</li>
-                  <li>Last month</li>
-                  <li>Current semester</li>
-                  <li>Last semester</li>
-                  <li>All</li>
-                  <li>Custom period</li>
+                  <li onclick="getBestAsset('today')">Today</li>
+                  <li onclick="getBestAsset('cweek')">Current week</li>
+                  <li onclick="getBestAsset('lweek')">Last week</li>
+                  <li onclick="getBestAsset('cmonth')">Current month</li>
+                  <li onclick="getBestAsset('lmonth')">Last month</li>
+                  <li onclick="getBestAsset('cquarter')">Current quarter</li>
+                  <li onclick="getBestAsset('lquarter')">Last quarter</li>
+                  <li onclick="getBestAsset('all')">All</li>
                 </ul>
               </div>
             </div>
@@ -168,15 +168,21 @@
             <div class="parte-central">
               <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
               <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-              <h1 class="black-h1">9.78%</h1>
+              <h1 id="best-asset-percent" class="black-h1"><%= Math.round(((Math.max(...assetStats.percent)) + Number.EPSILON) * 100) / 100 %>%</h1>
             </div>
-            <div class="d-flex flex-row justify-content-center align-items-center">
+            <div id="best-asset-amount" class="d-flex flex-row justify-content-center align-items-center">
               <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
               <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
               <a href="#">
-                <p class="pill mx-1 font-16 grey">EUR/USD</p>
+                <p class="pill mx-1 font-16 grey"><%= pairs[assetStats.percent.indexOf(Math.max(...assetStats.percent))] %></p>
               </a>
-              <p class="pill pill-verde font-16 mx-1"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2" alt="">1.956€</p>
+              <% if (Math.max(...assetStats.percent) >= 0) { %>
+                <p class="pill pill-verde font-16 mx-1"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">
+              <% } else { %>
+                <p class="pill pill-roja font-16 mx-1"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2">
+              <% } %>
+                <%= (Math.round(assetStats.amount[assetStats.percent.indexOf(Math.max(...assetStats.percent))] * 100) / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> <%= userBase %>
+              </p>
             </div>
             </a>
           </div>
@@ -229,8 +235,8 @@
                     <li>Last week</li>
                     <li>Current month</li>
                     <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
+                    <li>Current quarter</li>
+                    <li>Last quarter</li>
                     <li>All</li>
                     <li>Custom period</li>
                   </ul>
@@ -267,38 +273,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Double top</a></th>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Trendline brake</a></th>
-                    <td>5</td>
-                    <td><p class="mb-0 pill pill-verde">3.45%</p></td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">False breakout</a></th>
-                    <td>2</td>
-                    <td><p class="mb-0 pill pill-roja">-2%</p></td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Resistance test</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
+                  <% for (const property in strategyStats) { %>
+                    <tr>
+                      <th scope="row" class="align-middle"><a href="#" class="grey"><%= strategyStats[property].name %></a></th>
+                      <td><%= strategyStats[property].quantity %></td>
+                      <td>
+                        <% if (strategyStats[property].quantity == 0) { %>
+                          0
+                        <% } else { %>
+                          <% if (strategyStats[property].percentage/strategyStats[property].quantity >= 0) { %>
+                            <p class="mb-0 pill pill-verde">
+                              <%= strategyStats[property].percentage/strategyStats[property].quantity %>%
+                            </p>
+                          <% } else { %>
+                            <p class="mb-0 pill pill-roja">
+                              <%= strategyStats[property].percentage/strategyStats[property].quantity %>%
+                            </p>
+                          <% } %>
+                        <% } %>
+                      </td>
+                      <td><%= strategyStats[property].wins %></td>
+                      <td><%= strategyStats[property].be %></td>
+                      <td><%= strategyStats[property].losses %></td>
+                    </tr>
+                  <% } %>
                 </tbody>
               </table>
             </div>
@@ -357,8 +355,8 @@
                     <li>Last week</li>
                     <li>Current month</li>
                     <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
+                    <li>Current quarter</li>
+                    <li>Last quarter</li>
                     <li>All</li>
                     <li>Custom period</li>
                   </ul>
@@ -395,62 +393,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">EURUSD</a></th>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">GBPUSD</a></th>
-                    <td>5</td>
-                    <td><p class="mb-0 pill pill-verde">3.45%</p></td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">USD/JPY</a></th>
-                    <td>2</td>
-                    <td><p class="mb-0 pill pill-roja">-2%</p></td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">EURCAD</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">AUDCAD</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">NZDCAD</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">EURCHF</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
+                  <% for (var i = 6; i > -1; i--) { %>
+                    <tr>
+                      <th scope="row" class="align-middle"><a href="#" class="grey"><%= pairs[assetStats.showcase[i][1]] %></a></th>
+                      <td><%= assetStats.showcase[i][0] %></td>
+                      <td>
+                        <% if (assetStats.showcase[i][0] == 0) { %>
+                          0
+                        <% } else { %>
+                          <% if (assetStats.percent[assetStats.showcase[i][1]]/assetStats.showcase[i][0] >= 0) { %>
+                            <p class="mb-0 pill pill-verde">
+                              <%= assetStats.percent[assetStats.showcase[i][1]]/assetStats.showcase[i][0] %>%
+                            </p>
+                          <% } else { %>
+                            <p class="mb-0 pill pill-roja">
+                              <%= assetStats.percent[assetStats.showcase[i][1]]/assetStats.showcase[i][0] %>%
+                            </p>
+                          <% } %>
+                        <% } %>
+                      </td>
+                      <td><%= assetStats.wins[assetStats.showcase[i][1]] %></td>
+                      <td><%= assetStats.bevens[assetStats.showcase[i][1]] %></td>
+                      <td><%= assetStats.losses[assetStats.showcase[i][1]] %></td>
+                    </tr>
+                  <% } %>
                 </tbody>
               </table>
             </div>
@@ -509,8 +475,8 @@
                     <li>Last week</li>
                     <li>Current month</li>
                     <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
+                    <li>Current quarter</li>
+                    <li>Last quarter</li>
                     <li>All</li>
                     <li>Custom period</li>
                   </ul>
@@ -546,39 +512,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">5 min</a></th>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">15 min</a></th>
-                    <td>5</td>
-                    <!-- -->
-                    <td><p class="mb-0 pill pill-verde">3.45%</p></td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">1 hour</a></th>
-                    <td>2</td>
-                    <td><p class="mb-0 pill pill-roja">-2%</p></td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">4 hours</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
+                  <% for (var i = 6; i > -1; i--) { %>
+                    <tr>
+                      <th scope="row" class="align-middle"><a href="#" class="grey"><%= timeframes[timeframeStats.showcase[i][1]] %></a></th>
+                      <td><%= timeframeStats.showcase[i][0] %></td>
+                      <td>
+                        <% if (timeframeStats.showcase[i][0] == 0) { %>
+                          0
+                        <% } else { %>
+                          <% if (assetStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] >= 0) { %>
+                            <p class="mb-0 pill pill-verde">
+                              <%= timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] %>%
+                            </p>
+                          <% } else { %>
+                            <p class="mb-0 pill pill-roja">
+                              <%= timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] %>%
+                            </p>
+                          <% } %>
+                        <% } %>
+                      </td>
+                      <td><%= timeframeStats.wins[timeframeStats.showcase[i][1]] %></td>
+                      <td><%= timeframeStats.bevens[timeframeStats.showcase[i][1]] %></td>
+                      <td><%= timeframeStats.losses[timeframeStats.showcase[i][1]] %></td>
+                    </tr>
+                  <% } %>
                 </tbody>
               </table>
             </div>
@@ -637,8 +594,8 @@
                     <li>Last week</li>
                     <li>Current month</li>
                     <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
+                    <li>Current quarter</li>
+                    <li>Last quarter</li>
                     <li>All</li>
                     <li>Custom period</li>
                   </ul>
@@ -674,63 +631,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Monday</a></th>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Tuesday</a></th>
-                    <td>5</td>
-                    <!-- -->
-                    <td><p class="mb-0 pill pill-verde">3.45%</p></td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Weed-day</a></th>
-                    <td>2</td>
-                    <td><p class="mb-0 pill pill-roja">-2%</p></td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Thursday</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Free-day</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Saturday</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#" class="grey">Sunday</a></th>
-                    <td>21</td>
-                    <td><p class="pill pill-verde mb-0">2.32%</p></td>
-                    <td>15</td>
-                    <td>2</td>
-                    <td>4</td>
-                  </tr>
+                  <% for (const property in dayWeekStats) { %>
+                    <tr>
+                      <th scope="row" class="align-middle"><a href="#" class="grey"><%= dayWeekStats[property].name %></a></th>
+                      <td><%= dayWeekStats[property].quantity %></td>
+                      <td>
+                        <% if (dayWeekStats[property].quantity == 0) { %>
+                          0
+                        <% } else { %>
+                          <% if (dayWeekStats[property].percentage/dayWeekStats[property].quantity >= 0) { %>
+                            <p class="mb-0 pill pill-verde">
+                              <%= dayWeekStats[property].percentage/dayWeekStats[property].quantity %>%
+                            </p>
+                          <% } else { %>
+                            <p class="mb-0 pill pill-roja">
+                              <%= dayWeekStats[property].percentage/dayWeekStats[property].quantity %>%
+                            </p>
+                          <% } %>
+                        <% } %>
+                      </td>
+                      <td><%= dayWeekStats[property].wins %></td>
+                      <td><%= dayWeekStats[property].be %></td>
+                      <td><%= dayWeekStats[property].losses %></td>
+                    </tr>
+                  <% } %>
                 </tbody>
               </table>
             </div>
@@ -789,8 +713,8 @@
                     <li>Last week</li>
                     <li>Current month</li>
                     <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
+                    <li>Current quarter</li>
+                    <li>Last quarter</li>
                     <li>All</li>
                     <li>Custom period</li>
                   </ul>
@@ -854,8 +778,8 @@
                     <li>Last week</li>
                     <li>Current month</li>
                     <li>Last month</li>
-                    <li>Current semester</li>
-                    <li>Last semester</li>
+                    <li>Current quarter</li>
+                    <li>Last quarter</li>
                     <li>Custom period</li>
                   </ul>
                 </div>
@@ -955,8 +879,9 @@ iguhs sasdasd
 </section>
 
 <script type="text/javascript">
-  var statsResult = <%- JSON.stringify(statsResult) %>;
-  var statsDirection = <%- JSON.stringify(statsDirection) %>;
+  var currentUser = <%- JSON.stringify(currentUser); %>
+  var counter = <%- JSON.stringify(counter) %>;
+  var userBase = <%- JSON.stringify(userBase) %>;
 </script>
 
 <!-- <section> is inside partials -->

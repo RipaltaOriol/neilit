@@ -1,13 +1,27 @@
 /* FIXME: It's possible to clean the CSS code from this line till line number:  ________ */
 :root{
-  --gris-flojo: #F7F7F7;
-  --gris-medio: #EEEEEE;
-  --gris-fuerte: #E5E5E5;
-  --gris-texto: #7B7B7B;
-  --rojo-fuerte: #EE0000;
+  --grey-flojo: #F7F7F7;
+  --grey-medio: #EEEEEE;
+  --grey-fuerte: #E5E5E5;
+  --grey-texto: #7B7B7B;
+  --red-flojo: #FDDFDD;
+  --red-fuerte: #EE0000;
   --azul-primario: #007BFF;
+  --green-flojo: #CBF6E5;
+
   --naranja: #ff8818;
   --naranja-fuerte: #f57700;
+}
+
+/* || Utility */
+button {
+  background: none;
+  border: none;
+}
+
+/* || Utility */
+a:hover {
+  text-decoration: none;
 }
 
 /* || Utility */
@@ -26,6 +40,102 @@
   /* background: red; */
 }
 
+/* || Utility */
+.font-16{
+    font-size: 16px;
+  }
+
+/* || Utility */
+.grey {
+  color: #7b7b7b;
+}
+  .grey:hover {
+      background-color:  var(--grey-flojo);
+      border-radius: 7px;
+      color: black;
+  }
+  .grey a {
+    color: #7b7b7b;
+  }
+  .grey a:hover{
+    color: black;
+  }
+  .grey:hover img{
+    opacity: 1;
+  }
+
+.imagen-widget {
+  width: 20px;
+  height: auto;
+  opacity: .6;
+}
+
+.imagen-widget-change {
+  width: 25px;
+  height: auto;
+  opacity: .6;
+  border-radius: 7px;
+  transition-duration: .25s;
+}
+  .imagen-widget-change:hover {
+    opacity: 1;
+    transition-duration: .25s;
+    cursor: pointer;
+  }
+
+.imagen-widget-grande {
+  width: 25px;
+}
+
+/* || Utility */
+.pill {
+  padding: 1px 10px;
+  border-radius: 7px;
+}
+
+.pill-verde {
+  background: var(--green-flojo);
+  color: green;
+}
+
+.pill-amarilla { }
+
+.pill-roja {
+  background: var(--red-flojo);
+  color: red;
+}
+
+.pill-activo { }
+
+.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border-radius: 7px;
+  border: none;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+
+.dropdown button:hover, .dropdown button:focus {
+  border: none;
+  outline: 0;
+}
+
+.dropdown-menu li {
+  line-height: 1.5;
+  letter-spacing: 0.7px;
+  color: var(--grey-texto);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.dropdown-menu li:hover {
+  background-color: var(--grey-flojo);
+  color: black;
+}
+
 .container-updates{
   background: var(--naranja);
 }
@@ -35,6 +145,14 @@
 
 .widget-100{
   width: 100%;
+  border-radius: 7px;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+
+.widget-tercio {
+  width: 33.33%;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -82,3 +200,21 @@
 .progress-bar-orange{
   background-color: var(--naranja);
 }
+
+.inferior-widget {
+  border-top: 1px solid var(--grey-medio);
+  position: relative;
+  bottom: 0px;
+}
+
+.black-h1 {
+  color: black;
+  font-weight: 500;
+}
+
+#dLabel { }
+  #dLabel:hover {
+    color: black;
+  }
+
+  

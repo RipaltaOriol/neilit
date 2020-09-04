@@ -1,5 +1,4 @@
-//Para seleccionar la temporalidad que se muestra en los widgets de estadísticas
-// FIXME: hacer cada dropdown independiente
+// dropdown to select a time period for statistics
 $('.dropdown-menu li').on('click', function() {
   var allDD = $('.dropdown-menu');
   var current = allDD.index($(this).parent())
@@ -12,11 +11,67 @@ $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });
 
+// retrieves profits from the selected time period
+function getProfits(period) {
+  var profitsPercent = document.getElementById('profits-percent');
+  var profitsAmount = document.getElementById('profits-amount');
+  // makes an AJAX call with the corresponding data period
+  $.get('/' + currentUser.username + '/statistics/profits/' + period)
+    .done((data) => {
+      profitsPercent.innerHTML = data.percent + '%'
+      if (data.amount >= 0) {
+        profitsAmount.innerHTML = '<p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">'
+          + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
+      } else {
+        profitsAmount.innerHTML = '<p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2"'
+          + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
+      }
+  })
+    .fail(() => {
+      // error
+    })
+};
+
+// retrieves entry results from the selected time period
+function getEntries(period) {
+  // makes an AJAX call with the corresponding data period
+  $.get('/' + currentUser.username + '/statistics/entries/' + period)
+    .done((data) => {
+        popularAssetsChart.data.datasets[0].data = [data.wins, data.be, data.losses];
+        popularAssetsChart.update();
+  })
+    .fail(() => {
+      // error
+    })
+}
+
+// retrieves the best asset from the selected time period
+function getBestAsset(period) {
+  var bestAssetPercent = document.getElementById('best-asset-percent');
+  var bestAssetAmount = document.getElementById('best-asset-amount');
+  // makes an AJAX call with the corresponding data period
+  $.get('/' + currentUser.username + '/statistics/best-asset/' + period)
+    .done((data) => {
+      bestAssetPercent.innerHTML = data.percent + '%'
+      if (data.amount >= 0) {
+        bestAssetAmount.innerHTML = '<a href="#"><p class="pill mx-1 font-16 grey">' + data.pair + '</p></a>'
+          + '<p class="pill pill-verde font-16 mx-1"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">'
+          + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
+      } else {
+        bestAssetAmount.innerHTML = '<a href="#"><p class="pill mx-1 font-16 grey">' + data.pair + '</p></a>'
+          + '<p class="pill pill-roja font-16 mx-1"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2"'
+          + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
+      }
+  })
+    .fail(() => {
+      // error
+    })
+}
 
 //Gráficos
 //GRÁFICO DE ENTRADAS
 var donutChartWidgetTradesWinBELoss = document.getElementById('donutChartWidgetTradesWinBELoss').getContext('2d');
-var popularAssetsChart = new Chart(donutChartWidgetTradesWinBELoss,{
+var popularAssetsChart = new Chart(donutChartWidgetTradesWinBELoss, {
 
   //Determinamos que tipo de gráfico va a ser. En este caso, un gráfico de barras.
   type: 'doughnut',
@@ -24,7 +79,7 @@ var popularAssetsChart = new Chart(donutChartWidgetTradesWinBELoss,{
     labels:['Win', 'Break Even', 'Loss'],
     datasets:[{
       label:'LABEL',
-      data:[statsResult.WinCount, statsResult.BECount, statsResult.LossCount],
+      data:[counter.counterWin, counter.counterBE, counter.counterLoss],
       //Se dibujará debajo el gráfico que tenga menor orden. Si es el más pequeño, será el del fondo.
       order:2,
       backgroundColor:[
@@ -77,7 +132,7 @@ var orderDirection = new Chart(orderDirection,{
       //Este sería el título de la gráfica, pero lo hemos ocultado con legend>display>false.Es lo que se ve al hacer hover.
       label:'LABEL',
       //Número de operaciones que se han realizado. Siguiente orden: [WIN, BE, LOSS]
-      data:[statsDirection.LongCount, statsDirection.ShortCount],
+      data:[counter.counterLong, counter.counterShort],
       //Se dibujará debajo el gráfico que tenga menor orden. Si es el más pequeño, será el del fondo.
       order:2,
       //Seleccionamos el color de cada barra en rgb.

@@ -3,7 +3,7 @@
   <!-- CONTENT -->
   <div class="container mt-3 mb-5 mx-auto">
     <div class="journal-box px-0">
-      <form action="/<%= currentUser.username %>/journal/ta/<%= entry.id %>?_method=DELETE" method="POST">
+      <form action="/<%= currentUser.username %>/journal/entry/<%= entry.id %>?_method=DELETE" method="POST">
         <h3 class="mx-3"><%= entry.title %></h3>
         <hr>
         <div class="row mx-3">
