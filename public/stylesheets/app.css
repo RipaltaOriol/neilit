@@ -5,9 +5,28 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-SemiBold.ttf"); font-weight: 500;}
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
-:root{
-  --orange: #ff8818;
-  --orange-fuerte: #f57700;
+:root {
+
+  /* || LIGHT MODE & Base colors || */
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #4DAA57; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
+
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
 }
 
 /* || General styles */
@@ -57,7 +76,7 @@ input[type=search] {
   -webkit-box-sizing: content-box;
 }
   input[type=search]:focus {
-  	border-color: #ff8818;
+  	border-color: var(--neilit-1);
     box-shadow: 0 0 5px rgba(225,225,225,1);
   	-webkit-box-shadow: 0 0 5px rgba(225,225,225,1);
   	-moz-box-shadow: 0 0 5px rgba(225,225,225,1);
@@ -92,7 +111,7 @@ input[type=search] {
   border-radius: .25rem;
 }
   .bg-hover:hover {
-    background-color: #f7f7f7;
+    background-color: var(--grey-1);
   }
 
 /* || Utility */
@@ -107,12 +126,12 @@ input[type=search] {
     cursor: pointer;
   }
     .modal-body a:hover {
-      color: #ff8818;
+      color: var(--neilit-1);
     }
 
 /* || Utility */
 .bg-grey {
-  background-color: #f7f7f7;
+  background-color: var(--grey-1);
 }
 
 /* || Utility */
@@ -124,10 +143,10 @@ input[type=search] {
 
 /* || Utility */
 .orange {
-  color: #ff8818;
+  color: var(--neilit-1);
 }
   a.orange {
-    color: #ff8818;
+    color: var(--neilit-1);
     text-decoration: none;
   }
     a.orange:focus {
@@ -157,22 +176,21 @@ input[type=search] {
 .btn-neilit {
   font-size: 16px;
   color: white;
-  border: 0.5px solid #ff8818;
+  border: 0.5px solid var(--neilit-1);
   border-radius: .25rem;
-  background: #ff8818;
+  background: var(--neilit-1);
   transition-duration: .25s;
   padding: 0.25rem 0.5rem;
 }
   .btn-neilit:hover {
     color: white;
-    background-color: #f57700;
-  }
-
+    background-color: var(--neilit-2);
+}
 /* || Utility */
 .btn-inverted {
   font-size: 16px;
-  color: #ff8818;
-  border: 1.5px solid #ff8818;
+  color: var(--neilit-1);
+  border: 1.5px solid var(--neilit-1);
   border-radius: .25rem;
   background-color: white;
   transition-duration: .25s;
@@ -181,7 +199,7 @@ input[type=search] {
 }
   .btn-inverted:hover {
     color: white;
-    background-color: #ff8818;
+    background-color: var(--neilit-1);
     text-decoration: none;
     transition-duration: .25s;
   }
@@ -191,7 +209,7 @@ input[type=search] {
   background: white;
   padding: 5px 10px;
   border: none;
-  color: var(--orange);
+  color: var(--neilit-1);
   border-radius: 7px;
   transition-duration: .25s;
 }
@@ -240,7 +258,7 @@ input[type=search] {
   z-index: 1;
   top: 0;
   left: 0;
-  background: #ff8818;
+  background: var(--neilit-1);
   opacity: 1;
   overflow-x: hidden;
   transition: 0.5s;

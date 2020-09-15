@@ -1,10 +1,25 @@
-:root{
-  --gris-flojo: #F7F7F7;
-  --gris-medio: #EEEEEE;
-  --gris-fuerte: #E5E5E5;
-  --gris-texto: #7B7B7B;
-  --rojo-fuerte: #EE0000;
-  --azul-primario: #007BFF;
+:root {
+
+  /* || LIGHT MODE & Base colors || */
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #4DAA57; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
+
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
 }
 
 /* || General styles */
@@ -16,7 +31,7 @@ table {
     font-weight: normal;
     text-align: center;
     color: white;
-    border: 1px solid #ff8818;
+    border: 1px solid var(--neilit-1);
     margin: auto;
   }
     table th:nth-child(1){
@@ -35,7 +50,7 @@ tr { }
     background-color: white;
     color: grey;
     width: 40px;
-    border: 1px solid #ff8818;
+    border: 1px solid var(--neilit-1);
   }
   tr td{
     cursor: pointer;
@@ -47,7 +62,7 @@ td{
   border-radius: 7px;
 }
   td:hover{
-    background: var(--gris-medio);
+    background: var(--grey-2);
   }
     td a{
       color: black;
@@ -73,7 +88,7 @@ span .checkbox-orange {
     text-decoration: none;
   }
   .journal-box .btn-inverted {
-    color: #ff8818;
+    color: var(--neilit-1);
   }
     .journal-box .btn-inverted:hover {
       color: white;
@@ -85,7 +100,7 @@ span .checkbox-orange {
   }
 
 .info-box {
-  border: 1px solid #ced4da;
+  border: 3px solid purple;
   border-radius: .25rem;
 }
 
@@ -117,7 +132,7 @@ span .checkbox-orange {
     border-radius: 7px;
   }
     .ui-datepicker-prev:hover {
-      background: var(--gris-medio);
+      background: var(--grey-2);
       cursor: pointer;
     }
 
@@ -128,13 +143,13 @@ span .checkbox-orange {
     align-items: center;
   }
     .ui-datepicker-next:hover {
-      background: var(--gris-medio);
+      background: var(--grey-2);
       cursor: pointer;
     }
 
 .date-badge {
   display: block;
-  color: #ff8818;
+  color: var(--neilit-1);
 }
 
 .dropdown-menu {
@@ -146,13 +161,13 @@ span .checkbox-orange {
   }
     .dropdown-menu a:active{
       color: white;
-      background-color: #ff8818;
+      background-color: var(--neilit-1);
     }
 
 .widget-trigger { }
   .widget-trigger span {
     font-weight: bold;
-    color: #ff8818;
+    color: var(--neilit-1);
   }
 
 .widget-general { }
@@ -165,18 +180,19 @@ span .checkbox-orange {
   padding: 0 20px 0 20px;
   border-radius: .25rem;
 }
+  /*If the colours ara soft, change "1" for "2"*/
   .tag.win {
-    background: #10C0008B 0% 0% no-repeat padding-box;
+    background: var(--green-1) 0% 0% no-repeat padding-box;
   }
   .tag.loss {
-    background: #FF000080 0% 0% no-repeat padding-box;
+    background: var(--red-1) 0% 0% no-repeat padding-box;
   }
   .tag.be {
-    background: #FFCF18A6 0% 0% no-repeat padding-box;
+    background: var(--yellow) 0% 0% no-repeat padding-box;
   }
 
 .option-list {
-  background-color: #f7f7f7;
+  background-color: var(--grey-1);
   border-radius: .25rem;
 }
   .option-list:read-only {
@@ -198,26 +214,26 @@ span .checkbox-orange {
 }
   #client-comment:focus {
     color: black;
-    background-color: #f7f7f7;
+    background-color: var(--grey-1);
     border-radius: .25rem;
     outline: none;
   }
   #client-comment[placeholder]:empty:before {
     content: attr(placeholder);
-    color: #7b7b7b;
+    color: var(--grey-text);
   }
   #client-comment[placeholder]:empty:focus:before {
     content: "";
   }
 
 #add-e {
-  color: #ff8818;
+  color: var(--neilit-1);
   font-weight: 500;
   font-size: 16px;
   border-radius: .25rem;
 }
   #add-e:hover {
-    background-color: #f7f7f7;
+    background-color: var(--grey-1);
   }
   #add-e:focus {
     box-shadow: none;
@@ -234,7 +250,7 @@ span .checkbox-orange {
     text-decoration: underline;
   }
     #ta-content .title:hover {
-      background-color: #f7f7f7;
+      background-color: var(--grey-1);
     }
   #ta-content .text {
     width: 100%;
@@ -242,17 +258,17 @@ span .checkbox-orange {
     overflow: auto;
   }
     #ta-content .text:hover {
-      background-color: #f7f7f7;
+      background-color: var(--grey-1);
     }
     #ta-content .image div {
       border-radius: .25rem;
     }
       #ta-content .image div:hover {
-        background-color: #f7f7f7;
+        background-color: var(--grey-1);
       }
     #ta-content .image input {
       max-width: 300px;
-      border: 2px solid #ff8818;
+      border: 2px solid var(--neilit-1)
       border-radius: .25rem;
     }
   #ta-content .image-src {
@@ -263,7 +279,7 @@ span .checkbox-orange {
     border-radius: .25rem;
   }
     #ta-content .strategy div:hover {
-      background-color: #f7f7f7;
+      background-color: var(--grey-1);
     }
   #ta-content .move{
     display: inline;

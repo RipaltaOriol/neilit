@@ -1,3 +1,27 @@
+:root {
+
+  /* || LIGHT MODE & Base colors || */
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #4DAA57; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
+
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
+}
+
 /* || Bootstrap class */
 .container {
   max-width: 1025px;
@@ -16,7 +40,7 @@
 /* || Bootstrap class */
 .input-group .form-control:not(:first-child){
   font-size: 18px;
-  color: #ff8818;
+  color: var(--neilit-1);
   border: none;
   border-radius: .25rem!important;
   margin-left: .5rem;
@@ -29,7 +53,7 @@
 
 /* || Bootstrap class */
 .custom-select {
-  color: #ff8818;
+  color: var(--neilit-1);
   height: auto;
 }
   .custom-select:focus {
@@ -37,7 +61,7 @@
     box-shadow: none;
   }
   .custom-select:disabled {
-    color: #ff8818;
+    color: var(--neilit-1);
   }
 
 .journal-box {
@@ -58,7 +82,7 @@
   }
   .journal-box .journal-link {
     display: block;
-    color: #7B7B7B;
+    color: var(--grey-text);
   }
 
 .checkbox-orange {
@@ -81,10 +105,10 @@
     width: 0;
   }
     .checkbox-orange:hover input ~ .checkmark {
-      background-color: #EEEEEE;
+      background-color: var(--grey-2);
     }
     .checkbox-orange input:checked ~ .checkmark {
-      background-color: #FF8818;
+      background-color: var(--neilit-1);
     }
     .checkbox-orange input:checked ~ .checkmark:after {
       display: block;
@@ -97,7 +121,7 @@
   margin-top: 5px;
   height: 15px;
   width: 15px;
-  border: 2px solid #FF8818;
+  border: 2px solid var(--neilit-1);
   border-radius: 2px;
 }
   .checkmark:after {
@@ -108,6 +132,6 @@
 
 .comment-date {
   text-align: right;
-  color: #7B7B7B;
+  color: var(--grey-text);
   vertical-align: initial;
 }

@@ -1,11 +1,25 @@
 :root {
-  --grey-flojo: #F7F7F7;
-  --grey-medio: #EEEEEE;
-  --grey-fuerte: #E5E5E5;
-  --grey-texto: #7B7B7B;
-  --red-flojo: #FDDFDD;
-  --red-fuerte: #EE0000;
-  --green-flojo: #CBF6E5;
+
+  /* || LIGHT MODE & Base colors || */
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #008000; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
+
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
 }
 
 /* || Utility */
@@ -34,7 +48,7 @@ td {
 
 /* Cambia el color al hacer hover en las tablas */
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color: var(--gris-flojo);
+  background-color: var(--grey-1);
 }
   .table-hover tbody tr:hover td, .table-hover tbody tr:hover th td {
     color: black;
@@ -63,15 +77,15 @@ a:hover {
 
 /* || Utility */
 .grey {
-  color: #7b7b7b;
+  color: var(--grey-text);
 }
   .grey:hover {
-      background-color:  var(--gris-flojo);
+      background-color:  var(--grey-1);
       border-radius: 7px;
       color: black;
   }
   .grey a {
-    color: #7b7b7b;
+    color: var(--grey-text);
   }
   .grey a:hover {
     color: black;
@@ -100,22 +114,21 @@ a:hover {
 }
 
 .pill-verde {
-  background: var(--green-flojo);
-  color: green;
+  background: var(--green-1);
+  color: var(--green-2);
 }
 
 .pill-amarilla { }
 
 .pill-roja {
-  background: var(--red-flojo);
-  color: red;
+  background: var(--red-1);
+  color: var(--red-2);
 }
 
 .pill-activo { }
 
 .container-global {
   max-width: 1000px;
-  /* background: red; */
 }
 
 .widget-tercio {
@@ -151,7 +164,7 @@ a:hover {
 }
 
 .superior-widget {
-  border-bottom: 1px solid var(--gret-medio);
+  border-bottom: 1px solid var(--grey-2);
 }
   .superior-widget h5 {
     font-size: 20px;
@@ -176,7 +189,7 @@ a:hover {
     cursor: pointer;
   }
   .active-change {
-    background: var(--grey-flojo);
+    background: var(--grey-1);
   }
     .active-change img {
       opacity: 1!important;
@@ -194,7 +207,7 @@ a:hover {
   border-radius: 7px;
 }
   .background-change:hover {
-    background-color: var(--grey-flojo);
+    background-color: var(--grey-1);
   }
 
 .caret {
@@ -221,26 +234,26 @@ a:hover {
 .dropdown-menu li {
   line-height: 1.5;
   letter-spacing: 0.7px;
-  color: var(--grey-texto);
+  color: var(--grey-text);
   font-size: 16px;
   cursor: pointer;
   padding: 5px 10px;
 }
 
 .dropdown-menu li:hover {
-  background-color: var(--grey-flojo);
+  background-color: var(--grey-1);
   color: black;
 }
 
 .container-user-goals a {
-  color: var(--grey-texto);
+  color: var(--grey-text);
 }
 .container-user-goals a:hover {
   color: black;
 }
 
 .inferior-widget {
-  border-top: 1px solid var(--grey-medio);
+  border-top: 1px solid var(--grey-2);
   position: relative;
   bottom: 0px;
 }
@@ -250,7 +263,7 @@ a:hover {
   border: 0;
   text-align: left;
   background-color: inherit;
-  color: var(--grey-texto);
+  color: var(--grey-text);
 }
   #dLabel:hover {
     color: black;

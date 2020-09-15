@@ -1,3 +1,27 @@
+:root {
+
+  /* || LIGHT MODE & Base colors || */
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #4DAA57; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
+
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
+}
+
 /* || General styles */
 ul { }
   ul li {
@@ -6,19 +30,19 @@ ul { }
 
 input { }
   input.form-control {
-    background-color: #f7f7f7;
-    border-color: #f7f7f7;
+    background-color: var(--grey-1);
+    border-color: var(--grey-1);
   }
     input.form-control:focus {
-      background-color: #f7f7f7;
+      background-color: var(--grey-1);
       box-shadow: none;
-      border-color: #f7f7f7;
+      border-color: var(--grey-1);
     }
 
 button.dropdown-select {
   border: 0;
   background-color: inherit;
-  color: #7b7b7b;
+  color: var(grey-text);
 }
   button.dropdown-select:hover {
     color: black;
@@ -38,31 +62,32 @@ button.dropdown-select {
     margin-top: 0;
   }
   .journal-box a {
-    color: #fff;
+    color: white;
   }
     .journal-box a:hover {
-      color: #fff;
+      color: white;
       cursor: pointer;
       text-decoration: none;
     }
   .journal-box input {
-    color: #ff8818;
+    color: var(--neilit-1);
     border-radius: .25rem;
   }
   .journal-box .dropdown-item {
-    color: #000;
+    color: black;
   }
     .journal-box .dropdown-item:hover {
-      color: #000;
+      color: black;
     }
     .journal-box .dropdown-item:active {
-      color: #fff;
-      background-color: #ff8818;
+      color: white;
+      background-color: var(--neilit-1);
     }
 
 
 .plan-box {
-  border: 1px solid #dee2e6;
+  border: 3px solid purple;
+    /*SPANISH: Es el recuadro que aparece alrededor de un trading plan, cambiarlo por un hover como los demás elementos*/
   border-radius: .25rem;
   padding: .25em;
 }
@@ -88,10 +113,10 @@ button.dropdown-select {
     width: 0;
   }
     .checkbox-orange:hover input ~ .checkmark {
-      background-color: #EEEEEE;
+      background-color: var(--grey-2);
     }
     .checkbox-orange input:checked ~ .checkmark {
-      background-color: #FF8818;
+      background-color: var(--neilit-1);
     }
     .checkbox-orange input:checked ~ .checkmark:after {
       display: block;
@@ -114,14 +139,14 @@ button.dropdown-select {
   .dropdown-menu li {
     line-height: 1.5;
     letter-spacing: 0.7px;
-    color: #7b7b7b;
+    color: var(--grey-text);
     font-size: 16px;
     cursor: pointer;
     padding: 5px 10px;
   }
 
   .dropdown-menu li:hover {
-    background-color: #f7f7f7;
+    background-color: var(--grey-1);
     color: black;
   }
 
@@ -132,7 +157,7 @@ button.dropdown-select {
   margin-top: 5px;
   height: 15px;
   width: 15px;
-  border: 2px solid #FF8818;
+  border: 2px solid var(--neilit-1);
   border-radius: 2px;
 }
   .checkmark:after {
@@ -156,9 +181,9 @@ button.dropdown-select {
 .input-group-append { }
   .input-group-append button {
     font-size: 16px;
-    color: #fff;
-    background-color: #ff8818;
-    border: 1px solid #ff8818;
+    color: white;
+    background-color: var(--neilit-1);
+    border: 1px solid var(--neilit-1);
     border-top-right-radius: .25rem;
     border-bottom-right-radius: .25rem;
   }
@@ -168,21 +193,22 @@ button.dropdown-select {
 }
   .diveditable:focus {
     color: black;
-    background-color: #f7f7f7;
+    background-color: var(--grey-1);
     border-radius: .25rem;
     outline: none;
   }
   .diveditable[placeholder]:empty:before {
     content: attr(placeholder);
     color: darkGray;
+      /*SPANISH: No se donde está esto y no se por que color cambiarlo*/
   }
   .diveditable[placeholder]:empty:focus:before {
     content: "";
   }
 
 .strategy-title {
-  color: #ff8818;
-  border: 1px solid #ff8818;
+  color: var(--neilit-1);
+  border: 1px solid var(--neilit-1);
   border-radius: .25rem;
   padding: 0.25rem 0.5rem;
 }
@@ -193,26 +219,27 @@ button.dropdown-select {
 }
   .user-field:hover {
     background-color: #f5bc87;
+      /*SPANISH: No se donde está esto y no se por que color cambiarlo*/
     border-radius: 0.25rem;
     cursor: pointer;
   }
 
 .modal-body a {
-  color: #000000;
+  color: black;
 }
   .modal-body a:hover {
-    color: #ff8818;
+    color: var(--neilit-1);
   }
 
 #title {
   font-size: 1.4rem;
   font-weight: 500;
-  color: #000;
+  color: black;
 }
 
 #document { }
   #document input {
-    color: #000;
+    color: black;
   }
 
 #scheme {

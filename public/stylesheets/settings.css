@@ -1,20 +1,35 @@
-:root{
-  --grey-flojo: #F7F7F7;
-  --grey-medio: #EEEEEE;
-  --grey-fuerte: #E5E5E5;
-  --grey-texto: #7B7B7B;
-  --red-fuerte: #EE0000;
-  --blue-primario: #007BFF;
+:root {
+
+  /* || LIGHT MODE & Base colors || */
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #4DAA57; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
+
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
 }
 
 /* || General styles */
 h4 {
   font-size: 18px;
-  border-bottom: 2px solid #EEEEEE;
+  border-bottom: 2px solid var(--grey-2);
 }
   h4 a {
     font-size: 14px;
-    color: #7b7b7b;
+    color: var(--grey-text);
     transition-duration: .25s;
   }
   h4 a:hover {
@@ -27,14 +42,14 @@ h5 {
 }
 
 a {
-  color: var(--orange);
+  color: var(--neilit-1);
 }
   a:hover {
-    color: var(--orange-fuerte);
+    color: var(--neilit-2);
     text-decoration: none;
   }
   a.nav-link {
-    color: var(--grey-texto);
+    color: var(--grey-text);
     padding: 2px 15px 0 15px;
     font-size: 16px;
     border-bottom: 2px solid white;
@@ -42,37 +57,37 @@ a {
 
     a.nav-link:hover {
       color: black;
-      border-bottom: 2px solid var(--grey-fuerte);
+      border-bottom: 2px solid var(--grey-3);
       background-color: white !important;
     }
 
     a.nav-link.active {
       background: white;
-      color: var(--orange);
-      border-bottom: 2px solid var(--orange);
+      color: var(--neilit-1);
+      border-bottom: 2px solid var(--neilit-1);
     }
 
 li {
-  color: #7b7b7b;
+  color: var(--grey-text);
   padding: 3px 5px;
   border-radius: 0px !important;
   list-style-type: none;
 }
   li:hover{
-    background-color: #f7f7f7;
+    background-color: var(--grey-1);
     color: black;
   }
 
 input {
     padding: 5px 10px;
     border-radius: .25rem;
-    background: #f8f8f8;
+    background: var(--grey-1);
 }
   input:checked + .slider {
-    background-color: #FF8818;
+    background-color: var(--neilit-1);
   }
   input:focus + .slider {
-    box-shadow: 0 0 1px #FF8818;
+    box-shadow: 0 0 1px var(--neilit-1);
   }
   input:checked + .slider:before {
     -webkit-transform: translateX(15px);
@@ -81,23 +96,23 @@ input {
   }
 
 hr.profile {
-  background: red;
-  border: 1px solid var(--grey-medio);
+  background: var(--red-2);
+  border: 1px solid var(--grey-2);
   width: 100%;
   margin: 0;
 }
 
 #remaining-days{
-  color: var(--grey-texto) !important;
+  color: var(--grey-text) !important;
 }
   #remaining-days:hover{
-    color: var(--orange);
+    color: var(--neilit-1);
     text-decoration: none;
   }
 
 /* || Utility */
 .bg-orange {
-  background: #FF8818;
+  background: var(--neilit-1);
 }
   .bg-orange a:hover {
     color: white!important;
@@ -106,13 +121,13 @@ hr.profile {
 
 /* || Utility */
 .grey {
-  color: #7b7b7b;
+  color: var(--grey-text);
 }
   .grey a {
-    color: #ff8818;
+    color: var(--neilit-1);
   }
   .grey a:hover {
-    color: #f57700;
+    color: var(neilit-2);
   }
 
 .containerMenuSettings {
@@ -129,7 +144,7 @@ hr.profile {
 }
   .container-info-settings:hover {
     border-radius: 7px;
-    background: var(--grey-flojo);
+    background: var(--grey-1);
   }
 
 .tab-box {
@@ -141,7 +156,7 @@ hr.profile {
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
   .tab-box p {
-    color: var(--grey-texto);
+    color: var(--grey-text);
     padding: 3px 5px;
   }
     .tab-box p:hover {
@@ -171,17 +186,17 @@ hr.profile {
 /* || Boton Logout */
 .btn-logout {
   background: white;
-  color: var(--red-fuerte);
+  color: var(--red-2);
   border-radius: 7px;
-  border: 1px solid var(--red-fuerte);
+  border: 1px solid var(--red-2);
   padding: 3px 15px;
 }
 
 .btn-logout:hover {
-  background: var(--red-fuerte);
+  background: var(--red-2);
   color: white;
   border-radius: 7px;
-  border: 2px solid var(--red-fuerte);
+  border: 2px solid var(--red-2);
 }
 
 .containerOferta {
@@ -191,30 +206,30 @@ hr.profile {
 /* || Boton Settings Change plan */
 .change-plan {
   padding: 3px 15px;
-  border: 2px solid var(--orange);
+  border: 2px solid var(--neilit-1);
   border-radius: 7px;
   transition-duration: .25s;
 }
   .change-plan:hover {
     color: white;
-    border: 2px solid var(--orange);
-    background: var(--orange);
+    border: 2px solid var(--neilit-1);
+    background: var(--neilit-1);
     transition-duration: .25s;
   }
 
 .FAQ {
-  color: #7b7b7b;
+  color: var(--grey-text);
 }
   .FAQ:hover {
     color: black;
   }
 
 .invoice {
-  color: #212529;
+  color: black;
   border-radius: .25rem;
 }
   .invoice:hover {
-    background-color: #f7f7f7;
+    background-color: var(--grey-1);
   }
   .invoice img {
     width: 30px;
@@ -227,14 +242,14 @@ hr.profile {
     }
 
 .invoice-clear {
-  background: #cbf6e5;
-  color: #45d69e;
+  background: var(--green-1);
+  color: var(--green-2);
   border-radius: .25rem;
 }
 
 .invoice-pending {
-  background: #fce6e5;
-  color: #fd5e74;
+  background: var(--red-1);
+  color: var(--red-2);
   border-radius: .25rem;
 }
 
@@ -299,13 +314,13 @@ hr.profile {
   .dropdown-menu li {
     line-height: 1.5;
     letter-spacing: 0.7px;
-    color: var(--grey-texto);
+    color: var(--grey-text);
     font-size: 16px;
     cursor: pointer;
     padding: 5px 10px;
   }
   .dropdown-menu li:hover {
-    background-color: var(--grey-flojo);
+    background-color: var(--grey-1);
     color: black;
   }
 
@@ -326,11 +341,11 @@ hr.profile {
     border: none;
   }
   #listStrategy input {
-    color: #7b7b7b;
+    color: var(--grey-text);
     background: none;
   }
     #listStrategy input:focus {
-      color: #000000;
+      color: black;
     }
 
 #listGoals { }
@@ -346,11 +361,11 @@ hr.profile {
     border: none;
   }
   #listGoals input {
-    color: #7b7b7b;
+    color: var(--grey-text);
     background: none;
   }
     #listGoals input:focus {
-      color: #000000;
+      color: black;
     }
 
 /*Custom dropdown*/
@@ -359,7 +374,7 @@ hr.profile {
   border: 0;
   text-align: left;
   background-color: inherit;
-  color: var(--grey-texto);
+  color: var(--grey-text);
 }
   #dLabel:hover {
     color: black;
