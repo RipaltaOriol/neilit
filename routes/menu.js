@@ -27,11 +27,14 @@ router.get("/settings", middleware.isLoggedIn, (req, res) => {
 
 // DASHBOARD USER ROUTE
 router.get("", middleware.isLoggedIn, (req, res) => {
-  var selectUserBase = 'SELECT currency FROM currencies WHERE id = ?;'
-  var selectEntries = 'SELECT pair_id, size, direction, entry_price, exit_price, result FROM entries WHERE status = 1 AND user_id = ?;'
+  var selectUserBase  = 'SELECT currency FROM currencies WHERE id = ?;'
+  var selectEntries   = 'SELECT pair_id, profits, fees, result, MONTHNAME(exit_dt) AS month FROM entries WHERE status = 1 AND user_id = ?;'
+  var selectOpenOps   = 'SELECT pair_id, size, direction, DATE_FORMAT(entry_dt, "%d/%m/%y") AS date, entry_price FROM entries WHERE status = 0 AND user_id = ?;'
+  var selectMonth     = 'SELECT profits, fees FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;'
+  var selectWeek      = 'SELECT profits, fees FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;'
   connection.query(selectUserBase, req.user.currency_id, (err, getBase) => {
     if (err) throw err;
-    // creates an object to store the data to display in the dashboard
+    // object with dashboad data CURRENT BALANCE, BIGGEST TRADE & TOTAL ENTRIES
     var dashboardData = {
       base: getBase[0].currency,
       currentAmount: req.user.balance,
@@ -41,49 +44,88 @@ router.get("", middleware.isLoggedIn, (req, res) => {
       total: 0,
       rate: 0
     }
-    // creates an object to store the monthly outcome data
-    var dayWeekStats = {
-      January: { outcome: 0, total: 0 },
-      February: { outcome: 0, total: 0 },
-      March: { outcome: 0, total: 0 },
-      April: { outcome: 0, total: 0 },
-      May: { outcome: 0, total: 0 },
-      June: { outcome: 0, total: 0 },
-      July: { outcome: 0, total: 0 },
-      August: { outcome: 0, total: 0 },
-      September: { outcome: 0, total: 0 },
-      October: { outcome: 0, total: 0 },
-      November: { outcome: 0, total: 0 },
-      December: { outcome: 0, total: 0 }
+    // creates an object for monthly OUTCOME data
+    var outcomeMonth = {
+      January:    { outcome: 0, total: 0 },
+      February:   { outcome: 0, total: 0 },
+      March:      { outcome: 0, total: 0 },
+      April:      { outcome: 0, total: 0 },
+      May:        { outcome: 0, total: 0 },
+      June:       { outcome: 0, total: 0 },
+      July:       { outcome: 0, total: 0 },
+      August:     { outcome: 0, total: 0 },
+      September:  { outcome: 0, total: 0 },
+      October:    { outcome: 0, total: 0 },
+      November:   { outcome: 0, total: 0 },
+      December:   { outcome: 0, total: 0 }
     }
     connection.query(selectEntries, req.user.id, (err, getEntries) => {
       if (err) throw err;
       getEntries.forEach((entry) => {
+        // counts the entry to the corresponding metric
         dashboardData.total += 1;
+        outcomeMonth[entry.month].total += 1;
+        // counts the entry if result is WIN
         if (entry.result == 'win') { dashboardData.rate += 1 }
-        var entryAmount;
-        var entryPercent;
-        if (entry.direction == 'long') {
-          entryAmount = Math.round(((entry.exit_price - entry.entry_price) * entry.size * 100000 + Number.EPSILON) * 100) / 100;
-          entryPercent = Math.round(((entryAmount / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
-        } else {
-          entryAmount = Math.round(((entry.entry_price - entry.exit_price) * entry.size * 100000 + Number.EPSILON) * 100) / 100;
-          entryPercent = Math.round(((entryAmount / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
-        }
-        dashboardData.currentAmount += entryAmount;
+        // adds the entry ouctcome as amount and percent
+        var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+        dashboardData.currentAmount += (entry.profits - entry.fees);
+        // compares the entry percents to get the biggest trade
         if (entryPercent >= dashboardData.biggestPercent) {
           dashboardData.biggestPercent = entryPercent;
           dashboardData.biggestPair = pairs[entry.pair_id - 1];
         }
+        outcomeMonth[entry.month].outcome += (entry.profits - entry.fees);
       });
       dashboardData.currentPercent = (dashboardData.currentAmount / req.user.balance - 1) * 100
       dashboardData.currentAmount = dashboardData.currentAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
       dashboardData.rate = (dashboardData.rate/dashboardData.total * 100).toFixed(2);
-      res.render("user/user",
-        {
-          dashboardData:dashboardData
-        }
-      );
+      // divides the data in 'outcomeMonth' in two separate arrays
+      var outcomeMonthAmount = [];
+      var outcomeMonthTotal = [];
+      for (const month in outcomeMonth) {
+        outcomeMonthAmount.push(outcomeMonth[month].outcome)
+        outcomeMonthTotal.push(outcomeMonth[month].total)
+      }
+      connection.query(selectOpenOps, req.user.id, (err, getOps) => {
+        if (err) throw err;
+        // creates an object for open operations
+        var dashboardOps = { }
+        getOps.forEach((operation, i) => {
+          dashboardOps[i] = { }
+          dashboardOps[i].pair = pairs[operation.pair_id - 1];
+          dashboardOps[i].lot = operation.size;
+          dashboardOps[i].direction = operation.direction;
+          dashboardOps[i].date = operation.date;
+          dashboardOps[i].entry = operation.entry_price;
+        });
+        connection.query(selectMonth, req.user.id, (err, getMonth) => {
+          if (err) throw err;
+          var monthTwenty = 0;
+          getMonth.forEach((entry) => {
+            var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+            monthTwenty += entryPercent
+          });
+          connection.query(selectWeek, req.user.id, (err, getWeek) => {
+            if (err) throw err;
+            var weekFive = 0;
+            getWeek.forEach((entry) => {
+              var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+              weekFive += entryPercent
+            });
+            res.render("user/user",
+              {
+                dashboardData:dashboardData,
+                outcomeMonthAmount:outcomeMonthAmount,
+                outcomeMonthTotal:outcomeMonthTotal,
+                dashboardOps:dashboardOps,
+                monthTwenty:monthTwenty,
+                weekFive:weekFive,
+              }
+            );
+          })
+        })
+      })
     })
   })
 })
@@ -91,39 +133,45 @@ router.get("", middleware.isLoggedIn, (req, res) => {
 // STATISTICS ROUTE
 router.get("/statistics", middleware.isLoggedIn, (req, res) => {
   var selectUserBase = 'SELECT currency FROM currencies WHERE id = ?;'
-  var selectEntries = 'SELECT pair_id, size, strategy_id, timeframe_id, direction, entry_price, exit_price, result, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ?;';
+  var selectEntries = 'SELECT pair_id, strategy_id, timeframe_id, direction, result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ?;';
   connection.query(selectUserBase, req.user.currency_id, (err, getBase) => {
     if (err) throw err;
     var userBase = getBase[0].currency;
     // creates an object to store the asset stats
     var assetStats = {
-      quantity:Array(pairs.length).fill(0),
-      wins:    Array(pairs.length).fill(0),
-      losses:  Array(pairs.length).fill(0),
-      bevens:  Array(pairs.length).fill(0),
-      amount:  Array(pairs.length).fill(0),
-      percent: Array(pairs.length).fill(0)
+      quantity: Array(pairs.length).fill(0),
+      win:      Array(pairs.length).fill(0),
+      loss:     Array(pairs.length).fill(0),
+      be:       Array(pairs.length).fill(0),
+      amount:   Array(pairs.length).fill(0),
+      percent:  Array(pairs.length).fill(0)
     }
     // creates an object to store the timeframe stats
     var timeframeStats = {
-      quantity:Array(timeframes.length).fill(0),
-      wins:    Array(timeframes.length).fill(0),
-      losses:  Array(timeframes.length).fill(0),
-      bevens:  Array(timeframes.length).fill(0),
-      amount:  Array(timeframes.length).fill(0),
-      percent: Array(timeframes.length).fill(0)
+      quantity: Array(timeframes.length).fill(0),
+      win:      Array(timeframes.length).fill(0),
+      loss:     Array(timeframes.length).fill(0),
+      be:       Array(timeframes.length).fill(0),
+      amount:   Array(timeframes.length).fill(0),
+      percent:  Array(timeframes.length).fill(0)
     }
     connection.query(selectEntries, req.user.id, (err, getEntries) => {
       if (err) throw err;
-      // creates an object to count the metrics for the statistics page
-      var counter = {
-        counterWin: 0,
-        counterLoss: 0,
-        counterBE: 0,
-        counterLong: 0,
-        counterShort: 0,
-        profitsAmt: 0,
-        profitsPer: 0
+      // object with the statiscits from PROFITS, ENTRIES and DIRECTION
+      var statistics = {
+        profits: {
+          amount: 0,
+          percent: 0
+        },
+        entries: {
+          win: 0,
+          loss: 0,
+          be: 0
+        },
+        direction: {
+          long: 0,
+          short: 0
+        }
       }
       // creates an object to store the strategy stats
       var strategyStats = { }
@@ -131,71 +179,68 @@ router.get("/statistics", middleware.isLoggedIn, (req, res) => {
         strategyStats[Number(id, i)] = {
           name: userStrategies[i],
           quantity: 0,
-          wins: 0,
-          losses: 0,
+          win: 0,
+          loss: 0,
           be: 0,
-          percentage: 0
+          percent: 0
         }
       });
       // creates an object to store the day of the week stats
       var dayWeekStats = {
-        Monday: { name:'Monday', quantity:0, wins:0, losses:0, be:0, percentage:0 },
-        Tuesday: { name:'Tuesday', quantity:0, wins:0, losses:0, be:0, percentage:0 },
-        Wednesday: { name:'Wednesday', quantity:0, wins:0, losses:0, be:0, percentage:0 },
-        Thursday: { name:'Thursday', quantity:0, wins:0, losses:0, be:0, percentage:0 },
-        Friday: { name:'Friday', quantity:0, wins:0, losses:0, be:0, percentage:0 },
-        Saturday: { name:'Saturday', quantity:0, wins:0, losses:0, be:0, percentage:0 },
-        Sunday: { name:'Sunday', quantity:0, wins:0, losses:0, be:0, percentage:0 }
+        Monday:     { name:'Monday',    quantity:0, win:0, loss:0, be:0, percent:0 },
+        Tuesday:    { name:'Tuesday',   quantity:0, win:0, loss:0, be:0, percent:0 },
+        Wednesday:  { name:'Wednesday', quantity:0, win:0, loss:0, be:0, percent:0 },
+        Thursday:   { name:'Thursday',  quantity:0, win:0, loss:0, be:0, percent:0 },
+        Friday:     { name:'Friday',    quantity:0, win:0, loss:0, be:0, percent:0 },
+        Saturday:   { name:'Saturday',  quantity:0, win:0, loss:0, be:0, percent:0 },
+        Sunday:     { name:'Sunday',    quantity:0, win:0, loss:0, be:0, percent:0 }
       }
       getEntries.forEach((entry) => {
+        // counts the entry to the corresponding metric
         assetStats.quantity[Number(entry.pair_id) - 1]++;
         timeframeStats.quantity[Number(entry.timeframe_id) - 1]++;
         strategyStats[entry.strategy_id].quantity++;
         dayWeekStats[entry.date].quantity++;
-        // counts entry result
+        // counts the entry result to the corresponding metric
         if (entry.result == 'win') {
-          counter.counterWin++
-          assetStats.wins[Number(entry.pair_id) - 1]++;
-          timeframeStats.wins[Number(entry.timeframe_id) - 1]++;
-          strategyStats[entry.strategy_id].wins++;
-          dayWeekStats[entry.date].wins++;
+          statistics.entries.win++
+          assetStats.win[Number(entry.pair_id) - 1]++;
+          timeframeStats.win[Number(entry.timeframe_id) - 1]++;
+          strategyStats[entry.strategy_id].win++;
+          dayWeekStats[entry.date].win++;
         } else if (entry.result == 'loss') {
-          counter.counterLoss++
-          assetStats.losses[Number(entry.pair_id) - 1]++;
-          timeframeStats.losses[Number(entry.timeframe_id) - 1]++;
-          strategyStats[entry.strategy_id].losses++;
-          dayWeekStats[entry.date].losses++;
+          statistics.entries.loss++
+          assetStats.loss[Number(entry.pair_id) - 1]++;
+          timeframeStats.loss[Number(entry.timeframe_id) - 1]++;
+          strategyStats[entry.strategy_id].loss++;
+          dayWeekStats[entry.date].loss++;
         } else {
-          counter.counterBE++
-          assetStats.bevens[Number(entry.pair_id) - 1]++;
-          timeframeStats.bevens[Number(entry.timeframe_id) - 1]++;
+          statistics.entries.be++
+          assetStats.be[Number(entry.pair_id) - 1]++;
+          timeframeStats.be[Number(entry.timeframe_id) - 1]++;
           strategyStats[entry.strategy_id].be++;
           dayWeekStats[entry.date].be++;
         }
-        // variables to get the profits per amount and per percentage on entry
-        var entryOutcome;
-        var entryOutcomePer;
         // counts entry direction & calculates the entry profit
         if (entry.direction == 'long') {
-          counter.counterLong++
-          // COMBAK: convert the outcome from the entry currency to the account base currency
-          var entryOutcome = (entry.exit_price - entry.entry_price) * entry.size * 100000;
-          var entryOutcomePer = Math.round(((entryOutcome / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+          statistics.direction.long++
         } else {
-          counter.counterShort++
-          // COMBAK: convert the outcome from the entry currency to the account base currency
-          var entryOutcome = (entry.entry_price - entry.exit_price) * entry.size * 100000;
-          var entryOutcomePer = Math.round(((entryOutcome / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+          statistics.direction.short++
         }
-        counter.profitsAmt += entryOutcome;
-        assetStats.amount[Number(entry.pair_id) - 1]+= entryOutcome;
-        assetStats.percent[Number(entry.pair_id) - 1]+= entryOutcomePer;
-        timeframeStats.amount[Number(entry.timeframe_id) - 1]+= entryOutcome;
-        timeframeStats.percent[Number(entry.timeframe_id) - 1]+= entryOutcomePer;
-        strategyStats[entry.strategy_id].percentage += entryOutcomePer;
-        dayWeekStats[entry.date].percentage += entryOutcomePer;
+        var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+        statistics.profits.amount+=                               (entry.profits - entry.fees);
+        // adds the entry ouctcome for its corresponding asset
+        assetStats.amount[Number(entry.pair_id) - 1]+=            (entry.profits - entry.fees);
+        assetStats.percent[Number(entry.pair_id) - 1]+=           entryPercent;
+        // adds the entry ouctcome for its corresponding timeframe
+        timeframeStats.amount[Number(entry.timeframe_id) - 1]+=   (entry.profits - entry.fees);
+        timeframeStats.percent[Number(entry.timeframe_id) - 1]+=  entryPercent;
+        // adds the entry ouctcome for its corresponding strategy
+        strategyStats[entry.strategy_id].percent +=               entryPercent;
+        // adds the entry outcome for tis corresponding weekday
+        dayWeekStats[entry.date].percent +=                       entryPercent;
       });
-      // sorts the stats entris count to summarise the stats showcase
+      // sorts the entry quantity to preview the statistics showcase
       function getMax7(ar) {
         if (ar.length < 7) return ar;
         var max = [[ar[0],0],[ar[1],1],[ar[2],2],[ar[3],3],[ar[4],4],[ar[5],5],[ar[6],6]],
@@ -213,16 +258,16 @@ router.get("/statistics", middleware.isLoggedIn, (req, res) => {
         }
         return max;
       }
-      assetStats.showcase = getMax7(assetStats.quantity);
+      assetStats.showcase     = getMax7(assetStats.quantity);
       timeframeStats.showcase = getMax7(timeframeStats.quantity);
-      // converts the profits from currency amount to %
-      counter.profitsPer = Math.round(((counter.profitsAmt / req.user.balance) * 100 + Number.EPSILON) * 100) / 100
+      // converts the profits from amount to %
+      statistics.profits.percent = Math.round(((statistics.profits.amount / req.user.balance) * 100 + Number.EPSILON) * 100) / 100
       res.render("user/statistics",
         {
           pairs:pairs,
           timeframes:timeframes,
           userBase:userBase,
-          counter:counter,
+          statistics:statistics,
           assetStats:assetStats,
           timeframeStats:timeframeStats,
           strategyStats:strategyStats,

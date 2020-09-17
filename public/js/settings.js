@@ -103,27 +103,26 @@ $("#addStrategy").keypress(function(event){
 });
 
 // changes the account's base currency
-$('.dropdown-menu li').on('click', function() {
+$('#currency.dropdown-menu li').on('click', function() {
   var changeCurrency = $(this).text();
   // adds currency changes to the server
   var data = {currency: changeCurrency}
   $.post('/' + currentUser.username + '/settings/changeCurrency', data)
     .done((data) => {
     // adds currency changes to the client
-    $('.dropdown-select').text(changeCurrency);
+    $('.currency').text(changeCurrency);
   })
     .fail(() => {
     // error
   })
 });
 
-
-// changes dark mode preference
-$('#dark').change(() => {
-  var changeMode = $('#dark').is(':checked') ? '1' : '0'
+// changes show profits in entries preference
+$('#show-profits').change(() => {
+  var changeShowProfits = $('#show-profits').is(':checked') ? '1' : '0'
   // adds mode changes to the server
-  var data = {mode: changeMode}
-  $.post('/' + currentUser.username + '/settings/changeMode', data)
+  var data = {showProfits: changeShowProfits}
+  $.post('/' + currentUser.username + '/settings/changeShowProfits', data)
     .done((data) => {
     // success
   })
@@ -132,12 +131,12 @@ $('#dark').change(() => {
   })
 });
 
-// changes sound preference
-$('#sound').change(() => {
-  var changeSound = $('#sound').is(':checked') ? '1' : '0'
-  // adds sound changes to the server
-  var data = {sound: changeSound}
-  $.post('/' + currentUser.username + '/settings/changeSound', data)
+// changes dark mode preference
+$('#dark').change(() => {
+  var changeMode = $('#dark').is(':checked') ? '1' : '0'
+  // adds mode changes to the server
+  var data = {mode: changeMode}
+  $.post('/' + currentUser.username + '/settings/changeMode', data)
     .done((data) => {
     // success
   })

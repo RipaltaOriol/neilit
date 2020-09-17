@@ -109,28 +109,29 @@ span .checkbox-orange {
   align-items: center;
   font-weight: 500;
 }
-  .ui-datepicker-prev {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border-radius: 7px;
-  }
-    .ui-datepicker-prev:hover {
-      background: var(--gris-medio);
-      cursor: pointer;
-    }
 
-  .ui-datepicker-next {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+.ui-datepicker-prev {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+}
+  .ui-datepicker-prev:hover {
+    background: var(--gris-medio);
+    cursor: pointer;
   }
-    .ui-datepicker-next:hover {
-      background: var(--gris-medio);
-      cursor: pointer;
-    }
+
+.ui-datepicker-next {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+  .ui-datepicker-next:hover {
+    background: var(--gris-medio);
+    cursor: pointer;
+  }
 
 .date-badge {
   display: block;

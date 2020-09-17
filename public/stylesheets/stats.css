@@ -14,6 +14,12 @@ button {
   border: none;
 }
 
+input[type="date"]:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: var(--neilit-regular);
+}
+
 /* || Tables utilities */
 table{ }
 
@@ -62,6 +68,17 @@ a:hover {
 }
 
 /* || Utility */
+.wpx-100 {
+  height: 100px;
+}
+
+/* || Utility */
+.placeholder-stats {
+  margin: 0px auto;
+  color: var(--red-strong);
+}
+
+/* || Utility */
 .grey {
   color: #7b7b7b;
 }
@@ -79,6 +96,48 @@ a:hover {
   .grey:hover img {
     opacity: 1;
   }
+
+/* || JQuery UI class */
+.ui-datepicker {
+  background: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+  /* FIXME: When we put padding, something strange appears at the bottom of the screen. */
+  padding: 5px;
+}
+
+.ui-datepicker-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+}
+
+.ui-datepicker-prev {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+}
+  .ui-datepicker-prev:hover {
+    background: var(--gris-medio);
+    cursor: pointer;
+  }
+
+.ui-datepicker-next {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+  .ui-datepicker-next:hover {
+    background: var(--gris-medio);
+    cursor: pointer;
+  }
+.ui-state-default {
+  color: var(--gris-medio);
+}
 
 /* || Utility */
 .font-18 {
@@ -212,25 +271,26 @@ a:hover {
   -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
-
-.dropdown button:hover, .dropdown button:focus {
-  border: none;
-  outline: 0;
-}
-
-.dropdown-menu li {
-  line-height: 1.5;
-  letter-spacing: 0.7px;
-  color: var(--grey-texto);
-  font-size: 16px;
-  cursor: pointer;
-  padding: 5px 10px;
-}
-
-.dropdown-menu li:hover {
-  background-color: var(--grey-flojo);
-  color: black;
-}
+  .dropdown button:hover, .dropdown button:focus {
+    border: none;
+    outline: 0;
+  }
+  .dropdown-menu li {
+    line-height: 1.5;
+    letter-spacing: 0.7px;
+    color: var(--grey-texto);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+    .dropdown-menu li:hover {
+      background-color: var(--grey-flojo);
+      color: black;
+    }
+    .dropdown-menu li button {
+      padding: 0;
+      color: var(--grey-texto);
+    }
 
 .container-user-goals a {
   color: var(--grey-texto);

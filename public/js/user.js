@@ -8,12 +8,32 @@ $('.dropdown-menu li').on('click', function() {
 
 // retrieves the biggest trade from the selected time period
 function getBiggest(period) {
-  console.log(period);
+  var biggestPair = document.getElementById('biggest-pair');
+  var biggestPercent = document.getElementById('biggest-percent')
+  // makes an AJAX call with the corresponding data period
+  $.get('/' + currentUser.username + '/dashboard/biggest/' + period)
+    .done((data) => {
+      biggestPair.innerHTML = data.pair;
+      biggestPercent.innerHTML = data.percent.toFixed(2) + '%';
+  })
+    .fail(() => {
+      //error
+  })
 }
 
 // retrieves the total entries from the selected time period
 function getTotal(period) {
-  console.log(period);
+  var totalEntries = document.getElementById('total-entries');
+  var winRate = document.getElementById('win-rate');
+  // makes an AJAX call with the corresponding data period
+  $.get('/' + currentUser.username + '/dashboard/total/' + period)
+    .done((data) => {
+      totalEntries.innerHTML = data.total;
+      winRate.innerHTML = data.rate.toFixed(2) + '% wins';
+  })
+    .fail(() => {
+      // error
+  })
 }
 
 const ctx = document.getElementById('resultsChart');
@@ -23,21 +43,17 @@ if (ctx != null) {
 
 //Creamos una nueva variable y le pasamos el canvas que hemos seleccionado antes. También le pasaremos diversas funciones.
 var resultsChart = new Chart(ctx,{
-
   //Determinamos que tipo de gráfico va a ser. En este caso, un gráfico de barras.
   type: 'bar',
-
-  //
   data:{
-
     //Los labels son los nombres que aparecen en los ejes X e Y.
-    labels:['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    labels:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     //Vamos a establecer los datos que se visualizarán en el gráfico.
     datasets:[{
       //Este sería el título de la gráfica, pero lo hemos ocultado con legend>display>false.Es lo que se ve al hacer hover.
-      label:'Outcome',
+      label:'Amount',
       //La "columna1" tiene un valor de 20, la "columna2" de 90,...
-      data:[20, 90, 105, 90, -10, 54, 20, 90, 105, 90, 24, 54],
+      data: outcomeMonthAmount,
       //Se dibujará debajo el gráfico que tenga menor orden. Si es el más pequeño, será el del fondo.
       order:2,
       //Seleccionamos el color de cada barra en rgb.
@@ -62,13 +78,13 @@ var resultsChart = new Chart(ctx,{
       type: 'line',
 
       //Texto que se muestra previamente al data al hacer hover en el gráfico
-      label:'Tiempo dedicado',
+      label:'# of entries',
 
       //Hacemos que el gráfico de linea no tenga relleno. Solo una linea que une los valores de data.
       fill: false,
 
       //Data que se mostrará en el gráfico de linea
-      data:[10, 12, 30, 12, 50, 12, 100, 12, 12, 25, 12, 20],
+      data:outcomeMonthTotal,
 
       //Valores para lineTension [1 --> Linea recta], [0,5 --> Curva perfecta]
       lineTension: "0.5",

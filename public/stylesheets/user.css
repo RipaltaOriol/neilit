@@ -6,6 +6,8 @@
   --grey-texto: #7B7B7B;
   --red-flojo: #FDDFDD;
   --red-fuerte: #EE0000;
+  --soft-yellow: #fff3cd;
+  --hard-yellow: #856404;
   --azul-primario: #007BFF;
   --green-flojo: #CBF6E5;
 
@@ -98,7 +100,10 @@ a:hover {
   color: green;
 }
 
-.pill-amarilla { }
+.pill-yellow {
+  background: var(--soft-yellow);
+  color: var(--hard-yellow);
+}
 
 .pill-roja {
   background: var(--red-flojo);
@@ -216,5 +221,3 @@ a:hover {
   #dLabel:hover {
     color: black;
   }
-
-  

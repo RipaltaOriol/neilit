@@ -1,6 +1,8 @@
 let express = require('express');
+let fetch = require('node-fetch');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
+let currencies = require('../models/currencies');
 let timeframes = require('../models/timeframes');
 let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware')
@@ -78,7 +80,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
       size: Number(req.body.size),
       strategy_id: userIdStrategies[req.body.strategy],
       timeframe_id: Number(req.body.timeframe) + 1,
-      entry_price: req.body.entryPrice,
+      entry_price: req.body.entryPrice
     }
     // sets the entry date and time of the entry
     if (req.body.entryTime == '') {
@@ -127,7 +129,33 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
         newEntry.exit_price = req.body.closePrice;
       }
       newEntry.status = req.body.status;
+      newEntry.fees = 0;
       newEntry.result = req.body.result;
+      // sets the fees of the entry
+      if (req.body.fees != '') {
+        newEntry.fees = req.body.fees;
+      }
+      // sets the profits of the entry
+      if (req.body.profits != '') {
+        newEntry.pofits = req.body.profits;
+      } else {
+        var base = currencies[req.user.currency_id - 1]
+        var trade = pairs[Number(req.body.pair)].substring(4,7);
+        fetch(`https://api.exchangeratesapi.io/latest?base=${trade}`)
+        .then(res => res.json())
+        .then((data) => {
+          var entryAmount;
+          if (req.body.direction == 1) {
+            entryAmount = Math.round(((req.body.closePrice - req.body.entryPrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
+          } else {
+            entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
+          }
+          newEntry.profits = data["rates"][base] * entryAmount;
+        })
+        .catch((err) => {
+          if (err) throw err;
+        })
+      }
     }
     // saves the entry to the DB
     connection.query('INSERT INTO entries SET ?', newEntry, (err, response) => {

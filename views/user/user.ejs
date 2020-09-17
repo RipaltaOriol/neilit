@@ -1,496 +1,459 @@
 <%- include("../partials/header-user") %>
 
-  <!-- CONTENT -->
-  <!-- First widget has to be shown just once. It's a "what's new". The user must be able to close this widget.-->
-  <div class="d-flex flex-row justify-content-center mb-1">
-    <div class="container-global mt-2 mx-4 w-100">
-      <div class="d-flex flex-row justify-content-between">
-        <!-- Second Widget on dashboard//home-->
-        <div class="widget-100 container-updates ">
-          <!--PARTE SUPERIOR DEL WIDGET-->
-          <div class=" d-flex flex-row justify-content-between mt-2 pt-1">
-            <!--Superior Izquierda Widget-->
-            <div class="d-flex flex-row align-items-center">
-              <h5 class="mb-0 py-1 ml-3 mt-2">What's new?</h5>
-            </div>
-            <!--IMPORTANT: by clicking on the  img above, the user must be able to close the widget-->
-            <a href="#" class="mr-2">
-              <img src="/imgs/icons/close-white.svg" class="py-1 imagen-widget opacity-1" alt="Close">
-            </a>
+<!-- CONTENT -->
+<!-- First widget has to be shown just once. It's a "what's new". The user must be able to close this widget.-->
+<div class="d-flex flex-row justify-content-center mb-1">
+  <div class="container-global mt-2 mx-4 w-100">
+    <div class="d-flex flex-row justify-content-between">
+      <!-- Second Widget on dashboard//home-->
+      <div class="widget-100 container-updates ">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class=" d-flex flex-row justify-content-between mt-2 pt-1">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <h5 class="mb-0 py-1 ml-3 mt-2">What's new?</h5>
           </div>
-          <!-- Content of "Whats new" goes here!-->
-          <!-- My idea (Jaume) is to put maximum 3 new features and if the user wants to see more, put that info in another page -->
-          <div class="mb-2">
-            <p class="mb-0 features-text mx-3 mt-1">
-              Aquí encontrarás todas las novedades que vayamos introduciendo en la plataforma. Si quieres saber todo lo que hemos ido introduciendo
-              a lo largo del tiempo, haz click en el botón de "todas las novedades". Estos cuadros solo apareceran cuando tengamos algo importante que contrarte.
-            </p>
-          </div>
-          <div class="d-flex flex-row justify-content-center align-items-center pb-3">
-            <a href="#" class="btn font-16">
-              Todas las novedades
-            </a>
-            <a href="#" class="btn-second font-16">
-              Sugerir funcionalidades
-            </a>
-          </div>
+          <!--IMPORTANT: by clicking on the  img above, the user must be able to close the widget-->
+          <a href="#" class="mr-2">
+            <img src="/imgs/icons/close-white.svg" class="py-1 imagen-widget opacity-1" alt="Close">
+          </a>
+        </div>
+        <!-- Content of "Whats new" goes here!-->
+        <!-- My idea (Jaume) is to put maximum 3 new features and if the user wants to see more, put that info in another page -->
+        <div class="mb-2">
+          <p class="mb-0 features-text mx-3 mt-1">
+            Aquí encontrarás todas las novedades que vayamos introduciendo en la plataforma. Si quieres saber todo lo que hemos ido introduciendo
+            a lo largo del tiempo, haz click en el botón de "todas las novedades". Estos cuadros solo apareceran cuando tengamos algo importante que contrarte.
+          </p>
+        </div>
+        <div class="d-flex flex-row justify-content-center align-items-center pb-3">
+          <a href="#" class="btn font-16">
+            Todas las novedades
+          </a>
+          <a href="#" class="btn-second font-16">
+            Sugerir funcionalidades
+          </a>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="d-flex flex-row justify-content-center mb-1">
-    <div class="container-global mt-2 mx-4 w-100">
-      <div class="d-flex flex-row justify-content-between">
-        <!--PRIMER WIDGET PRIMERA LINEA || PROFITS-->
-        <div class="widget-tercio mx-3">
-          <!--PARTE SUPERIOR DEL WIDGET-->
-          <div class="superior-widget d-flex flex-row justify-content-between mt-2">
-            <!--Superior Izquierda Widget-->
-            <div class="d-flex flex-row align-items-center">
-              <img src="/imgs/icons/profits.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
-              <h5 class="mb-0 py-1">Current Balance</h5>
-            </div>
-            <!--Superior Derecha Widget-->
-            <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+<div class="d-flex flex-row justify-content-center mb-1">
+  <div class="container-global mt-2 mx-4 w-100">
+    <div class="d-flex flex-row justify-content-between">
+      <!--PRIMER WIDGET PRIMERA LINEA || PROFITS-->
+      <div class="widget-tercio mx-3">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <img src="/imgs/icons/profits.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Current Balance</h5>
           </div>
-          <!--PARTE CENTRAL DEL WIDGET-->
-          <a href="#" class="">
-            <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
-              <div class="parte-central">
-                <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
-                <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-                <h1 class="black-h1"><%= dashboardData.currentAmount%> <%=dashboardData.base%></h1>
+          <!--Superior Derecha Widget-->
+          <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+        </div>
+        <!--PARTE CENTRAL DEL WIDGET-->
+        <a href="#" class="">
+          <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="parte-central">
+              <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
+              <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
+              <h1 class="black-h1"><%= dashboardData.currentAmount%> <%=dashboardData.base%></h1>
+            </div>
+            <% if (Number.isNaN(dashboardData.currentPercent)) { %>
+              <div>
+                <p class="pill pill-yellow font-16">N/A%</p>
               </div>
-              <div class="">
+            <% } else { %>
+              <div>
                 <% if (dashboardData.currentPercent >= 0) { %>
                   <p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">
                 <% } else { %>
                   <p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2">
                 <% } %>
-                  <%= dashboardData.currentPercent %></p>
+                  <%= dashboardData.currentPercent %>%</p>
+              </div>
+            <% } %>
+          </div>
+        </a>
+        <!--PARTE INFERIOR DEL WIDGET-->
+        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+          <div class="grey">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+            </div>
+          </a>
+          </div>
+          <div class="">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+      <div class="widget-tercio mx-3">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <img src="/imgs/icons/star.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Biggest Trade</h5>
+          </div>
+          <!--Superior Derecha Widget-->
+          <a href="#" class="mr-2">
+            <div class="grey font-16 mb-0">
+              <!--Dropdown temporalidad widget-->
+              <div class="dropdown">
+                <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  All
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                  <li onclick="getBiggest('today')">Today</li>
+                  <li onclick="getBiggest('cweek')">Current week</li>
+                  <li onclick="getBiggest('lweek')">Last week</li>
+                  <li onclick="getBiggest('cmonth')">Current month</li>
+                  <li onclick="getBiggest('lmonth')">Last month</li>
+                  <li onclick="getBiggest('cquarter')">Current quarter</li>
+                  <li onclick="getBiggest('lquarter')">Last quarter</li>
+                  <li onclick="getBiggest('all')">All</li>
+                </ul>
               </div>
             </div>
           </a>
-          <!--PARTE INFERIOR DEL WIDGET-->
-          <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-            <div class="grey">
-            <a href="#">
-              <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-                <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-                <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-              </div>
-            </a>
+        </div>
+        <!--PARTE CENTRAL DEL WIDGET-->
+        <a href="#" class="">
+          <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="parte-central">
+              <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
+              <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
+              <h1 id="biggest-pair" class="black-h1"><%= dashboardData.biggestPair %></h1>
             </div>
-            <div class="">
-            <a href="#">
-              <div class="d-flex flex-row justify-content-center align-items-center">
-                <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
-              </div>
-            </a>
+            <div>
+              <p id="biggest-percent" class="pill pill-yellow font-16">
+                <%= dashboardData.biggestPercent.toFixed(2) %>%
+              </p>
             </div>
+          </div>
+        </a>
+        <!--PARTE INFERIOR DEL WIDGET-->
+        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+          <div class="grey">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+            </div>
+          </a>
+          </div>
+          <div class="">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            </div>
+          </a>
           </div>
         </div>
-        <div class="widget-tercio mx-3">
-          <!--PARTE SUPERIOR DEL WIDGET-->
-          <div class="superior-widget d-flex flex-row justify-content-between mt-2">
-            <!--Superior Izquierda Widget-->
-            <div class="d-flex flex-row align-items-center">
-              <img src="/imgs/icons/star.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
-              <h5 class="mb-0 py-1">Biggest Trade</h5>
-            </div>
-            <!--Superior Derecha Widget-->
-            <a href="#" class="mr-2">
-              <div class="grey font-16 mb-0">
-                <!--Dropdown temporalidad widget-->
-                <div class="dropdown">
-                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    All
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li onclick="getBiggest('today')">Today</li>
-                    <li onclick="getBiggest('cweek')">Current week</li>
-                    <li onclick="getBiggest('lweek')">Last week</li>
-                    <li onclick="getBiggest('cmonth')">Current month</li>
-                    <li onclick="getBiggest('lmonth')">Last month</li>
-                    <li onclick="getBiggest('cquarter')">Current quarter</li>
-                    <li onclick="getBiggest('lquarter')">Last quarter</li>
-                    <li onclick="getBiggest('all')">All</li>
-                  </ul>
-                </div>
-              </div>
-            </a>
+      </div>
+      <div class="widget-tercio mx-3">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+            <img src="/imgs/icons/folder.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
+            <h5 class="mb-0 py-1">Total Entries</h5>
           </div>
-          <!--PARTE CENTRAL DEL WIDGET-->
-          <a href="#" class="">
-            <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
-              <div class="parte-central">
-                <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
-                <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-                <h1 class="black-h1"><%= dashboardData.biggestPair %></h1>
-              </div>
-              <div class="">
-                <p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2"><%= dashboardData.biggestPercent %>%</p>
+          <!--Superior Derecha Widget-->
+          <a href="#" class="mr-2">
+            <div class="grey font-16 mb-0">
+              <!--Dropdown temporalidad widget-->
+              <div class="dropdown">
+                <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  All
+                </button>
+                <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                  <li onclick="getTotal('today')">Today</li>
+                  <li onclick="getTotal('cweek')">Current week</li>
+                  <li onclick="getTotal('lweek')">Last week</li>
+                  <li onclick="getTotal('cmonth')">Current month</li>
+                  <li onclick="getTotal('lmonth')">Last month</li>
+                  <li onclick="getTotal('cquarter')">Current quarter</li>
+                  <li onclick="getTotal('lquarter')">Last quarter</li>
+                  <li onclick="getTotal('all')">All</li>
+                </ul>
               </div>
             </div>
           </a>
-          <!--PARTE INFERIOR DEL WIDGET-->
-          <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-            <div class="grey">
-            <a href="#">
-              <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-                <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-                <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-              </div>
-            </a>
-            </div>
-            <div class="">
-            <a href="#">
-              <div class="d-flex flex-row justify-content-center align-items-center">
-                <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
-              </div>
-            </a>
-            </div>
-          </div>
         </div>
-        <div class="widget-tercio mx-3">
-          <!--PARTE SUPERIOR DEL WIDGET-->
-          <div class="superior-widget d-flex flex-row justify-content-between mt-2">
-            <!--Superior Izquierda Widget-->
-            <div class="d-flex flex-row align-items-center">
-              <img src="/imgs/icons/folder.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="profits">
-              <h5 class="mb-0 py-1">Total Entries</h5>
+        <!--PARTE CENTRAL DEL WIDGET-->
+        <a href="#" class="">
+          <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="parte-central">
+              <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
+              <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
+              <h1 id="total-entries" class="black-h1"><%= dashboardData.total %></h1>
             </div>
-            <!--Superior Derecha Widget-->
-            <a href="#" class="mr-2">
-              <div class="grey font-16 mb-0">
-                <!--Dropdown temporalidad widget-->
-                <div class="dropdown">
-                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    All
-                  </button>
-                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
-                  <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li onclick="getTotal('today')">Today</li>
-                    <li onclick="getTotal('cweek')">Current week</li>
-                    <li onclick="getTotal('lweek')">Last week</li>
-                    <li onclick="getTotal('cmonth')">Current month</li>
-                    <li onclick="getTotal('lmonth')">Last month</li>
-                    <li onclick="getTotal('cquarter')">Current quarter</li>
-                    <li onclick="getTotal('lquarter')">Last quarter</li>
-                    <li onclick="getTotal('all')">All</li>
-                  </ul>
-                </div>
-              </div>
-            </a>
-          </div>
-          <!--PARTE CENTRAL DEL WIDGET-->
-          <a href="#" class="">
-            <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
-              <div class="parte-central">
-                <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
-                <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-                <h1 class="black-h1"><%= dashboardData.total %></h1>
-              </div>
-              <div class="">
-              <% if (dashboardData.rate > 10) { %>
-                <p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">
+            <div>
+              <% if (isNaN(parseFloat(dashboardData.rate))) { %>
+                <p id="win-rate" class="pill pill-yellow font-16">N/A% wins</p>
               <% } else { %>
-                <p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2">
+                <p id="win-rate" class="pill pill-yellow font-16"><%= dashboardData.rate %>% wins</p>
               <% } %>
-                <%= dashboardData.rate %>% wins</p>
+            </div>
+          </div>
+        </a>
+        <!--PARTE INFERIOR DEL WIDGET-->
+        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
+          <div class="grey">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
+              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
+              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
+            </div>
+          </a>
+          </div>
+          <div class="">
+          <a href="#">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex flex-row justify-content-center mb-1">
+  <div class="container-global mt-2 mx-4 w-100">
+    <div class="mt-2 mx-2">
+      <!-- Second Widget on dashboard//home-->
+      <div class="widget-100">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+              <img src="/imgs/icons/wallet.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
+            <h5 class="mb-0 py-1">Outcome</h5>
+          </div>
+          <!--Superior Derecha Widget-->
+          <a href="#" class="mr-2">
+            <div class="grey font-16 mb-0">
+              <!--Dropdown temporalidad widget-->
+              <div class="dropdown">
+                <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  All
+                </button>
+                <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                  <li>Today</li>
+                  <li>Current week</li>
+                  <li>Last week</li>
+                  <li>Current month</li>
+                  <li>Last month</li>
+                  <li>Current quarter</li>
+                  <li>Last quarter</li>
+                  <li>All</li>
+                </ul>
               </div>
             </div>
           </a>
-          <!--PARTE INFERIOR DEL WIDGET-->
-          <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-            <div class="grey">
-            <a href="#">
-              <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-                <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-                <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-              </div>
-            </a>
-            </div>
-            <div class="">
-            <a href="#">
-              <div class="d-flex flex-row justify-content-center align-items-center">
-                <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
-              </div>
-            </a>
-            </div>
-          </div>
         </div>
-        </div>
-        </div>
-        </div>
-
-  <div class="d-flex flex-row justify-content-center mb-1">
-    <div class="container-global mt-2 mx-4 w-100">
-      <div class="mt-2 mx-2">
-        <!-- Second Widget on dashboard//home-->
-        <div class="widget-100">
-          <!--PARTE SUPERIOR DEL WIDGET-->
-          <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
-            <!--Superior Izquierda Widget-->
-            <div class="d-flex flex-row align-items-center">
-                <img src="/imgs/icons/wallet.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
-              <h5 class="mb-0 py-1">Outcome</h5>
-            </div>
-            <!--Superior Derecha Widget-->
-            <a href="#" class="mr-2">
-              <div class="grey font-16 mb-0">
-                <!--Dropdown temporalidad widget-->
-                <div class="dropdown">
-                  <button id="dLabel" class="dropdown-select grey font-16 mb-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    All
-                  </button>
-                  <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
-                  <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current quarter</li>
-                    <li>Last quarter</li>
-                    <li>All</li>
-                  </ul>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="">
-            <div class="container-graph px-3 mt-2">
-              <canvas id="resultsChart" width="300" height="250"></canvas>
-            </div>
+        <div class="">
+          <div class="container-graph px-3 mt-2">
+            <canvas id="resultsChart" width="300" height="250"></canvas>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="d-flex flex-row justify-content-center mb-1">
-    <div class="container-global mt-2 mx-4 w-100">
-      <div class="mt-2 mx-2">
-        <!-- Third Widget on dashboard//home-->
-        <div class="widget-100">
-          <!--PARTE SUPERIOR DEL WIDGET-->
-          <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
-            <!--Superior Izquierda Widget-->
-            <div class="d-flex flex-row align-items-center">
-                <img src="/imgs/icons/open-ops.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
-              <h5 class="mb-0 py-1">Open positions</h5>
+<div class="d-flex flex-row justify-content-center mb-1">
+  <div class="container-global mt-2 mx-4 w-100">
+    <div class="mt-2 mx-2">
+      <!-- Third Widget on dashboard//home-->
+      <div class="widget-100">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+              <img src="/imgs/icons/open-ops.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
+            <h5 class="mb-0 py-1">Open positions</h5>
+          </div>
+        </div>
+        <div class="">
+          <div class="mb-2 mt-3 w-100">
+            <div class="parte-central">
+              <!-- Every row of the table must be linked to the details of that operation.  -->
+              <!-- IMPORTANT: The user must be able to sort and order the open positions by every column -->
+              <table class="table table-hover table-borderless font-16 text-center">
+                <thead>
+                  <tr class="pb-4">
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los activos con almenos una operación cerrada">Asset</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Lots</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Direction</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Resultado medio en cada timeframe">Entry date</th>
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones ganadoras">Entry price</th>
+                    <!-- CURRENT PRICE | Check price with API -->
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Check those numbers with your broker">Current price</th>
+                    <!-- OPEN RESULT | Check price with API -->
+                    <!-- SPANISH: Supongo que API proporcionará un cierto formato. Forzar al usuario a utilizar ese mismo formato para que podamos realizar comparaciones. -->
+                    <th scope="col" data-toggle="tooltip" data-placement="top" title="Check those numbers with your broker.">Open result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (const ops in dashboardOps) { %>
+                    <tr>
+                      <th scope="row" class="align-middle"><%= dashboardOps[ops].pair %></th>
+                      <!-- Lot -->
+                      <td><%= dashboardOps[ops].lot %></td>
+                      <!-- Direction -->
+                      <td>
+                        <div class=" d-flex flex-row justify-content-center">
+                          <% if (dashboardOps[ops].direction == 'long') { %>
+                            <p class="mb-0 pill pill-roja pill-direction">
+                              <img src="/imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="direction">
+                              Short
+                            </p>
+                          <% } else { %>
+                            <p class="mb-0 pill pill-roja pill-direction">
+                              <img src="/imgs/icons/trending-up-green.svg" class="py-1 imagen-widget opacity-1" alt="direction">
+                              Long
+                            </p>
+                          <% } %>
+                        </div>
+                      </td>
+                      <!-- Entry date -->
+                      <td><%= dashboardOps[ops].date %></td>
+                      <!-- Entry price -->
+                      <td><%= dashboardOps[ops].entry %></td>
+                      <!-- Current price -->
+                      <td>---</td>
+                      <!-- Open result -->
+                      <td>
+                        <div class=" d-flex flex-row justify-content-center">
+                          <p class="mb-0 pill pill-roja pill-direction">
+                            ---
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center pb-2">
+              <a href="#">
+                <p class="pill font-16 grey mb-0">See more details</p>
+              </a>
             </div>
           </div>
-          <div class="">
-            <div class="mb-2 mt-3 w-100">
-              <div class="parte-central">
-                <!-- Every row of the table must be linked to the details of that operation.  -->
-                <!-- IMPORTANT: The user must be able to sort and order the open positions by every column -->
-                <table class="table table-hover table-borderless font-16 text-center">
-                  <thead>
-                    <tr class="pb-4">
-                      <th scope="col" data-toggle="tooltip" data-placement="top" title="En esta columna se muestran todos los activos con almenos una operación cerrada">Asset</th>
-                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Lots</th>
-                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de entradas con cada timeframe como principal.">Direction</th>
-                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Resultado medio en cada timeframe">Entry date</th>
-                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones ganadoras">Entry price</th>
-                      <!-- CURRENT PRICE | Check price with API -->
-                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Check those numbers with your broker">Current price</th>
-                      <!-- OPEN RESULT | Check price with API -->
-                      <!-- SPANISH: Supongo que API proporcionará un cierto formato. Forzar al usuario a utilizar ese mismo formato para que podamos realizar comparaciones. -->
-                      <th scope="col" data-toggle="tooltip" data-placement="top" title="Check those numbers with your broker.">Open result</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <!-- All the info must be taken from the user entry -->
-                      <th scope="row" class="align-middle">EURUSD</th>
-                      <!-- Lots -->
-                      <td>1.23</td>
-                      <!-- Direction -->
-                      <!-- SPANISH: Me gustarí que dependiendo de la dirección, apareciera un pill personalizado como los que hacemos manualmente ahora. Debe poner el color y la dirección de la flecha -->
-                      <td>
-                        <div class=" d-flex flex-row justify-content-center">
-                          <p class="mb-0 pill pill-verde pill-direction">
-                            <img src="/imgs/icons/trending-up-green.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
-                            Long
-                          </p>
-                        </div>
-
-                      </td>
-                      <!-- Entry date -->
-                      <td>17/08/19</td>
-                      <!-- Entry price -->
-                      <td>1,25487</td>
-                      <!-- Current price -->
-                      <td>1,25978</td>
-                      <!-- Open result -->
-                      <!-- SPANISH: El usuario debe ser capaz de cambiar el formato de los datos, MONEDA-PIPS-PORCENTAJErespecto a su cuenta -->
-                      <td>
-                        <div class=" d-flex flex-row justify-content-center">
-                          <p class="mb-0 pill pill-verde pill-direction">
-                            $87
-                          </p>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="align-middle">USDJPY</th>
-                      <!-- Lots -->
-                      <td>2.03</td>
-                      <!-- Direction -->
-                      <!-- SPANISH: Me gustarí que dependiendo de la dirección, apareciera un pill personalizado como los que hacemos manualmente ahora. Debe poner el color y la dirección de la flecha -->
-                      <td>
-                        <div class=" d-flex flex-row justify-content-center">
-                          <p class="mb-0 pill pill-roja pill-direction">
-                            <img src="/imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
-                            Short
-                          </p>
-                        </div>
-                      </td>
-                      <!-- Entry date -->
-                      <td>05/12/19</td>
-                      <!-- Entry price -->
-                      <td>1,47892</td>
-                      <!-- Current price -->
-                      <td>1,47814</td>
-                      <!-- Open result -->
-                      <td>
-                        <div class=" d-flex flex-row justify-content-center">
-                          <p class="mb-0 pill pill-roja pill-direction">
-                            -$45
-                          </p>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="align-middle">XAUUSD</th>
-                      <!-- Lots -->
-                      <td>0.71</td>
-                      <!-- Direction -->
-                      <!-- SPANISH: Me gustarí que dependiendo de la dirección, apareciera un pill personalizado como los que hacemos manualmente ahora. Debe poner el color y la dirección de la flecha -->
-                      <td>
-                        <div class=" d-flex flex-row justify-content-center">
-                          <p class="mb-0 pill pill-roja pill-direction">
-                            <img src="/imgs/icons/trending-down-red.svg" class="py-1 imagen-widget opacity-1" alt="Outcome">
-                            Short
-                          </p>
-                        </div>
-                      </td>
-                      <!-- Entry date -->
-                      <td>12/05/01</td>
-                      <!-- Entry price -->
-                      <td>2.000</td>
-                      <!-- Current price -->
-                      <td>1.987</td>
-                      <!-- Open result -->
-                      <td>
-                        <div class=" d-flex flex-row justify-content-center">
-                          <p class="mb-0 pill pill-verde pill-direction">
-                            $874
-                          </p>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="d-flex flex-row justify-content-center align-items-center pb-2">
-                <a href="#">
-                  <p class="pill font-16 grey mb-0">See more details</p>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="">
-            <!-- Poner un boton que lleve a una página con más detalles de las operaciones -->
-          </div>
+        </div>
+        <div class="">
+          <!-- Poner un boton que lleve a una página con más detalles de las operaciones -->
         </div>
       </div>
     </div>
   </div>
+</div>
 
 
-        <div class="d-flex flex-row justify-content-center">
-          <div class="container-global mt-2 mx-4 w-100">
-            <div class="mt-2 mx-2">
-              <!-- Third Widget on dashboard//home-->
-              <div class="widget-100">
-                <!--PARTE SUPERIOR DEL WIDGET-->
-                <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
-                  <!--Superior Izquierda Widget-->
-                  <div class="d-flex flex-row align-items-center">
-                      <img src="/imgs/icons/flag.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
-                    <h5 class="mb-0 py-1">Goals</h5>
-                  </div>
-                </div>
-                <div class="">
-                  <div class="mb-2 mt-3 w-100 px-3">
-                    <div class="parte-central d-flex flex-row justify-content-center align-items-center my-2">
-                      <!-- Start of 1st Goal-->
-                      <!-- Cambiar el tipo de fuente del nombre de los objetivos-->
-                      <!-- Talvez tengamos que limitar el numero de caracteres del nombre del objetivo-->
-                      <div class="d-flex w-33">
-                        Account to $50k
-                      </div>
-                      <!-- In order for the progress-bar to work, must be a "div inside a div"-->
-                      <div class="progress w-100 border">
-                        <div class="progress-bar progress-bar-orange" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="25%"></div>
-                      </div>
-                      <!-- END of 1st Goal -->
-                    </div>
-
-                    <div class="parte-central d-flex flex-row justify-content-center align-items-center my-2">
-                      <!-- Start of 1st Goal-->
-                      <div class="d-flex w-33">
-                        Consistency three months
-                      </div>
-                      <!-- In order for the progress-bar to work, must be a "div inside a div"-->
-                      <div class="progress w-100 border">
-                        <div class="progress-bar progress-bar-orange" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="40%"></div>
-                      </div>
-                      <!-- END of 1st Goal -->
-                    </div>
-
-                    <div class="parte-central d-flex flex-row justify-content-center align-items-center my-2">
-                      <!-- Start of 1st Goal-->
-                      <div class="d-flex w-33">
-                        5% Weekly
-                      </div>
-                      <!-- In order for the progress-bar to work, must be a "div inside a div"-->
-                      <div class="progress w-100 border">
-                        <div class="progress-bar progress-bar-orange" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="85%"></div>
-                      </div>
-                      <!-- END of 1st Goal -->
-                    </div>
-
-                    <div class="parte-central d-flex flex-row justify-content-center align-items-center my-2">
-                      <!-- Start of 1st Goal-->
-                      <div class="d-flex w-33">
-                        20% Monthly
-                      </div>
-                      <!-- In order for the progress-bar to work, must be a "div inside a div"-->
-                      <div class="progress w-100 border">
-                        <div class="progress-bar progress-bar-orange" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="15%"></div>
-                      </div>
-                      <!-- END of 1st Goal -->
-                    </div>
-                    <div class="d-flex flex-row justify-content-center align-items-center pb-2">
-                      <a href="#">
-                        <p class="pill font-16 grey mb-0">See more details</p>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="">
-                  <!-- Poner un boton que lleve a una página con más detalles de las operaciones -->
-                </div>
+<div class="d-flex flex-row justify-content-center">
+  <div class="container-global mt-2 mx-4 w-100">
+    <div class="mt-2 mx-2">
+      <!-- Third Widget on dashboard//home-->
+      <div class="widget-100">
+        <!--PARTE SUPERIOR DEL WIDGET-->
+        <div class="superior-widget d-flex flex-row justify-content-between mt-2 pt-1">
+          <!--Superior Izquierda Widget-->
+          <div class="d-flex flex-row align-items-center">
+              <img src="/imgs/icons/flag.svg" class="mx-2 py-1 imagen-widget opacity-1" alt="Outcome">
+            <h5 class="mb-0 py-1">Goals</h5>
+          </div>
+        </div>
+        <div class="">
+          <div class="mb-2 mt-3 w-100 px-3">
+            <div class="parte-central d-flex flex-row justify-content-center align-items-center my-2">
+              <!-- Start of 1st Goal-->
+              <!-- Cambiar el tipo de fuente del nombre de los objetivos-->
+              <!-- Talvez tengamos que limitar el numero de caracteres del nombre del objetivo-->
+              <div class="d-flex w-33">
+                Account to 50 <%= dashboardData.base %>
               </div>
+              <!-- In order for the progress-bar to work, must be a "div inside a div"-->
+              <div class="progress w-100 border">
+                <% var to50 = parseInt(dashboardData.currentAmount.replace(/,/g, '')) / 50000 * 100 %>
+                <% if (to50 > 100) { to50 = 100; } %>
+                <div class="progress-bar progress-bar-orange" role="progressbar" style="width: <%= to50 %>%" data-toggle="tooltip" data-placement="top" title="<%= to50 %>%"></div>
+              </div>
+            </div>
+            <div class="parte-central d-flex flex-row justify-content-center align-items-center my-2">
+              <!-- Start of 1st Goal-->
+              <div class="d-flex w-33">
+                Consistency three months
+              </div>
+              <!-- In order for the progress-bar to work, must be a "div inside a div"-->
+              <div class="progress w-100 border">
+                <div class="progress-bar progress-bar-orange" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="40%"></div>
+              </div>
+            </div>
+
+            <div class="parte-central d-flex flex-row justify-content-center align-items-center my-2">
+              <!-- Start of 1st Goal-->
+              <div class="d-flex w-33">
+                5% Weekly
+              </div>
+              <!-- In order for the progress-bar to work, must be a "div inside a div"-->
+              <div class="progress w-100 border">
+                <% var to5Per = weekFive / 5 * 100 %>
+                <% if (to5Per > 100) { to5Per = 100; } %>
+                <% if (to5Per < 0) { to5Per = 0; } %>
+                <div class="progress-bar progress-bar-orange" role="progressbar" style="width: <%= to5Per %>%" data-toggle="tooltip" data-placement="top" title="<%= to5Per %>%"></div>
+              </div>
+            </div>
+            <div class="parte-central d-flex flex-row justify-content-center align-items-center my-2">
+              <!-- Start of 1st Goal-->
+              <div class="d-flex w-33">
+                20% Monthly
+              </div>
+              <!-- In order for the progress-bar to work, must be a "div inside a div"-->
+              <div class="progress w-100 border">
+                <% var to20Per = monthTwenty / 20 * 100 %>
+                <% if (to20Per > 100) { to20Per = 100; } %>
+                <% if (to20Per < 0) { to20Per = 0; } %>
+                <div class="progress-bar progress-bar-orange" role="progressbar" style="width: <%= to20Per %>%" data-toggle="tooltip" data-placement="top" title="<%= to20Per %>%"></div>
+              </div>
+              <!-- END of 1st Goal -->
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center pb-2">
+              <a href="#">
+                <p class="pill font-16 grey mb-0">See more details</p>
+              </a>
             </div>
           </div>
         </div>
+        <div class="">
+          <!-- Poner un boton que lleve a una página con más detalles de las operaciones -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var currentUser = <%- JSON.stringify(currentUser); %>
+  var outcomeMonthAmount = <%- JSON.stringify(outcomeMonthAmount); %>
+  var outcomeMonthTotal = <%- JSON.stringify(outcomeMonthTotal); %>
+</script>
 
 <!-- <section> is inside partials -->
 </section>

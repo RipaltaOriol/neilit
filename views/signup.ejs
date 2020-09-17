@@ -47,7 +47,7 @@
     <div class="col-10 col-md-8 col-lg-5 mt-5 text-center">
       <h2 class="orange">Join Neilit</h2>
       <p class="border-bottom pb-2 mb-3">Create a new account</p>
-      <form class="" method="POST" action="/signup">
+      <form method="POST" action="/signup">
         <!-- first name -->
         <input class="mb-3 pl-2" type="text" required="required" name="name" value="" placeholder="First Name">
         <!-- last name -->
@@ -60,6 +60,21 @@
         <input class="mb-3 pl-2" type="password" required="required" name="password" placeholder="Password">
         <!-- confirm password -->
         <input class="mb-3 pl-2" type="password" required="required" name="confirmPassword" placeholder="Cofirm Password">
+        <!-- base currency -->
+        <div class="dropright">
+          <input class="mb-3 pl-2" id="dd" class="dropdown-select" data-toggle="dropdown" type="text" required="required" name="base" placeholder="Account's Base Currency" readonly>
+          <ul class="dropdown-menu" aria-labelledby="dd">
+            <li>USD</li>
+            <li>EUR</li>
+            <li>CAD</li>
+            <li>JPY</li>
+            <li>GBP</li>
+            <li>CHF</li>
+            <li>AUD</li>
+          </ul>
+        </div>
+        <!-- account balance -->
+        <input class="mb-3 pl-2" type="number" required="required" name="balance" placeholder="Account Balance" min="0" step="0.01">
         <a href="/login" class="font-14 link-gris d-block mb-2">Already a member? Log in</a>
         <!-- Boton -->
         <div class="mt-3 d-block flex-row justify-content-center">
@@ -73,25 +88,14 @@
         <div class="container-steps mt-5 mb-5 d-block">
           <!-- Para hacer que funcione, se debe añadir la clase active a cada paso -->
           <ul class="progressbar">
-            <li class="active">
-              Information
-            </li>
-            <li class="">
-              Choose plan
-            </li>
-            <li class="">
-              Payment
-            </li>
-
+            <li class="active">Information</li>
+            <li>Choose plan</li>
+            <li>Payment</li>
           </ul>
         </div>
       </form>
     </div>
   </div>
-</div>
-
-<div class="footer text-center w-100">
-  <p class="font-13">Designed in Barcelona. Developed in Boston.</p>
 </div>
 
 <%- include("./partials/footer-home") %>

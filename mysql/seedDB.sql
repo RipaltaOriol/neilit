@@ -63,10 +63,10 @@ VALUES
   (2, 4, 3, 'The LTC failed to break the 21EMA towards the upside. The price managed to close one candle above the 21EMA in the 4-hour charts, but went back down. I am looking for a possible re-test of the bottom support for the following days.', NULL, NULL, NULL),
   (2, 5, 4, NULL, NULL, 2, 9);
 
-INSERT INTO entries (user_id, pair_id, category, size, strategy_id, timeframe_id, entry_dt, exit_dt, direction, entry_price, stop_loss, take_profit, exit_price, ta_id, status, comment, result)
+INSERT INTO entries (user_id, pair_id, category, size, strategy_id, timeframe_id, entry_dt, exit_dt, direction, entry_price, stop_loss, take_profit, exit_price, profits, fees, ta_id, status, comment, result)
 VALUES
-  (1, 121, 'Forex', 1, 4, 1, '2019-04-23 17:30:00', '2019-04-23 00:00:00', 'long', 107.199, 106.920, 107.960, 107.960, 1, true, "Nailed this trade!", 'win'),
-  (1, 60, 'Forex', 0.1, 1, 1, '2019-04-27 09:45:00', '2019-04-27 13:00:00', 'short', 1.52485, 1.52677, 1.51566, 1.52485, 2, true, 'Retrace to the triangle neck. Give more room to the SL (not so tight).', 'loss');
+  (1, 121, 'Forex', 1, 4, 1, '2019-04-23 17:30:00', '2019-04-23 00:00:00', 'long', 107.199, 106.920, 107.960, 107.960, 76100.00, 10.00, 1, true, "Nailed this trade!", 'win'),
+  (1, 60, 'Forex', 0.1, 1, 1, '2019-04-27 09:45:00', '2019-04-27 13:00:00', 'short', 1.52485, 1.52677, 1.51566, 1.52485, 100.00, 1.00, 2, true, 'Retrace to the triangle neck. Give more room to the SL (not so tight).', 'loss');
 
 INSERT INTO entries (user_id, pair_id, category, size, strategy_id, timeframe_id, entry_dt, direction, entry_price, stop_loss, take_profit)
 VALUES

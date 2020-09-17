@@ -1,10 +1,13 @@
 var express = require('express');
+const util = require('util');
 var router = express.Router({mergeParams: true});
 let pairs = require("../models/pairs");
 let timeframes = require("../models/timeframes");
 let categories = require("../models/categoriesPairs");
 let middleware = require('../middleware');
 let connection = require('../models/connectDB');
+// node native promisify
+const query = util.promisify(connection.query).bind(connection);
 
 // Trading Plan Elements
 var strategyPlan = require('../models/elements/plan');
@@ -54,7 +57,6 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 
 // NEW PLAN LOGIC
 router.post("/new", middleware.isLoggedIn, (req, res) => {
-  console.log(req.body);
   // creates an object with the new plan variables
   var newPlan = {
     user_id: req.user.id,
@@ -76,66 +78,185 @@ router.post("/new", middleware.isLoggedIn, (req, res) => {
   connection.query('INSERT INTO plans SET ?', newPlan, (err, planId) => {
     if (err) throw err;
     var plan_id = planId.insertId;
-    // creates an array with the new checklist variables
-    var newChecklist = []
-    // stores the plan's journal checklist into the DB if any
-    if (req.body.checklist != undefined) {
-      if (Array.isArray(req.body.checklist)) {
-        req.body.checklist.forEach((item) => {
-          newChecklist.push([plan_id, item])
-        });
-      } else {
-        newChecklist.push([plan_id, req.body.checklist])
-      }
-      var addChecklists = 'INSERT INTO checklists (plan_id, checklist) VALUES ?'
-      connection.query(addChecklists, [newChecklist], (err) => {
-        if (err) throw err;
-        // creates and array with the new goals values
-        var newObjectives = []
-        // stores the plan's objectives into the DB
-        if (req.body.objectiveFin != undefined) {
-          if (Array.isArray(req.body.objectiveFin)) {
-            req.body.objectiveFin.forEach((objective) => {
-              newObjectives.push([plan_id, 'fin', objective])
+    (async () => {
+      try {
+        // stores the plan's journal checklist into the DB if any
+        if (req.body.checklist != undefined) {
+          // creates array with the new checklist variables
+          var newChecklist = []
+          if (Array.isArray(req.body.checklist)) {
+            req.body.checklist.forEach((item) => {
+              newChecklist.push([plan_id, item])
             });
           } else {
-            newObjectives.push([plan_id, 'fin', req.body.objectiveFin])
+            newChecklist.push([plan_id, req.body.checklist])
           }
+          const addChecklists = await query('INSERT INTO checklists (plan_id, checklist) VALUES ?', [newChecklist]);
         }
-        if (req.body.objectiveNonfin != undefined) {
-          if (Array.isArray(req.body.objectiveNonfin)) {
-            req.body.objectiveNonfin.forEach((objective) => {
-              newObjectives.push([plan_id, 'nonfin', objective])
+        if (req.body.objectiveFin != null || req.body.objectiveNonfin != null) {
+          // creates array with the new goals values
+          var newObjectives = []
+          // stores the plan's objectives into the DB
+          if (req.body.objectiveFin != null) {
+            if (Array.isArray(req.body.objectiveFin)) {
+              req.body.objectiveFin.forEach((objective) => {
+                newObjectives.push([plan_id, 'fin', objective])
+              });
+            } else {
+              newObjectives.push([plan_id, 'fin', req.body.objectiveFin])
+            }
+          }
+          if (req.body.objectiveNonfin != null) {
+            if (Array.isArray(req.body.objectiveNonfin)) {
+              req.body.objectiveNonfin.forEach((objective) => {
+                newObjectives.push([plan_id, 'nonfin', objective])
+              });
+            } else {
+              newObjectives.push([plan_id, 'nonfin', req.body.objectiveNonfin])
+            }
+          }
+          var addObjectives = await query('INSERT INTO objectives (plan_id, type, objective) VALUES ?', [newObjectives]);
+        }
+        // saves plan's strategies to the DB
+        if (req.body.strategies != undefined) {
+          // creates array with the strategies values
+          var newStrategies = []
+          // more than one strategy
+          if (Array.isArray(req.body.strategies)) {
+            req.body.strategies.forEach((iStrategy, i) => {
+              var strategyId = userIdStrategies[userStrategies.findIndex(strategy => strategy == iStrategy)]
+              var timeframeId = null;
+              var pairId = null;
+              var risk = null;
+              if (req.body.timeframes[i] != '') {
+                timeframeId = timeframes.findIndex(timeframe => timeframe === req.body.timeframes[i]) + 1;
+              }
+              if (req.body.pairs[i] != '') {
+                pairId = pairs.findIndex(pair => pair === req.body.pairs[i]) + 1;
+              }
+              if (req.body.risk[i] != '') {
+                risk = req.body.risk[i];
+              }
+              newStrategies.push([plan_id, strategyId, req.body.about[i], req.body.howto[i], req.body.keyNotes[i], timeframeId, pairId, risk])
             });
-          } else {
-            newObjectives.push([plan_id, 'nonfin', req.body.objectiveNonfin])
           }
+          // one strategy
+          else {
+            var strategyId = userIdStrategies[userStrategies.findIndex(strategy => strategy == req.body.strategies)]
+            var timeframeId = null;
+            var pairId = null;
+            var risk = null;
+            if (req.body.timeframes != '') {
+              timeframeId = timeframes.findIndex(timeframe => timeframe === req.body.timeframes) + 1;
+            }
+            if (req.body.pairs != '') {
+              pairId = pairs.findIndex(pair => pair === req.body.pairs) + 1;
+            }
+            if (req.body.risk != '') {
+              risk = req.body.risk;
+            }
+            newStrategies.push([plan_id, strategyId, req.body.about, req.body.howto, req.body.keyNotes, timeframeId, pairId, risk])
+          }
+          var addStrategies = await query('INSERT INTO pln_strategies (plan_id, strategy_id, about, howto, keynotes, timeframe_id, pair_id, risk) VALUES ?', [newStrategies]);
         }
-        var addObjectives = 'INSERT INTO objectives (plan_id, type, objective) VALUES ?'
-        connection.query(addObjectives, [newObjectives], (err) => {
-          if (err) throw err;
-
-        })
-        // COMBAK: continue to execute the objectives query + do the account objective query
-        // then the account objectives
-        // you can print the plans and goals to the EJS
-        // and the the strategies + positioning
-        // COMBAK: then, do the strategy and positioning
+        // saves plan's positioning rules to the DB
+        if (req.body.positionTitle != undefined) {
+          // creates array with the strategies values
+          var newPositions = []
+          // more than one positioning rule
+          if (Array.isArray(req.body.positionTitle)) {
+            req.body.positionTitle.forEach((position, i) => {
+              var strategyId = userIdStrategies[userStrategies.findIndex(strategy => strategy == req.body.positionStrategy[i])]
+              var amount = null
+              if (req.body.amount[i] != '') {
+                amount = Number(req.body.amount[i]);
+              }
+              var order = null;
+              if (req.body.orderType[i] != '') {
+                order = req.body.orderType[i];
+              }
+              newPositions.push([plan_id, strategyId, position, req.body.positionType[i], amount, order, req.body.description[i]])
+            });
+          }
+          // one positioning rule
+          else {
+            var strategyId = userIdStrategies[userStrategies.findIndex(strategy => strategy == req.body.positionStrategy)]
+            var amount = null
+            if (req.body.amount != '') {
+              amount = Number(req.body.amount);
+            }
+            var order = null;
+            if (req.body.orderType != '') {
+              order = req.body.orderType;
+            }
+            newPositions.push([plan_id, strategyId, req.body.title, req.body.positionType, amount, order, req.body.description])
+          }
+          var addPositions = await query('INSERT INTO pln_positions (plan_id, strategy_id, title, rule_type, amount, order_type, description) VALUES ?', [newPositions]);
+        }
+      } catch (e) {
+        throw e;
+      } finally {
         res.redirect('/' + req.user.username + '/plan');
-      })
-    } else {
-      // develop the code here
-
-      res.redirect('/' + req.user.username + '/plan');
-    }
+      }
+    })()
   })
 })
 
 // SHOW PLAN ROUTE
-router.get("/1", middleware.isLoggedIn, (req, res) => {
-  // var getPlan ='...'
-  // continue
-  res.render('user/plan/show')
+router.get("/:id", middleware.isLoggedIn, (req, res) => {
+  // inserts DB queries to variables
+  var selectPlan = 'SELECT * FROM plans WHERE id = ? AND user_id = ?;'
+  var selectChecklist = 'SELECT checklist FROM checklists WHERE plan_id = ?;'
+  var selectGoals = 'SELECT type, objective FROM objectives WHERE plan_id = ?;'
+  var selectStrategy = 'SELECT * FROM pln_strategies WHERE plan_id = ?;'
+  var selectPositioning = 'SELECT * FROM pln_positions WHERE plan_id = ?;'
+  var checklist = []
+  var finObjectives = []
+  var nonfinObjectives = []
+  var strategies = { }
+  connection.query(selectPlan, [req.params.id, req.user.id], (err, getPlan) => {
+    if (err) throw err;
+    var planInfo = getPlan[0];
+    connection.query(selectChecklist, req.params.id, (err, getChecklist) => {
+      if (err) throw err;
+      getChecklist.forEach((result) => {
+        checklist.push(result.checklist)
+      });
+      connection.query(selectGoals, req.params.id, (err, getGoals) => {
+        if (err) throw err;
+        getGoals.forEach((result) => {
+          if (result.type == 'fin') {
+            finObjectives.push(result.objective);
+          } else {
+            nonfinObjectives.push(result.objective);
+          }
+        });
+        connection.query(selectStrategy, req.params.id, (err, getStrategy) => {
+          if (err) throw err;
+          getStrategy.forEach((strategy) => {
+            strategies[strategy.strategy_id] = {name: userStrategies[userIdStrategies.findIndex(strategyId => strategyId === strategy.strategy_id)] ,main: strategy, rules: []}
+          });
+          connection.query(selectPositioning, req.params.id, (err, getPositioning) => {
+            if (err) throw err;
+            getPositioning.forEach((position) => {
+              strategies[position.strategy_id].rules.push(position)
+            });
+            res.render('user/plan/show',
+              {
+                pairs:pairs,
+                timeframes:timeframes,
+                plan:planInfo,
+                checklist:checklist,
+                finObjectives:finObjectives,
+                nonfinObjectives:nonfinObjectives,
+                strategies:strategies
+              }
+            );
+          })
+        })
+      })
+    })
+  })
 })
 
 // UPDATE PLAN ROUTE

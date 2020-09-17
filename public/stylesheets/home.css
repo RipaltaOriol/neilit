@@ -5,12 +5,12 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
 :root{
+  --neilit-default: #ff8818;
   --amarillo: #FFCF18;
-  --naranja: #FF8818;
   --naranja-fuerte: #f57700;
   --verde: #4DAA57;
   --azul-fuerte:#151B26;
-  --gris-flojo: #F7F7F7;
+  --bg-hover: #f7f7f7;
   --gris: #AAAAAA;
   --gris-texto: #7B7B7B;
 }
@@ -41,7 +41,7 @@ h3 {
 
 h5 {
   font-weight: lighter;
-  color: var(--naranja);
+  color: var(--neilit-default);
 }
 
 a { }
@@ -66,7 +66,7 @@ form input {
 }
   form input:focus {
     color: black;
-    border: 1px solid var(--naranja);
+    border: 1px solid var(--neilit-default);
     outline: none;
   }
 
@@ -86,7 +86,7 @@ form input {
 /* || Bootstrap class */
 .jumbotron {
   background-color: var(--amarillo);
-  background-image: linear-gradient(to left, var(--amarillo), var(--naranja));
+  background-image: linear-gradient(to left, var(--amarillo), var(--neilit-default));
 }
 
 /* || Bootstrap class */
@@ -117,18 +117,18 @@ form input {
     color: black;
   }
     .modal-body a:hover{
-      color: var(--naranja);
+      color: var(--neilit-default);
       text-decoration: none;
     }
 
 /* || Utility */
 .orange {
-  color: var(--naranja);
+  color: var(--neilit-default);
 }
 
 /* || Utility */
 .bg-orange {
-  background: var(--naranja);
+  background: var(--neilit-default);
 }
   .bg-orange a:hover {
     color: white!important;
@@ -189,7 +189,7 @@ form input {
 .btn-neilit {
   font-size: 17px;
   color: white;
-  background: var(--naranja);
+  background: var(--neilit-default);
   border: none;
   border-radius: 7px;
   padding: 7px 21px;
@@ -204,15 +204,15 @@ form input {
 /* || Utility */
 .btn-inverted {
   font-size: 17px;
-  color: var(--naranja);
-  border: 2px solid var(--naranja);
+  color: var(--neilit-default);
+  border: 2px solid var(--neilit-default);
   border-radius: 7px;
   padding: 5px 10px;
   transition-duration: .5s;
 }
   .btn-inverted:hover {
     color: white;
-    background: var(--naranja);
+    background: var(--neilit-default);
     transition-duration: .5s;
   }
 
@@ -226,7 +226,7 @@ form input {
   transition-duration: .5s;
 }
   .btn-white:hover {
-    color: var(--naranja);
+    color: var(--neilit-default);
     background: white;
     transition-duration: .5s;
   }
@@ -239,11 +239,11 @@ form input {
 
 /* || Utility */
 .border-orange-r {
-  border-right: 2px solid var(--naranja);
+  border-right: 2px solid var(--neilit-default);
 }
 /* || Utility */
 .border-orange-l {
-  border-left: 2px solid var(--naranja);
+  border-left: 2px solid var(--neilit-default);
 }
 
 /* || Bootstrap class */
@@ -272,7 +272,7 @@ form input {
   transition-duration: .5s;
 }
   .btn-nav:hover {
-    color: var(--naranja);
+    color: var(--neilit-default);
     text-decoration: none;
     transition-duration: .5s;
   }
@@ -295,7 +295,7 @@ form input {
 /* || Element Experiment */
 .circuloAnimado{
   padding: 10px;
-  background: var(--naranja);
+  background: var(--neilit-default);
   border-radius: 50px;
   width: 25px;
   height: 25px;
@@ -303,6 +303,22 @@ form input {
   animation-duration: 3s;
   animation-iteration-count: infinite;
 }
+
+/* || Dropdown Configuration */
+.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border-radius: 7px;
+}
+  .dropdown-menu li {
+    line-height: 1.15;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+    .dropdown-menu li:hover {
+      background-color: var(--bg-hover);
+    }
 
 .checkbox-orange {
   display: block;
@@ -327,7 +343,7 @@ form input {
       background-color: var(--gris-flojo);
     }
     .checkbox-orange input:checked ~ .checkmark {
-      background-color: var(--naranja);
+      background-color: var(--neilit-default);
     }
     .checkbox-orange input:checked ~ .checkmark:after {
       display: block;
@@ -340,7 +356,7 @@ form input {
   margin-top: 5px;
   height: 15px;
   width: 15px;
-  border: 2px solid var(--naranja);
+  border: 2px solid var(--neilit-default);
   border-radius: 2px;
 }
   .checkmark:after {
@@ -348,12 +364,6 @@ form input {
     position: absolute;
     display: none;
   }
-
-/* || Utility */
-.footer {
-  position:fixed;
-  bottom: 0px;
-}
 
 #sticky-nav {
   background-color: rgba(0, 0, 0, 0);
@@ -384,7 +394,7 @@ form input {
 #neilit{
   font-size: 150px;
   font-weight: bold;
-  color: var(--naranja);
+  color: var(--neilit-default);
   margin-top: 20vh;
 }
 
@@ -441,7 +451,7 @@ form input {
   width: 30px;
   height: 30px;
   background: white;
-  border: 2px solid var(--naranja);
+  border: 2px solid var(--neilit-default);
   display: block;
   text-align: center;
   margin: 0 auto 10px auto;
@@ -454,7 +464,7 @@ form input {
   position: absolute;
   width: 100%;
   height: 2px;
-  background: var(--naranja);
+  background: var(--neilit-default);
   top: 15px;
   left: -50%;
   z-index: -1;
@@ -469,11 +479,11 @@ form input {
 }
 
 .progressbar li.active::before{
-  border-color: var(--naranja);
-  background: var(--naranja);
+  border-color: var(--neilit-default);
+  background: var(--neilit-default);
   color: white;
 }
 
 .progressbar li.active + li:after{
-  background-color: var(--naranja);
+  background-color: var(--neilit-default);
 }

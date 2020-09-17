@@ -3,8 +3,6 @@
   --grey-medio: #EEEEEE;
   --grey-fuerte: #E5E5E5;
   --grey-texto: #7B7B7B;
-  --red-fuerte: #EE0000;
-  --blue-primario: #007BFF;
 }
 
 /* || General styles */
@@ -87,13 +85,7 @@ hr.profile {
   margin: 0;
 }
 
-#remaining-days{
-  color: var(--grey-texto) !important;
-}
-  #remaining-days:hover{
-    color: var(--orange);
-    text-decoration: none;
-  }
+
 
 /* || Utility */
 .bg-orange {
@@ -123,14 +115,6 @@ hr.profile {
 .nav-item {
   margin: 0 3px 0 3px;
 }
-
-.container-info-settings {
-  padding: 2px 4px 2px 4px;
-}
-  .container-info-settings:hover {
-    border-radius: 7px;
-    background: var(--grey-flojo);
-  }
 
 .tab-box {
   width: 850px;
@@ -168,39 +152,9 @@ hr.profile {
 .profile-picture { }
   .profile-picture:hover { }
 
-/* || Boton Logout */
-.btn-logout {
-  background: white;
-  color: var(--red-fuerte);
-  border-radius: 7px;
-  border: 1px solid var(--red-fuerte);
-  padding: 3px 15px;
-}
-
-.btn-logout:hover {
-  background: var(--red-fuerte);
-  color: white;
-  border-radius: 7px;
-  border: 2px solid var(--red-fuerte);
-}
-
 .containerOferta {
   border-radius: 7px 7px 0 0;
 }
-
-/* || Boton Settings Change plan */
-.change-plan {
-  padding: 3px 15px;
-  border: 2px solid var(--orange);
-  border-radius: 7px;
-  transition-duration: .25s;
-}
-  .change-plan:hover {
-    color: white;
-    border: 2px solid var(--orange);
-    background: var(--orange);
-    transition-duration: .25s;
-  }
 
 .FAQ {
   color: #7b7b7b;
@@ -225,18 +179,17 @@ hr.profile {
       opacity: .8;
       transition-duration: .25s;
     }
-
-.invoice-clear {
-  background: #cbf6e5;
-  color: #45d69e;
-  border-radius: .25rem;
-}
-
-.invoice-pending {
-  background: #fce6e5;
-  color: #fd5e74;
-  border-radius: .25rem;
-}
+  /* Invoice's status: Clear or Pending */
+  .clear {
+    background: #cbf6e5;
+    color: #2c946c;
+    border-radius: .25rem;
+  }
+  .pending {
+    background: #fce6e5;
+    color: #fd5e74;
+    border-radius: .25rem;
+  }
 
 .switch {
   position: relative;
@@ -354,17 +307,29 @@ hr.profile {
     }
 
 /*Custom dropdown*/
-#dLabel {
-  border-radius: 7px;
+#dd {
+  border-radius: .25rem;
   border: 0;
   text-align: left;
   background-color: inherit;
   color: var(--grey-texto);
 }
-  #dLabel:hover {
+  #dd:hover {
     color: black;
+    background-color: #f7f7f7;
   }
 
 #initial-balance{
   width: 150px;
 }
+
+/* || Btn Logout */
+#logout {
+  color: var(--red-strong);
+  border-radius: .25rem;
+  border: 2px solid var(--red-strong);
+}
+  #logout:hover {
+    color: white;
+    background: var(--red-strong);
+  }

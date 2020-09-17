@@ -4,6 +4,22 @@ ul { }
     list-style-type: none;
   }
 
+ol {
+  list-style: none;
+  counter-reset: li;
+  padding-left: 1.5em;
+}
+  ol li {
+    counter-increment: li;
+  }
+    ol li::before {
+      content: counter(li);
+      color: var(--neilit-regular);
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+
 input { }
   input.form-control {
     background-color: #f7f7f7;
@@ -22,6 +38,38 @@ button.dropdown-select {
 }
   button.dropdown-select:hover {
     color: black;
+  }
+
+/* || Utilities */
+.w-350 {
+  width: 350px;
+}
+
+/* || Neilit color bullets */
+.neilit-bullets {
+  list-style: none;
+  padding-left: 1.5em;
+}
+  .neilit-bullets li::before {
+    content: "\25E6";
+    color: var(--neilit-regular);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+
+/* || Neilit numbered list */
+.neilit-numbers { }
+  .neilit-numbers li::before {
+    width: 1.5em;
+    height: 1.5em;
+    word-spacing: 32px;
+    background-color: var(--neilit-regular);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: -1.5em;
   }
 
 .journal-box {
@@ -59,7 +107,6 @@ button.dropdown-select {
       color: #fff;
       background-color: #ff8818;
     }
-
 
 .plan-box {
   border: 1px solid #dee2e6;
@@ -189,7 +236,7 @@ button.dropdown-select {
 
 /* || Show plan highlight */
 .user-field {
-  padding: 0.15em 0.25em;
+  padding: 0em 0.25em;
 }
   .user-field:hover {
     background-color: #f5bc87;
@@ -212,10 +259,24 @@ button.dropdown-select {
 
 #document { }
   #document input {
-    color: #000;
+    color: var(--neilit-regular);
+  }
+  #document button.dropdown-select {
+    color: var(--neilit-regular);
+  }
+  #document .diveditable {
+    color: var(--neilit-regular);
   }
 
-#scheme {
-  width: 25%;
-  max-width: 300px;
+#dd-objectives .dropdown-item:active {
+  color: var(--neilit-regular);
+  background-color: white;
+}
+
+#plan-title {
+  border-bottom: 1px solid var(--neilit-regular);
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

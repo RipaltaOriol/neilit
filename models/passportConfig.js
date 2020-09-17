@@ -1,8 +1,9 @@
 // Load necessary requirements and connenctions
 const LocalStrategy  = require('passport-local').Strategy;
-const mysql           = require('mysql');
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const mysql          = require('mysql');
+const bcrypt         = require('bcrypt');
+const currencies     = require(__dirname + '/currencies.js')
+const saltRounds     = 10;
 
 // Connect to DB
 var connection = mysql.createConnection({
@@ -47,12 +48,21 @@ module.exports = function(passport) {
         if (req.body.password != req.body.confirmPassword) {
           return done(null, false, req.flash("error", "Passwords don't match."));
         }
-        // Create user if no user with that email exists
+        // create user if no user with that email exists
         var newUserMysql = new Object();
         newUserMysql.username = req.body.username;
         newUserMysql.email = email;
         newUserMysql.name = req.body.name;
         newUserMysql.surname = req.body.surname;
+        newUserMysql.role_id = 1;
+        // sets account's base currency and initial balance
+        var currencyId = currencies.indexOf(req.body.base);
+        if (currencyId < 0) {
+          return done(null, false, req.flash("error", "The selected base currency is not valid."));
+        } else {
+          newUserMysql.currency_id = currencyId + 1;
+        }
+        newUserMysql.balance = req.body.balance;
         // Hash password
         var hashingPassword = new Promise (function(resolve, reject) {
           setTimeout(function() {

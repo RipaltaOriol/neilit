@@ -70,20 +70,20 @@ router.post("/changeCurrency", middleware.isLoggedIn, (req, res) => {
 })
 
 // UPDATE MODE ROUTE
-router.post("/changeMode", middleware.isLoggedIn, (req, res) => {
-  var updateMode = 'UPDATE users SET dark_mode = ? WHERE id = ?'
-  // updates the mode from the DB
-  connection.query(updateMode, [req.body.mode, req.user.id], (err) => {
+router.post("/changeShowProfits", middleware.isLoggedIn, (req, res) => {
+  var updateShowProfits = 'UPDATE users SET showProfits = ? WHERE id = ?'
+  // updates the show profits in entries config. from the DB
+  connection.query(updateShowProfits, [req.body.showProfits, req.user.id], (err) => {
     if (err) throw err;
     res.end();
   })
 })
 
-// UPDATE SOUND ROUTE
-router.post("/changeSound", middleware.isLoggedIn, (req, res) => {
-  var updateSound = 'UPDATE users SET sound = ? WHERE id = ?'
-  // updates the sound from the DB
-  connection.query(updateSound, [req.body.sound, req.user.id], (err) => {
+// UPDATE MODE ROUTE
+router.post("/changeMode", middleware.isLoggedIn, (req, res) => {
+  var updateMode = 'UPDATE users SET darkMode = ? WHERE id = ?'
+  // updates the mode from the DB
+  connection.query(updateMode, [req.body.mode, req.user.id], (err) => {
     if (err) throw err;
     res.end();
   })
