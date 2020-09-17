@@ -13,7 +13,6 @@
   --neilit-1: #FF8818; /*Original*/
   --neilit-2: #F57700; /*Strong*/
   --blue-1: #007BFF; /* */
-
   /* || DARK MODE || */
   /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
   --white: #FFFFFF; /*Just text*/
@@ -133,8 +132,7 @@ button.dropdown-select {
     }
 
 .plan-box {
-  border: 3px solid purple;
-    /*SPANISH: Es el recuadro que aparece alrededor de un trading plan, cambiarlo por un hover como los demás elementos*/
+  border: 1px solid #dee2e6;
   border-radius: .25rem;
   padding: .25em;
 }
