@@ -4,6 +4,7 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-SemiBold.ttf"); font-weight: 500;}
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
+<<<<<<< HEAD
 :root{
   --neilit-default: #ff8818;
   --amarillo: #FFCF18;
@@ -13,6 +14,30 @@
   --bg-hover: #f7f7f7;
   --gris: #AAAAAA;
   --gris-texto: #7B7B7B;
+=======
+:root {
+
+  /* || LIGHT MODE & Base colors || */
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #4DAA57; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
+
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 }
 
 /* || General styles */
@@ -41,7 +66,11 @@ h3 {
 
 h5 {
   font-weight: lighter;
+<<<<<<< HEAD
   color: var(--neilit-default);
+=======
+  color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 }
 
 a { }
@@ -55,18 +84,22 @@ strong {
 
 p {
   font-size: 17px;
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 form input {
   height: 35px;
-  border: 1px solid var(--gris);
+  border: 1px solid var(--grey-2);
   border-radius: 7px;
   width: 300px;
 }
   form input:focus {
     color: black;
+<<<<<<< HEAD
     border: 1px solid var(--neilit-default);
+=======
+    border: 1px solid var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
     outline: none;
   }
 
@@ -85,8 +118,12 @@ form input {
 
 /* || Bootstrap class */
 .jumbotron {
+<<<<<<< HEAD
   background-color: var(--amarillo);
   background-image: linear-gradient(to left, var(--amarillo), var(--neilit-default));
+=======
+  background-color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 }
 
 /* || Bootstrap class */
@@ -95,7 +132,7 @@ form input {
     cursor: pointer;
   }
     .modal-body a:hover {
-      background-color: var(--gris-flojo);
+      background-color: var(--grey-1);
       border-radius: .25rem;
     }
 
@@ -117,18 +154,30 @@ form input {
     color: black;
   }
     .modal-body a:hover{
+<<<<<<< HEAD
       color: var(--neilit-default);
+=======
+      color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
       text-decoration: none;
     }
 
 /* || Utility */
 .orange {
+<<<<<<< HEAD
   color: var(--neilit-default);
+=======
+  color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 }
 
 /* || Utility */
 .bg-orange {
+<<<<<<< HEAD
   background: var(--neilit-default);
+=======
+  background: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 }
   .bg-orange a:hover {
     color: white!important;
@@ -156,12 +205,12 @@ form input {
 
 /* || Utility */
 .color-gris{
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 /* || Utility */
 .link-gris{
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
   .link-gris:hover{
     color: black;
@@ -189,7 +238,11 @@ form input {
 .btn-neilit {
   font-size: 17px;
   color: white;
+<<<<<<< HEAD
   background: var(--neilit-default);
+=======
+  background: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
   border: none;
   border-radius: 7px;
   padding: 7px 21px;
@@ -197,22 +250,31 @@ form input {
 }
   .btn-neilit:hover {
     color: white;
-    background: var(--naranja-fuerte);
+    background: var(--neilit-1);
     transition-duration: .25s;
   }
 
 /* || Utility */
 .btn-inverted {
   font-size: 17px;
+<<<<<<< HEAD
   color: var(--neilit-default);
   border: 2px solid var(--neilit-default);
+=======
+  color: var(--neilit-1);
+  border: 2px solid var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
   border-radius: 7px;
   padding: 5px 10px;
   transition-duration: .5s;
 }
   .btn-inverted:hover {
     color: white;
+<<<<<<< HEAD
     background: var(--neilit-default);
+=======
+    background: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
     transition-duration: .5s;
   }
 
@@ -226,7 +288,11 @@ form input {
   transition-duration: .5s;
 }
   .btn-white:hover {
+<<<<<<< HEAD
     color: var(--neilit-default);
+=======
+    color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
     background: white;
     transition-duration: .5s;
   }
@@ -234,16 +300,24 @@ form input {
 /* || Utility */
 .subtitle-sm {
   font-size: 20px;
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 /* || Utility */
 .border-orange-r {
+<<<<<<< HEAD
   border-right: 2px solid var(--neilit-default);
 }
 /* || Utility */
 .border-orange-l {
   border-left: 2px solid var(--neilit-default);
+=======
+  border-right: 2px solid var(--neilit-1);
+}
+/* || Utility */
+.border-orange-l {
+  border-left: 2px solid var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 }
 
 /* || Bootstrap class */
@@ -272,7 +346,11 @@ form input {
   transition-duration: .5s;
 }
   .btn-nav:hover {
+<<<<<<< HEAD
     color: var(--neilit-default);
+=======
+    color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
     text-decoration: none;
     transition-duration: .5s;
   }
@@ -295,7 +373,11 @@ form input {
 /* || Element Experiment */
 .circuloAnimado{
   padding: 10px;
+<<<<<<< HEAD
   background: var(--neilit-default);
+=======
+  background: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
   border-radius: 50px;
   width: 25px;
   height: 25px;
@@ -340,10 +422,14 @@ form input {
     width: 0;
   }
     .checkbox-orange:hover input ~ .checkmark {
-      background-color: var(--gris-flojo);
+      background-color: var(--grey-1);
     }
     .checkbox-orange input:checked ~ .checkmark {
+<<<<<<< HEAD
       background-color: var(--neilit-default);
+=======
+      background-color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
     }
     .checkbox-orange input:checked ~ .checkmark:after {
       display: block;
@@ -356,7 +442,11 @@ form input {
   margin-top: 5px;
   height: 15px;
   width: 15px;
+<<<<<<< HEAD
   border: 2px solid var(--neilit-default);
+=======
+  border: 2px solid var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
   border-radius: 2px;
 }
   .checkmark:after {
@@ -394,7 +484,11 @@ form input {
 #neilit{
   font-size: 150px;
   font-weight: bold;
+<<<<<<< HEAD
   color: var(--neilit-default);
+=======
+  color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
   margin-top: 20vh;
 }
 
@@ -442,7 +536,7 @@ form input {
   width: 33.33%;
   position: relative;
   text-align: center;
-  color: var(--gris-texto);
+  color: var(--neilit-1);
 }
 
 .progressbar li::before{
@@ -451,7 +545,11 @@ form input {
   width: 30px;
   height: 30px;
   background: white;
+<<<<<<< HEAD
   border: 2px solid var(--neilit-default);
+=======
+  border: 2px solid var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
   display: block;
   text-align: center;
   margin: 0 auto 10px auto;
@@ -464,8 +562,12 @@ form input {
   position: absolute;
   width: 100%;
   height: 2px;
+<<<<<<< HEAD
   background: var(--neilit-default);
   top: 15px;
+=======
+  background: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
   left: -50%;
   z-index: -1;
 }
@@ -475,15 +577,24 @@ form input {
 }
 
 .progressbar li.active{
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 .progressbar li.active::before{
+<<<<<<< HEAD
   border-color: var(--neilit-default);
   background: var(--neilit-default);
+=======
+  border-color: var(--neilit-1);
+  background: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
   color: white;
 }
 
 .progressbar li.active + li:after{
+<<<<<<< HEAD
   background-color: var(--neilit-default);
+=======
+  background-color: var(--neilit-1);
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 }

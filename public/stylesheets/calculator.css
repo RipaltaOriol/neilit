@@ -1,3 +1,27 @@
+:root {
+
+  /* || LIGHT MODE & Base colors || */
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #4DAA57; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
+
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
+}
+
 /* || General styles */
 button:disabled {
   opacity: .75;
@@ -5,7 +29,7 @@ button:disabled {
 
 /* || Bootstrap class */
 .custom-select {
-  color: #ff8818;
+  color: var(--neilit-1);
 }
   .custom-select:focus {
     border-color: #ced4da;
@@ -26,7 +50,7 @@ button:disabled {
     margin-top: 0;
   }
   .journal-box input {
-    color: #ff8818;
+    color: var(--neilit-1);
     border-radius: .25rem;
   }
 
@@ -51,7 +75,7 @@ button:disabled {
 
 #calculator { }
   #calculator input {
-    background-color: #f7f7f7;
+    background-color: var(--grey-1)
   }
   #calculator span {
     border-radius: .25rem;

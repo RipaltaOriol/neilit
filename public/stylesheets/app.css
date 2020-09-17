@@ -6,15 +6,34 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
 :root {
+
+  /* || LIGHT MODE & Base colors || */
   --neilit-regular: #ff8818;
   --neilit-strong: #f57700;
   --text-contrast: #ffffff;
   --red-strong: #a10000;
-}
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
+  --red-1: #FDDFDD; /*Soft*/
+  --red-2: #EE0000; /*Strong*/
+  --green-1: #CBF6E5; /*Soft*/
+  --green-2: #4DAA57; /*Strong*/
+  --yellow: #FFCF18; /*Warning*/
+  --neilit-1: #FF8818; /*Original*/
+  --neilit-2: #F57700; /*Strong*/
+  --blue-1: #007BFF; /* */
 
-:root.dark-mode {
-  --neilit-regular: #000000;
-  --text-contrast: #ffffff;
+  /* || DARK MODE || */
+  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
+  --white: #FFFFFF; /*Just text*/
+  --black-1: #424242; /*Soft*/
+  --black-2: #272727; /*Medium*/
+  --black-3: #121212; /*Strong*/
+  :root.dark-mode {
+    --neilit-regular: #000000;
+    --text-contrast: #ffffff;
 }
 
 /* || General styles */
@@ -99,7 +118,7 @@ input[type=search] {
   border-radius: .25rem;
 }
   .bg-hover:hover {
-    background-color: #f7f7f7;
+    background-color: var(--grey-1);
   }
 
 /* || Utility */
@@ -119,7 +138,7 @@ input[type=search] {
 
 /* || Utility */
 .bg-grey {
-  background-color: #f7f7f7;
+  background-color: var(--grey-1);
 }
 
 /* || Utility */
@@ -198,7 +217,7 @@ input[type=search] {
   background: var(--text-contrast);
   padding: 5px 10px;
   border: none;
-  color: var(--orange);
+  color: var(--neilit-1);
   border-radius: 7px;
   transition-duration: .25s;
 }
