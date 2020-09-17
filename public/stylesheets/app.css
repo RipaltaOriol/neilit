@@ -31,6 +31,7 @@
   --black-1: #424242; /*Soft*/
   --black-2: #272727; /*Medium*/
   --black-3: #121212; /*Strong*/
+}
   :root.dark-mode {
     --neilit-regular: #000000;
     --text-contrast: #ffffff;
