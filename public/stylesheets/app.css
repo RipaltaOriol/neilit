@@ -6,6 +6,8 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
 :root {
+
+  /* || LIGHT MODE & Base colors || */
   --neilit-regular: #ff8818;
   --neilit-strong: #f57700;
   --text-contrast: #ffffff;
@@ -22,7 +24,7 @@
   --neilit-1: #FF8818; /*Original*/
   --neilit-2: #F57700; /*Strong*/
   --blue-1: #007BFF; /* */
-}
+
   /* || DARK MODE || */
   /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
   --white: #FFFFFF; /*Just text*/

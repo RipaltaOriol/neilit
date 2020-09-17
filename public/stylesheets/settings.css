@@ -1,10 +1,17 @@
+<<<<<<< HEAD
+:root{
+  --grey-flojo: #F7F7F7;
+  --grey-medio: #EEEEEE;
+  --grey-fuerte: #E5E5E5;
+  --grey-texto: #7B7B7B;
+=======
 :root {
 
   /* || LIGHT MODE & Base colors || */
-  --grey-flojo: #F7F7F7; /*Soft*/
-  --grey-medio: #EEEEEE; /*Medium*/
-  --grey-fuerte: #E5E5E5; /*Strong*/
-  --grey-texto: #7B7B7B; /*Just text*/
+  --grey-1: #F7F7F7; /*Soft*/
+  --grey-2: #EEEEEE; /*Medium*/
+  --grey-3: #E5E5E5; /*Strong*/
+  --grey-text: #7B7B7B; /*Just text*/
   --red-1: #FDDFDD; /*Soft*/
   --red-2: #EE0000; /*Strong*/
   --green-1: #CBF6E5; /*Soft*/
@@ -20,6 +27,7 @@
   --black-1: #424242; /*Soft*/
   --black-2: #272727; /*Medium*/
   --black-3: #121212; /*Strong*/
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 }
 
 /* || General styles */
@@ -102,6 +110,9 @@ hr.profile {
   margin: 0;
 }
 
+<<<<<<< HEAD
+
+=======
 #remaining-days{
   color: var(--grey-text) !important;
 }
@@ -109,6 +120,7 @@ hr.profile {
     color: var(--neilit-1);
     text-decoration: none;
   }
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 
 /* || Utility */
 .bg-orange {
@@ -139,6 +151,8 @@ hr.profile {
   margin: 0 3px 0 3px;
 }
 
+<<<<<<< HEAD
+=======
 .container-info-settings {
   padding: 2px 4px 2px 4px;
 }
@@ -147,6 +161,7 @@ hr.profile {
     background: var(--grey-1);
   }
 
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 .tab-box {
   width: 850px;
   min-width: 850px;
@@ -183,6 +198,8 @@ hr.profile {
 .profile-picture { }
   .profile-picture:hover { }
 
+<<<<<<< HEAD
+=======
 /* || Boton Logout */
 .btn-logout {
   background: white;
@@ -199,10 +216,13 @@ hr.profile {
   border: 2px solid var(--red-2);
 }
 
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 .containerOferta {
   border-radius: 7px 7px 0 0;
 }
 
+<<<<<<< HEAD
+=======
 /* || Boton Settings Change plan */
 .change-plan {
   padding: 3px 15px;
@@ -217,6 +237,7 @@ hr.profile {
     transition-duration: .25s;
   }
 
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 .FAQ {
   color: var(--grey-text);
 }
@@ -240,6 +261,7 @@ hr.profile {
       opacity: .8;
       transition-duration: .25s;
     }
+<<<<<<< HEAD
   /* Invoice's status: Clear or Pending */
   .clear {
     background: #cbf6e5;
@@ -251,6 +273,20 @@ hr.profile {
     color: #fd5e74;
     border-radius: .25rem;
   }
+=======
+
+.invoice-clear {
+  background: var(--green-1);
+  color: var(--green-2);
+  border-radius: .25rem;
+}
+
+.invoice-pending {
+  background: var(--red-1);
+  color: var(--red-2);
+  border-radius: .25rem;
+}
+>>>>>>> c38b574a8212fe51d87c2d3249d1b4b0c0be0553
 
 .switch {
   position: relative;
