@@ -172,8 +172,4 @@ router.get("/best-asset/:period", middleware.isLoggedIn, (req, res) => {
   })()
 })
 
-router.get("/details-balance", (res, req) => {
-res.render("user/statistics/balance")
-});
-
 module.exports = router;
