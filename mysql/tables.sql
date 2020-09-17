@@ -1,5 +1,3 @@
--- Learn how to drop tables simultaneously
--- Involving foreign refrences
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS checklists;
@@ -49,11 +47,13 @@ CREATE TABLE users
     role_id INT NOT NULL,
     password VARCHAR(4000) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    expiration TIMESTAMP DEFAULT NULL,
+    expiration DATE DEFAULT NULL,
     currency_id INT NOT NULL,
     balance DECIMAL(10,4) NOT NULL,
-    dark_mode BOOLEAN DEFAULT false NOT NULL,
-    sound BOOLEAN DEFAULT false NOT NULL,
+    showProfits BOOLEAN DEFAULT false NOT NULL,
+    darkMode BOOLEAN DEFAULT false NOT NULL,
+    resetPasswordToken VARCHAR(4000),
+    resetPasswordExpire DATETIME,
     FOREIGN KEY (role_id) REFERENCES roles(id),
     FOREIGN KEY (currency_id) REFERENCES currencies(id)
   );
@@ -138,6 +138,8 @@ CREATE TABLE entries
   stop_loss DECIMAL(8,5),
   take_profit DECIMAL(8,5),
   exit_price DECIMAL(8,5),
+  profits DECIMAL(10,4),
+  fees DECIMAl (8,4),
   ta_id INT,
   status BOOLEAN DEFAULT false NOT NULL,
   comment VARCHAR(4000),
@@ -243,7 +245,7 @@ CREATE TABLE pln_strategies
   strategy_id INT NOT NULL,
   about VARCHAR(1000),
   howto VARCHAR(1000),
-  kynotes VARCHAR(1000),
+  keynotes VARCHAR(1000),
   timeframe_id INT,
   pair_id INT,
   risk DECIMAL(4,2),
@@ -259,16 +261,13 @@ CREATE TABLE pln_positions
 (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   plan_id INT NOT NULL,
-  pln_str_id INT NOT NULL,
   strategy_id INT NOT NULL,
   title VARCHAR(100),
-  rule_type ENUM('tp', 'sl'),
-  position_type BOOLEAN NOT NULL,
-  amount DECIMAL(4, 2),
+  rule_type ENUM('tp-f', 'tp-p', 'sl-f', 'sl-p'),
+  amount DECIMAL(5, 2),
   order_type ENUM('market', 'limit'),
   description VARCHAR(1000),
   FOREIGN KEY (plan_id) REFERENCES plans(id),
-  FOREIGN KEY (pln_str_id) REFERENCES pln_strategies(id),
   FOREIGN KEY (strategy_id) REFERENCES strategies(id)
 );
 

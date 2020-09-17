@@ -1,35 +1,19 @@
 /* FIXME: It's possible to clean the CSS code from this line till line number:  ________ */
-:root {
+:root{
+  --grey-flojo: #F7F7F7;
+  --grey-medio: #EEEEEE;
+  --grey-fuerte: #E5E5E5;
+  --grey-texto: #7B7B7B;
+  --red-flojo: #FDDFDD;
+  --red-fuerte: #EE0000;
+  --soft-yellow: #fff3cd;
+  --hard-yellow: #856404;
+  --azul-primario: #007BFF;
+  --green-flojo: #CBF6E5;
 
-  /* || LIGHT MODE & Base colors || */
-  --grey-1: #F7F7F7; /*Soft*/
-  --grey-2: #EEEEEE; /*Medium*/
-  --grey-3: #E5E5E5; /*Strong*/
-  --grey-text: #7B7B7B; /*Just text*/
-  --red-1: #FDDFDD; /*Soft*/
-  --red-2: #EE0000; /*Strong*/
-  --green-1: #CBF6E5; /*Soft*/
-  --green-2: #008000; /*Strong*/
-  --yellow: #FFCF18; /*Warning*/
-  --neilit-1: #FF8818; /*Original*/
-  --neilit-2: #F57700; /*Strong*/
-  --blue-1: #007BFF; /* */
-
-  /* || DARK MODE || */
-  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
-  --white: #FFFFFF; /*Just text*/
-  --black-1: #424242; /*Soft*/
-  --black-2: #272727; /*Medium*/
-  --black-3: #121212; /*Strong*/
+  --naranja: #ff8818;
+  --naranja-fuerte: #f57700;
 }
-
-/* || Utility */
-tr{
-
-}
-  tr:hover{
-    cursor: pointer;
-  }
 
 /* || Utility */
 button {
@@ -42,9 +26,9 @@ a:hover {
   text-decoration: none;
 }
 
-/* || Utility || */
-.w-33{
-  width: 33%;
+/* || Utility */
+.font-16{
+  font-size: 16px;
 }
 
 /* || Utility */
@@ -55,6 +39,7 @@ a:hover {
 /* || Utility */
 .container-global{
   max-width: 1000px;
+  /* background: red; */
 }
 
 /* || Utility */
@@ -64,15 +49,15 @@ a:hover {
 
 /* || Utility */
 .grey {
-  color: var(--grey-text);
+  color: #7b7b7b;
 }
   .grey:hover {
-      background-color:  var(--grey-1);
+      background-color:  var(--grey-flojo);
       border-radius: 7px;
       color: black;
   }
   .grey a {
-    color: var(--grey-text);
+    color: #7b7b7b;
   }
   .grey a:hover{
     color: black;
@@ -111,15 +96,18 @@ a:hover {
 }
 
 .pill-verde {
-  background: var(--green-1);
-  color: var(--green-2);
+  background: var(--green-flojo);
+  color: green;
 }
 
-.pill-amarilla { }
+.pill-yellow {
+  background: var(--soft-yellow);
+  color: var(--hard-yellow);
+}
 
 .pill-roja {
-  background: var(--red-1);
-  color: var(--red-2);
+  background: var(--red-flojo);
+  color: red;
 }
 
 .pill-activo { }
@@ -142,19 +130,19 @@ a:hover {
 .dropdown-menu li {
   line-height: 1.5;
   letter-spacing: 0.7px;
-  color: var(--grey-text);
+  color: var(--grey-texto);
   font-size: 16px;
   cursor: pointer;
   padding: 5px 10px;
 }
 
 .dropdown-menu li:hover {
-  background-color: var(--grey-1);
+  background-color: var(--grey-flojo);
   color: black;
 }
 
 .container-updates{
-  background: var(--neilit-1);
+  background: var(--naranja);
 }
   .container-updates h5{
     color: white;
@@ -183,31 +171,29 @@ a:hover {
 
 .btn{
   padding: 3px 15px;
-  border: 2px solid white;
+  border: 2px solid var(--naranja);
   border-radius: 7px;
   transition-duration: .25s;
   background: white;
-  color: var(--neilit-1);
+  color: var(--naranja);
 }
   .btn:hover{
-    background: white;
-    color: var(--neilit-1);
+    color: white;
+    border: 2px solid var(--naranja);
+    background: var(--naranja);
     transition-duration: .25s;
-    -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-    -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-    box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   }
 
 .btn-second{
   padding: 3px 15px;
-  border: 2px solid var(--neilit-1);
+  border: 2px solid var(--naranja);
   border-radius: 7px;
   transition-duration: .25s;
   color: white;
 }
   .btn-second:hover{
-    color: white;
-    border: 2px solid var(--neilit-1);
+    color: var(--gris-medio);
+    border: 2px solid var(--naranja);
     text-decoration: underline;
     transition-duration: .25s;
   }
@@ -217,11 +203,11 @@ a:hover {
 }
 
 .progress-bar-orange{
-  background-color: var(--neilit-1);
+  background-color: var(--naranja);
 }
 
 .inferior-widget {
-  border-top: 1px solid var(--grey-2);
+  border-top: 1px solid var(--grey-medio);
   position: relative;
   bottom: 0px;
 }

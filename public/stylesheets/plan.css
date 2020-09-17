@@ -1,51 +1,75 @@
-:root {
-
-  /* || LIGHT MODE & Base colors || */
-  --grey-1: #F7F7F7; /*Soft*/
-  --grey-2: #EEEEEE; /*Medium*/
-  --grey-3: #E5E5E5; /*Strong*/
-  --grey-text: #7B7B7B; /*Just text*/
-  --red-1: #FDDFDD; /*Soft*/
-  --red-2: #EE0000; /*Strong*/
-  --green-1: #CBF6E5; /*Soft*/
-  --green-2: #4DAA57; /*Strong*/
-  --yellow: #FFCF18; /*Warning*/
-  --neilit-1: #FF8818; /*Original*/
-  --neilit-2: #F57700; /*Strong*/
-  --blue-1: #007BFF; /* */
-
-  /* || DARK MODE || */
-  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
-  --white: #FFFFFF; /*Just text*/
-  --black-1: #424242; /*Soft*/
-  --black-2: #272727; /*Medium*/
-  --black-3: #121212; /*Strong*/
-}
-
 /* || General styles */
 ul { }
   ul li {
     list-style-type: none;
   }
 
+ol {
+  list-style: none;
+  counter-reset: li;
+  padding-left: 1.5em;
+}
+  ol li {
+    counter-increment: li;
+  }
+    ol li::before {
+      content: counter(li);
+      color: var(--neilit-regular);
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+
 input { }
   input.form-control {
-    background-color: var(--grey-1);
-    border-color: var(--grey-1);
+    background-color: #f7f7f7;
+    border-color: #f7f7f7;
   }
     input.form-control:focus {
-      background-color: var(--grey-1);
+      background-color: #f7f7f7;
       box-shadow: none;
-      border-color: var(--grey-1);
+      border-color: #f7f7f7;
     }
 
 button.dropdown-select {
   border: 0;
   background-color: inherit;
-  color: var(grey-text);
+  color: #7b7b7b;
 }
   button.dropdown-select:hover {
     color: black;
+  }
+
+/* || Utilities */
+.w-350 {
+  width: 350px;
+}
+
+/* || Neilit color bullets */
+.neilit-bullets {
+  list-style: none;
+  padding-left: 1.5em;
+}
+  .neilit-bullets li::before {
+    content: "\25E6";
+    color: var(--neilit-regular);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+
+/* || Neilit numbered list */
+.neilit-numbers { }
+  .neilit-numbers li::before {
+    width: 1.5em;
+    height: 1.5em;
+    word-spacing: 32px;
+    background-color: var(--neilit-regular);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: -1.5em;
   }
 
 .journal-box {
@@ -62,32 +86,30 @@ button.dropdown-select {
     margin-top: 0;
   }
   .journal-box a {
-    color: white;
+    color: #fff;
   }
     .journal-box a:hover {
-      color: white;
+      color: #fff;
       cursor: pointer;
       text-decoration: none;
     }
   .journal-box input {
-    color: var(--neilit-1);
+    color: #ff8818;
     border-radius: .25rem;
   }
   .journal-box .dropdown-item {
-    color: black;
+    color: #000;
   }
     .journal-box .dropdown-item:hover {
-      color: black;
+      color: #000;
     }
     .journal-box .dropdown-item:active {
-      color: white;
-      background-color: var(--neilit-1);
+      color: #fff;
+      background-color: #ff8818;
     }
 
-
 .plan-box {
-  border: 3px solid purple;
-    /*SPANISH: Es el recuadro que aparece alrededor de un trading plan, cambiarlo por un hover como los demás elementos*/
+  border: 1px solid #dee2e6;
   border-radius: .25rem;
   padding: .25em;
 }
@@ -113,10 +135,10 @@ button.dropdown-select {
     width: 0;
   }
     .checkbox-orange:hover input ~ .checkmark {
-      background-color: var(--grey-2);
+      background-color: #EEEEEE;
     }
     .checkbox-orange input:checked ~ .checkmark {
-      background-color: var(--neilit-1);
+      background-color: #FF8818;
     }
     .checkbox-orange input:checked ~ .checkmark:after {
       display: block;
@@ -139,14 +161,14 @@ button.dropdown-select {
   .dropdown-menu li {
     line-height: 1.5;
     letter-spacing: 0.7px;
-    color: var(--grey-text);
+    color: #7b7b7b;
     font-size: 16px;
     cursor: pointer;
     padding: 5px 10px;
   }
 
   .dropdown-menu li:hover {
-    background-color: var(--grey-1);
+    background-color: #f7f7f7;
     color: black;
   }
 
@@ -157,7 +179,7 @@ button.dropdown-select {
   margin-top: 5px;
   height: 15px;
   width: 15px;
-  border: 2px solid var(--neilit-1);
+  border: 2px solid #FF8818;
   border-radius: 2px;
 }
   .checkmark:after {
@@ -181,9 +203,9 @@ button.dropdown-select {
 .input-group-append { }
   .input-group-append button {
     font-size: 16px;
-    color: white;
-    background-color: var(--neilit-1);
-    border: 1px solid var(--neilit-1);
+    color: #fff;
+    background-color: #ff8818;
+    border: 1px solid #ff8818;
     border-top-right-radius: .25rem;
     border-bottom-right-radius: .25rem;
   }
@@ -193,56 +215,68 @@ button.dropdown-select {
 }
   .diveditable:focus {
     color: black;
-    background-color: var(--grey-1);
+    background-color: #f7f7f7;
     border-radius: .25rem;
     outline: none;
   }
   .diveditable[placeholder]:empty:before {
     content: attr(placeholder);
     color: darkGray;
-      /*SPANISH: No se donde está esto y no se por que color cambiarlo*/
   }
   .diveditable[placeholder]:empty:focus:before {
     content: "";
   }
 
 .strategy-title {
-  color: var(--neilit-1);
-  border: 1px solid var(--neilit-1);
+  color: #ff8818;
+  border: 1px solid #ff8818;
   border-radius: .25rem;
   padding: 0.25rem 0.5rem;
 }
 
 /* || Show plan highlight */
 .user-field {
-  padding: 0.15em 0.25em;
+  padding: 0em 0.25em;
 }
   .user-field:hover {
     background-color: #f5bc87;
-      /*SPANISH: No se donde está esto y no se por que color cambiarlo*/
     border-radius: 0.25rem;
     cursor: pointer;
   }
 
 .modal-body a {
-  color: black;
+  color: #000000;
 }
   .modal-body a:hover {
-    color: var(--neilit-1);
+    color: #ff8818;
   }
 
 #title {
   font-size: 1.4rem;
   font-weight: 500;
-  color: black;
+  color: #000;
 }
 
 #document { }
   #document input {
-    color: black;
+    color: var(--neilit-regular);
+  }
+  #document button.dropdown-select {
+    color: var(--neilit-regular);
+  }
+  #document .diveditable {
+    color: var(--neilit-regular);
   }
 
-#scheme {
-  width: 25%;
-  max-width: 300px;
+#dd-objectives .dropdown-item:active {
+  color: var(--neilit-regular);
+  background-color: white;
+}
+
+#plan-title {
+  border-bottom: 1px solid var(--neilit-regular);
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

@@ -6,27 +6,15 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
 :root {
+  --neilit-regular: #ff8818;
+  --neilit-strong: #f57700;
+  --text-contrast: #ffffff;
+  --red-strong: #a10000;
+}
 
-  /* || LIGHT MODE & Base colors || */
-  --grey-1: #F7F7F7; /*Soft*/
-  --grey-2: #EEEEEE; /*Medium*/
-  --grey-3: #E5E5E5; /*Strong*/
-  --grey-text: #7B7B7B; /*Just text*/
-  --red-1: #FDDFDD; /*Soft*/
-  --red-2: #EE0000; /*Strong*/
-  --green-1: #CBF6E5; /*Soft*/
-  --green-2: #4DAA57; /*Strong*/
-  --yellow: #FFCF18; /*Warning*/
-  --neilit-1: #FF8818; /*Original*/
-  --neilit-2: #F57700; /*Strong*/
-  --blue-1: #007BFF; /* */
-
-  /* || DARK MODE || */
-  /* Some colours are the same than the LIGHT MODE. We dont duplicate code.*/
-  --white: #FFFFFF; /*Just text*/
-  --black-1: #424242; /*Soft*/
-  --black-2: #272727; /*Medium*/
-  --black-3: #121212; /*Strong*/
+:root.dark-mode {
+  --neilit-regular: #000000;
+  --text-contrast: #ffffff;
 }
 
 /* || General styles */
@@ -38,7 +26,7 @@ body {
 h1 {
   font-weight: bold;
   font-size: 35px;
-  color: white;
+  color: var(--text-contrast);
 }
 
 h3 {
@@ -65,8 +53,8 @@ input {
 input[type=search] {
   height: 20px;
   padding: 10px 10px 10px 2.25rem;
-	background: #ffffff url("/imgs/icons/search.svg") no-repeat 15px;
-  border: 2px solid #ffffff;
+	background: var(--text-contrast) url("/imgs/icons/search.svg") no-repeat 15px;
+  border: 2px solid var(--text-contrast);
   border-radius: 10em;
 	-webkit-border-radius: 10em;
 	-moz-border-radius: 10em;
@@ -76,7 +64,7 @@ input[type=search] {
   -webkit-box-sizing: content-box;
 }
   input[type=search]:focus {
-  	border-color: var(--neilit-1);
+  	border-color: var(--neilit-regular);
     box-shadow: 0 0 5px rgba(225,225,225,1);
   	-webkit-box-shadow: 0 0 5px rgba(225,225,225,1);
   	-moz-box-shadow: 0 0 5px rgba(225,225,225,1);
@@ -111,7 +99,7 @@ input[type=search] {
   border-radius: .25rem;
 }
   .bg-hover:hover {
-    background-color: var(--grey-1);
+    background-color: #f7f7f7;
   }
 
 /* || Utility */
@@ -126,12 +114,12 @@ input[type=search] {
     cursor: pointer;
   }
     .modal-body a:hover {
-      color: var(--neilit-1);
+      color: var(--neilit-regular);
     }
 
 /* || Utility */
 .bg-grey {
-  background-color: var(--grey-1);
+  background-color: #f7f7f7;
 }
 
 /* || Utility */
@@ -143,10 +131,10 @@ input[type=search] {
 
 /* || Utility */
 .orange {
-  color: var(--neilit-1);
+  color: var(--neilit-regular);
 }
   a.orange {
-    color: var(--neilit-1);
+    color: var(--neilit-regular);
     text-decoration: none;
   }
     a.orange:focus {
@@ -175,41 +163,42 @@ input[type=search] {
 /* || Utility */
 .btn-neilit {
   font-size: 16px;
-  color: white;
-  border: 0.5px solid var(--neilit-1);
+  color: var(--text-contrast);
+  border: 0.5px solid var(--neilit-regular);
   border-radius: .25rem;
-  background: var(--neilit-1);
+  background: var(--neilit-regular);
   transition-duration: .25s;
   padding: 0.25rem 0.5rem;
 }
   .btn-neilit:hover {
-    color: white;
-    background-color: var(--neilit-2);
-}
+    color: var(--text-contrast);
+    background-color: var(--neilit-strong);
+  }
+
 /* || Utility */
 .btn-inverted {
   font-size: 16px;
-  color: var(--neilit-1);
-  border: 1.5px solid var(--neilit-1);
+  color: var(--neilit-regular);
+  border: 1.5px solid var(--neilit-regular);
   border-radius: .25rem;
-  background-color: white;
+  background-color: var(--text-contrast);
   transition-duration: .25s;
   padding: 0.25rem 0.5rem;
 
 }
   .btn-inverted:hover {
-    color: white;
-    background-color: var(--neilit-1);
+    color: var(--text-contrast);
+    background-color: var(--neilit-regular);
     text-decoration: none;
     transition-duration: .25s;
   }
 
 /* Boton Upgrade SideBar */
 .btn-upgrade{
-  background: white;
+  background: var(--text-contrast);
   padding: 5px 10px;
   border: none;
-  color: var(--neilit-1);
+  color: var(--orange);
   border-radius: 7px;
   transition-duration: .25s;
 }
@@ -258,19 +247,14 @@ input[type=search] {
   z-index: 1;
   top: 0;
   left: 0;
-  background: var(--neilit-1);
+  background: var(--neilit-regular);
   opacity: 1;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 20px;
 }
   #neilit-menu a {
-    color: white;
-  }
-  #neilit-menu img{
-    /* FIXME: load the icon in white color*/
-    filter: invert(100%);
-    -webkit-filter: invert(100%); /* Safari 6.0 - 9.0 */
+    color: var(--text-contrast);
   }
 
 #header-menu {
@@ -307,7 +291,7 @@ input[type=search] {
     #search input[type=search]:focus {
 	    width: 375px;
 	    padding-left: 2.25rem;
-	    background-color: #ffffff;
+	    background-color: var(--text-contrast);
 	    cursor: auto;
     }
 

@@ -1,3 +1,6 @@
+// graph canvas & containers
+var entriesGraph = document.getElementById('donutChartWidgetTradesWinBELoss')
+
 // dropdown to select a time period for statistics
 $('.dropdown-menu li').on('click', function() {
   var allDD = $('.dropdown-menu');
@@ -9,6 +12,16 @@ $('.dropdown-menu li').on('click', function() {
 //Tooltips
 $(document).ready(function() {
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+});
+
+// Generates the datepicker
+$("input[type=date]").datepicker({
+  dateFormat: 'yy-mm-dd'
+});
+
+// prevents the classic datepicker from loading
+$("input[type=date]").on('click', function() {
+  return false;
 });
 
 // retrieves profits from the selected time period
@@ -32,17 +45,32 @@ function getProfits(period) {
     })
 };
 
+// retrieves profits from a custom time period
+function getCustomProfits() {
+  console.log('Triggering');
+  var from = $('#from-period').value;
+  console.log(from);
+
+}
+
 // retrieves entry results from the selected time period
 function getEntries(period) {
   // makes an AJAX call with the corresponding data period
   $.get('/' + currentUser.username + '/statistics/entries/' + period)
     .done((data) => {
-        popularAssetsChart.data.datasets[0].data = [data.wins, data.be, data.losses];
+      if (data.win + data.be + data.loss > 0) {
+        entriesGraph.style.display = "block";
+        popularAssetsChart.data.datasets[0].data = [data.win, data.be, data.loss];
         popularAssetsChart.update();
+        document.getElementById('no-data-entries-graph').classList.add('d-none')
+      } else {
+        entriesGraph.style.display = "none";
+        document.getElementById('no-data-entries-graph').classList.remove('d-none');
+      }
   })
     .fail(() => {
       // error
-    })
+  })
 }
 
 // retrieves the best asset from the selected time period
@@ -68,7 +96,6 @@ function getBestAsset(period) {
     })
 }
 
-//Gráficos
 //GRÁFICO DE ENTRADAS
 var donutChartWidgetTradesWinBELoss = document.getElementById('donutChartWidgetTradesWinBELoss').getContext('2d');
 var popularAssetsChart = new Chart(donutChartWidgetTradesWinBELoss, {
@@ -79,7 +106,7 @@ var popularAssetsChart = new Chart(donutChartWidgetTradesWinBELoss, {
     labels:['Win', 'Break Even', 'Loss'],
     datasets:[{
       label:'LABEL',
-      data:[counter.counterWin, counter.counterBE, counter.counterLoss],
+      data:[statistics.entries.win, statistics.entries.be, statistics.entries.loss],
       //Se dibujará debajo el gráfico que tenga menor orden. Si es el más pequeño, será el del fondo.
       order:2,
       backgroundColor:[
@@ -132,7 +159,7 @@ var orderDirection = new Chart(orderDirection,{
       //Este sería el título de la gráfica, pero lo hemos ocultado con legend>display>false.Es lo que se ve al hacer hover.
       label:'LABEL',
       //Número de operaciones que se han realizado. Siguiente orden: [WIN, BE, LOSS]
-      data:[counter.counterLong, counter.counterShort],
+      data:[statistics.direction.long, statistics.direction.short],
       //Se dibujará debajo el gráfico que tenga menor orden. Si es el más pequeño, será el del fondo.
       order:2,
       //Seleccionamos el color de cada barra en rgb.

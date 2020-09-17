@@ -323,7 +323,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     var editTa = {
       pair_id: Number(req.body.pair) + 1,
       category: req.body.category,
-      created_at: req.bdoy.date,
+      created_at: req.body.date,
       user_id: req.user.id
     }
     // stores the constants of the technical analysis into the DB

@@ -55,7 +55,7 @@
                 <label class="my-auto">Tamaño
                   <span class="mandatory">*</span>
                 </label>
-                <input type="number" class="bg-hover form-control px-2" name="size" min="0" step="0.1" placeholder="especifique su tamaño de operación en lotes">
+                <input type="number" class="bg-hover form-control px-2" name="size" min="0" step="0.01" placeholder="especifique su tamaño de operación en lotes">
               </span>
               <span class="input-group">
                 <label class="my-auto">Precio de Entrada
@@ -178,6 +178,15 @@
           <span class="mb-2">
             <label class="mb-0">Precio de Salida</label>
             <input type="number" class="bg-hover orange px-2" name="closePrice" min="0" step="0.00001">
+          </span>
+          <span class="mb-2">
+            <label class="mb-0">Beneficios</label>
+            <input type="number" class="bg-hover orange px-2" name="profits" placeholder="en divisa base de cuenta" min="0" step="0.0001">
+              <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="En case de dejarlo en blanco Neilit calculara por ti los beneficios de la operación.">
+          </span>
+          <span class="mb-2">
+            <label class="mb-0">Comisiones</label>
+            <input type="number" class="bg-hover orange px-2" name="fees" min="0" step="0.01">
           </span>
           <span class="mb-2">
             <label class="mb-0">Resultado</label>

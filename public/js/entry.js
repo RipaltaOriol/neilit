@@ -66,10 +66,11 @@ $('#noneTa').click(() => {
   $('#entry-ta').addClass('d-none')
 })
 
-// Generates the datepicker for the TA
+// Generates the datepicker
 $("input[type=date]").datepicker({
   dateFormat: 'yy-mm-dd'
 });
+
 // prevents the classic datepicker from loading
 $("input[type=date]").on('click', function() {
   return false;

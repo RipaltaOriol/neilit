@@ -12,6 +12,7 @@ let express         = require('express'),
 // Routes Dependencies
 let indexRoutes       = require('./routes/index'),
     menuRoutes        = require('./routes/menu'),
+    dashboardRoutes   = require('./routes/dashboard'),
     settingsRoutes    = require('./routes/settings')
     commentRoutes     = require('./routes/comments'),
     entryRoutes       = require('./routes/entries'),
@@ -67,7 +68,8 @@ connection.query(sqlToES, function(err) {
 let pairs = require("./models/pairs");
 let timeframes = require("./models/timeframes");
 let categories = require("./models/categoriesPairs");
-let strategies = require("./models/strategies")
+let strategies = require("./models/strategies");
+
 // Store user strategies
 // FIXME: merge these two lists into an object
 global.userStrategies = [];
@@ -85,6 +87,7 @@ app.use((req, res, next) => {
 
 app.use("/", indexRoutes);
 app.use("/:profile", menuRoutes);
+app.use("/:profile/dashboard", dashboardRoutes);
 app.use("/:profile/settings", settingsRoutes);
 app.use("/:profile/journal/comment", commentRoutes);
 app.use("/:profile/journal/entry", entryRoutes);

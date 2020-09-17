@@ -4,43 +4,287 @@
   <section id="">
     <div class="container mt-3 mb-5 mx-auto">
       <div class="journal-box px-3">
-        <h2>Mi primer plan de acción en Neilit</h2>
+        <h2 id="plan-title"><%= plan.title %></h2>
         <br>
-        <h4>General Information</h4>
-        <div>
-          <ul class="px-0">
-            <li>
-              <label class="mr-1 font-weight-bold">Broker:</label>
-              <span class="user-field">KRAKEN</span>
-            </li>
-            <li>
-              <label class="mr-1 font-weight-bold">Charts:</label>
-              <span class="user-field">KRAKEN</span>
-            </li>
-            <li>
-              <label class="mr-1 font-weight-bold">Capital:</label>
-              <span class="user-field">KRAKEN</span>
-            </li>
-            <li>
-              <label class="font-weight-bold mb-0">Business Routine:</label>
-              <p>Bacon ipsum dolor amet short loin flank landjaeger beef ribs t-bone, pastrami short ribs sausage bacon shank pancetta cow filet mignon jowl frankfurter. Ham hock turducken hamburger flank capicola pork loin chicken fatback. T-bone turkey doner, pig pancetta pork chop tenderloin shankle alcatra cow bacon. Chuck sirloin hamburger, tri-tip meatloaf boudin cupim ribeye. Swine turkey frankfurter hamburger flank, t-bone tri-tip. Salami andouille sirloin ground round, meatloaf sausage turkey flank alcatra cow porchetta tail corned beef picanha ball tip.</p>
-            </li>
-          </ul>
-        </div>
-        <br>
-        <h4>Psychology</h4>
-        <div>
-          <ul class="px-0">
-            <li>
-              <label class="font-weight-bold mb-0">Psychology Notes:</label>
-              <p>Bacon ipsum dolor amet short loin flank landjaeger beef ribs t-bone, pastrami short ribs sausage bacon shank pancetta cow filet mignon jowl frankfurter. Ham hock turducken hamburger flank capicola pork loin chicken fatback. T-bone turkey doner, pig pancetta pork chop tenderloin shankle alcatra cow bacon. Chuck sirloin hamburger, tri-tip meatloaf boudin cupim ribeye. Swine turkey frankfurter hamburger flank, t-bone tri-tip. Salami andouille sirloin ground round, meatloaf sausage turkey flank alcatra cow porchetta tail corned beef picanha ball tip.</p>
-            </li>
-
-          </ul>
-
-        </div>
+        <% if (plan.broker != null || plan.charts != null || plan.capital != null || plan.routine != null) { %>
+          <h4 class="orange">General Information</h4>
+          <div>
+            <ul class="px-0">
+              <% if (plan.broker != null) { %>
+                <li>
+                  <label class="mr-1 font-weight-bold">Broker:</label>
+                  <span class="user-field"><%= plan.broker %></span>
+                </li>
+              <% } %>
+              <% if (plan.charts != null) { %>
+                <li>
+                  <label class="mr-1 font-weight-bold">Charts:</label>
+                  <span class="user-field"><%= plan.charts %></span>
+                </li>
+              <% } %>
+              <% if (plan.capital != null) { %>
+                <li>
+                  <label class="mr-1 font-weight-bold">Capital:</label>
+                  <span class="user-field"><%= plan.capital %></span>
+                </li>
+              <% } %>
+              <% if (plan.routine != null) { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Business Routine:</label>
+                  <p>Bacon ipsum dolor amet short loin flank landjaeger beef ribs t-bone, pastrami short ribs sausage bacon shank pancetta cow filet mignon jowl frankfurter. Ham hock turducken hamburger flank capicola pork loin chicken fatback. T-bone turkey doner, pig pancetta pork chop tenderloin shankle alcatra cow bacon. Chuck sirloin hamburger, tri-tip meatloaf boudin cupim ribeye. Swine turkey frankfurter hamburger flank, t-bone tri-tip. Salami andouille sirloin ground round, meatloaf sausage turkey flank alcatra cow porchetta tail corned beef picanha ball tip.</p>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+          <br>
+        <% } %>
+        <% for (const property in strategies) { %>
+          <h4 class="orange"><%= strategies[property].name %></h4>
+          <div>
+            <ul class="px-0">
+              <% if (strategies[property].main.about != '') { %>
+                <li>
+                  <label class="font-weight-bold mb-0">About:</label>
+                  <p><%= strategies[property].main.about %></p>
+                </li>
+              <% } %>
+              <% if (strategies[property].main.howto != '') { %>
+                <li>
+                  <label class="font-weight-bold mb-0">How to Use:</label>
+                  <p><%= strategies[property].main.howto %></p>
+                </li>
+              <% } %>
+              <% if (strategies[property].main.keynotes != '') { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Key Notes:</label>
+                  <p><%= strategies[property].main.keynotes %></p>
+                </li>
+              <% } %>
+              <% if (strategies[property].main.timeframe_id != null) { %>
+                <li>
+                  <label class="mr-1 font-weight-bold">Timeframes:</label>
+                  <span class="user-field"><%= timeframes[strategies[property].main.timeframe_id - 1] %></span>
+                </li>
+              <% } %>
+              <% if (strategies[property].main.pair_id != null) { %>
+                <li>
+                  <label class="mr-1 font-weight-bold">Assets:</label>
+                  <span class="user-field"><%= timeframes[strategies[property].main.pair_id - 1] %></span>
+                </li>
+              <% } %>
+              <% if (strategies[property].main.risk != null) { %>
+                <li>
+                  <label class="mr-1 font-weight-bold">Risk Tolerance:</label>
+                  <span class="user-field"><%= strategies[property].main.risk %></span>
+                </li>
+              <% } %>
+              <% if (strategies[property].main.backtest_id != null) { %>
+                <li>
+                  <label class="mr-1 font-weight-bold">Backtest Sheet:</label>
+                  <span class="user-field"><%= strategies[property].main.backtest_id %></span>
+                </li>
+              <% } %>
+              <% if (strategies[property].rules.length > 0) { %>
+                <li>
+                  <label class="font-weight-bold mb-2">Positioning Rules:</label>
+                  <ol class="neilit-numbers">
+                    <% strategies[property].rules.forEach((rule) => { %>
+                      <li>
+                        <% if (rule.title != '') { %>
+                          <h5 class="orange d-inline-block ml-2"><%= rule.title %></h5>
+                        <% } %>
+                        <div class="ml-2">
+                          <label class="mr-1 font-weight-bold">Positioning Type:</label>
+                          <% if (rule.rule_type == 'tp-f') { %>
+                            <span class="user-field">Absolute Take Profit</span>
+                          <% } else if (rule.rule_type == 'tp-p') { %>
+                            <span class="user-field">Partial Take Profit</span>
+                          <% } else if (rule.rule_type == 'sl-f') { %>
+                            <span class="user-field">Absolute Stop Loss</span>
+                          <% } else { %>
+                            <span class="user-field">Partial Stop Loss</span>
+                          <% } %>
+                        </div>
+                        <% if (rule.amount != null) { %>
+                          <div class="ml-2">
+                            <label class="mr-1 font-weight-bold">Amount:</label>
+                            <span class="user-field"><%= rule.amount %>%</span>
+                          </div>
+                        <% } %>
+                        <% if (rule.order_type != null) { %>
+                          <div class="ml-2">
+                            <label class="mr-1 font-weight-bold">Order Type:</label>
+                            <% if (rule.order_type == 'market') { %>
+                              <span class="user-field">Market order</span>
+                            <% } else { %>
+                              <span class="user-field">Limit order</span>
+                            <% } %>
+                          </div>
+                        <% } %>
+                        <% if (rule.description != '') { %>
+                          <div class="ml-2">
+                            <label class="mr-1 font-weight-bold mb-0">Description:</label>
+                            <p><%= rule.description %></p>
+                          </div>
+                        <% } %>
+                      </li>
+                    <% }); %>
+                  </ol>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+          <br>
+        <% } %>
+        <% if (plan.psy_notes != '' || plan.psy_tips != 0) { %>
+          <h4 class="orange">Psychology</h4>
+          <div>
+            <ul class="px-0">
+              <% if (plan.psy_notes != '') { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Psychology Notes:</label>
+                  <p><%= plan.psy_notes %></p>
+                </li>
+              <% } %>
+              <% if (plan.psy_tips != 0) { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Psychology Tips:</label>
+                  <ol>
+                    <li class="mb-2">
+                      It is <span class="orange">more important to make money</span> than to <span class="orange">be right</span>. Therefore, there is nothing too expensive or too cheap.
+                      Ever.Remember that oil went down to negative on 2020.
+                    </li>
+                    <li class="mb-2">
+                      A game plan is a must. Before entering any operation, you have to know where will you take profit and where will you place your stop loss.
+                      And it has to be as objective as possible.
+                    </li>
+                    <li class="mb-2">
+                      <span class="orange">Trust you edge.</span> You will have 4 losing trades in a row and it is okay. <span class="orange">
+                      Do not change your attitude</span> towards trading. This is how a profit graph could potentially look:<img class="d-block w-350" src="/imgs/profit_graph.png" alt="Profits Graph">
+                    </li>
+                    <li class="mb-2">
+                      Be aware that <span class="orange">being uncomfortable when trading is completely okay</span>. It will never get easier.
+                      You have to incomplete information; therefore, you will bever be 100% comfortable.
+                    </li>
+                    <li class="mb-2">
+                      <span class="orange">Do not</span> try to make money by catching tops and bottoms.
+                    </li>
+                    <li class="mb-2">
+                      Always remember that you, as a trader, also have the <span class="orange">right to make money</span> (inner psychology).
+                    </li>
+                    <li class="mb-2">
+                      <span class="orange">Do not</span> be scared to change sides in the middle of a trade. Switch your directional bias when convenient and necessary.
+                      Do not marry a side.
+                    </li>
+                    <li class="mb-2">
+                      <span class="orange">Do not FOMO!</span> The market will open again tomorrow. It does not make sense to beat yourself over missing on something.
+                      <span class="orange">New opportunities will come.</span>
+                    </li>
+                    <li class="mb-2">
+                      Do not <span class="orange">EVER EVER EVER</span> add to a losing position.
+                    </li>
+                    <li class="mb-2">
+                      Cash is the goal. But never the measure of success. For instance, a measure of success would be: <span class="orange">did I follow my rules today?</span>
+                      Even if it is a negative day in terms of cash flows it can still be a successful day.
+                    </li>
+                    <li class="mb-2">
+                      <span>Read the right side of the chart instead of the left</span> (it takes practice). Everybody knows how to see a Head and Shoulders after it has formed.
+                      Start by trying to anticipate the next candles of your most traded asset.
+                    </li>
+                    <li class="mb-2">
+                      You should be able to explain your edge to someone else in an elevator ride. <span>Otherwise you do not have an edge</span>.
+                    </li>
+                    <li class="mb-2">
+                      Losing a trade does not make you a loser.
+                    </li>
+                    <li class="mb-2">
+                      The original conviction on an active trade <span class="orange">must remain</span> unless something major changes.
+                    </li>
+                  </ol>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+          <br>
+        <% } %>
+        <% if (plan.jrn_process != '' || checklist.length > 0) { %>
+          <h4 class="orange">Journaling</h4>
+          <div>
+            <ul class="px-0">
+              <% if (plan.jrn_process != '') { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Journaling Process:</label>
+                  <p><%= plan.jrn_process %></p>
+                </li>
+              <% } %>
+              <% if (checklist.length > 0) { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Journal Checklist:</label>
+                  <ol>
+                    <% checklist.forEach((item) => { %>
+                      <li><%= item %></li>
+                    <% }); %>
+                  </ol>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+          <br>
+        <% } %>
+        <% if (nonfinObjectives.length > 0 ||finObjectives.length > 0) { %>
+          <h4 class="orange">Objectives</h4>
+          <div>
+            <ul class="px-0">
+              <% if (nonfinObjectives.length > 0) { %>
+                <li>
+                  <label class="mr-1 mb-0 font-weight-bold">Non-Financial Objectives:</label>
+                  <ul class="neilit-bullets mb-3">
+                    <% nonfinObjectives.forEach((goal) => { %>
+                      <li><%= goal %></li>
+                    <% }); %>
+                  </ul>
+                </li>
+              <% } %>
+              <% if (finObjectives.length > 0) { %>
+                <li>
+                  <label class="mr-1 mb-0 font-weight-bold">Financial Objectives:</label>
+                  <ul class="neilit-bullets mb-3">
+                    <% finObjectives.forEach((goal) => { %>
+                      <li><%= goal %></li>
+                    <% }); %>
+                  </ul>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+          <br>
+        <% } %>
+        <% if (plan.str_revision != '' || plan.jrn_revision != '' || plan.pln_revision != '') { %>
+          <h4 class="orange">Others</h4>
+          <div>
+            <ul class="px-0">
+              <% if (plan.str_revision != '') { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Strategy Revision:</label>
+                  <p><%= plan.str_revision %></p>
+                </li>
+              <% } %>
+              <% if (plan.jrn_revision != '') { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Journal Revision:</label>
+                  <p><%= plan.jrn_revision %></p>
+                </li>
+              <% } %>
+              <% if (plan.pln_revision != '') { %>
+                <li>
+                  <label class="font-weight-bold mb-0">Trading Plan Revision:</label>
+                  <p><%= plan.pln_revision %></p>
+                </li>
+              <% } %>
+            </ul>
+          </div>
+        <% } %>
       </div>
-
     </div>
   </section>
 

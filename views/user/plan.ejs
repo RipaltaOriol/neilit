@@ -14,12 +14,9 @@
               <span><%= plans.date[i] %></span>
             </div>
             <div class="d-flex align-items-center">
-              <button type="button" class="btn-neilit d-inline mr-2 p-1">
-                <img src="/imgs/icons/download-white.svg" alt="download">
-              </button>
-              <button type="button" class="btn-neilit d-inline mr-2 p-1">
+              <a href="/<%= currentUser.username %>/plan/<%= plan %>" class="btn-neilit d-inline mr-2 p-1">
                 <img src="/imgs/icons/visibility-white.svg" alt="show">
-              </button>
+              </a>
               <form action="/<%= currentUser.username %>/plan/<%= plan %>?_method=DELETE" method="POST">
                 <button type="submit" class="btn-neilit d-inline mr-2 p-1">
                   <img src="/imgs/icons/delete-white.svg" alt="delete">

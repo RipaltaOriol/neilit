@@ -31,27 +31,53 @@
                   <li onclick="getProfits('cquarter')">Current quarter</li>
                   <li onclick="getProfits('lquarter')">Last quarter</li>
                   <li onclick="getProfits('all')">All</li>
-                  <li>Custom period</li>
+                  <li>
+                    <button type="button" data-toggle="modal" data-target="#customProfits">Custom period</button>
+                  </li>
                 </ul>
               </div>
             </div>
           </a>
+          <!-- Modal -->
+          <div class="modal fade" id="customProfits" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Custom period</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p class="mb-0">From:</p>
+                  <input id="from-period" type="date" class="bg-hover form-control mb-2 px-2">
+                  <p class="mb-0">To:</p>
+                  <input id="to-period" type="date" class="bg-hover form-control px-2">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" onclick="getCustomProfits()" class="btn-neilit" data-dismiss="modal">Apply</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <!--PARTE CENTRAL DEL WIDGET-->
-        <a href="#" class="">
+        <a href="#!" class="">
           <div class="mb-2 mt-3 d-flex flex-column justify-content-center align-items-center">
             <div class="parte-central">
-              <!--AQUI TIENE QUE IR EL BENEFICIO TOTAL DE LAS OPERACIONES-->
-              <!--EN EL SPAN DE LA MONEDA DEBEMOS COLOCAR LA MONEDA QUE HAYA SELECCIONADO EL USUARIO EN SETTINGS-->
-              <h1 id="profits-percent" class="black-h1"><%= counter.profitsPer %>%</h1>
+              <% if (!(Number.isNaN(statistics.profits.percent))) { %>
+                <h1 id="profits-percent" class="black-h1"><%= statistics.profits.percent %>%</h1>
+              <% } else { %>
+                <h1 id="profits-percent" class="black-h1">N/A</h1>
+              <% } %>
             </div>
             <div id="profits-amount">
-              <% if (counter.profitsAmt >= 0) { %>
+              <% if (statistics.profits.amount >= 0) { %>
                 <p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">
               <% } else { %>
                 <p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2">
               <% } %>
-                <%= (Math.round((counter.profitsAmt + Number.EPSILON) * 100) / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> <%= userBase %>
+                <%= (Math.round((statistics.profits.amount + Number.EPSILON) * 100) / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> <%= userBase %>
               </p>
             </div>
           </div>
@@ -107,9 +133,15 @@
           </a>
         </div>
         <!--PARTE CENTRAL DEL WIDGET-->
-        <a href="#" class="">
-          <div class="parte-central my-2 d-flex flex-column justify-content-center align-items-center px-1">
-            <canvas id="donutChartWidgetTradesWinBELoss" width="100" height="100"></canvas>
+        <a href="#!">
+          <div class="parte-central my-2 d-flex flex-column justify-content-center align-items-center px-1 wpx-100">
+            <% if (statistics.entries.win + statistics.entries.loss + statistics.entries.be > 0) { %>
+              <canvas id="donutChartWidgetTradesWinBELoss" width="100" height="100"></canvas>
+              <p id="no-data-entries-graph" class="placeholder-stats d-none">Not enough data</p>
+            <% } else { %>
+              <canvas id="donutChartWidgetTradesWinBELoss" class="d-none"></canvas>
+              <p id="no-data-entries-graph" class="placeholder-stats">Not enough data</p>
+            <% } %>
           </div>
         </a>
         <!--PARTE INFERIOR DEL WIDGET-->
@@ -174,7 +206,7 @@
               <!--DEPENDIENDO DE SI ESTAMOS EN BENEFICIO O PERDIDA, EL COLOR DE BEREMOS PONER UNA CLASE DE "PILL" U OTRA-->
               <!--Aquí debe ir el porcentaje de beneficio o perdida de todas las operaciones de cada usuario-->
               <a href="#">
-                <p class="pill mx-1 font-16 grey"><%= pairs[assetStats.percent.indexOf(Math.max(...assetStats.percent))] %></p>
+                <p class="pill px-0 font-16 grey"><%= pairs[assetStats.percent.indexOf(Math.max(...assetStats.percent))] %></p>
               </a>
               <% if (Math.max(...assetStats.percent) >= 0) { %>
                 <p class="pill pill-verde font-16 mx-1"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">
@@ -281,20 +313,20 @@
                         <% if (strategyStats[property].quantity == 0) { %>
                           0
                         <% } else { %>
-                          <% if (strategyStats[property].percentage/strategyStats[property].quantity >= 0) { %>
+                          <% if (strategyStats[property].percent/strategyStats[property].quantity >= 0) { %>
                             <p class="mb-0 pill pill-verde">
-                              <%= strategyStats[property].percentage/strategyStats[property].quantity %>%
+                              <%= strategyStats[property].percent/strategyStats[property].quantity %>%
                             </p>
                           <% } else { %>
                             <p class="mb-0 pill pill-roja">
-                              <%= strategyStats[property].percentage/strategyStats[property].quantity %>%
+                              <%= strategyStats[property].percent/strategyStats[property].quantity %>%
                             </p>
                           <% } %>
                         <% } %>
                       </td>
-                      <td><%= strategyStats[property].wins %></td>
+                      <td><%= strategyStats[property].win %></td>
                       <td><%= strategyStats[property].be %></td>
-                      <td><%= strategyStats[property].losses %></td>
+                      <td><%= strategyStats[property].loss %></td>
                     </tr>
                   <% } %>
                 </tbody>
@@ -412,9 +444,9 @@
                           <% } %>
                         <% } %>
                       </td>
-                      <td><%= assetStats.wins[assetStats.showcase[i][1]] %></td>
-                      <td><%= assetStats.bevens[assetStats.showcase[i][1]] %></td>
-                      <td><%= assetStats.losses[assetStats.showcase[i][1]] %></td>
+                      <td><%= assetStats.win[assetStats.showcase[i][1]] %></td>
+                      <td><%= assetStats.be[assetStats.showcase[i][1]] %></td>
+                      <td><%= assetStats.loss[assetStats.showcase[i][1]] %></td>
                     </tr>
                   <% } %>
                 </tbody>
@@ -531,9 +563,9 @@
                           <% } %>
                         <% } %>
                       </td>
-                      <td><%= timeframeStats.wins[timeframeStats.showcase[i][1]] %></td>
-                      <td><%= timeframeStats.bevens[timeframeStats.showcase[i][1]] %></td>
-                      <td><%= timeframeStats.losses[timeframeStats.showcase[i][1]] %></td>
+                      <td><%= timeframeStats.win[timeframeStats.showcase[i][1]] %></td>
+                      <td><%= timeframeStats.be[timeframeStats.showcase[i][1]] %></td>
+                      <td><%= timeframeStats.loss[timeframeStats.showcase[i][1]] %></td>
                     </tr>
                   <% } %>
                 </tbody>
@@ -639,20 +671,20 @@
                         <% if (dayWeekStats[property].quantity == 0) { %>
                           0
                         <% } else { %>
-                          <% if (dayWeekStats[property].percentage/dayWeekStats[property].quantity >= 0) { %>
+                          <% if (dayWeekStats[property].percent/dayWeekStats[property].quantity >= 0) { %>
                             <p class="mb-0 pill pill-verde">
-                              <%= dayWeekStats[property].percentage/dayWeekStats[property].quantity %>%
+                              <%= dayWeekStats[property].percent/dayWeekStats[property].quantity %>%
                             </p>
                           <% } else { %>
                             <p class="mb-0 pill pill-roja">
-                              <%= dayWeekStats[property].percentage/dayWeekStats[property].quantity %>%
+                              <%= dayWeekStats[property].percent/dayWeekStats[property].quantity %>%
                             </p>
                           <% } %>
                         <% } %>
                       </td>
-                      <td><%= dayWeekStats[property].wins %></td>
+                      <td><%= dayWeekStats[property].win %></td>
                       <td><%= dayWeekStats[property].be %></td>
-                      <td><%= dayWeekStats[property].losses %></td>
+                      <td><%= dayWeekStats[property].loss %></td>
                     </tr>
                   <% } %>
                 </tbody>
@@ -727,10 +759,13 @@
         </div>
         <!--PARTE CENTRAL DEL WIDGET-->
           <div class="mb-2 mt-3 w-100">
-            <div class="parte-central">
-              <!-- Cambiar el color al hacer hover por nuestro gris flojo -->
-
-              <canvas id="orderDirection" width="100" height="100"></canvas>
+            <div class="parte-central my-2 d-flex flex-column justify-content-center align-items-center px-1 wpx-100">
+              <% if (statistics.direction.long + statistics.direction.short > 0) { %>
+                <canvas id="orderDirection" width="100" height="100"></canvas>
+              <% } else { %>
+                <canvas id="orderDirection" class="d-none"></canvas>
+                <p class="placeholder-stats">Not enough data</p>
+              <% } %>
             </div>
           </div>
 
@@ -866,21 +901,9 @@
   </div>
 </div>
 
-
-
-
-
-<!-- <div class="mt-3 mx-4">
-iguhs sasdasd
-</div> -->
-
-<!-- No se si las dos lineas inferiores debo dejarlas o no -->
-<!-- <section> is inside partials -->
-</section>
-
 <script type="text/javascript">
   var currentUser = <%- JSON.stringify(currentUser); %>
-  var counter = <%- JSON.stringify(counter) %>;
+  var statistics = <%- JSON.stringify(statistics) %>;
   var userBase = <%- JSON.stringify(userBase) %>;
 </script>
 

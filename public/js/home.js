@@ -46,7 +46,7 @@ if (winrate != null) {
   short.addEventListener("click", () => {
     winrate.textContent = 100 * 0.789
   });
-  
+
   // Strategies:
   var trendline = document.getElementById("trendline")
   var zone = document.getElementById("zone")
@@ -81,3 +81,9 @@ if (winrate != null) {
     winrate.textContent = 100 * 0.768
   });
 }
+
+// changes the account's base currency
+$('.dropdown-menu li').on('click', function() {
+  var currency = $(this).text();
+  $('#dd').val(currency);
+});

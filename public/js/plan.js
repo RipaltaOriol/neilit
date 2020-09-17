@@ -1,15 +1,66 @@
-var clientRoutine = document.getElementById("client-routine");
-var serverRoutine = document.getElementById("server-routine");
-var clientPsychology = document.getElementById("client-psychology");
-var serverPsychology = document.getElementById("server-psychology");
-var clientJournaling = document.getElementById("client-journaling");
-var serverJournaling = document.getElementById("server-journaling");
-var clientRStrategy = document.getElementById("client-rstrategy");
-var serverRStrategy = document.getElementById("server-rstrategy");
-var clientRJournal = document.getElementById("client-rjournal");
-var serverRJournal = document.getElementById("server-rjournal");
-var clientRPlan = document.getElementById("client-rplan");
-var serverRPlan = document.getElementById("server-rplan");
+// component checkbox: positioning
+var checkRules        = $('#rules');
+var checkTitle        = $('#title');
+var checkType         = $('#type');
+var checkAmount       = $('#amount');
+var checkOrderType    = $('#order-type');
+var checkDescription  = $('#description');
+
+var clientRoutine     = document.getElementById("client-routine");
+var serverRoutine     = document.getElementById("server-routine");
+var clientPsychology  = document.getElementById("client-psychology");
+var serverPsychology  = document.getElementById("server-psychology");
+var clientJournaling  = document.getElementById("client-journaling");
+var serverJournaling  = document.getElementById("server-journaling");
+var clientRStrategy   = document.getElementById("client-rstrategy");
+var serverRStrategy   = document.getElementById("server-rstrategy");
+var clientRJournal    = document.getElementById("client-rjournal");
+var serverRJournal    = document.getElementById("server-rjournal");
+var clientRPlan       = document.getElementById("client-rplan");
+var serverRPlan       = document.getElementById("server-rplan");
+
+// behavior for components on positioning
+checkTitle.click(() => {
+  if (checkTitle.prop('checked')) {
+    checkRules.prop('checked', true);
+  }
+  uncheckPositioning()
+})
+
+checkType.click(() => {
+  if (checkType.prop('checked')) {
+    checkRules.prop('checked', true);
+  }
+  uncheckPositioning()
+})
+
+checkAmount.click(() => {
+  if (checkAmount.prop('checked')) {
+    checkRules.prop('checked', true);
+  }
+  uncheckPositioning()
+})
+
+checkOrderType.click(() => {
+  if (checkOrderType.prop('checked')) {
+    checkRules.prop('checked', true);
+  }
+  uncheckPositioning()
+})
+
+checkDescription.click(() => {
+  if (checkDescription.prop('checked')) {
+    checkRules.prop('checked', true);
+  }
+  uncheckPositioning()
+})
+
+function uncheckPositioning() {
+  if (!(checkTitle.prop('checked') || checkType.prop('checked') || checkAmount.prop('checked')
+  || checkOrderType.prop('checked') || checkDescription.prop('checked'))) {
+    checkRules.prop('checked', false);
+  }
+}
 
 // stores the strategies to include in the trading plan
 var strategyArray = []
@@ -59,7 +110,6 @@ function storeComponents() {
     backtest: $('#backtest').is(':checked') ? 'block' : 'none',
     rules: $('#rules').is(':checked') ? 'block' : 'none',
     title: $('#title').is(':checked') ? 'block' : 'none',
-    type: $('#type').is(':checked') ? 'block' : 'none',
     amount: $('#amount').is(':checked') ? 'block' : 'none',
     orderType: $('#order-type').is(':checked') ? 'block' : 'none',
     description: $('#description').is(':checked') ? 'block' : 'none',
@@ -102,7 +152,7 @@ $('#addTrack').keypress(function(event) {
 // resets list in the plan's journal section
 function resetChecklist() {
   var checklist = document.getElementById('listJournalItems');
-  var itemsChecklist = checklist.getElementsByTagName('li');
+  var itemsChecklist = checklist.getElementsByTagName('input');
   var checklistLength = itemsChecklist.length;
   for (var i = checklistLength - 1; i >= 0; i--) {
     itemsChecklist[i].remove();
@@ -142,8 +192,8 @@ if (window.localStorage.getItem('components') != null) {
       document.getElementsByClassName('risk')[i].style.display = preferences.risk;
       document.getElementsByClassName('backtest')[i].style.display = preferences.backtest;
       document.getElementsByClassName('rules')[i].style.display = preferences.rules;
-      // sets the input's value of the timeframe and pair to be send to the sever
-      // in case they are left out of the plan
+
+      // sets default input value for timeframe and pair to send sever
       if (preferences.timeframe == 'none') {
         document.getElementsByClassName('input-tfs')[i].value = ''
       } else {
@@ -199,18 +249,19 @@ function addRule(type, id) {
   var rulesBtnsList = $('.rulesBtns');
   var current = rulesBtnsList.index(id)
   var currentRule = $('.positioning').length;
-  var begDirectionTemplate = `
-    <input type="text" name="direction" value="
-  `
-  var endDirectionTemplate  = `
-    " class="d-none">
-  `
-  $('.rules').eq(current).append(elements.newPosition + begDirectionTemplate
-    + type + endDirectionTemplate)
+  $('.rules').eq(current).append(elements.newPosition)
+  document.getElementsByClassName('position-strategy')[currentRule].value = document.getElementsByClassName('strategy-input')[current].value;
+  document.getElementsByClassName('position-type')[currentRule].value = type;
   document.getElementsByClassName('position-title')[currentRule].style.display = preferences.title;
-  document.getElementsByClassName('position-type')[currentRule].style.display = preferences.type;
   document.getElementsByClassName('position-amount')[currentRule].style.display = preferences.amount;
+  if (type == 'tp-f' || type == 'sl-f') {
+    document.getElementsByClassName('input-amount')[currentRule].value = '100';
+    document.getElementsByClassName('input-amount')[currentRule].readOnly = 'true';
+  }
   document.getElementsByClassName('order-type')[currentRule].style.display = preferences.orderType;
+  if (preferences.orderType != 'none') {
+    document.getElementsByClassName('input-order')[currentRule].value = 'market';
+  }
   document.getElementsByClassName('description')[currentRule].style.display = preferences.description;
 }
 
@@ -230,6 +281,14 @@ function changePair(pair, id) {
   document.getElementsByClassName('input-pairs')[current].value = pair;
 }
 
+// allows changes on the order type of a positioning rule
+function changeOrder(order, id) {
+  var orderList = $('.list-orders')
+  var current = orderList.index(id.parentNode)
+  $('.dd-order-type')[current].innerHTML = id.innerHTML;
+  document.getElementsByClassName('input-order')[current].value = order;
+}
+
 // deletes the local storage when submitting plan
 $('#submit-plan').click(() => {
   window.localStorage.removeItem('components');
@@ -241,7 +300,7 @@ $('#submit-plan').click(() => {
   serverRJournal.value    = clientRJournal.textContent    || clientRJournal.innerText;
   serverRPlan.value       = clientRPlan.textContent       || clientRPlan.innerText;
   // sends the Strategies' content to the server
-  var clientAbout = document.getElementsByClassName("client-about")
+  var clientAbout = document.getElementsByClassName("client-about");
   var serverAbout = document.getElementsByClassName("server-about");
   var clientHowto = document.getElementsByClassName("client-howto");
   var serverHowto = document.getElementsByClassName("server-howto");
@@ -251,5 +310,11 @@ $('#submit-plan').click(() => {
     serverAbout[i].value    = clientAbout[i].textContent    || clientAbout[i].innerText;
     serverHowto[i].value    = clientHowto[i].textContent    || clientHowto[i].innerText;
     serverKeyNotes[i].value = clientKeyNotes[i].textContent || clientKeyNotes[i].innerText;
+  };
+  // send the Positions' content to the server
+  var clientDescription = document.getElementsByClassName("client-description");
+  var serverDescription = document.getElementsByClassName("server-description");
+  for (var i = 0; i < clientDescription.length; i++) {
+    serverDescription[i].value = clientDescription[i].textContent || clientDescription[i].innerText;
   };
 })
