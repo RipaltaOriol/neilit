@@ -6,13 +6,13 @@
 
 :root{
   --neilit-default: #ff8818;
-  --amarillo: #FFCF18;
-  --naranja-fuerte: #f57700;
-  --verde: #4DAA57;
-  --azul-fuerte:#151B26;
-  --bg-hover: #f7f7f7;
-  --gris: #AAAAAA;
-  --gris-texto: #7B7B7B;
+  --neilit-altern: #f57700;
+  --yellow: #ffcf18;
+  --green-strong: #4daa57;
+  --blue-strong:#151B26;
+  --background-hover: #f7f7f7;
+  --grey: #aaaaaa;
+  --grey-text: #7b7b7b;
 }
 
 /* || General styles */
@@ -55,12 +55,12 @@ strong {
 
 p {
   font-size: 17px;
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 form input {
   height: 35px;
-  border: 1px solid var(--gris);
+  border: 1px solid var(--grey);
   border-radius: 7px;
   width: 300px;
 }
@@ -85,8 +85,8 @@ form input {
 
 /* || Bootstrap class */
 .jumbotron {
-  background-color: var(--amarillo);
-  background-image: linear-gradient(to left, var(--amarillo), var(--neilit-default));
+  background-color: var(--yellow);
+  background-image: linear-gradient(to left, var(--yellow), var(--neilit-default));
 }
 
 /* || Bootstrap class */
@@ -95,7 +95,7 @@ form input {
     cursor: pointer;
   }
     .modal-body a:hover {
-      background-color: var(--gris-flojo);
+      background-color: var(--background-hover);
       border-radius: .25rem;
     }
 
@@ -156,12 +156,12 @@ form input {
 
 /* || Utility */
 .color-gris{
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 /* || Utility */
 .link-gris{
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
   .link-gris:hover{
     color: black;
@@ -197,7 +197,7 @@ form input {
 }
   .btn-neilit:hover {
     color: white;
-    background: var(--naranja-fuerte);
+    background: var(--neilit-altern);
     transition-duration: .25s;
   }
 
@@ -234,7 +234,7 @@ form input {
 /* || Utility */
 .subtitle-sm {
   font-size: 20px;
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 /* || Utility */
@@ -317,7 +317,7 @@ form input {
     padding: 5px 10px;
   }
     .dropdown-menu li:hover {
-      background-color: var(--bg-hover);
+      background-color: var(--background-hover);
     }
 
 .checkbox-orange {
@@ -340,7 +340,7 @@ form input {
     width: 0;
   }
     .checkbox-orange:hover input ~ .checkmark {
-      background-color: var(--gris-flojo);
+      background-color: var(--background-hover);
     }
     .checkbox-orange input:checked ~ .checkmark {
       background-color: var(--neilit-default);
@@ -442,7 +442,7 @@ form input {
   width: 33.33%;
   position: relative;
   text-align: center;
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 .progressbar li::before{
@@ -475,7 +475,7 @@ form input {
 }
 
 .progressbar li.active{
-  color: var(--gris-texto);
+  color: var(--grey-text);
 }
 
 .progressbar li.active::before{

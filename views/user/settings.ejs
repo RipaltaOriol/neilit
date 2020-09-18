@@ -3,12 +3,6 @@
   <div class="bg-orange py-2">
     <div class="w-100 row mx-auto d-flex align-items-center">
       <div class="col-6">
-        <a href="javascript:history.back()" class="text-light">
-          <img src="/imgs/icons/arrow-left.svg" class="align-middle">
-          <p class="m-0 p-0 d-inline align-middle">Back</p>
-        </a>
-      </div>
-      <div class="col-6 text-right">
         <a href="/<%= currentUser.username %>" class="text-light">
           <p class="m-0 p-0 mr-2">Go to dashboard</p>
         </a>
@@ -112,7 +106,7 @@
             <h4 class="pb-1 mb-3">My Plan</h4>
             <div class="d-flex flex-row justify-content-between align-items-baseline mb-2">
               <h5 class="mb-1">Neilit Pro</h5>
-              <a href="/plans" class="bg-hover orange px-1 font-16">What does the plan include?</a>
+              <a href="/plans" class="bg-hover px-1 font-16">What does the plan include?</a>
             </div>
             <% if (currentUser.expiration != null) { %>
               <div class="d-flex flex-row justify-content-between align-items-baseline">
@@ -291,10 +285,10 @@
             <input type="text" id="addGoal" placeholder="New Goal" class="w-100 font-16">
             <!-- Up to 5 goals -->
             <a href="#!" id="">
-              <ul id="listGoals" class="pl-0">
+              <ul id="listGoals" class="pl-0 list">
                 <% goals.forEach((goal) => { %>
                   <li class="mt-2 py-0 font-16 goal-li">
-                    <input type="text" value="<%= goal %>" class="goal">
+                    <input type="text" value="<%= goal %>" class="goal" readonly>
                     <button type="button" class="float-right goal-delete" onclick="deleteGoal(this)">
                       <img class="icon-20" src="/imgs/icons/delete.svg">
                     </button>
@@ -313,10 +307,10 @@
             <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100 font-16">
             <!-- all strategies -->
             <a href="#!" id="">
-              <ul id="listStrategy" class="pl-0">
+              <ul id="listStrategy" class="pl-0 list">
                 <% strategies.forEach((strategy) => { %>
                   <li class="mt-2 py-0 strategy-li">
-                    <input type="text" class="strategy" value="<%= strategy %>">
+                    <input type="text" class="strategy" value="<%= strategy %>" readonly>
                     <button type="button" class="float-right strategy-delete" onclick="deleteStrategy(this)">
                       <img class="icon-20" src="/imgs/icons/delete.svg">
                     </button>

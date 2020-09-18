@@ -6,7 +6,7 @@ $(document).ready(function() {
 // stores the goals's HTML to a variable
 var begGoal = `<li class="mt-2 py-0 font-16 goal-li">
     <input type="text" value="`;
-var endGoal = `" class="goal">
+var endGoal = `" class="goal" readonly>
     <button type="button" class="float-right goal-delete" onclick="deleteGoal(this)">
       <img class="icon-20" src="/imgs/icons/delete.svg">
     </button>
@@ -58,7 +58,7 @@ $("#addGoal").keypress(function(event) {
 var begStrategy = `<li class="mt-2 py-0 strategy-li">
     <input type="text" value="
   `;
-var endStrategy = `" class="strategy">
+var endStrategy = `" class="strategy" readonly>
     <button type="button" class="float-right strategy-delete" onclick="deleteStrategy(this)">
       <img class="icon-20" src="/imgs/icons/delete.svg">
     </button>
@@ -138,7 +138,7 @@ $('#dark').change(() => {
   var data = {mode: changeMode}
   $.post('/' + currentUser.username + '/settings/changeMode', data)
     .done((data) => {
-    // success
+    location.reload();
   })
     .fail(() => {
     // error

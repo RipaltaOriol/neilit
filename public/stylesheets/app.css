@@ -6,27 +6,60 @@
 @font-face { font-family: Nunito; src: url("/fonts/Nunito-Bold.ttf"); font-weight: bold;}
 
 :root {
-  --neilit-regular: #ff8818;
-  --neilit-strong: #f57700;
-  --text-contrast: #ffffff;
-  --red-strong: #a10000;
+  --invert-white:       #ffffff;
+  --invert-black:       #000000;
+  --neilit-permanent:   #ff8818;
+  --neilit-default:     #ff8818;
+  --neilit-altern:      #f57700;
+  --neilit-white:       #ff8818;
+  --white-neilit:       #ffffff;
+  --background-strong:  #ffffff;
+  --background-medium:  #ffffff;
+  --background-neilit:  #ff8818;
+  --text-contrast:      #212529;
+  --text-grey:          #7b7b7b;
+  --background-hover:   #f7f7f7;
+  --red-strong:         #a10000;
+  --red-invert:         #a10000;
+  --box-background:     #ffffff;
+  --grey-medium:        #eeeeee;
+  --grey-strong:        #e5e5e5;
+  --switch:             #eeeeee;
+  --box-shadow: rgba(0,0,0,0.2);
 }
 
 :root.dark-mode {
-  --neilit-regular: #000000;
-  --text-contrast: #ffffff;
+  --invert-white:       #121212;
+  --invert-black:       #ffffff;
+  --neilit-default:     #272727;
+  --neilit-white:       #ffffff;
+  --white-neilit:       #ff8818;
+  --background-strong:  #121212;
+  --background-medium:  #272727;
+  --background-neilit:  #474747;
+  --background-hover:   #424242;
+  --text-grey:          #a9a9a9;
+  --box-background:     #272727;
+  --text-contrast:      #dedad6;
+  --red-invert:         #ffffff;
+  --grey-medium:        #d0d0d0;
+  --grey-strong:        #707070;
+  --switch:             #777777;
+  --box-shadow: rgba(255,255,255,0.2);
 }
 
 /* || General styles */
 body {
   font-family: Nunito;
   font-size: 18px;
+  color: var(--text-contrast);
+  background-color: var(--background-strong);
 }
 
 h1 {
   font-weight: bold;
   font-size: 35px;
-  color: var(--text-contrast);
+  color: white;
 }
 
 h3 {
@@ -53,8 +86,8 @@ input {
 input[type=search] {
   height: 20px;
   padding: 10px 10px 10px 2.25rem;
-	background: var(--text-contrast) url("/imgs/icons/search.svg") no-repeat 15px;
-  border: 2px solid var(--text-contrast);
+	background: white url("/imgs/icons/search.svg") no-repeat 15px;
+  border: 2px solid white;
   border-radius: 10em;
 	-webkit-border-radius: 10em;
 	-moz-border-radius: 10em;
@@ -64,7 +97,7 @@ input[type=search] {
   -webkit-box-sizing: content-box;
 }
   input[type=search]:focus {
-  	border-color: var(--neilit-regular);
+  	border-color: var(--neilit-default);
     box-shadow: 0 0 5px rgba(225,225,225,1);
   	-webkit-box-shadow: 0 0 5px rgba(225,225,225,1);
   	-moz-box-shadow: 0 0 5px rgba(225,225,225,1);
@@ -99,7 +132,7 @@ input[type=search] {
   border-radius: .25rem;
 }
   .bg-hover:hover {
-    background-color: #f7f7f7;
+    background-color: var(--background-hover);
   }
 
 /* || Utility */
@@ -114,12 +147,12 @@ input[type=search] {
     cursor: pointer;
   }
     .modal-body a:hover {
-      color: var(--neilit-regular);
+      color: var(--neilit-default);
     }
 
 /* || Utility */
 .bg-grey {
-  background-color: #f7f7f7;
+  background-color: var(--background-hover);
 }
 
 /* || Utility */
@@ -128,13 +161,16 @@ input[type=search] {
   max-width: 20px;
   margin-right: 0;
 }
+  .dark-mode .icon-20 {
+    filter: invert();
+  }
 
 /* || Utility */
 .orange {
-  color: var(--neilit-regular);
+  color: var(--neilit-default);
 }
   a.orange {
-    color: var(--neilit-regular);
+    color: var(--neilit-default);
     text-decoration: none;
   }
     a.orange:focus {
@@ -163,42 +199,42 @@ input[type=search] {
 /* || Utility */
 .btn-neilit {
   font-size: 16px;
-  color: var(--text-contrast);
-  border: 0.5px solid var(--neilit-regular);
+  color: white;
+  border: 0.5px solid var(--neilit-default);
   border-radius: .25rem;
-  background: var(--neilit-regular);
+  background: var(--neilit-default);
   transition-duration: .25s;
   padding: 0.25rem 0.5rem;
 }
   .btn-neilit:hover {
-    color: var(--text-contrast);
-    background-color: var(--neilit-strong);
+    color: white;
+    background-color: var(--neilit-altern);
   }
 
 /* || Utility */
 .btn-inverted {
   font-size: 16px;
-  color: var(--neilit-regular);
-  border: 1.5px solid var(--neilit-regular);
+  color: var(--neilit-white);
+  border: 1px solid var(--neilit-white);
   border-radius: .25rem;
-  background-color: var(--text-contrast);
+  background-color: var(--background-medium);
   transition-duration: .25s;
   padding: 0.25rem 0.5rem;
 
 }
   .btn-inverted:hover {
-    color: var(--text-contrast);
-    background-color: var(--neilit-regular);
+    color: var(--white-neilit)!important;
+    background-color: var(--neilit-white);
     text-decoration: none;
     transition-duration: .25s;
   }
 
 /* Boton Upgrade SideBar */
 .btn-upgrade{
-  background: var(--text-contrast);
+  background: white;
   padding: 5px 10px;
   border: none;
-  color: var(--orange);
+  color: var(--neilit-default);
   border-radius: 7px;
   transition-duration: .25s;
 }
@@ -226,8 +262,12 @@ input[type=search] {
    }
 
 .btn-top {
-  width: 25px;
+  width: 1.75rem;
+  height: 1.75rem;
 }
+  .dark-mode .btn-top {
+    filter: invert();
+  }
 
 /* || Utility */
 .info {
@@ -247,14 +287,14 @@ input[type=search] {
   z-index: 1;
   top: 0;
   left: 0;
-  background: var(--neilit-regular);
+  background: var(--neilit-default);
   opacity: 1;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 20px;
 }
   #neilit-menu a {
-    color: var(--text-contrast);
+    color: white;
   }
 
 #header-menu {
@@ -291,7 +331,7 @@ input[type=search] {
     #search input[type=search]:focus {
 	    width: 375px;
 	    padding-left: 2.25rem;
-	    background-color: var(--text-contrast);
+	    background-color: white;
 	    cursor: auto;
     }
 
@@ -304,4 +344,9 @@ input[type=search] {
 #toggle-o-menu { }
   #toggle-o-menu img {
     width: 34px;
+  }
+  .dark-mode #toggle-o-menu img {
+    width: 2.25rem;
+    height: 2.25rem;
+    filter: invert();
   }

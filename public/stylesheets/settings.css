@@ -1,14 +1,12 @@
-:root{
-  --grey-flojo: #F7F7F7;
-  --grey-medio: #EEEEEE;
-  --grey-fuerte: #E5E5E5;
-  --grey-texto: #7B7B7B;
-}
-
 /* || General styles */
+h2 { }
+  h2.orange {
+    color: var(--neilit-white);
+  }
+
 h4 {
   font-size: 18px;
-  border-bottom: 2px solid #EEEEEE;
+  border-bottom: 2px solid var(--grey-medium);
 }
   h4 a {
     font-size: 14px;
@@ -21,34 +19,36 @@ h4 {
   }
 
 h5 {
+
   font-size: 16px;
 }
 
 a {
-  color: var(--orange);
+  color: var(--neilit-permanent);
 }
   a:hover {
-    color: var(--orange-fuerte);
+    color: var(--neilit-altern);
     text-decoration: none;
   }
   a.nav-link {
-    color: var(--grey-texto);
+    color: var(--text-grey);
     padding: 2px 15px 0 15px;
     font-size: 16px;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid var(--invert-white);
   }
-
     a.nav-link:hover {
-      color: black;
-      border-bottom: 2px solid var(--grey-fuerte);
-      background-color: white !important;
+      color: var(--invert-black);
+      border-bottom: 2px solid var(--grey-strong);
+      background-color: var(--background-strong);
     }
-
     a.nav-link.active {
-      background: white;
+      background: var(--background-strong);
       color: var(--orange);
       border-bottom: 2px solid var(--orange);
     }
+  a.orange {
+    color: var(--neilit-permanent);
+  }
 
 li {
   color: #7b7b7b;
@@ -57,20 +57,21 @@ li {
   list-style-type: none;
 }
   li:hover{
-    background-color: #f7f7f7;
+    background-color: var(--background-hover);
     color: black;
   }
 
 input {
+    color: var(--invert-black);
     padding: 5px 10px;
     border-radius: .25rem;
-    background: #f8f8f8;
+    background: var(--background-hover);
 }
   input:checked + .slider {
-    background-color: #FF8818;
+    background-color: var(--neilit-permanent);
   }
   input:focus + .slider {
-    box-shadow: 0 0 1px #FF8818;
+    box-shadow: 0 0 1px var(--neilit-permanent);
   }
   input:checked + .slider:before {
     -webkit-transform: translateX(15px);
@@ -80,16 +81,14 @@ input {
 
 hr.profile {
   background: red;
-  border: 1px solid var(--grey-medio);
+  border: 1px solid var(--grey-medium);
   width: 100%;
   margin: 0;
 }
 
-
-
 /* || Utility */
 .bg-orange {
-  background: #FF8818;
+  background: var(--background-neilit);
 }
   .bg-orange a:hover {
     color: white!important;
@@ -107,6 +106,13 @@ hr.profile {
     color: #f57700;
   }
 
+.tab-box {
+  background-color: var(--box-background);
+}
+  .tab-box a:hover {
+    color: var(--neilit-permanent);
+  }
+
 .containerMenuSettings {
   width: 100%;
 }
@@ -120,12 +126,12 @@ hr.profile {
   width: 850px;
   min-width: 850px;
   border-radius: 7px;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
   .tab-box p {
-    color: var(--grey-texto);
+    color: var(--text-grey);
     padding: 3px 5px;
   }
     .tab-box p:hover {
@@ -143,6 +149,9 @@ hr.profile {
       opacity: 1;
       transition-duration: 0.25s;
     }
+  .dark-mode .img-sm {
+    filter: invert();
+  }
   .tab-box .img-md {
     height: 40px;
     width: auto;
@@ -150,7 +159,9 @@ hr.profile {
 
 /* || Profile picture */
 .profile-picture { }
-  .profile-picture:hover { }
+  .dark-mode .profile-picture {
+    filter: invert();
+  }
 
 .containerOferta {
   border-radius: 7px 7px 0 0;
@@ -210,7 +221,7 @@ hr.profile {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #eeeeee;
+  background-color: var(--switch);
   -webkit-transition: .4s;
   transition: .4s;
   width: 40px;
@@ -243,67 +254,51 @@ hr.profile {
 .dropdown-menu {
   padding: 0;
   margin: 0;
+  background-color: var(--background-medium);
   border-radius: 7px;
   border: none;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
   .dropdown-menu li {
     line-height: 1.5;
     letter-spacing: 0.7px;
-    color: var(--grey-texto);
+    color: var(--text-grey);
     font-size: 16px;
     cursor: pointer;
     padding: 5px 10px;
   }
   .dropdown-menu li:hover {
-    background-color: var(--grey-flojo);
-    color: black;
+    background-color: var(--background-hover);
+    color: var(--invert-black);
   }
 
 .info {
   transform: translateX(35px);
 }
+  .dark-mode .info {
+    filter: invert();
+  }
 
-#listStrategy { }
-  #listStrategy ul{
+.list { }
+  .list ul{
     border-radius: 7px;
   }
-  #listStrategy li {
+  .list li {
     font-size: 16px;
     border-radius: 7px;
   }
-  #listStrategy button {
+  .list button {
     background: none;
     border: none;
   }
-  #listStrategy input {
-    color: #7b7b7b;
+  .list input {
+    color: var(--text-grey);
     background: none;
   }
-    #listStrategy input:focus {
-      color: #000000;
-    }
-
-#listGoals { }
-  #listStrategy ul{
-    border-radius: 7px;
-  }
-  #listGoals li {
-    font-size: 16px;
-    border-radius: 7px;
-  }
-  #listGoals button {
-    background: none;
-    border: none;
-  }
-  #listGoals input {
-    color: #7b7b7b;
-    background: none;
-  }
-    #listGoals input:focus {
-      color: #000000;
+    .list input:focus {
+      color: var(--invert-black);
     }
 
 /*Custom dropdown*/
@@ -312,11 +307,11 @@ hr.profile {
   border: 0;
   text-align: left;
   background-color: inherit;
-  color: var(--grey-texto);
+  color: var(--text-grey);
 }
   #dd:hover {
-    color: black;
-    background-color: #f7f7f7;
+    color: var(--invert-black);
+    background-color: var(--background-hover);
   }
 
 #initial-balance{
@@ -325,11 +320,12 @@ hr.profile {
 
 /* || Btn Logout */
 #logout {
-  color: var(--red-strong);
+  color: var(--red-invert);
   border-radius: .25rem;
-  border: 2px solid var(--red-strong);
+  border: 2px solid var(--red-invert);
 }
   #logout:hover {
     color: white;
     background: var(--red-strong);
+    border: 2px solid var(--red-strong);
   }

@@ -1,5 +1,8 @@
 // graph canvas & containers
 var entriesGraph = document.getElementById('donutChartWidgetTradesWinBELoss')
+// data display points
+var profitsPercent = document.getElementById('profits-percent');
+var profitsAmount = document.getElementById('profits-amount');
 
 // dropdown to select a time period for statistics
 $('.dropdown-menu li').on('click', function() {
@@ -16,7 +19,7 @@ $(document).ready(function() {
 
 // Generates the datepicker
 $("input[type=date]").datepicker({
-  dateFormat: 'yy-mm-dd'
+  dateFormat: 'yy/mm/dd'
 });
 
 // prevents the classic datepicker from loading
@@ -26,8 +29,6 @@ $("input[type=date]").on('click', function() {
 
 // retrieves profits from the selected time period
 function getProfits(period) {
-  var profitsPercent = document.getElementById('profits-percent');
-  var profitsAmount = document.getElementById('profits-amount');
   // makes an AJAX call with the corresponding data period
   $.get('/' + currentUser.username + '/statistics/profits/' + period)
     .done((data) => {
@@ -46,11 +47,34 @@ function getProfits(period) {
 };
 
 // retrieves profits from a custom time period
-function getCustomProfits() {
-  console.log('Triggering');
-  var from = $('#from-period').value;
-  console.log(from);
-
+function getCustomProfits(from, to) {
+  var dFrom = new Date(from.value);
+  var dTo = new Date(to.value);
+  // checks if the given dates are valid
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
+  if (isValidDate(dFrom) && isValidDate(dTo)) {
+    dFrom = from.value.replace(/\//g, '-');
+    dTo = to.value.replace(/\//g, '-');
+    // makes an AJAX call with the custom data perio
+    $.get('/' + currentUser.username + '/statistics/profits/custom/' + dFrom + '/' + dTo)
+      .done((data) => {
+        profitsPercent.innerHTML = data.percent + '%'
+        if (data.amount >= 0) {
+          profitsAmount.innerHTML = '<p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">'
+            + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
+        } else {
+          profitsAmount.innerHTML = '<p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2"'
+            + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
+        }
+    })
+      .fail(() => {
+        // error
+    })
+  } else {
+    // date error
+  }
 }
 
 // retrieves entry results from the selected time period
@@ -71,6 +95,30 @@ function getEntries(period) {
     .fail(() => {
       // error
   })
+}
+
+// retrieves entry results from a custom time period
+function getCustomEntries(from, to) {
+  var dFrom = new Date(from.value);
+  var dTo = new Date(to.value);
+  // checks if the given dates are valid
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
+  if (isValidDate(dFrom) && isValidDate(dTo)) {
+    dFrom = from.value.replace(/\//g, '-');
+    dTo = to.value.replace(/\//g, '-');
+    // makes an AJAX call with the custom data perio
+    $.get('/' + currentUser.username + '/statistics/profits/custom/' + dFrom + '/' + dTo)
+      .done((data) => {
+        console.log(data);
+    })
+      .fail(() => {
+        // error
+    })
+  } else {
+    // date error
+  }
 }
 
 // retrieves the best asset from the selected time period

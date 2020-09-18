@@ -38,8 +38,8 @@
               </div>
             </div>
           </a>
-          <!-- Modal -->
-          <div class="modal fade" id="customProfits" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <!-- modal -->
+          <div class="modal fade" id="customProfits" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -50,12 +50,12 @@
                 </div>
                 <div class="modal-body">
                   <p class="mb-0">From:</p>
-                  <input id="from-period" type="date" class="bg-hover form-control mb-2 px-2">
+                  <input id="from-profits" type="date" class="bg-hover form-control mb-2 px-2">
                   <p class="mb-0">To:</p>
-                  <input id="to-period" type="date" class="bg-hover form-control px-2">
+                  <input id="to-profits" type="date" class="bg-hover form-control px-2">
                 </div>
                 <div class="modal-footer">
-                  <button type="button" onclick="getCustomProfits()" class="btn-neilit" data-dismiss="modal">Apply</button>
+                  <button type="button" onclick="getCustomProfits(document.getElementById('from-profits'), document.getElementById('to-profits'))" class="btn-neilit" data-dismiss="modal">Apply</button>
                 </div>
               </div>
             </div>
@@ -95,7 +95,7 @@
           <div class="">
           <a href="#">
             <div class="d-flex flex-row justify-content-center align-items-center">
-              <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
+              <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma.">
             </div>
           </a>
           </div>
@@ -127,10 +127,35 @@
                   <li onclick="getEntries('cquarter')">Current quarter</li>
                   <li onclick="getEntries('lquarter')">Last quarter</li>
                   <li onclick="getEntries('all')">All</li>
+                  <li>
+                    <button type="button" data-toggle="modal" data-target="#customEntries">Custom period</button>
+                  </li>
                 </ul>
               </div>
             </div>
           </a>
+          <!-- modal -->
+          <div class="modal fade" id="customEntries" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Custom period</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p class="mb-0">From:</p>
+                  <input id="from-entries" type="date" class="bg-hover form-control mb-2 px-2">
+                  <p class="mb-0">To:</p>
+                  <input id="to-entries" type="date" class="bg-hover form-control px-2">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" onclick="getCustomEntries(document.getElementById('from-entries'), document.getElementById('to-entries'))" class="btn-neilit" data-dismiss="modal">Apply</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <!--PARTE CENTRAL DEL WIDGET-->
         <a href="#!">
