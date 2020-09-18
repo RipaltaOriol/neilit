@@ -87,39 +87,6 @@ router.get("/entries/:period", middleware.isLoggedIn, (req, res) => {
   var be = 0;
   (async () => {
     try {
-      var getEntries = await query('SELECT result FROM entries WHERE status = 1 AND user_id = ? AND entry_dt > ? AND entry_dt < ?;', [req.user.id, req.params.from, req.params.to]);
-      getEntries.forEach((entry) => {
-        switch (entry.result) {
-          case 'win':
-            win += 1;
-            break;
-          case 'loss':
-            loss += 1;
-            break;
-          case 'be':
-            be += 1
-            break;
-        }
-      })
-    } catch (e) {
-      throw e;
-    } finally {
-      res.json({
-        win: win,
-        loss: loss,
-        be: be
-      })
-    }
-  })()
-})
-
-// ACCOUNT ENTRIES - WIN & LOSS & BE
-router.get("/entries/custom/:from/:to", middleware.isLoggedIn, (req, res) => {
-  var win = 0;
-  var loss = 0;
-  var be = 0;
-  (async () => {
-    try {
       switch (req.params.period) {
         case 'today':
           var getEntries = await query('SELECT result FROM entries WHERE entry_dt > CURDATE() AND status = 1 AND user_id = ?;', req.user.id);
@@ -171,7 +138,41 @@ router.get("/entries/custom/:from/:to", middleware.isLoggedIn, (req, res) => {
   })()
 })
 
-// BEST ASSET
+// ACCOUNT CUSTOM ENTRIES - WIN & LOSS & BE
+router.get("/entries/custom/:from/:to", middleware.isLoggedIn, (req, res) => {
+  var win = 0;
+  var loss = 0;
+  var be = 0;
+  (async () => {
+    try {
+      var getEntries = await query('SELECT result FROM entries WHERE status = 1 AND user_id = ? AND entry_dt > ? AND entry_dt < ?;', [req.user.id, req.params.from, req.params.to]);
+      getEntries.forEach((entry) => {
+        switch (entry.result) {
+          case 'win':
+            win += 1;
+            break;
+          case 'loss':
+            loss += 1;
+            break;
+          case 'be':
+            be += 1
+            break;
+        }
+      })
+    } catch (e) {
+      //throw e;
+      console.log(e);
+    } finally {
+      res.json({
+        win: win,
+        loss: loss,
+        be: be
+      })
+    }
+  })()
+})
+
+// BEST BEST ASSET
 router.get("/best-asset/:period", middleware.isLoggedIn, (req, res) => {
   var amount = 0;
   var percent = 0;
@@ -204,6 +205,38 @@ router.get("/best-asset/:period", middleware.isLoggedIn, (req, res) => {
           var getEntries = await query('SELECT profits, fees, pair_id FROM entries WHERE status = 1 AND user_id = ?;', req.user.id);
           break;
       }
+      var pairsAmount = Array(pairs.length).fill(0);
+      var pairsPercent = Array(pairs.length).fill(0);
+      getEntries.forEach((entry) => {
+        entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+        pairsAmount[Number(entry.pair_id) - 1] += (entry.profits - entry.fees);
+        pairsPercent[Number(entry.pair_id) - 1] += entryPercent;
+      })
+      amount = Math.max(...pairsAmount);
+      percent = pairsPercent[pairsAmount.indexOf(amount)];
+      if (amount > 0) {
+        pair = pairs[pairsAmount.indexOf(amount)]
+      }
+    } catch (e) {
+      throw e;
+    } finally {
+      res.json({
+        amount: amount,
+        percent: percent,
+        pair: pair
+      })
+    }
+  })()
+})
+
+// BEST CUSTOM BEST ASSET
+router.get("/best-asset/custom/:from/:to", middleware.isLoggedIn, (req, res) => {
+  var amount = 0;
+  var percent = 0;
+  var pair = 'N/A';
+  (async () => {
+    try {
+      var getEntries = await query('SELECT profits, fees, pair_id FROM entries WHERE status = 1 AND user_id = ? AND entry_dt > ? AND entry_dt < ?;', [req.user.id, req.params.from, req.params.to]);
       var pairsAmount = Array(pairs.length).fill(0);
       var pairsPercent = Array(pairs.length).fill(0);
       getEntries.forEach((entry) => {

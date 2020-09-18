@@ -12,11 +12,6 @@ $('.dropdown-menu li').on('click', function() {
   $('.dropdown-select')[current].innerHTML = getValue;
 });
 
-//Tooltips
-$(document).ready(function() {
-    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-});
-
 // Generates the datepicker
 $("input[type=date]").datepicker({
   dateFormat: 'yy/mm/dd'
@@ -57,7 +52,7 @@ function getCustomProfits(from, to) {
   if (isValidDate(dFrom) && isValidDate(dTo)) {
     dFrom = from.value.replace(/\//g, '-');
     dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data perio
+    // makes an AJAX call with the custom data period
     $.get('/' + currentUser.username + '/statistics/profits/custom/' + dFrom + '/' + dTo)
       .done((data) => {
         profitsPercent.innerHTML = data.percent + '%'
@@ -108,10 +103,18 @@ function getCustomEntries(from, to) {
   if (isValidDate(dFrom) && isValidDate(dTo)) {
     dFrom = from.value.replace(/\//g, '-');
     dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data perio
-    $.get('/' + currentUser.username + '/statistics/profits/custom/' + dFrom + '/' + dTo)
+    // makes an AJAX call with the custom data period
+    $.get('/' + currentUser.username + '/statistics/entries/custom/' + dFrom + '/' + dTo)
       .done((data) => {
-        console.log(data);
+        if (data.win + data.be + data.loss > 0) {
+          entriesGraph.style.display = "block";
+          popularAssetsChart.data.datasets[0].data = [data.win, data.be, data.loss];
+          popularAssetsChart.update();
+          document.getElementById('no-data-entries-graph').classList.add('d-none')
+        } else {
+          entriesGraph.style.display = "none";
+          document.getElementById('no-data-entries-graph').classList.remove('d-none');
+        }
     })
       .fail(() => {
         // error
@@ -142,6 +145,38 @@ function getBestAsset(period) {
     .fail(() => {
       // error
     })
+}
+
+// retrieves the best asset from a custom time period
+function getCustomBestAsset(from, to) {
+  var dFrom = new Date(from.value);
+  var dTo = new Date(to.value);
+  // checks if the given dates are valid
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
+  if (isValidDate(dFrom) && isValidDate(dTo)) {
+    dFrom = from.value.replace(/\//g, '-');
+    dTo = to.value.replace(/\//g, '-');
+    // makes an AJAX call with the custom data period
+    $.get('/' + currentUser.username + '/statistics/entries/custom/' + dFrom + '/' + dTo)
+      .done((data) => {
+        if (data.win + data.be + data.loss > 0) {
+          entriesGraph.style.display = "block";
+          popularAssetsChart.data.datasets[0].data = [data.win, data.be, data.loss];
+          popularAssetsChart.update();
+          document.getElementById('no-data-entries-graph').classList.add('d-none')
+        } else {
+          entriesGraph.style.display = "none";
+          document.getElementById('no-data-entries-graph').classList.remove('d-none');
+        }
+    })
+      .fail(() => {
+        // error
+    })
+  } else {
+    // date error
+  }
 }
 
 //GRÁFICO DE ENTRADAS
@@ -296,4 +331,9 @@ var orderDirectionResults = new Chart(orderDirectionResults,{
       display: false,
     }
   }
+});
+
+//Tooltips
+$(document).ready(function() {
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 });
