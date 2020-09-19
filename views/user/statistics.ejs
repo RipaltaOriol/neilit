@@ -44,9 +44,6 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">Custom period</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                 </div>
                 <div class="modal-body">
                   <p class="mb-0">From:</p>
@@ -83,22 +80,12 @@
           </div>
         </a>
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma.">
             </div>
           </a>
-          </div>
         </div>
       </div>
       <!--SEGUNDO WIDGET PRIMERA LINEA || ENTRIES-->
@@ -140,9 +127,6 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">Custom period</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                 </div>
                 <div class="modal-body">
                   <p class="mb-0">From:</p>
@@ -170,22 +154,12 @@
           </div>
         </a>
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
-          </div>
         </div>
       </div>
       <!--TERCER WIDGET PRIMERA LINEA || PROFITS-->
@@ -227,9 +201,6 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">Custom period</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                 </div>
                 <div class="modal-body">
                   <p class="mb-0">From:</p>
@@ -270,22 +241,12 @@
           </div>
 
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma.">
             </div>
           </a>
-          </div>
         </div>
       </div>
     </div>
@@ -312,14 +273,14 @@
                   </button>
                   <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current quarter</li>
-                    <li>Last quarter</li>
-                    <li>All</li>
+                    <li onclick="getStrategies('today'); return false;">Today</li>
+                    <li onclick="getStrategies('cweek'); return false;">Current week</li>
+                    <li onclick="getStrategies('lweek'); return false;">Last week</li>
+                    <li onclick="getStrategies('cmonth'); return false;">Current month</li>
+                    <li onclick="getStrategies('lmonth'); return false;">Last month</li>
+                    <li onclick="getStrategies('cquarter'); return false;">Current quarter</li>
+                    <li onclick="getStrategies('lquarter'); return false;">Last quarter</li>
+                    <li onclick="getStrategies('all'); return false;">All</li>
                     <li>Custom period</li>
                   </ul>
                 </div>
@@ -358,8 +319,8 @@
                   <% for (const property in strategyStats) { %>
                     <tr>
                       <th scope="row" class="align-middle"><a href="#" class="grey"><%= strategyStats[property].name %></a></th>
-                      <td><%= strategyStats[property].quantity %></td>
-                      <td>
+                      <td id="<%= property %>-quantity"><%= strategyStats[property].quantity %></td>
+                      <td id="<%= property %>-average">
                         <% if (strategyStats[property].quantity == 0) { %>
                           0
                         <% } else { %>
@@ -374,9 +335,9 @@
                           <% } %>
                         <% } %>
                       </td>
-                      <td><%= strategyStats[property].win %></td>
-                      <td><%= strategyStats[property].be %></td>
-                      <td><%= strategyStats[property].loss %></td>
+                      <td id="<%= property %>-win"><%= strategyStats[property].win %></td>
+                      <td id="<%= property %>-be"><%= strategyStats[property].be %></td>
+                      <td id="<%= property %>-loss"><%= strategyStats[property].loss %></td>
                     </tr>
                   <% } %>
                 </tbody>
@@ -390,22 +351,12 @@
           </div>
 
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
-          </div>
         </div>
       </div>
     </div>
@@ -432,14 +383,14 @@
                   </button>
                   <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current quarter</li>
-                    <li>Last quarter</li>
-                    <li>All</li>
+                    <li onclick="getAssets('today'); return false;">Today</li>
+                    <li onclick="getAssets('cweek'); return false;">Current week</li>
+                    <li onclick="getAssets('lweek'); return false;">Last week</li>
+                    <li onclick="getAssets('cmonth'); return false;">Current month</li>
+                    <li onclick="getAssets('lmonth'); return false;">Last month</li>
+                    <li onclick="getAssets('cquarter'); return false;">Current quarter</li>
+                    <li onclick="getAssets('lquarter'); return false;">Last quarter</li>
+                    <li onclick="getAssets('all'); return false;">All</li>
                     <li>Custom period</li>
                   </ul>
                 </div>
@@ -474,7 +425,7 @@
                     <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones perdidas">Loosers</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="assets-body">
                   <% for (var i = 6; i > -1; i--) { %>
                     <tr>
                       <th scope="row" class="align-middle"><a href="#" class="grey"><%= pairs[assetStats.showcase[i][1]] %></a></th>
@@ -510,22 +461,12 @@
           </div>
 
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
-          </div>
         </div>
       </div>
     </div>
@@ -552,14 +493,14 @@
                   </button>
                   <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current quarter</li>
-                    <li>Last quarter</li>
-                    <li>All</li>
+                    <li onclick="getTimeframes('today'); return false;">Today</li>
+                    <li onclick="getTimeframes('cweek'); return false;">Current week</li>
+                    <li onclick="getTimeframes('lweek'); return false;">Last week</li>
+                    <li onclick="getTimeframes('cmonth'); return false;">Current month</li>
+                    <li onclick="getTimeframes('lmonth'); return false;">Last month</li>
+                    <li onclick="getTimeframes('cquarter'); return false;">Current quarter</li>
+                    <li onclick="getTimeframes('lquarter'); return false;">Last quarter</li>
+                    <li onclick="getTimeframes('all'); return false;">All</li>
                     <li>Custom period</li>
                   </ul>
                 </div>
@@ -593,7 +534,7 @@
                     <th scope="col" data-toggle="tooltip" data-placement="top" title="Número de operaciones perdidas">Loosers</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="timeframes-body">
                   <% for (var i = 6; i > -1; i--) { %>
                     <tr>
                       <th scope="row" class="align-middle"><a href="#" class="grey"><%= timeframes[timeframeStats.showcase[i][1]] %></a></th>
@@ -602,7 +543,7 @@
                         <% if (timeframeStats.showcase[i][0] == 0) { %>
                           0
                         <% } else { %>
-                          <% if (assetStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] >= 0) { %>
+                          <% if (timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] >= 0) { %>
                             <p class="mb-0 pill pill-verde">
                               <%= timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] %>%
                             </p>
@@ -629,22 +570,12 @@
           </div>
 
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
-          </div>
         </div>
       </div>
     </div>
@@ -671,14 +602,14 @@
                   </button>
                   <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current quarter</li>
-                    <li>Last quarter</li>
-                    <li>All</li>
+                    <li onclick="getDays('today'); return false;">Today</li>
+                    <li onclick="getDays('cweek'); return false;">Current week</li>
+                    <li onclick="getDays('lweek'); return false;">Last week</li>
+                    <li onclick="getDays('cmonth'); return false;">Current month</li>
+                    <li onclick="getDays('lmonth'); return false;">Last month</li>
+                    <li onclick="getDays('cquarter'); return false;">Current quarter</li>
+                    <li onclick="getDays('lquarter'); return false;">Last quarter</li>
+                    <li onclick="getDays('all'); return false;">All</li>
                     <li>Custom period</li>
                   </ul>
                 </div>
@@ -716,8 +647,8 @@
                   <% for (const property in dayWeekStats) { %>
                     <tr>
                       <th scope="row" class="align-middle"><a href="#" class="grey"><%= dayWeekStats[property].name %></a></th>
-                      <td><%= dayWeekStats[property].quantity %></td>
-                      <td>
+                      <td id="<%= property %>-quantity"><%= dayWeekStats[property].quantity %></td>
+                      <td id="<%= property %>-average">
                         <% if (dayWeekStats[property].quantity == 0) { %>
                           0
                         <% } else { %>
@@ -732,9 +663,9 @@
                           <% } %>
                         <% } %>
                       </td>
-                      <td><%= dayWeekStats[property].win %></td>
-                      <td><%= dayWeekStats[property].be %></td>
-                      <td><%= dayWeekStats[property].loss %></td>
+                      <td id="<%= property %>-win"><%= dayWeekStats[property].win %></td>
+                      <td id="<%= property %>-be"><%= dayWeekStats[property].be %></td>
+                      <td id="<%= property %>-loss"><%= dayWeekStats[property].loss %></td>
                     </tr>
                   <% } %>
                 </tbody>
@@ -748,22 +679,12 @@
           </div>
 
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
-          </div>
         </div>
       </div>
     </div>
@@ -790,19 +711,40 @@
                   </button>
                   <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current quarter</li>
-                    <li>Last quarter</li>
-                    <li>All</li>
-                    <li>Custom period</li>
+                    <li onclick="getDirection('today'); return false;">Today</li>
+                    <li onclick="getDirection('cweek'); return false;">Current week</li>
+                    <li onclick="getDirection('lweek'); return false;">Last week</li>
+                    <li onclick="getDirection('cmonth'); return false;">Current month</li>
+                    <li onclick="getDirection('lmonth'); return false;">Last month</li>
+                    <li onclick="getDirection('cquarter'); return false;">Current quarter</li>
+                    <li onclick="getDirection('lquarter'); return false;">Last quarter</li>
+                    <li onclick="getDirection('all'); return false;">All</li>
+                    <li>
+                      <button type="button" data-toggle="modal" data-target="#customDirection" onclick="return false;">Custom period</button>
+                    </li>
                   </ul>
                 </div>
               </div>
             </a>
+            <!-- modal -->
+            <div class="modal fade" id="customDirection" tabindex="-1" role="dialog">
+              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Custom period</h5>
+                  </div>
+                  <div class="modal-body">
+                    <p class="mb-0">From:</p>
+                    <input id="from-direction" type="date" class="bg-hover form-control mb-2 px-2">
+                    <p class="mb-0">To:</p>
+                    <input id="to-direction" type="date" class="bg-hover form-control px-2">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" onclick="getCustomDirection(document.getElementById('from-direction'), document.getElementById('to-direction'))" class="btn-neilit" data-dismiss="modal">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           </div>
 
@@ -812,30 +754,21 @@
             <div class="parte-central my-2 d-flex flex-column justify-content-center align-items-center px-1 wpx-100">
               <% if (statistics.direction.long + statistics.direction.short > 0) { %>
                 <canvas id="orderDirection" width="100" height="100"></canvas>
+                <p id="no-data-direction-graph" class="placeholder-stats d-none">Not enough data</p>
               <% } else { %>
                 <canvas id="orderDirection" class="d-none"></canvas>
-                <p class="placeholder-stats">Not enough data</p>
+                <p id="no-data-direction-graph" class="placeholder-stats">Not enough data</p>
               <% } %>
             </div>
           </div>
 
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
-          </div>
         </div>
       </div>
       <div class="widget-dos-tercios mx-3 mt-4">
@@ -858,48 +791,59 @@
                   </button>
                   <!--ARREGLARLO: Hay diferencia entre el "placeholder" y el texto en el dropdon. -->
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
-                    <li>Today</li>
-                    <li>Current week</li>
-                    <li>Last week</li>
-                    <li>Current month</li>
-                    <li>Last month</li>
-                    <li>Current quarter</li>
-                    <li>Last quarter</li>
-                    <li>Custom period</li>
+                    <li onclick="getDirectionPer('today'); return false;">Today</li>
+                    <li onclick="getDirectionPer('cweek'); return false;">Current week</li>
+                    <li onclick="getDirectionPer('lweek'); return false;">Last week</li>
+                    <li onclick="getDirectionPer('cmonth'); return false;">Current month</li>
+                    <li onclick="getDirectionPer('lmonth'); return false;">Last month</li>
+                    <li onclick="getDirectionPer('cquarter'); return false;">Current quarter</li>
+                    <li onclick="getDirectionPer('lquarter'); return false;">Last quarter</li>
+                    <li onclick="getDirectionPer('all'); return false;">All</li>
+                    <li>
+                      <button type="button" data-toggle="modal" data-target="#customDirectionPer" onclick="return false;">Custom period</button>
+                    </li>
                   </ul>
                 </div>
               </div>
             </a>
+            <!-- modal -->
+            <div class="modal fade" id="customDirectionPer" tabindex="-1" role="dialog">
+              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Custom period</h5>
+                  </div>
+                  <div class="modal-body">
+                    <p class="mb-0">From:</p>
+                    <input id="from-directionPer" type="date" class="bg-hover form-control mb-2 px-2">
+                    <p class="mb-0">To:</p>
+                    <input id="to-directionPer" type="date" class="bg-hover form-control px-2">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" onclick="getCustomDirectionPer(document.getElementById('from-directionPer'), document.getElementById('to-directionPer'))" class="btn-neilit" data-dismiss="modal">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          </div>
+        </div>
 
         </div>
         <!--PARTE CENTRAL DEL WIDGET-->
           <div class="mb-2 mt-3 w-100">
             <div class="parte-central">
               <!-- Cambiar el color al hacer hover por nuestro gris flojo -->
-
               <canvas id="orderDirectionResults" width="100" height="100"></canvas>
             </div>
           </div>
 
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
-          </div>
         </div>
       </div>
     </div>
@@ -918,32 +862,17 @@
         <!--PARTE CENTRAL DEL WIDGET-->
           <div class="w-100">
             <div class="custom-stats-soon d-flex flex-row justify-content-center align-content-center">
-              <div>
-                <p class="mb-0">We are currently working on this feature. </p>
-              </div>
-              <div>
-              <p class="mb-0">If you want to know more about our Custom Stats, read this article.</p>
-              </div>
+              <p class="my-3">We are currently working on this feature. If you want to know more about our <strong>Custom Stats</strong>, read <a href="#!" class="orange">this article</a>.</p>
             </div>
           </div>
 
         <!--PARTE INFERIOR DEL WIDGET-->
-        <div class="inferior-widget d-flex flex-row justify-content-between px-2 pt-1 mb-1">
-          <div class="grey">
-          <a href="#">
-            <div class="d-flex flex-row justify-content-center align-items-center" data-toggle="tooltip" data-placement="top" title="Estamos trabajando en esta funcionalidad. Muy pronto estará lista." alt="alt">
-              <p class="font-16 mb-0 mr-0 pl-2 py-1">Download</p>
-              <img src="/imgs/icons/download.svg" class="py-1 imagen-widget" alt="alt">
-            </div>
-          </a>
-          </div>
-          <div class="">
-          <a href="#">
+        <div class="inferior-widget d-flex flex-row justify-content-end px-2 pt-1 mb-1">
+          <a href="#!">
             <div class="d-flex flex-row justify-content-center align-items-center">
               <img src="/imgs/icons/help.svg" class="mx-2 py-1 imagen-widget mb-0 pb-0 imagen-info" data-toggle="tooltip" data-placement="top" title="Beneficio obtenido en la temporalidad seleccionada. Neilit calcula este dato en base a las operaciones que registras en la plataforma." alt="alt">
             </div>
           </a>
-          </div>
         </div>
       </div>
     </div>
@@ -955,6 +884,8 @@
   var currentUser = <%- JSON.stringify(currentUser); %>
   var statistics = <%- JSON.stringify(statistics) %>;
   var userBase = <%- JSON.stringify(userBase) %>;
+  var pairs = <%- JSON.stringify(pairs) %>;
+  var timeframes = <%- JSON.stringify(timeframes) %>;
 </script>
 
 <!-- <section> is inside partials -->

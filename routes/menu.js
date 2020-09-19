@@ -133,7 +133,7 @@ router.get("", middleware.isLoggedIn, (req, res) => {
 // STATISTICS ROUTE
 router.get("/statistics", middleware.isLoggedIn, (req, res) => {
   var selectUserBase = 'SELECT currency FROM currencies WHERE id = ?;'
-  var selectEntries = 'SELECT pair_id, strategy_id, timeframe_id, direction, result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ?;';
+  var selectEntries = 'SELECT pair_id, strategy_id, timeframe_id, direction, result, profits, fees, MONTH(entry_dt) as month, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ?;';
   connection.query(selectUserBase, req.user.currency_id, (err, getBase) => {
     if (err) throw err;
     var userBase = getBase[0].currency;
@@ -171,6 +171,10 @@ router.get("/statistics", middleware.isLoggedIn, (req, res) => {
         direction: {
           long: 0,
           short: 0
+        },
+        directionPer: {
+          long: Array(12).fill(0),
+          short: Array(12).fill(0)
         }
       }
       // creates an object to store the strategy stats
@@ -196,6 +200,7 @@ router.get("/statistics", middleware.isLoggedIn, (req, res) => {
         Sunday:     { name:'Sunday',    quantity:0, win:0, loss:0, be:0, percent:0 }
       }
       getEntries.forEach((entry) => {
+        var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
         // counts the entry to the corresponding metric
         assetStats.quantity[Number(entry.pair_id) - 1]++;
         timeframeStats.quantity[Number(entry.timeframe_id) - 1]++;
@@ -224,10 +229,11 @@ router.get("/statistics", middleware.isLoggedIn, (req, res) => {
         // counts entry direction & calculates the entry profit
         if (entry.direction == 'long') {
           statistics.direction.long++
+          statistics.directionPer.long[entry.month - 1]+= entryPercent
         } else {
           statistics.direction.short++
+          statistics.directionPer.short[entry.month - 1]+= entryPercent
         }
-        var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
         statistics.profits.amount+=                               (entry.profits - entry.fees);
         // adds the entry ouctcome for its corresponding asset
         assetStats.amount[Number(entry.pair_id) - 1]+=            (entry.profits - entry.fees);

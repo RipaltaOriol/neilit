@@ -1,3 +1,14 @@
+$(document).ready(function() {
+  // generates the datepicker
+  $("input[type=date]").datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+  // prevents the classic datepicker from loading
+  $("input[type=date]").on('click', function() {
+    return false;
+  });
+})
+
 var storeEntry = document.getElementById('submit-entry')
 var clientComment = document.getElementById("client-comment");
 var serverComment = document.getElementById("server-comment");
@@ -65,16 +76,6 @@ function connectTa(index) {
 $('#noneTa').click(() => {
   $('#entry-ta').addClass('d-none')
 })
-
-// Generates the datepicker
-$("input[type=date]").datepicker({
-  dateFormat: 'yy-mm-dd'
-});
-
-// prevents the classic datepicker from loading
-$("input[type=date]").on('click', function() {
-  return false;
-});
 
 // Toggles the display of the information box's input fields
 function toggleDisplay(box) {

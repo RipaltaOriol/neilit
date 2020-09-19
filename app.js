@@ -98,7 +98,7 @@ app.use("/:profile/plan", planRoutes);
 // app.use("/:profile/details-entries", statisticsRoutes)
 
 // PORT LISTENING
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 100;
 app.listen(port, function() {
   console.log('Server has Started!');
 })

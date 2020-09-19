@@ -1,7 +1,14 @@
 <%- include("../../../partials/header-log") %>
 
+<style media="screen">
+  /* || Utility */
+  .ui-datepicker {
+    box-shadow: none;
+  }
+</style>
+
   <!-- CONTENT -->
-  <div class="container mt-3 mb-5 mx-auto">
+  <div class="container mt-3 mb-5 mx-auto ta">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/ta" method="POST">
         <h3 class="mx-3">Crear Análisis Técnico</h3>
@@ -62,8 +69,8 @@
 
 <!-- JQUERY -->
 <script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
 <script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
 <script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
 <!-- LOCAL SCRIPTS -->
 <script type="text/javascript" src="/js/ta.js"></script>
