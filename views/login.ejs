@@ -5,25 +5,17 @@
     <div class="col-4">
       <a href="/" class="text-light">
         <img src="/imgs/icons/arrow-left.svg" class="icon-content-xs">
-        Go Back
+        <%= __("Go Back") %>
       </a>
     </div>
     <div class="col-4">
       <h1 class="text-light text-center mb-0">NEILIT</h1>
     </div>
-
     <div class="col-4 d-flex justify-content-end">
-      <!-- Size: M, L Y XL -->
       <div class="d-none d-md-block text-light">
-        Not a member?
+        <%= __('Not a member?') %>
         <a href="/signup" class="text-light ml-1 hover-white">
-          <strong>Sign up</strong>
-        </a>
-      </div>
-      <!-- Size: S Y XS -->
-      <div class="d-block d-md-none">
-        <a href="/signup" class="text-light ml-1 hover-white">
-          <strong>Sign up</strong>
+          <strong><%= __('Sign up') %></strong>
         </a>
       </div>
     </div>
@@ -44,23 +36,17 @@
   <% } %>
   <div class="row d-flex justify-content-center">
     <div class="col-10 col-md-8 col-lg-5 mt-5 text-center">
-      <h2 class="orange">Welcome Back</h2>
-      <p class="border-bottom pb-2 mb-3">Log in into your account</p>
+      <h2 class="orange"><%= __("Welcome Back") %></h2>
+      <p class="border-bottom pb-2 mb-3"><%= __("Log in into your account") %></p>
       <form method="POST" action="/login">
         <!-- email -->
-        <input class="mb-3 pl-2" type="email" required="required" name="email" placeholder="Email">
+        <input class="mb-3 pl-2" type="email" required="required" name="email" placeholder="<%= __("Email") %>">
         <!-- password -->
-        <input class="mb-2 pl-2" type="password" required="required" name="password"placeholder="Password">
-        <a href="/forgot-password" class="font-14 link-gris d-block">Forgot your password?</a>
+        <input class="mb-2 pl-2" type="password" required="required" name="password"placeholder="<%= __("Password") %>">
+        <a href="/forgot-password" class="font-14 link-gris d-block"><%= __("Forgot your password?") %></a>
         <div class="mt-4 d-flex flex-row justify-content-center">
           <button class="btn-neilit" type="submit">Sign in</button>
         </div>
-        <!-- Terminos y condiciones + Politica de privacidad -->
-        <div class="mt-3 font-13 color-gris">
-          By clicking “Sign in” above, you acknowledge that you have read and understood, and agree to
-          Neilit's <a href="#" class="link-gris"><ins>Terms & Conditions<ins></a> and <a href="#" class="link-gris"><ins>Privacy Policy</ins></a>.
-        </div>
-
       </form>
     </div>
   </div>

@@ -10,6 +10,7 @@ i18n.configure({
 module.exports = function(req, res, next) {
 
   i18n.init(req, res);
+  res.setLocale(language);
   return next();
 
 };

@@ -76,7 +76,7 @@ router.post("/changeCurrency", middleware.isLoggedIn, (req, res) => {
   })
 })
 
-// UPDATE MODE ROUTE
+// UPDATE SHOW PROFITS ROUTE
 router.post("/changeShowProfits", middleware.isLoggedIn, (req, res) => {
   var updateShowProfits = 'UPDATE users SET showProfits = ? WHERE id = ?'
   // updates the show profits in entries config. from the DB
@@ -92,6 +92,17 @@ router.post("/changeMode", middleware.isLoggedIn, (req, res) => {
   // updates the mode from the DB
   connection.query(updateMode, [req.body.mode, req.user.id], (err) => {
     if (err) throw err;
+    res.end();
+  })
+})
+
+// UPDATE LANGUAGE ROUTE
+router.post("/changeLanguage", middleware.isLoggedIn, (req, res) => {
+  var updateMode = 'UPDATE users SET language = ? WHERE id = ?'
+  // updates the mode from the DB
+  connection.query(updateMode, [req.body.lang, req.user.id], (err) => {
+    if (err) throw err;
+    language = req.body.lang;
     res.end();
   })
 })

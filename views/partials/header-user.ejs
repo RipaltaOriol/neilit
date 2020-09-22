@@ -26,37 +26,37 @@
           <a href="/<%= currentUser.username %>">
             <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
               <img src="/imgs/icons/home.svg" alt="home">
-              <span class="pl-2">Home</span>
+              <span class="pl-2"><%= __('Home') %></span>
             </div>
           </a>
           <a href="/<%= currentUser.username %>/statistics">
             <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
               <img src="/imgs/icons/donut.svg" alt="statistics">
-              <span class="pl-2">Estadísticas</span>
+              <span class="pl-2"><%= __('Statistics') %></span>
             </div>
           </a>
           <a href="/<%= currentUser.username %>/journal">
             <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
               <img src="/imgs/icons/journal.svg" alt="journal">
-              <span class="pl-2">Diario</span>
+              <span class="pl-2"><%= __('Journal') %></span>
             </div>
           </a>
           <a href="/<%= currentUser.username %>/plan">
             <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
               <img src="/imgs/icons/plan.svg" alt="trading plan">
-              <span class="pl-2">Trading Plan</span>
+              <span class="pl-2"><%= __('Trading Plan') %></span>
             </div>
           </a>
           <a href="/<%= currentUser.username %>/calculator">
             <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
               <img src="/imgs/icons/calculator.svg" alt="calculator">
-              <span class="pl-2">Calculadora</span>
+              <span class="pl-2"><%= __('Calculator') %></span>
             </div>
           </a>
         </div>
         <div class="mt-auto text-center">
           <button class="btn-upgrade w-75">
-            <strong>Upgrade to Pro!</strong>
+            <strong><%= __('Upgrade to Legacy') %>!</strong>
           </button>
         </div>
       </div>

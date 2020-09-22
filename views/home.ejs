@@ -1,10 +1,7 @@
 <%- include("./partials/header-home") %>
 
 <div id="home">
-
-  <!-- 1st NAVBAR -->
-  <!-- Size: L Y XL -->
-  <div class="d-none d-lg-block">
+  <div class="">
     <nav class="navbar">
     <!-- email -->
     <ul class="navbar-nav">
@@ -15,27 +12,23 @@
         </p>
       </li>
     </ul>
-
     <!-- language -->
      <ul class="navbar-nav">
        <li class="nav-item">
           <a data-toggle="modal" data-target=".modal-language-lg" class="cursor-pointer ml-5">
             <img src="/imgs/icons/language.svg" alt="language">
-            <span>Idioma</span>
+            <span><%= __('Language')%></span>
           </a>
           <!-- language modal -->
           <div class="modal modal-language-lg fade" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-sm" role="document">
               <div class="modal-content text-center">
-                <div class="modal-header">
-                  <h5 class="modal-title">This feature is still in <strong>beta</strong>. Sorry for the inconvenience.</h5>
-                </div>
-                <div class="modal-body py-1">
+                <div class="modal-body py-2">
                   <form action="/language/en" method="POST">
-                    <button type="submit" class="mt-1">English</button>
+                    <button type="submit"><%= __('English')%></button>
                   </form>
                   <form action="/language/es" method="POST">
-                    <button type="submit" class="mt-1">Spanish</button>
+                    <button type="submit"><%= __('Spanish')%></button>
                   </form>
                 </div>
               </div>
@@ -43,7 +36,6 @@
           </div>
         </li>
       </ul>
-
      <!-- social media -->
      <ul class="navbar-nav ml-auto">
        <li class="nav-item social">
@@ -60,93 +52,30 @@
            <!-- <img src="/imgs/icons/twitter.svg" alt="twitter" class="ml-2"> -->
          </p>
        </li>
-     </ul>
-
-   </nav>
- </div>
-
-  <!-- Size: M -->
-  <div class="d-none d-md-block d-lg-none">
-    <nav class="navbar">
-
-      <!-- email -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <p class="mb-0">
-            <img src="/imgs/icons/email.svg" alt="email">
-            info@neilit.com
-          </p>
-        </li>
-      </ul>
-
-      <!-- language -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a data-toggle="modal" data-target=".modal-language-md" class="cursor-pointer ml-5">
-            <img src="/imgs/icons/language.svg" alt="language">
-            <span>Idioma</span>
-          </a>
-          <!-- language modal -->
-          <div class="modal modal-language-md fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm" role="document">
-              <div class="modal-content text-center">
-                <div class="modal-header">
-                  <h5 class="modal-title">This feature is still in <strong>beta</strong>. Sorry for the inconvenience.</h5>
-                </div>
-                <div class="modal-body">
-                  <a class="mt-1" id="idiomaEnglish" data-dismiss="modal">English</a>
-                  <a class="mt-1" id="idiomaSpanish" data-dismiss="modal">Spanish</a>
-                  <a class="mt-1" id="idiomaCatalan" data-dismiss="modal">Catalan</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <!-- social media -->
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <p class="mb-0">
-            <!-- facebook -->
-            <!-- <img src="/imgs/icons/fb.svg" alt="facebook" class="ml-2"> -->
-            <!-- instagram -->
-            <!-- <img src="/imgs/icons/ig.svg" alt="instagram" class="ml-2"> -->
-            <!-- youtube -->
-            <!-- <img src="/imgs/icons/yt.svg" alt="youtube" class="ml-2"> -->
-            <!-- linkedin -->
-            <!-- <img src="/imgs/icons/linkedin.svg" alt="linkedin" class="ml-2"> -->
-            <!-- twitter -->
-            <!-- <img src="/imgs/icons/twitter.svg" alt="twitter" class="ml-2"> -->
-          </p>
-        </li>
       </ul>
     </nav>
   </div>
 
-
-  <!-- 2nd NAVBAR -->
-  <!-- Size: L Y XL -->
-  <div class="d-none d-lg-block sticky-top">
+  <div class="sticky-top">
     <nav class="navbar" id="sticky-nav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a href="#!" class="btn-nav mr-4">Inicio</a>
+          <a href="#!" class="btn-nav mr-4"><%= __('Home')%></a>
         </li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a href="#!" class="btn-nav mr-4">Como Funciona</a>
+          <a href="#!" class="btn-nav mr-4"><%= __('Features')%></a>
         </li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a href="#!" class="btn-nav mr-4">Planes</a>
+          <a href="#!" class="btn-nav mr-4"><%= __('Pricing')%></a>
         </li>
       </ul>
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a href="/wiki" class="btn-nav mr-4">Wiki</a>
+          <a href="/wiki" class="btn-nav mr-4"><%= __('Resources')%></a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
@@ -158,65 +87,8 @@
         </li>
       </ul>
     </nav>
-  </div>
+    <p id="beta""><strong><%= __('We are in BETA') %></strong></p>
 
-  <!-- Size: M -->
-  <div class="d-none d-md-block d-lg-none sticky-top">
-    <nav class="navbar" id="sticky-nav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a href="#!" class="btn-nav mr-4">Inicio</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a href="#!" class="btn-nav mr-4">Como Funciona</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item ">
-          <a href="#!" class="btn-nav mr-4">Estadísticas Personalizadas</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a href="#!" class="btn-nav mr-4">Plataforma</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a href="" class="btn-nav mr-4">Planes</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href="/wiki" class="btn-nav mr-4">Wiki</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <!-- login -->
-          <a class="btn-neilit" href="/login">Login</a>
-          <!-- signup -->
-        </li>
-      </ul>
-    </nav>
-  </div>
-
-  <!-- Size: S Y XS -->
-  <div class="d-block d-md-none sticky-top">
-    <nav class="navbar" id="sticky-nav">
-      <ul class="navbar-nav">
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <!-- login -->
-          <a class="btn-neilit" href="">Login</a>
-          <!-- signup -->
-          <a class="btn-white" href="">Sign up</a>
-        </li>
-      </ul>
-    </nav>
   </div>
 
   <!-- flash messages -->
@@ -236,36 +108,34 @@
   <% } %>
 
   <!-- neilit home -->
-  <div class="d-flex justify-content-center">
+  <div class="text-center">
     <h1 id="neilit" class="mb-0">NEILIT</h1>
   </div>
-  <div class="d-flex justify-content-center mb-2">
-    <span class="circuloAnimado"></span>
-    <h2>Analiza Tu Trading</h2>
+  <div class="text-center mb-2">
+    <h2><%= __('slogan')%></h2>
   </div>
   <div class="d-flex justify-content-center">
-      <a class="btn-neilit" href="#">Saber Más</a>
+      <a class="btn-neilit" href="#!"><%= __('Learn More')%></a>
   </div>
 </div>
 
 <!-- content web -->
 <div class="container text-center mt-4">
-  <h1>¿Cómo Funciona Neilit?</h1>
-  <span class="subtitle-sm">Sácale el máximo partido a tu trading</span>
+  <h1><%= __('How Does Neilit Work?')%></h1>
+  <span class="subtitle-sm"><%= __('Get the most out of your trading')%></span>
 </div>
 
-<!-- Size: L Y XL -->
 <div class="d-none d-lg-block mt-3">
   <div class="container">
     <div class="row">
       <div class="col-lg-6 pt-4 text-right border-orange-r">
         <h3>
           <span class="orange">1.</span>
-          Análisis Técnico
+          <%= __('Technical Analysis')%>
         </h3>
         <p class="hover-black">
-          Guarda los datos de tus <span class="orange">análisis en Neilit</span>
-          para poder acceder a las estadísticas de tus operaciones más adelante.
+          <%= __('Store all your ')%><span class="orange"><%= __('technical analysis in Neilit')%></span>
+          <%= __(' to review you thought process whenever you want.')%>
         </p>
       </div>
       <div class="col-lg-6 border-orange-l"></div>
@@ -275,11 +145,11 @@
       <div class="col-lg-6 border-orange-l">
         <h3>
           <span class="orange">2.</span>
-          Entrada
+          <%= __('Entry')%>
         </h3>
         <p class="hover-black">
-          Cuando entres en una operación, introduce la información en Neilit.
-          Podrás <span class="orange">vincular la entrada con un análisis técnico</span>.
+          <%= __("Whenever you enter a trade save the operation parameters in Neilit. You'll be able to ")%>
+          <span class="orange"><%= __('link your entry to a TA.')%></span>
         </p>
       </div>
     </div>
@@ -287,12 +157,12 @@
       <div class="col-lg-6 text-right border-orange-r">
         <h3>
           <span class="orange">3.</span>
-          Estadísticas
+          <%= __('Statistics')%>
         </h3>
         <p class="hover-black">
-          Conoce los detalles de tus operaciones gracias a las
-          <span class="orange">estadísticas personalizadas</span>
-          de Neilit. Saber tus puntos débiles es el primer paso para eliminarlos.
+          <%= __('Know the detail of your operations through ')%>
+          <span class="orange"><%= __('Neilit statistics')%></span>.
+          <%= __(' Seeing your mistakes is the first step to avoid them.')%>
         </p>
       </div>
       <div class="col-lg-6 border-orange-l"></div>
@@ -302,203 +172,100 @@
       <div class="col-lg-6 pb-2 border-orange-l">
         <h3>
           <span class="orange">4.</span>
-          Mejora
+          <%= __('Improvements')%>
         </h3>
         <p class="hover-black">
-          Aplica las estadísticas anteriores a tu trading para
-          <span class="orange">aumentar tu rentabilidad</span>.
-          Nosotros te ayudaremos durante el proceso.
+          <%= __('Apply the insights from Neilit statistics to your trading to ')%>
+          <span class="orange"><%= __('improve you profitability')%></span>.
+          <%= __(" We'll help you in the process.")%>
         </p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Size: M -->
-<div class="d-none d-md-block d-lg-none">
-  <div class="container mt-3">
-    <div class="row">
-      <div class="col-md-6 text-center">
-        <h3>
-          <span class="orange">1.</span>
-          Análisis Técnico
-        </h3>
-        <p>
-          Guarda los datos de tus <span class="orange">análisis en Neilit</span>
-          para poder acceder a las estadísticas de tus operaciones más adelante.
-        </p>
-      </div>
-      <div class="col-md-6 text-center">
-        <h3>
-          <span class="orange">2.</span>
-          Entrada
-        </h3>
-        <p>
-          Cuando entres en una operación, introduce la información en Neilit.
-          Podrás <span class="orange">vincular la entrada con un análisis técnico</span>.
-        </p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 text-center">
-        <h3>
-          <span class="orange">3.</span>
-          Estadísticas
-        </h3>
-        <p>
-          Conoce los detalles de tus operaciones gracias a las
-          <span class="orange">estadísticas personalizadas</span>
-          de Neilit. Saber tus puntos débiles es el primer paso para eliminarlos.
-        </p>
-      </div>
-      <div class="col-md-6 text-center">
-        <h3>
-          <span class="orange">4.</span>
-          Mejora
-        </h3>
-        <p>
-          Aplica las estadísticas anteriores a tu trading para
-          <span class="orange">aumentar tu rentabilidad</span>.
-          Nosotros te ayudaremos durante el proceso.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Size: S Y XS -->
-<div class="d-block d-md-none">
-  <div class="container">
-    <div class="text-center mt-3">
-      <h3>
-        <span class="orange">1.</span>
-        Análisis Técnico
-      </h3>
-      <p class="hover-black">
-        Guarda los datos de tus <span class="orange">análisis en Neilit</span>
-        para poder acceder a las estadísticas de tus operaciones más adelante.
-      </p>
-
-    </div>
-    <div class="text-center mt-3">
-      <h3>
-        <strong class="orange">2.</strong>
-        Entrada
-      </h3>
-      <p class="hover-black">
-        Cuando entres en una operación, introduce la información en Neilit.
-        Podrás <span class="orange">vincular la entrada con un análisis técnico</span>.
-      </p>
-    </div>
-    <div class="text-center mt-3">
-      <h3>
-        <span class="orange">3.</span>
-        Estadísticas
-      </h3>
-      <p class="hover-black">
-        Conoce los detalles de tus operaciones gracias a las
-        <span class="orange">estadísticas personalizadas</span> de Neilit.
-        Saber tus puntos débiles es el primer paso para eliminarlos.
-      </p>
-    </div>
-    <div class="text-center mt-3">
-      <h3>
-        <span class="orange">4.</span>
-        Mejora
-      </h3>
-      <p class="hover-black">
-        Aplica las estadísticas anteriores a tu trading para
-        <span class="orange">aumentar tu rentabilidad</span>.
-        Nosotros te ayudaremos durante el proceso.
-      </p>
-    </div>
-  </div>
-</div>
-
-<!-- Size: L Y XL -->
 <div class="d-none d-lg-block mt-4">
   <div class="jumbotron py-4">
     <div class="container text-center">
-      <h2>Mide lo importante</h2>
-      <h2>Mejora tus resultados</h2>
+      <h2><%= __('Measure you data')%></h2>
+      <h2><%= __('Improve your results')%></h2>
       <p class="text-light mt-2">
-        Con nuestras estadísticas personalizables conocerás las estrategias que
-        mejor se adaptan a tu operativa. De esta manera podrás centrarte en lo
-        que te funciona y sabrás donde puedes mejorar todavía. Conoce tu trading.
+        <%= __("With our statistics you'll gain intel on the strategies that better suit you methodology.")%>
+        <%= __("This way you'll be able to focus on what works and keep improving.")%>
       </p>
-      <a href="#!" class="btn-white">Reproducir</a>
+      <a href="#!" class="btn-white"><%= __('Tutorial')%></a>
     </div>
   </div>
 </div>
 
-<!-- Size: L Y XL -->
 <div class="d-none d-lg-block">
   <div class="container">
-    <h2 class="text-body">Estadístcas Personalizadas</h2>
-    <h3 class="text-center">Obtén mayores rentabilidades</h3>
+    <h2 class="text-body"><%= __('Personalised Statistics')%></h2>
+    <h3 class="text-center"><%= __('Obtain better profitability')%></h3>
     <div class="row d-flex justify-content-center mt-4">
       <div class="col-lg-4 text-center">
         <img src="/imgs/icons/search-orange.svg" class="icon-content">
-        <h3>Filtrar por Activos</h3>
+        <h3><%= __('Filter throught Assets')%></h3>
         <p>
-          Si quieres saber el porcentaje de <span class="orange">operaciones ganadoras</span>
-          de un activo, simplemente selecciónalo y tendrás el dato al instante.
+          <%= __('If you want to know the percentage of ')%><span class="orange"><%= __('won operations')%></span>
+          <%= __(" of an asset, simply select it and you'll see that data instantly.")%>
         </p>
 
       </div>
       <div class="col-lg-4 text-center">
         <img src="/imgs/icons/swap-orange.svg" class="icon-content">
-        <h3>Dirección de la Entrada</h3>
+        <h3><%= __('Entry Direction')%></h3>
         <p>
-          Añade la posición que tomaste en la operación, ya sea
-          <span class="orange">compra o venta</span>, para que los datos sean
-          más precisos todavía.
+          <%= __('Add the trade direction to your entry, ')%>
+          <span class="orange"><%= __('long or short')%></span>,
+          <%= __(' for your data to be more precise.')%>
         </p>
       </div>
     </div>
     <div class="row d-flex justify-content-center">
       <div class="col-lg-4 text-center">
         <img src="/imgs/icons/calendar-orange.svg" class="icon-content">
-        <h3>Periodo Concreto</h3>
+        <h3><%= __('Custom Periods')%></h3>
         <p>
-          Filtra según la fecha de <span class="orange">apertura o cierre</span>
-          de la aplicación para obtener datos más acotados.
+          <%= __('Filter through custom ')%><span class="orange"><%= __('from and to dates')%></span>
+          <%= __('to get precise time period data.')%>
         </p>
 
       </div>
       <div class="col-lg-4 text-center">
         <img src="/imgs/icons/chart-orange.svg" class="icon-content">
-        <h3>Patrones Desencadenantes</h3>
+        <h3><%= __('Trigger Patterns')%></h3>
         <p>
-          Conoce que <span class="orange">patrones</span> son los que <span class="orange">más
-          rentabilidad</span> aportan a tu cuenta y cuales son los más imprecisos.
+          <%= __('Know what ')%> <span class="orange"><%= __('patterns')%></span>
+          <%= __(' are the ones that give you the ')%><span class="orange"><%= __('highest hit rate')%></span>
+          <%= __(' and which ones are imprecise.')%>
         </p>
       </div>
     </div>
     <div class="row d-flex flex-column align-items-center">
       <img src="/imgs/icons/dots-orange.svg" class="icon-content">
-      <h3>Más</h3>
+      <h3><%= __('More')%></h3>
     </div>
 
     <div class="row d-flex justify-content-center">
       <div class="col-lg-4 d-flex flex-column text-center">
         <strong class="mt-2">
           <img src="/imgs/icons/wallet-orange.svg" class="icon-content-sm mr-2">
-          Variación de tu cuenta
+          <%= __('Account variation')%>
         </strong>
         <strong class="mt-2">
           <img src="/imgs/icons/widgets-orange.svg" class="icon-content-sm mr-2">
-          Exportación de widget
+          <%= __('Export widgets')%>
         </strong>
       </div>
       <div class="col-lg-4 d-flex flex-column text-center">
         <strong class="mt-2">
           <img src="/imgs/icons/whatshot-orange.svg" class="icon-content-sm mr-2">
-          Rentabilidad
+          <%= __('Profitability')%>
         </strong>
         <strong class="mt-2">
           <img src="/imgs/icons/file-orange.svg" class="icon-content-sm mr-2">
-          Informes personalizados
+          <%= __('Personalised reports')%>
         </strong>
       </div>
     </div>
@@ -511,11 +278,10 @@
         <span class="badge">Beta</span>
       </h2>
       <p class="mb-1">
-        Crea una estadística personalizada sencilla con datos de muestra y
-        descubre el potencial de Neilit por ti mismo.
+        <%= __("Create a simple personalised statistics with sample data and discover the Neilit's true potential.")%>
       </p>
       <p>
-        Sigue los pasos y descubre como se hace.
+        <%= __("Follow the steps and explore what you're able to do.")%>
       </p>
     </div>
 
@@ -524,7 +290,7 @@
       <div class="col-lg-6 text-center mt-3 py-2" id="demo-statistics">
         <div class="text-center my-3 font-20">
           <span class="orange mr-2">1</span>
-          Selecciona todos los activos que quieres estudiar:
+          <%= __("Select all the assets you want to disclose:")%>
         </div>
         <div class="row d-flex justify-content-center text-left mb-3">
           <div class="col-lg-4">
@@ -575,19 +341,19 @@
 
         <div class="text-center my-3 font-20">
           <span class="orange mr-2">2</span>
-          Selecciona la dirección de la entrada::
+          <%= __("Select a trade direction:")%>
         </div>
         <div class="row d-flex justify-content-center text-left mb-3">
           <div class="col-lg-4">
             <label class="checkbox-orange" id="buy">
-              Compra
+              <%= __("Long")%>
               <input type="checkbox">
               <span class="checkmark"></span>
             </label>
           </div>
           <div class="col-lg-4">
             <label class="checkbox-orange" id="short">
-              Venta
+              <%= __("Short")%>
               <input type="checkbox" >
               <span class="checkmark"></span>
             </label>
@@ -596,39 +362,39 @@
 
         <div class="text-center my-3 font-20">
           <span class="orange mr-2">3</span>
-          ¿Que patrones fueron desencadenantes en la entrada?
+          <%= __("What strategies were triggered in the operation?")%>
         </div>
         <div class="row d-flex justify-content-center text-left mb-3">
           <div class="col-lg-5">
             <label class="checkbox-orange" id="trendline">
-              Canal Paralelo
+              <%= __("Bull Flag")%>
               <input type="checkbox">
               <span class="checkmark"></span>
             </label>
             <label class="checkbox-orange" id="zone">
-              Rotura de Zona
+              <%= __("Butterfly pattern")%>
               <input type="checkbox">
               <span class="checkmark"></span>
             </label>
             <label class="checkbox-orange" id="double-bottom">
-              Doble Suelo
+              <%= __("Double Floor")%>
               <input type="checkbox">
               <span class="checkmark"></span>
             </label>
             <label class="checkbox-orange" id="double-top">
-              Doble Techo
+              <%= __("Double Top")%>
               <input type="checkbox">
               <span class="checkmark"></span>
             </label>
           </div>
           <div class="col-lg-5">
             <label class="checkbox-orange" id="triangle">
-              Triángulo
+              <%= __("Triangle pattern")%>
               <input type="checkbox">
               <span class="checkmark"></span>
             </label>
             <label class="checkbox-orange" id="h&s">
-              Hombros y Cabeza
+              <%= __("Head & Shoulders")%>
               <input type="checkbox">
               <span class="checkmark"></span>
             </label>
@@ -638,7 +404,7 @@
               <span class="checkmark"></span>
             </label>
             <label class="checkbox-orange" id="butterfly">
-              Mariposa
+              <%= __("Butterfly pattern")%>
               <input type="checkbox">
               <span class="checkmark"></span>
             </label>
@@ -646,9 +412,8 @@
         </div>
 
         <div class="text-center d-flex flex-column font-20">
-          Porcentaje de operaciones ganadoras:
+          <%= __("Percentage of won operations:")%>
           <span class="orange"><span id="winrate">-</span>%</span>
-          <p class="font-13">*Datos aleatorios.</p>
         </div>
       </div>
     </div>

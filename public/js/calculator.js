@@ -38,6 +38,7 @@ async function calcRisk(base) {
           }
           // calculates the lot size
           var lSize = pSize * vPip
+          if (isNaN(lSize)) { lSize = "Error" }
           document.getElementById('units-size').innerHTML = (lSize * 100000).toFixed(0);
           document.getElementById('lots-size').innerHTML = (lSize).toFixed(3);
         }
@@ -57,6 +58,7 @@ async function calcRisk(base) {
         var vPip = 0.1;
         // calculates the lot size
         var lSize = pSize * vPip
+        if (isNaN(lSize)) { lSize = "Error" }
         document.getElementById('units-size').innerHTML = (lSize * 100000).toFixed(0);
         document.getElementById('lots-size').innerHTML = (lSize).toFixed(3);
       // the base currency doesn't appear in the pair or is the first currency
@@ -71,6 +73,7 @@ async function calcRisk(base) {
         }
         // calculates the lot size
         var lSize = pSize * vPip
+        if (isNaN(lSize)) { lSize = "Error" }
         document.getElementById('units-size').innerHTML = (lSize * 100000).toFixed(0);
         document.getElementById('lots-size').innerHTML = (lSize).toFixed(3);
       }

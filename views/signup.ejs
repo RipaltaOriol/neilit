@@ -5,7 +5,7 @@
     <div class="col-4">
       <a href="/" class="text-light">
         <img src="/imgs/icons/arrow-left.svg" class="icon-content-xs">
-        Go Back
+        <%= __('Go Back') %>
       </a>
     </div>
     <div class="col-4">
@@ -13,17 +13,10 @@
     </div>
 
     <div class="col-4 d-flex justify-content-end">
-      <!-- Size: M, L Y XL -->
       <div class="d-none d-md-block text-light">
-        Already a member?
+        <%= __('Already a member?') %>
         <a href="/login" class="text-light ml-1 hover-white">
-          <strong>Log in</strong>
-        </a>
-      </div>
-      <!-- Size: S Y XS -->
-      <div class="d-block d-md-none">
-        <a href="/login" class="text-light ml-1 hover-white">
-          <strong>Log in</strong>
+          <strong><%= __('Log in') %></strong>
         </a>
       </div>
     </div>
@@ -45,24 +38,24 @@
   <div class="row d-flex justify-content-center">
     <!-- NOTE: adjust the bootstrap class to change dimensions across different screens -->
     <div class="col-10 col-md-8 col-lg-5 mt-5 text-center">
-      <h2 class="orange">Join Neilit</h2>
-      <p class="border-bottom pb-2 mb-3">Create a new account</p>
+      <h2 class="orange"><%= __('Join Neilit') %></h2>
+      <p class="border-bottom pb-2 mb-3"><%= __('Create a new account') %></p>
       <form method="POST" action="/signup">
         <!-- first name -->
-        <input class="mb-3 pl-2" type="text" required="required" name="name" value="" placeholder="First Name">
+        <input class="mb-3 pl-2" type="text" required="required" name="name" value="" placeholder="<%= __('First Name') %>">
         <!-- last name -->
-        <input class="mb-3 pl-2" type="text" required="required" name="surname"placeholder="Last Name">
+        <input class="mb-3 pl-2" type="text" required="required" name="surname"placeholder="<%= __('Last Name') %>">
         <!-- username -->
-        <input class="mb-3 pl-2" type="text" required="required" name="username" placeholder="Username">
+        <input class="mb-3 pl-2" type="text" required="required" name="username" placeholder="<%= __('Username') %>">
         <!-- email -->
-        <input class="mb-3 pl-2" type="email" required="required" name="email" placeholder="Email">
+        <input class="mb-3 pl-2" type="email" required="required" name="email" placeholder="<%= __('Email') %>">
         <!-- password -->
-        <input class="mb-3 pl-2" type="password" required="required" name="password" placeholder="Password">
+        <input class="mb-3 pl-2" type="password" required="required" name="password" placeholder="<%= __('Password') %>">
         <!-- confirm password -->
-        <input class="mb-3 pl-2" type="password" required="required" name="confirmPassword" placeholder="Cofirm Password">
+        <input class="mb-3 pl-2" type="password" required="required" name="confirmPassword" placeholder="<%= __('Confirm Password') %>">
         <!-- base currency -->
         <div class="dropright">
-          <input class="mb-3 pl-2" id="dd" class="dropdown-select" data-toggle="dropdown" type="text" required="required" name="base" placeholder="Account's Base Currency" readonly>
+          <input class="mb-3 pl-2" id="dd" class="dropdown-select" data-toggle="dropdown" type="text" required="required" name="base" placeholder="<%= __("Account's Base Currency") %>" readonly>
           <ul class="dropdown-menu" aria-labelledby="dd">
             <li>USD</li>
             <li>EUR</li>
@@ -74,15 +67,15 @@
           </ul>
         </div>
         <!-- account balance -->
-        <input class="mb-3 pl-2" type="number" required="required" name="balance" placeholder="Account Balance" min="0" step="0.01">
-        <a href="/login" class="font-14 link-gris d-block mb-2">Already a member? Log in</a>
+        <input class="mb-3 pl-2" type="number" required="required" name="balance" placeholder="<%= __('Account Balance') %>" min="0" step="0.01">
+        <a href="/login" class="font-14 link-gris d-block mb-2"><%= __('Already a member?') %> <%= __('Log in') %></a>
         <!-- Boton -->
         <div class="mt-4">
-          <button class="btn-neilit" type="submit">Next step</button>
+          <button class="btn-neilit" type="submit"><%= __('Continue') %></button>
         </div>
         <div class="mt-3 font-13 color-gris">
-          By clicking “Next step” above, you acknowledge that you have read and understood, and agree to
-          Neilit's <a href="#" class="link-gris"><ins>Terms & Conditions<ins></a> and <a href="#" class="link-gris"><ins>Privacy Policy</ins></a>.
+          <%= __("By clicking “Next step” above, you acknowledge that you have read and understood, and agree to Neilit's") %>
+          <a href="#" class="link-gris"><ins><%= __('Terms & Conditions') %><ins></a> <%= __('and') %> <a href="#" class="link-gris"><ins><%= __('Privacy Policy') %></ins></a>.
         </div>
       </form>
     </div>

@@ -219,7 +219,7 @@ form { }
   background: var(--neilit-default);
   border: none;
   border-radius: 7px;
-  padding: 7px 21px;
+  padding: 5px 10px;
   transition-duration: .5s;
 }
   .btn-neilit:hover {
@@ -442,19 +442,6 @@ form { }
   background-size: cover;
 }
 
-@keyframes animacionCirculo{
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: .7;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(2);
-  }
-}
-
 .container-steps{
   width: 100%;
 }
@@ -537,4 +524,11 @@ form { }
   left: 0;
   right: 0;
   z-index: 100;
+}
+
+#beta {
+  color: white;
+  background-color: #ba3302;
+  padding: 5px 0px;
+  text-align: center;
 }

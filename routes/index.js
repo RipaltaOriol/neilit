@@ -7,7 +7,6 @@ let nodemailer    = require('nodemailer');
 let crypto        = require('crypto');
 let bcrypt        = require('bcrypt');
 const saltRounds  = 10;
-let language = 'en'
 
 // Global Program Variables
 let plans      = require('../models/plans');
@@ -29,7 +28,6 @@ router.post('/language/:lang', (req, res) => {
 
 // HOME ROUTE
 router.get("/", (req, res) => {
-  res.setLocale(language);
   res.render("home");
 });
 
@@ -50,6 +48,7 @@ router.post("/login", passport.authenticate('local-login', {
   failureRedirect: '/login'
 }), (req, res) => {
   strategies(req.user.id);
+  language = req.user.language;
   res.redirect("/" + req.user.username)
 })
 
@@ -124,7 +123,6 @@ router.post('/create-subscription', async (req, res) => {
   } catch (error) {
     return res.status('402').send({ error: { message: error.message } });
   }
-
   // Change the default invoice settings on the customer to the new payment method
   await stripe.customers.update(
     req.body.customerId,
@@ -134,7 +132,6 @@ router.post('/create-subscription', async (req, res) => {
       },
     }
   );
-
   // Create the subscription
   const subscription = await stripe.subscriptions.create({
     customer: req.body.customerId,
@@ -304,9 +301,19 @@ router.get("/plans", (req, res) => {
 
 })
 
-// WIKI ROUTE
-router.get("/wiki", (req, res) => {
-  res.send("You have reached the wiki route");
+// FEATURES ROUTE
+router.get("/features", (req, res) => {
+  res.render("features");
+})
+
+// PRICING ROUTE
+router.get("/pricing", (req, res) => {
+  res.render("pricing");
+})
+
+// RESOURCES ROUTE
+router.get("/resources", (req, res) => {
+  res.render("resources");
 })
 
 module.exports = router;

@@ -77,6 +77,7 @@ let strategies = require("./models/strategies");
 global.userStrategies = [];
 global.userIdStrategies = [];
 global.notification = true;
+global.language = 'en';
 
 // #### MIDDLEWARES ####
 // MIDDLEWARE to have USER INFORMATION on all routes

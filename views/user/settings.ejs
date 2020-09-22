@@ -4,7 +4,7 @@
     <div class="w-100 row mx-auto d-flex align-items-center">
       <div class="col-6">
         <a href="/<%= currentUser.username %>" class="text-light">
-          <p class="m-0 p-0 mr-2">Go to dashboard</p>
+          <p class="m-0 p-0 mr-2"><%= __('Go to dashboard') %></p>
         </a>
       </div>
     </div>
@@ -14,27 +14,27 @@
     <ul class="nav containerMenuSettings d-flex flex-row justify-content-center">
       <li class="nav-item p-0">
         <a class="nav-link active" role="tab" href="#profile" data-toggle="tab">
-          Profile
+          <%= __('Profile') %>
         </a>
       </li>
       <li class="nav-item p-0">
         <a class="nav-link" role="tab" href="#accountBilling" data-toggle="tab">
-          Account and Billing
+          <%= __('Account and Billing') %>
         </a>
       </li>
       <li class="nav-item p-0">
         <a class="nav-link" role="tab" href="#settings" data-toggle="tab">
-          Settings
+          <%= __('Settings') %>
         </a>
       </li>
       <li class="nav-item p-0">
         <a class="nav-link" role="tab" href="#customization" data-toggle="tab">
-          Customization
+          <%= __('Customization') %>
         </a>
       </li>
       <li class="nav-item p-0">
         <a class="nav-link" role="tab" href="#helpSupport" data-toggle="tab">
-          Help and Support
+          <%= __('Help and Support') %>
         </a>
       </li>
     </ul>
@@ -49,31 +49,31 @@
           <div class="d-flex justify-content-between">
 
             <div class="w-50 mx-5 my-4">
-              <h4 class="pb-1 mb-3">Private Information</h4>
+              <h4 class="pb-1 mb-3"><%= __('Private Information') %></h4>
                 <!-- Name -->
                 <div class="mb-2 d-flex flex-row justify-content-between align-items-baseline">
-                  <h5 class="mb-0 pb-0">First Name</h5>
+                  <h5 class="mb-0 pb-0"><%= __('First Name') %></h5>
                   <p class="mb-0 pb-0 font-16"><%= currentUser.name %></p>
                 </div>
                 <!-- Last name -->
                 <div class="mb-2 d-flex flex-row justify-content-between align-items-baseline">
-                  <h5 class="mb-0 pb-0">Last Name</h5>
+                  <h5 class="mb-0 pb-0"><%= __('Last Name') %></h5>
                   <p class="mb-0 pb-0 font-16"><%= currentUser.surname %></p>
                 </div>
                 <!-- Email -->
                 <div class="mb-2 d-flex flex-row justify-content-between align-items-baseline">
-                  <h5 class="mb-0 pb-0">Email</h5>
+                  <h5 class="mb-0 pb-0"><%= __('Email') %></h5>
                   <p class="mb-0 pb-0 font-16"><%= currentUser.email %></p>
                 </div>
                 <!-- Password -->
                 <div class="mb-2 d-flex flex-row justify-content-between align-items-baseline">
-                  <h5 class="mb-0 pb-0">Password</h5>
+                  <h5 class="mb-0 pb-0"><%= __('Password') %></h5>
                   <a href="/forgot-password" class="bg-hover mb-0 pb-0 px-1 font-16">Change password</a>
                 </div>
             </div>
 
             <div class="w-50 mx-5 my-4">
-              <h4 class="pb-1 mb-3"> Public Information </h4>
+              <h4 class="pb-1 mb-3"><%= __('Public Information') %></h4>
               <!-- Profile Picture -->
               <div class="mb-2 d-flex flex-row justify-content-center align-items-baseline">
                 <!-- // DEBUG: hacer que cuando hagas hover aparezca texto encima con un color negro al 25% para cambiar la imagen. -->
@@ -83,65 +83,68 @@
               </div>
               <!-- Username -->
               <div class="mb-2 d-flex flex-row justify-content-between align-items-baseline">
-                <h5 class="mb-0 pb-0">Username</h5>
+                <h5 class="mb-0 pb-0"><%= __('Username') %></h5>
                 <p class="mb-0 pb-0 font-16">@<%= currentUser.username %></p>
               </div>
             </div>
           </div>
           <hr class="profile">
           <div class="text-center mt-3 mb-3">
-            <a id="logout" href="/logout" class="p-1 font-16">Sign off</a>
+            <a id="logout" href="/logout" class="p-1 font-16"><%= __('Sign off') %></a>
           </div>
         </div>
       </div>
 
       <!-- account & billing -->
       <div role="tabpanel" class="tab-box tab-pane" id="accountBilling">
-        <div class="bg-orange d-flex flex-column text-center py-5 containerOferta">
-          <h2 class="text-light">Get 6 months free!</h2>
-          <h5 class="text-light">Switch to the annual plan and save $60. You will have access to exclusive features.</h5>
-        </div>
+        <% if (0) { %>
+          <div class="bg-orange d-flex flex-column text-center py-5 containerOferta">
+            <!-- promotion board -->
+            <h2 class="text-light">Get 6 months free!</h2>
+            <h5 class="text-light">Switch to the annual plan and save $60. You will have access to exclusive features.</h5>
+          </div>
+        <% } %>
         <div class="d-flex justify-content-between">
           <div class="w-50 mx-5 my-4">
-            <h4 class="pb-1 mb-3">My Plan</h4>
+            <h4 class="pb-1 mb-3"><%= __('My Plan') %></h4>
             <div class="d-flex flex-row justify-content-between align-items-baseline mb-2">
               <h5 class="mb-1"><%= role.toUpperCase() %></h5>
-              <a href="/plans" class="bg-hover px-1 font-16">What does the plan include?</a>
+              <a href="/plans" class="bg-hover px-1 font-16"><%= __('What does the plan include?') %></a>
             </div>
             <% if (currentUser.role_id == 2) { %>
               <div class="d-flex flex-row justify-content-between align-items-baseline">
-                <h5 class="mb-1">Remaining days</h5>
+                <h5 class="mb-1"><%= __('Remaining days') %></h5>
                 <!-- Poner los dias que de verdad faltan para cada usuario -->
-                <p href="#!" class="mb-0 pb-0 font-16 grey">14 days</p>
+                <p href="#!" class="mb-0 pb-0 font-16 grey">14 <%= __('days') %></p>
               </div>
             <% } %>
             <div class="text-right mt-3">
               <a href="/<%= currentUser.username %>/settings/change-plan" class="btn-inverted font-16">
-                Change plan
+                <%= __('Change plan') %>
               </a>
             </div>
           </div>
           <div class="w-50 mx-5 my-4">
-            <h4 class="pb-1 mb-3">Payment method</h4>
+            <h4 class="pb-1 mb-3"><%= __('Payment method') %></h4>
             <div class="d-flex align-items-center">
               <img src="/imgs/icons/payment.svg" class="img-md mr-2">
               <p class="mb-0 pb-0 mr-2 font-16">*9872</p>
-              <img src="/imgs/icons/lock.svg" class="img-sm mr-2" data-toggle="tooltip" data-placement="right" title="Mensaje sobre seguridad del metodo de pago">
+              <img src="/imgs/icons/lock.svg" class="img-sm mr-2" data-toggle="tooltip" data-placement="right" title="">
             </div>
             <div class="text-right">
-              <a href="#!" class="bg-hover mb-2 px-1 font-14">Change payment method</a>
+              <a href="#!" class="bg-hover mb-2 px-1 font-14"><%= __('Change payment method') %></a>
             </div>
             <div class="d-flex align-items-center">
-              <h5 class="mb-0 mr-2">Billing Interval</h5>
-              <p class="mb-0 font-16">Monthly</p>
+              <h5 class="mb-0 mr-2"><%= __('Billing Interval') %></h5>
+              <p class="mb-0 font-16"><%= __('Monthly') %></p>
             </div>
             <div class="d-flex align-items-center">
-              <h5 class="mb-0 mr-2">Invoice Amount</h5>
+              <h5 class="mb-0 mr-2"><%= __('Invoice Amount') %></h5>
               <!-- Poner el precio de cada usuario -->
               <p class="mb-0 font-16">$25</p>
             </div>
             <div class="d-flex justify-content-center mt-2">
-              <a href="!#" class="bg-hover px-1 orange font-16" data-toggle="modal" data-target="#invoices">See Invoices</a>
+              <a href="!#" class="bg-hover px-1 orange font-16" data-toggle="modal" data-target="#invoices"><%= __('See Invoices') %></a>
             </div>
 
             <!-- modal invoices -->
@@ -211,10 +214,10 @@
       <div role="tabpanel" class="tab-box tab-pane" id="settings">
        <div class="d-flex justify-content-between">
         <div class="text-left w-50 mx-5 my-4">
-          <h4 class="pb-1 mb-3">Configuración de Balance</h4>
+          <h4 class="pb-1 mb-3"><%= __('Account Configuration') %></h4>
           <div class="d-flex flex-row justify-content-between align-items-center mb-2">
             <div>
-              <h5 class="mb-0 mr-2">Account Currency</h5>
+              <h5 class="mb-0 mr-2"><%= __('Account currency') %></h5>
             </div>
             <!--dropdown-->
             <div class="dropdown">
@@ -229,12 +232,12 @@
             </div>
           </div>
           <div class="mb-2 d-flex flex-row justify-content-between align-items-center">
-            <h5 class="mb-0 mr-2 d-block">Balance Inicial</h5>
+            <h5 class="mb-0 mr-2 d-block"><%= __('Initial balance') %></h5>
             <input type="text" id="initial-balance" class="font-16 text-right" value="<%= currentUser.balance %>" readonly>
           </div>
           <!-- show profits in entry -->
           <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-            <h5 class="mb-0 mr-2">Show profits inside entries</h5>
+            <h5 class="mb-0 mr-2"><%= __('Show profits inside entries') %></h5>
             <label class="switch mb-0">
               <input id="show-profits" type="checkbox"
               <% if (currentUser.showProfits) { %>
@@ -246,7 +249,7 @@
           </div>
           <!-- dark mode -->
           <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-            <h5 class="mb-0 mr-2">Dark mode</h5>
+            <h5 class="mb-0 mr-2"><%= __('Dark mode') %></h5>
             <label class="switch mb-0">
               <input id="dark" type="checkbox"
               <% if (currentUser.darkMode) { %>
@@ -258,16 +261,20 @@
           </div>
           <div class="d-flex flex-row justify-content-between align-items-center mb-2">
             <div>
-              <h5 class="mb-0 mr-2">Language</h5>
+              <h5 class="mb-0 mr-2"><%= __('Language') %></h5>
             </div>
             <!--dropdown-->
             <div class="dropdown">
               <button id="dd" class="language dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Spanish
+                <% if (currentUser.language == 'en') { %>
+                  <%= __('English') %>
+                <% } else { %>
+                  <%= __('Spanish') %>
+                <% } %>
               </button>
               <ul id="language" class="dropdown-menu" aria-labelledby="dd">
-                <li>Spanish</li>
-                <li>English</li>
+                <li onclick="changeLanguage('es')"><%= __('Spanish') %></li>
+                <li onclick="changeLanguage('en')"><%= __('English') %></li>
               </ul>
             </div>
           </div>
@@ -276,10 +283,10 @@
         <div class="text-left w-50 mx-5 my-4">
           <div class="mb-3">
             <h4 class="pb-1 mb-2">
-              Current Goals
-              <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Add up to 5 goals to your Neilit account">
+              <%= __('Current Goals') %>
+              <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('Add up to 5 goals to your Neilit account') %>">
             </h4>
-            <input type="text" id="addGoal" placeholder="New Goal" class="w-100 font-16">
+            <input type="text" id="addGoal" placeholder="<%= __('New Goal') %>" class="w-100 font-16">
             <!-- Up to 5 goals -->
             <a href="#!" id="">
               <ul id="listGoals" class="pl-0 list">
@@ -297,11 +304,11 @@
           <div class="pt-4">
             <div class="d-block flex-row justify-content-between">
               <h4 class="pb-1 mb-3">
-                Strategies
-                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Create a new strategies to add to your TA">
+                <%= __('Strategies') %>
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('Create a new strategies to add to your TA') %>">
               </h4>
             </div>
-            <input type="text" id="addStrategy" placeholder="New Strategy Name" class="w-100 font-16">
+            <input type="text" id="addStrategy" placeholder="<%= __('New Strategy') %>" class="w-100 font-16">
             <!-- all strategies -->
             <a href="#!" id="">
               <ul id="listStrategy" class="pl-0 list">
@@ -322,8 +329,8 @@
       <div role="tabpanel" class="tab-box tab-pane" id="customization">
         <div class="d-flex flex-column py-5 text-center align-items-center">
           <a href="!#"></a>
-          <h2 class="mx-auto orange w-50 mb-4">We Are Currently Working On This Page.</h2>
-          <span class="w-50 mt-3 grey">To know more about what we are working on, you can visit our <a href="#" class="bg-hover px-1">next updates</a>.</span>
+          <h2 class="mx-auto orange w-50 mb-4"><%= __('We Are Currently Working On This Page') %></h2>
+          <span class="w-50 mt-3 grey"><%= __('To know more about what we are working on, you can visit our') %> <a href="/features" class="bg-hover px-1"><%= __('next updates') %></a>.</span>
         </div>
       </div>
 
@@ -332,38 +339,37 @@
         <div class="d-flex justify-content-between">
           <div class="w-50 mx-5 my-4">
             <h4 class="pb-1 mb-3">
-              FAQs
-              <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="Frequently Asked Question(s)">
+              <%= __('FAQs') %>
+              <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('Frequently Asked Question(s)') %>'">
             </h4>
             <div class="d-flex flex-column">
-              <a href="#!" class="FAQ pl-1 mb-1 bg-hover font-16">How to create an entry</a>
-              <a href="#!" class="FAQ pl-1 mb-1 bg-hover font-16">How to backtest</a>
-              <a href="#!" class="FAQ pl-1 mb-1 bg-hover font-16">Interpret statistics</a>
-              <a href="#!" class="FAQ pl-1 mb-1 bg-hover font-16">Upgrade your plan</a>
-              <a href="#!" class="FAQ pl-1 mb-1 bg-hover font-16">Random questions</a>
-              <a href="#!" class="FAQ pl-1 mb-1 bg-hover font-16">How to create an entry</a>
+              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create an entry') %></a>
+              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to backtest') %></a>
+              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Interpret statistics') %></a>
+              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Upgrade your plan') %></a>
+              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Random questions') %></a>
+              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create an entry') %></a>
             </div>
           </div>
 
           <div class="w-50 mx-5 my-4">
             <div class="mb-4">
-              <h4 class="pb-1 mb-3">Ask Us</h4>
+              <h4 class="pb-1 mb-3"><%= __('Ask Us') %></h4>
               <span class="grey font-16">
-                Send a message to
-                <a href="#">support@neilit.com</a>
-                and we will help you as soon as possible.
+                <%= __('Send a message to') %>
+                <a href="#"><%= __('support@neilit.com') %></a>
+                <%= __('and we will help you as soon as possible') %>.
               </span>
             </div>
 
             <div class="">
-              <h4 class="pb-1 mb-3">Wiki</h4>
+              <h4 class="pb-1 mb-3"><%= __('Resources') %></h4>
               <span class="grey font-16">
-                Solve all your doubts at the moment. You will
-                find most of Neilit's functions described in depth.
+                <%= __("Solve all your doubts at the moment. You will find most of Neilit's functions described in depth") %>.
               </span>
               <div class="d-flex flex-row justify-content-center mt-4">
-                <a href="#" class="bg-hover px-1 font-16 change-plan">
-                  Go to Wiki
+                <a href="/resources" class="bg-hover px-1 font-16 change-plan">
+                  <%= __('Go to Resources') %>
                 </a>
               </div>
             </div>

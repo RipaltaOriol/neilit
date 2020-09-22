@@ -145,6 +145,18 @@ $('#dark').change(() => {
   })
 });
 
+// changes the account's language
+function changeLanguage(lang) {
+  var data = {lang: lang}
+  $.post('/' + currentUser.username + '/settings/changeLanguage', data)
+    .done((data) => {
+    location.reload();
+  })
+    .fail(() => {
+    // error
+  })
+}
+
 // cancel subscription
 function cancelSubscription() {
   return fetch('/' + username + '/settings/cancel-subscription', {
@@ -164,7 +176,9 @@ function cancelSubscription() {
 }
 
 var form = document.getElementById('cancel-form');
-form.addEventListener('submit', function (ev) {
-  ev.preventDefault();
-  cancelSubscription();
-})
+if (form) {
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    cancelSubscription();
+  })
+}

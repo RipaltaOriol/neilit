@@ -62,7 +62,11 @@ module.exports = function(passport) {
         } else {
           newUserMysql.currency_id = currencyId + 1;
         }
-        newUserMysql.balance = req.body.balance;
+        if (req.body.balance > 0) {
+          newUserMysql.balance = req.body.balance;
+        } else {
+          return done(null, false, req.flash("error", "Your account must be worth something."));
+        }
         // Hash password
         var hashingPassword = new Promise (function(resolve, reject) {
           setTimeout(function() {
