@@ -49,6 +49,36 @@ button:disabled {
       margin-left: .25em;
   }
 
+/* || Dropdown */
+.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border-radius: 7px;
+  border: none;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+
+.dropdown button:hover, .dropdown button:focus {
+  border: none;
+  outline: 0;
+}
+
+.dropdown-menu li {
+  line-height: 1.5;
+  letter-spacing: 0.7px;
+  color: var(--text-grey);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.dropdown-menu li:hover {
+  background-color: var(--background-hover);
+  color: black;
+}
+
 #calculator { }
   #calculator input {
     background-color: #f7f7f7;
@@ -60,4 +90,28 @@ button:disabled {
 #lots-size, #units-size {
   font-family: RobotoMono;
   font-size: 18px;
+}
+
+#dropdown-label {
+  border: none;
+  background: var(--background-hover);
+  border-radius: 7px;
+}
+  #dropdown-label:hover {
+    color: black;
+    background: var(--background-hover);
+  }
+
+#dropdown-items {
+  height: 200px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+input#dropdown-search[type=text] {
+  background-color: white;
+  color: black;
+  border-bottom: 1px solid black;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }

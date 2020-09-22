@@ -1,19 +1,35 @@
 let express       = require('express');
+const util        = require('util');
 let router        = express.Router();
 let passport      = require('passport');
 let async         = require('async');
 let nodemailer    = require('nodemailer');
 let crypto        = require('crypto');
-let bcrypt       = require('bcrypt');
+let bcrypt        = require('bcrypt');
 const saltRounds  = 10;
-
+let language = 'en'
 
 // Global Program Variables
+let plans      = require('../models/plans');
 let strategies = require('../models/strategies');
 let connection = require('../models/connectDB');
+let selectPlan;
+// node native promisify
+const query = util.promisify(connection.query).bind(connection);
+
+// COMBAK: set your secret key. Remember to switch to your live secret key in production!
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVcs6jWWvowXuRqXQKvFCK6pYG7Q8NRSy9NQ8uCjHADKAHd36Mfosx006ajk0pov');
+
+// I18N (MULTI-LANGUAGE) LOGIC
+router.post('/language/:lang', (req, res) => {
+  language = req.params.lang;
+  res.redirect('/')
+})
 
 // HOME ROUTE
 router.get("/", (req, res) => {
+  res.setLocale(language);
   res.render("home");
 });
 
@@ -45,9 +61,90 @@ router.get("/signup", (req, res) => {
 // SIGNUP LOGIC
 router.post("/signup", passport.authenticate('local-signup', {
   failureRedirect: '/signup'
-}), (req, res) => {
-  res.redirect("/" + req.user.username);
+}), async (req, res) => {
+  try {
+    // Create a new customer object
+    const customer = await stripe.customers.create({
+      email: req.user.email,
+    });
+    var saveStripeCustomerId = await query('UPDATE users SET stripeCustomerId = ? WHERE email = ?', [customer.id, req.user.email])
+    res.redirect("/signup/select-plan");
+  } catch (e) {
+    req.flash('error', 'There was an issue with the registration. Please, try again later.')
+    res.redirect('/signup');
+  }
 })
+
+// SELECT PLAN ROUTE
+router.get("/signup/select-plan", (req, res) => {
+  if (req.user) {
+    res.render("select", {priceList:plans.price_id})
+  } else {
+    req.flash('error', 'You must signup before choosing a plan.')
+    res.redirect('/signup');
+  }
+})
+
+// SELECT PLAN LOGIC
+router.post("/signup/select-plan", (req, res) => {
+  if (req.user) {
+    if (req.body.priceId != '') {
+      selectPlan = req.body.priceId
+      res.redirect('/signup/select-plan/checkout')
+    } else {
+      res.redirect("/" + req.user.username)
+    }
+  } else {
+    req.flash('error', 'You must signup before choosing a plan.')
+    res.redirect('/signup');
+  }
+})
+
+// CHECKOUT ROUTE
+router.get("/signup/select-plan/checkout", (req, res) => {
+  if (req.user) {
+    res.render('checkout',
+      {
+        customerId: req.user.stripeCustomerId,
+        priceId: selectPlan
+      }
+    )
+  } else {
+    req.flash('error', 'You must signup before you checkout');
+    res.redirect('/signup');
+  }
+})
+
+router.post('/create-subscription', async (req, res) => {
+  // Attach the payment method to the customer
+  try {
+    await stripe.paymentMethods.attach(req.body.paymentMethodId, {
+      customer: req.body.customerId,
+    });
+  } catch (error) {
+    return res.status('402').send({ error: { message: error.message } });
+  }
+
+  // Change the default invoice settings on the customer to the new payment method
+  await stripe.customers.update(
+    req.body.customerId,
+    {
+      invoice_settings: {
+        default_payment_method: req.body.paymentMethodId,
+      },
+    }
+  );
+
+  // Create the subscription
+  const subscription = await stripe.subscriptions.create({
+    customer: req.body.customerId,
+    items: [{ price: 'price_1HTUBMFaIcvTY5RCKZixDYVk' }],
+    expand: ['latest_invoice.payment_intent'],
+  });
+  var saveUserPlan = await query('UPDATE users SET stripeSubscriptionId = ?, role_id = 2, expiration = CURDATE() + INTERVAL 1 MONTH WHERE id = ?;', [subscription.id, req.user.id]);
+  res.send(subscription);
+});
+
 
 // LOGOUT ROUTE
 router.get("/logout", (req, res) => {

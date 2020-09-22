@@ -105,21 +105,18 @@
           <div class="w-50 mx-5 my-4">
             <h4 class="pb-1 mb-3">My Plan</h4>
             <div class="d-flex flex-row justify-content-between align-items-baseline mb-2">
-              <h5 class="mb-1">Neilit Pro</h5>
+              <h5 class="mb-1"><%= role.toUpperCase() %></h5>
               <a href="/plans" class="bg-hover px-1 font-16">What does the plan include?</a>
             </div>
-            <% if (currentUser.expiration != null) { %>
+            <% if (currentUser.role_id == 2) { %>
               <div class="d-flex flex-row justify-content-between align-items-baseline">
                 <h5 class="mb-1">Remaining days</h5>
                 <!-- Poner los dias que de verdad faltan para cada usuario -->
                 <p href="#!" class="mb-0 pb-0 font-16 grey">14 days</p>
               </div>
-              <div class="mb-2 d-flex flex-row justify-content-end">
-                <a href="#" class="bg-hover mb-0 pb-0 p-1 font-14">Cancel automatic renewal</a>
-              </div>
             <% } %>
             <div class="text-right mt-3">
-              <a href="#" class="btn-inverted font-16">
+              <a href="/<%= currentUser.username %>/settings/change-plan" class="btn-inverted font-16">
                 Change plan
               </a>
             </div>

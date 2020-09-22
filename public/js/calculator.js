@@ -9,15 +9,15 @@ async function calcRisk(base) {
   var aSize = document.getElementById('account-size').value;
   var oRisk = document.getElementById('ops-risk').value;
   var slPip = document.getElementById('sl-pip').value;
-  var exchangePair = document.getElementById('exchange-pair').value;
+  var pair = document.getElementById('dropdown-label');
+  // three options for calculating the value of a pip:
+  var namePair = pair.textContent.trim() || pair.innerText.trim();
   // OPTIMIZE: refactor this code
   if (aSize == '' || oRisk == '') {
     var aRisk = document.getElementById("trade-size").value;
     if (aRisk != '') {
       if (slPip != '') {
         var pSize = (aRisk / slPip);
-        // three options for calculating the value of a pip:
-        var namePair = currencies[exchangePair]
         // the base currency is the against currency pair
         if (base == namePair.substring(4, 7)) {
           // determines the value per pip
@@ -51,8 +51,6 @@ async function calcRisk(base) {
     var aRisk = aSize * (oRisk / 100);
     if (slPip != '') {
       var pSize = (aRisk / slPip);
-      // three options for calculating the value of a pip:
-      var namePair = currencies[exchangePair]
       // the base currency is the against currency pair
       if (base == namePair.substring(4, 7)) {
         // determines the value per pip
@@ -78,6 +76,37 @@ async function calcRisk(base) {
       }
     } else {
       return false;
+    }
+  }
+}
+
+// dropdown to select a time period for statistics
+$('.dropdown-menu li').on('click', function() {
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  if ($('.dropdown-select')[current]) {
+    $('.dropdown-select')[current].innerHTML = getValue;
+  }
+});
+
+// quick access to dropdown elements
+function changePair(pair) {
+  $('.dropdown-select')[0].innerHTML = pair;
+}
+
+// search bar for the dropdown
+function searchDropdown() {
+  var input, search, dropdownItems, val;
+  input = document.querySelector('#dropdown-search');
+  search = input.value.toUpperCase();
+  dropdownItems = document.getElementById('dropdown-items').getElementsByTagName('li');
+  for (var i = 0; i < dropdownItems.length; i++) {
+    val = dropdownItems[i].textContent || dropdownItems[i].innerText;
+    if (val.toUpperCase().indexOf(search) > -1) {
+      dropdownItems[i].style.display = "";
+    } else {
+      dropdownItems[i].style.display = "none";
     }
   }
 }

@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS timeframes;
 DROP TABLE IF EXISTS goals;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS currencies;
+DROP TABLE IF EXISTS languages;
 DROP TABLE IF EXISTS roles;
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -28,7 +29,13 @@ SET FOREIGN_KEY_CHECKS = 1;
 CREATE TABLE roles
   (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    role VARCHAR(40) NOT NULL
+    role VARCHAR(40) NOT NULL,
+    price_id VARCHAR(4000)
+  );
+
+CREATE TABLE languages
+  (
+    language VARCHAR(2) PRIMARY KEY NOT NULL
   );
 
 CREATE TABLE currencies
@@ -44,6 +51,7 @@ CREATE TABLE users
     email VARCHAR(40) NOT NULL,
     name VARCHAR(40) NOT NULL,
     surname VARCHAR(40) NOT NULL,
+    language VARCHAR(2) NOT NULL DEFAULT 'en',
     role_id INT NOT NULL,
     password VARCHAR(4000) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -54,6 +62,10 @@ CREATE TABLE users
     darkMode BOOLEAN DEFAULT false NOT NULL,
     resetPasswordToken VARCHAR(4000),
     resetPasswordExpire DATETIME,
+    stripeCustomerId VARCHAR(500),
+    stripeSubscriptionId VARCHAR(500),
+    stripeProductId VARCHAR(500),
+    FOREIGN KEY (language) REFERENCES languages(language),
     FOREIGN KEY (role_id) REFERENCES roles(id),
     FOREIGN KEY (currency_id) REFERENCES currencies(id)
   );

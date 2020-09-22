@@ -144,3 +144,27 @@ $('#dark').change(() => {
     // error
   })
 });
+
+// cancel subscription
+function cancelSubscription() {
+  return fetch('/' + username + '/settings/cancel-subscription', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  })
+    .then(response => {
+      console.log('This response');
+      return response.json();
+    })
+    .then(cancelSubscriptionResponse => {
+      console.log('Almost there');
+      window.location.href = "/" + username + "/settings";
+    });
+}
+
+var form = document.getElementById('cancel-form');
+form.addEventListener('submit', function (ev) {
+  ev.preventDefault();
+  cancelSubscription();
+})

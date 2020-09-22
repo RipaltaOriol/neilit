@@ -262,12 +262,17 @@ input[type=search] {
    }
 
 .btn-top {
-  width: 1.75rem;
-  height: 1.75rem;
+  position: fixed;
+  top: 25px;
+  right: 25px;
 }
-  .dark-mode .btn-top {
-    filter: invert();
+  .btn-top img {
+    width: 1.75rem;
+    height: 1.75rem;
   }
+    .dark-mode .btn-top img {
+      filter: invert();
+    }
 
 /* || Utility */
 .info {
@@ -341,7 +346,11 @@ input[type=search] {
   }
 
 /* || DOM selector */
-#toggle-o-menu { }
+#toggle-o-menu {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+}
   #toggle-o-menu img {
     width: 34px;
   }

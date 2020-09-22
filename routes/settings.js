@@ -1,4 +1,5 @@
 let express = require('express');
+const util  = require('util');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
 let currencies = require('../models/currencies');
@@ -9,6 +10,12 @@ let connection = require('../models/connectDB');
 
 // Global Program Variables
 let strategies = require('../models/strategies');
+// node native promisify
+const query = util.promisify(connection.query).bind(connection);
+// COMBAK: Set your secret key. Remember to switch to your live secret key in production!
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVcs6jWWvowXuRqXQKvFCK6pYG7Q8NRSy9NQ8uCjHADKAHd36Mfosx006ajk0pov');
+
 
 // NEW STRATEGY ROUTE
 router.post("/newStrategy", middleware.isLoggedIn, (req, res) => {
@@ -88,5 +95,21 @@ router.post("/changeMode", middleware.isLoggedIn, (req, res) => {
     res.end();
   })
 })
+
+// CHANGE PLAN ROUTE
+router.get("/change-plan", middleware.isLoggedIn, (req, res) => {
+  res.render('user/change', {username: req.user.username})
+})
+
+router.post('/cancel-subscription', async (req, res) => {
+  // Delete the subscription
+  const deletedSubscription = await stripe.subscriptions.del(
+    req.user.stripeSubscriptionId
+  );
+  var cancelSubscription = await query('UPDATE users SET expiration = NULL, role_id = 1, stripeSubscriptionId = NULL WHERE id = ?;', req.user.id);
+  console.log('The post fetch was made');
+  res.send(deletedSubscription);
+});
+
 
 module.exports = router;

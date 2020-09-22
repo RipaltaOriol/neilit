@@ -115,4 +115,9 @@ router.get("/total/:period", middleware.isLoggedIn, (req, res) => {
   })()
 })
 
+router.get('/remove-notification', (req, res) => {
+  notification = false;
+  res.send({})
+})
+
 module.exports = router;

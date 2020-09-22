@@ -1,8 +1,14 @@
-INSERT INTO roles (role)
+INSERT INTO languages (language)
 VALUES
-  ('free'),
-  ('premium'),
-  ('unlimited');
+  ('en'),
+  ('es'),
+  ('ca');
+
+INSERT INTO roles (role, price_id)
+VALUES
+  ('free', null),
+  ('legacy', 'price_1HTUBMFaIcvTY5RCKZixDYVk'),
+  ('admin', 'neilit-secret');
 
 INSERT INTO currencies (currency)
 VALUES

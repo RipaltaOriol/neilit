@@ -10,18 +10,24 @@ let connection = require('../models/connectDB');
 // SETTINGS ROUTE
 router.get("/settings", middleware.isLoggedIn, (req, res) => {
   var selectGoals = 'SELECT goal FROM goals WHERE user_id = ?';
+  var selectRole = 'SELECT role FROM roles WHERE id = ?';
   var goals = []
   connection.query(selectGoals, req.user.id, (err, getGoals) => {
     getGoals.forEach((result) => {
       goals.push(result.goal)
     });
-    res.render("user/settings",
-      {
-        strategies:userStrategies,
-        currencies: currencies,
-        goals: goals
-      }
-    );
+    connection.query(selectRole, req.user.role_id, (err, getRole) => {
+      if (err) throw err;
+      var role = getRole[0].role;
+      res.render("user/settings",
+        {
+          strategies: userStrategies,
+          currencies: currencies,
+          goals: goals,
+          role: role
+        }
+      );
+    })
   })
 })
 
@@ -115,6 +121,7 @@ router.get("", middleware.isLoggedIn, (req, res) => {
             });
             res.render("user/user",
               {
+                notification:notification,
                 dashboardData:dashboardData,
                 outcomeMonthAmount:outcomeMonthAmount,
                 outcomeMonthTotal:outcomeMonthTotal,

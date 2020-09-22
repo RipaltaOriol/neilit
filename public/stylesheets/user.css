@@ -1,4 +1,3 @@
-/* FIXME: It's possible to clean the CSS code from this line till line number:  ________ */
 :root{
   --grey-flojo: #F7F7F7;
   --grey-medio: #EEEEEE;
@@ -37,6 +36,12 @@ a:hover {
 }
 
 /* || Utility */
+.no-wrap{
+  white-space: nowrap;
+}
+
+
+/* || Utility */
 .container-global{
   max-width: 1000px;
   /* background: red; */
@@ -71,6 +76,12 @@ a:hover {
   height: auto;
   opacity: .6;
 }
+
+.notification { }
+  .notification img { }
+    .notification img:hover {
+      opacity: 1;
+    }
 
 .imagen-widget-change {
   width: 25px;
@@ -169,38 +180,42 @@ a:hover {
   font-size: 16px;
 }
 
-.btn{
-  padding: 3px 15px;
-  border: 2px solid var(--naranja);
+.news{
   border-radius: 7px;
   transition-duration: .25s;
+  border: 2px solid white;
   background: white;
-  color: var(--naranja);
+  color: var(--neilit-default);
 }
-  .btn:hover{
+  .news:hover{
     color: white;
-    border: 2px solid var(--naranja);
-    background: var(--naranja);
+    border: 2px solid var(--neilit-default);
+    background: var(--neilit-default);
     transition-duration: .25s;
   }
 
-.btn-second{
-  padding: 3px 15px;
-  border: 2px solid var(--naranja);
+.suggest{
+  color: white;
+  border: 2px solid var(--neilit-default);
   border-radius: 7px;
   transition-duration: .25s;
-  color: white;
 }
-  .btn-second:hover{
-    color: var(--gris-medio);
-    border: 2px solid var(--naranja);
-    text-decoration: underline;
+  .suggest:hover{
+    color: white;
+    border: 2px solid white;
     transition-duration: .25s;
   }
 
 .pill-direction{
   width: 100px;
 }
+
+.progress {
+  height: 20px;
+}
+  .progress {
+    font-family: RobotoMono;
+  }
 
 .progress-bar-orange{
   background-color: var(--naranja);
