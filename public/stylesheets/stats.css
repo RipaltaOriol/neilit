@@ -1,11 +1,7 @@
 :root {
-  --grey-flojo: #F7F7F7;
-  --grey-medio: #EEEEEE;
-  --grey-fuerte: #E5E5E5;
-  --grey-texto: #7B7B7B;
-  --red-flojo: #FDDFDD;
-  --red-fuerte: #EE0000;
-  --green-flojo: #CBF6E5;
+  --red-soft: #fddfdd;
+  --green-soft: #cbf6e5;
+
 }
 
 /* || Utility */
@@ -17,7 +13,6 @@ button {
 input[type="date"]:focus {
   outline: none;
   box-shadow: none;
-  border-color: var(--neilit-regular);
 }
 
 /* || Tables utilities */
@@ -28,6 +23,7 @@ tr {
 }
 
 th {
+  color: var(--invert-black);
   padding: 0!important;
 }
   th:hover {
@@ -35,36 +31,19 @@ th {
   }
 
 td {
+  color: var(--invert-black);
+  font-weight: 200;
   padding: 5px!important;
 }
 
 /* Cambia el color al hacer hover en las tablas */
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color: var(--gris-flojo);
+  background-color: var(--background-hover);
 }
-  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th td {
-    color: black;
-  }
 
 /* || Utility */
 a:hover {
   text-decoration: none;
-}
-
-/* || Utility */
-/* canvas {
-  border-radius: 7px;
-  transition-duration: .25s;
-}
-  canvas:hover {
-    background-color: var(--gris-flojo);
-    transition-duration: .25s;
-  } */
-
-/* || Utility */
-.black-h1 {
-  color: black;
-  font-weight: 500!important;
 }
 
 /* || Utility */
@@ -80,12 +59,10 @@ a:hover {
 
 /* || Utility */
 .grey {
-  color: #7b7b7b;
+  color: var(--text-grey);
 }
   .grey:hover {
-      background-color:  var(--gris-flojo);
-      border-radius: 7px;
-      color: black;
+      color: var(--invert-black);
   }
   .grey a {
     color: #7b7b7b;
@@ -99,45 +76,42 @@ a:hover {
 
 /* || JQuery UI class */
 .ui-datepicker {
-  background: white;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.23);
-  /* FIXME: When we put padding, something strange appears at the bottom of the screen. */
-  padding: 5px;
+  background: var(--background-strong);
+  border-radius: .25rem;
+  box-shadow: 0 3px 6px var(--box-shadow);
+  padding: 10px 10px;
 }
 
 .ui-datepicker-title {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   font-weight: 500;
 }
 
 .ui-datepicker-prev {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border-radius: 7px;
+  display: block;
+  text-align: center;
+  border-radius: .25rem;
 }
   .ui-datepicker-prev:hover {
-    background: var(--gris-medio);
+    background: var(--background-hover);
     cursor: pointer;
   }
 
 .ui-datepicker-next {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  display: block;
+  text-align: center;
+  border-radius: .25rem;
 }
   .ui-datepicker-next:hover {
-    background: var(--gris-medio);
+    background: var(--background-hover);
     cursor: pointer;
   }
 .ui-state-default {
-  color: var(--gris-medio);
+  color: var(--text-grey);
 }
+  .ui-state-default:hover {
+    color: var(--invert-black);
+  }
 
 /* || Utility */
 .font-18 {
@@ -159,14 +133,14 @@ a:hover {
 }
 
 .pill-verde {
-  background: var(--green-flojo);
+  background: var(--green-soft);
   color: green;
 }
 
 .pill-amarilla { }
 
 .pill-roja {
-  background: var(--red-flojo);
+  background: var(--red-soft);
   color: red;
 }
 
@@ -180,33 +154,33 @@ a:hover {
 .widget-tercio {
   width: 33.33%;
   border-radius: 7px;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
 
 .widget-50 {
   width: 50%;
   border-radius: 7px;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
 
 .widget-dos-tercios {
   width: 66.66%;
   border-radius: 7px;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
 
 .widget-100 {
   width: 100%;
   border-radius: 7px;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
 
 .superior-widget {
@@ -221,25 +195,16 @@ a:hover {
   height: auto;
   opacity: .6;
 }
+  .dark-mode .imagen-widget {
+    filter: invert();
+  }
 
-.imagen-widget-change {
-  width: 25px;
-  height: auto;
-  opacity: .6;
-  border-radius: 7px;
-  transition-duration: .25s;
+.active-change {
+  background: var(--background-hover);
 }
-  .imagen-widget-change:hover {
-    opacity: 1;
-    transition-duration: .25s;
-    cursor: pointer;
+  .active-change img {
+    opacity: 1!important;
   }
-  .active-change {
-    background: var(--grey-flojo);
-  }
-    .active-change img {
-      opacity: 1!important;
-    }
 
 .imagen-widget-grande {
   width: 25px;
@@ -253,7 +218,7 @@ a:hover {
   border-radius: 7px;
 }
   .background-change:hover {
-    background-color: var(--grey-flojo);
+    background-color: var(--background-hover);
   }
 
 .caret {
@@ -265,11 +230,12 @@ a:hover {
 .dropdown-menu {
   padding: 0;
   margin: 0;
+  background-color: var(--background-medium);
   border-radius: 7px;
   border: none;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
   .dropdown button:hover, .dropdown button:focus {
     border: none;
@@ -278,40 +244,76 @@ a:hover {
   .dropdown-menu li {
     line-height: 1.5;
     letter-spacing: 0.7px;
-    color: var(--grey-texto);
+    color: var(--text-grey);
     font-size: 16px;
     cursor: pointer;
     padding: 5px 10px;
   }
     .dropdown-menu li:hover {
-      background-color: var(--grey-flojo);
-      color: black;
+      background-color: var(--background-hover);
+      color: var(--invert-black);
     }
     .dropdown-menu li button {
+      width: 100%;
+      line-height: 1.5;
+      text-align: left;
+      letter-spacing: 0.7px;
+      color: var(--text-grey);
+      font-size: 16px;
+      cursor: pointer;
       padding: 0;
-      color: var(--grey-texto);
+    }
+      .dropdown-menu li button:hover {
+        background-color: var(--background-hover);
+        color: var(--invert-black);
+      }
+
+.modal-body { }
+  .modal-body input {
+    color: var(--invert-black);
+    background-color: var(--background-strong);
+  }
+    .modal-body input:focus {
+      color: var(--invert-black);
+      background-color: var(--background-strong);
+      border-color: var(--invert-black);
     }
 
 .container-user-goals a {
-  color: var(--grey-texto);
+  color: var(--text-grey);
 }
 .container-user-goals a:hover {
   color: black;
 }
 
 .inferior-widget {
-  border-top: 1px solid var(--grey-medio);
+  border-top: 1px solid var(--grey-medium);
   position: relative;
   bottom: 0px;
 }
 
-#dLabel {
-  border-radius: 7px;
-  border: 0;
-  text-align: left;
-  background-color: inherit;
-  color: var(--grey-texto);
+.neilit-widget {
+  background-color: var(--background-medium);
 }
-  #dLabel:hover {
-    color: black;
+
+.data-widget {
+  color: var(--invert-black);
+  font-weight: 500;
+}
+
+.coming-soon { }
+  .coming-soon p {
+    font-weight: 200;
+  }
+
+
+#dd {
+  border-radius: .25rem;
+  border: 0;
+  background-color: inherit;
+  color: var(--text-grey);
+}
+  #dd:hover {
+    color: var(--invert-black);
+    background-color: var(--background-hover)
   }

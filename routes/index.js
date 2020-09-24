@@ -138,7 +138,7 @@ router.post('/create-subscription', async (req, res) => {
     items: [{ price: 'price_1HTUBMFaIcvTY5RCKZixDYVk' }],
     expand: ['latest_invoice.payment_intent'],
   });
-  var saveUserPlan = await query('UPDATE users SET stripeSubscriptionId = ?, role_id = 2, expiration = CURDATE() + INTERVAL 1 MONTH WHERE id = ?;', [subscription.id, req.user.id]);
+  var saveUserPlan = await query('UPDATE users SET stripeSubscriptionId = ?, stripeProductId = ?, role_id = 2, expiration = CURDATE() + INTERVAL 1 MONTH WHERE id = ?;', [subscription.id, subscription.plan.product, req.user.id]);
   res.send(subscription);
 });
 

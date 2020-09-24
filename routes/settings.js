@@ -118,7 +118,6 @@ router.post('/cancel-subscription', async (req, res) => {
     req.user.stripeSubscriptionId
   );
   var cancelSubscription = await query('UPDATE users SET expiration = NULL, role_id = 1, stripeSubscriptionId = NULL WHERE id = ?;', req.user.id);
-  console.log('The post fetch was made');
   res.send(deletedSubscription);
 });
 

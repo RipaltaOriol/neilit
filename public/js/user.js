@@ -1,3 +1,8 @@
+var axesColor = 'rgba(0,0,0,0.1)'
+if (currentUser.darkMode) {
+  axesColor = 'rgb(255,255,255,0.1)'
+}
+
 // dropdown to select a time period for statistics
 $('.dropdown-menu li').on('click', function() {
   var allDD = $('.dropdown-menu');
@@ -54,7 +59,6 @@ var resultsChart = new Chart(ctx,{
       data: outcomeMonthAmount,
       order:2,
       backgroundColor:'rgb(255,136,24)',
-
     }, {
       type: 'line',
       label:'# of entries',
@@ -75,9 +79,13 @@ var resultsChart = new Chart(ctx,{
         id: 'A',
         type: 'linear',
         position: 'left',
-        gridLines: false,
+        gridLines: {
+          display: true,
+          color: axesColor,
+          zeroLineColor: axesColor
+        },
         ticks:{
-          display: false
+          display: true,
         }
       }, {
         id: 'N',
@@ -86,6 +94,13 @@ var resultsChart = new Chart(ctx,{
         ticks: {
           display: false,
           max: Math.max(...outcomeMonthTotal) + 1
+        }
+      }],
+      xAxes:[{
+        gridLines: {
+          display: true,
+          color: axesColor,
+          zeroLineColor: axesColor
         }
       }]
     },

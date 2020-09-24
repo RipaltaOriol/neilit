@@ -4,18 +4,18 @@
   <div class="mt-3 mx-4">
     <section id="journal">
       <div class="container">
-        <h2>Diario</h2>
+        <h2><%= __('Journal') %></h2>
         <div class="row mb-4">
 
           <!-- ENTRIES -->
           <div class="col-6">
             <div class="journal-box px-0">
               <div class="d-flex justify-content-between mx-3 mb-0">
-                <a href="/<%= currentUser.username %>/journal/entry">
-                  <h3>Últimas entradas</h3>
+                <a href="/<%= currentUser.username %>/journal/entry" class="text-decoration-none">
+                  <h3><%= __('Recent entries') %></h3>
                 </a>
                 <div>
-                  <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="Sección de las entradas de dirario">
+                  <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="<%= __('Section for journal entries.') %>">
                 </div>
               </div>
               <hr class="mb-2">
@@ -25,27 +25,32 @@
                 <% }); %>
               </div>
               <br>
-              <h3 class="mx-3 mb-2">Crear una entrada</h3>
+              <h3 class="mx-3 mb-2"><%= __('Create a new entry') %></h3>
               <hr class="mb-2">
               <form class="d-flex flex-column" action="/<%= currentUser.username %>/journal/entry/new">
                 <div class="d-flex justify-content-between align-items-center mb-3 mx-3">
-                  <select id="entry-pair" class="custom-select p-1 w-50" onchange="entryPair();">
-                    <!-- FIXME: passing the PAIR id is probably off by 1 -->
-                    <% for (var i = 0; i < pairs.length; i++) { %>
-                      <option value="<%= i %>"><%= pairs[i] %></option>
-                    <% } %>
-                  </select>
+                  <div class="dropdown w-50">
+                    <button id="dropdown-label" class="dropdown-select w-100 text-left py-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= pairs[0] %>
+                    </button>
+                    <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                      <input class="p-2 w-100 dropdown-search" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                      <% for (var i = 0; i < pairs.length; i++) { %>
+                        <li><%= pairs[i] %></li>
+                      <% } %>
+                    </ul>
+                  </div>
                   <div class="mx-auto my-2">
                     <div class="form-check form-check-inline">
                       <label class="checkbox-orange mb-0">
-                        Compra
+                        <%= __('Long') %>
                         <input type="radio" name="direction" onclick="entryDirection(1);">
                         <span class="checkmark"></span>
                       </label>
                     </div>
                     <div class="form-check form-check-inline">
                       <label class="checkbox-orange mb-0">
-                        Venta
+                        <%= __('Short') %>
                         <input type="radio" name="direction" onclick="entryDirection(-1);">
                         <span class="checkmark"></span>
                       </label>
@@ -53,7 +58,7 @@
                   </div>
                 </div>
                 <div class="d-flex justify-content-center mx-3">
-                  <input type="submit" value="Continuar" class="btn-neilit">
+                  <input type="submit" value="<%= __('Continue') %>" class="btn-neilit">
                 </div>
               </form>
             </div>
@@ -63,11 +68,11 @@
           <div class="col-6">
             <div class="journal-box px-0">
               <div class="d-flex justify-content-between mx-3 mb-0">
-                <a href="/username/journal/ta">
-                  <h3>Análisis técnico</h3>
+                <a href="/username/journal/ta" class="text-decoration-none">
+                  <h3><%= __('Technical Analysis') %></h3>
                 </a>
                 <div>
-                  <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="Sección de las análisis técnicos">
+                  <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="<%= __('Section for the journal tecnical analysis.') %>">
                 </div>
               </div>
               <hr class="mb-2">
@@ -77,17 +82,22 @@
                 <% }); %>
               </div>
               <br>
-              <h3 class="mx-3 mb-2">Nuevo análisis técnico</h3>
+              <h3 class="mx-3 mb-2"><%= __('New tecnical analysis') %></h3>
               <hr class="mb-3">
               <div class="mx-3">
                 <form class="d-flex justify-content-between" action="/<%= currentUser.username %>/journal/ta/new">
-                  <select id="ta-pair" class="custom-select p-1 w-50" onchange="taPair();">
-                    <!-- FIXME: passing the PAIR id is probably off by 1 -->
-                    <% for (var i = 0; i < pairs.length; i++) { %>
-                      <option value="<%= i %>"><%= pairs[i] %></option>
-                    <% } %>
-                  </select>
-                  <input type="submit" value="Continuar" class="btn-neilit">
+                  <div class="dropdown w-50">
+                    <button id="dropdown-label" class="dropdown-select w-100 text-left py-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= pairs[0] %>
+                    </button>
+                    <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                      <input class="p-2 w-100 dropdown-search" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                      <% for (var i = 0; i < pairs.length; i++) { %>
+                        <li><%= pairs[i] %></li>
+                      <% } %>
+                    </ul>
+                  </div>
+                  <input type="submit" value="<%= __('Continue') %>" class="btn-neilit">
                 </form>
               </div>
             </div>
@@ -100,11 +110,11 @@
           <div class="col-6">
             <div class="journal-box px-0">
               <div class="d-flex justify-content-between mx-3 mb-0">
-                <a href="/<%= currentUser.username %>/journal/comment">
-                  <h3>Últimos comentarios</h3>
+                <a href="/<%= currentUser.username %>/journal/comment" class="text-decoration-none">
+                  <h3><%= __('Recent comments') %></h3>
                 </a>
                 <div>
-                  <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="Sección de comentarios">
+                  <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="<%= __('Section for the journal comments.') %>">
                 </div>
               </div>
               <hr class="mb-2">
@@ -120,8 +130,8 @@
               </div>
               <br>
               <form class="d-flex justify-content-center mx-3" action="/<%= currentUser.username %>/journal/comment/new">
-                <input type="submit" class="btn-neilit mx-2" value="Continuar">
-                <input type="button" class="btn-inverted mx-2" value="Saber más">
+                <input type="submit" class="btn-neilit mx-2" value="<%= __('Continue') %>">
+                <a href="/features" class="btn-inverted mx-2"><%= __('Learn more') %></a>
               </form>
             </div>
           </div>
@@ -130,17 +140,17 @@
           <div class="col-6">
             <div class="journal-box px-0">
               <div class="d-flex justify-content-between mx-3 mb-0">
-                <a href="/username/journal/entry">
-                  <h3>Backtesting</h3>
+                <a href="/username/journal/entry" class="text-decoration-none">
+                  <h3><%= __('Backtesting') %></h3>
                 </a>
                 <div>
-                  <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="Sección de 'backtesting' de estrategias">
+                  <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="<%= __('Section for the backtesting of new strategies and ideas.') %>">
                 </div>
               </div>
               <hr class="mb-2">
               <div class="mx-3">
                 <% if (backtest.title.length < 1) { %>
-                  <p>Conoce el comportamiento de los activos y pon a prueba tus estrategias.</p>
+                  <p><%= __('Get to know the behavior of your assets and test your strategies') %>.</p>
                 <% } else { %>
                   <% backtest.title.forEach((test, i) => { %>
                     <a class="journal-link" href="/<%= currentUser.username %>/journal/backtest/<%= backtest.id[i] %>"><%= test %></a>
@@ -149,8 +159,8 @@
               </div>
               <br>
               <form class="d-flex justify-content-center mx-3" action="/<%= currentUser.username %>/journal/backtest/new">
-                <input type="submit" class="btn-neilit" value="Continuar">
-                <input type="button" class="btn-inverted mx-2" value="Ver todo">
+                <input type="submit" class="btn-neilit" value="<%= __('Continue') %>">
+                <a href="/features" class="btn-inverted mx-2"><%= __('Learn more') %></a>
               </form>
             </div>
           </div>

@@ -12,9 +12,11 @@
   --neilit-default:     #ff8818;
   --neilit-altern:      #f57700;
   --neilit-white:       #ff8818;
+  --neilit-black:       #ff8818;
   --white-neilit:       #ffffff;
   --background-strong:  #ffffff;
   --background-medium:  #ffffff;
+  --background-soft:    #ffffff;
   --background-neilit:  #ff8818;
   --text-contrast:      #212529;
   --text-grey:          #7b7b7b;
@@ -34,8 +36,10 @@
   --neilit-default:     #272727;
   --neilit-white:       #ffffff;
   --white-neilit:       #ff8818;
+  --neilit-black:       #000000;
   --background-strong:  #121212;
   --background-medium:  #272727;
+  --background-soft:    #474747;
   --background-neilit:  #474747;
   --background-hover:   #424242;
   --text-grey:          #a9a9a9;
@@ -167,10 +171,10 @@ input[type=search] {
 
 /* || Utility */
 .orange {
-  color: var(--neilit-default);
+  color: var(--neilit-permanent);
 }
   a.orange {
-    color: var(--neilit-default);
+    color: var(--neilit-permanent);
     text-decoration: none;
   }
     a.orange:focus {
@@ -200,7 +204,7 @@ input[type=search] {
 .btn-neilit {
   font-size: 16px;
   color: white;
-  border: 0.5px solid var(--neilit-default);
+  border: 0.5px solid var(--neilit-white);
   border-radius: .25rem;
   background: var(--neilit-default);
   transition-duration: .25s;
@@ -208,6 +212,7 @@ input[type=search] {
 }
   .btn-neilit:hover {
     color: white;
+    border-color: var(--neilit-permanent);
     background-color: var(--neilit-altern);
   }
 
@@ -277,11 +282,11 @@ input[type=search] {
 /* || Utility */
 .info {
   height: 20px;
-  opacity: 0.3;
+  opacity: 0.6;
   transition-duration: 0.15s;
 }
   .info:hover {
-    opacity: 0.6;
+    opacity: 1;
     transition-duration: 0.15s;
   }
 

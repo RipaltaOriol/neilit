@@ -1,3 +1,10 @@
+var axesColor = 'rgba(0,0,0,0.1)'
+var doughnutBorderColor = 'rgb(255,255,255)'
+if (currentUser.darkMode) {
+  axesColor = 'rgba(255,255,255,0.1)'
+  doughnutBorderColor = 'rgb(39,39,39,39)'
+}
+
 $(document).ready(function() {
     // tooltips
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
@@ -390,7 +397,8 @@ var popularAssetsChart = new Chart(donutChartWidgetTradesWinBELoss, {
         'rgba(69, 214, 158, 1)',
         'rgba(255, 183, 51, 1)',
         'rgba(253 ,94, 116, 1)',
-      ]
+      ],
+      borderColor: doughnutBorderColor
     }]
   },
   options:{
@@ -439,7 +447,8 @@ var orderDirection = new Chart(orderDirection,{
       backgroundColor:[
         "rgba(2,62,138,1)",
         "rgba(144,224,239,1)"
-      ]
+      ],
+      borderColor: doughnutBorderColor
     }]
   },
   options:{
@@ -487,6 +496,7 @@ var orderDirectionResults = new Chart(orderDirectionResults,{
       backgroundColor: 'rgba(0,0,0,0)',
       borderColor: 'rgb(2,62,138)',
       pointBackgroundColor: 'rgb(2,62,138)',
+      pointBorderColor: 'rgb(2,62,138)',
       label: 'Long',
       data: statistics.directionPer.long,
       order: 1,
@@ -495,6 +505,7 @@ var orderDirectionResults = new Chart(orderDirectionResults,{
       backgroundColor: 'rgba(0,0,0,0)',
       borderColor: 'rgb(144,224,239)',
       pointBackgroundColor: 'rgb(144,224,239)',
+      pointBorderColor: 'rgb(144,224,239)',
       label: 'Short',
       data: statistics.directionPer.short,
       order: 2,
@@ -504,7 +515,9 @@ var orderDirectionResults = new Chart(orderDirectionResults,{
     scales: {
       xAxes:[{
         gridLines:{
-          display:false
+          display:true,
+          color: axesColor,
+          zeroLineColor: axesColor
         },
         ticks:{
           display: false,
@@ -512,7 +525,9 @@ var orderDirectionResults = new Chart(orderDirectionResults,{
       }],
       yAxes:[{
         gridLines:{
-          display:false
+          display:true,
+          color: axesColor,
+          zeroLineColor: axesColor
         },
         ticks:{
           display: true,

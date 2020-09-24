@@ -4,37 +4,37 @@
   <div class="pt-4 mx-4">
     <section id="calculator">
       <div class="container">
-        <h2>Calculadora de Riesgo</h2>
+        <h2><%= __('Position Size Calculator') %></h2>
         <% if (currentUser.currency_id == null) { %>
           <div id="local-alert">
             <div class="alert alert-danger mt-2" role="alert">
-              Para utilizar la calculadora de riesgo primero debe seleccionar su divisa de cuenta en ajustes.
+              <%= __('To use position size calculator you must first select you account currenty inside settings.') %>
             </div>
           </div>
         <% } %>
         <div class="journal-box px-0 w-50">
-          <h3 class="mx-3">Información de la cuenta</h3>
+          <h3 class="mx-3"><%= __('Account information') %></h3>
           <hr>
           <div class="mx-3">
             <input id="base" type="text" value="<%= currency %>" class="d-none">
-            <input id="account-size" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de la cuenta">
-            <input id="ops-risk" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Riesgo de la cuenta en %">
-            <div class="separator">or</div>
-            <input id="trade-size" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de la operación">
+            <input id="account-size" class="d-block px-2 mb-2 w-100 py-1" type="number" min="0" placeholder="<%= __('Account size') %>">
+            <input id="ops-risk" class="d-block px-2 mb-2 w-100 py-1" type="number" min="0" placeholder="<%= __('Risk in %') %>">
+            <div class="separator"><%= __('or') %></div>
+            <input id="trade-size" class="d-block px-2 mb-2 w-100 py-1" type="number" min="0" placeholder="<%= __('Amount at risk') %>">
           </div>
           <br>
-          <h3 class="mx-3">Información de la operación</h3>
+          <h3 class="mx-3"><%= __('Trade information') %></h3>
           <hr>
           <div class="mx-3">
-            <input id="sl-pip" class="d-block px-2 mb-2 w-100" type="number" min="0" placeholder="Tamaño de Stop-Loss en Pips">
+            <input id="sl-pip" class="d-block px-2 mb-2 w-100 py-1" type="number" min="0" placeholder="<%= __('Stop-Loss distance in Pips') %>">
           </div>
           <br>
-          <h3 class="mx-3">Par de Divisas</h3>
+          <h3 class="mx-3"><%= __('Asset') %></h3>
           <hr>
           <div class="mb-0 mx-3">
             <!--Dropdown temporalidad widget-->
             <div class="dropdown">
-              <button id="dropdown-label" class="dropdown-select w-100 text-left" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button id="dropdown-label" class="dropdown-select w-100 text-left py-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= currencies[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
@@ -53,22 +53,18 @@
             </div>
           </div>
           <br>
-          <h3 class="mx-3">Resultado</h3>
+          <h3 class="mx-3"><%= __('Result') %></h3>
           <hr>
           <div class="mx-3">
-            <p class="d-inline">Tamaño de la operacion en lotes:</p>
+            <p class="d-inline"><%= __('Size of the trade in lots') %>:</p>
             <strong><span id="lots-size" class="bg-grey orange px-2"></span></strong>
           </div>
           <div class="mx-3">
-            <p class="d-inline">Tamaño de la operacion en unidades:</p>
+            <p class="d-inline"><%= __('Size of the trade in units') %>:</p>
             <strong><span id="units-size" class="bg-grey orange px-2"></span></strong>
           </div>
           <div class="d-flex justify-content-end mx-3 mt-2">
-            <% if (currentUser.currency_id == null) { %>
-              <button class="btn-neilit" disabled>CALCULAR</button>
-            <% } else { %>
-              <button class="btn-neilit" onclick="calcRisk()">CALCULAR</button>
-            <% } %>
+            <button class="btn-neilit" onclick="calcRisk()"><%= __('Calculate') %></button>
           </div>
         </div>
       </div>

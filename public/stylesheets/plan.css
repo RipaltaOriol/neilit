@@ -75,9 +75,10 @@ button.dropdown-select {
 .journal-box {
   padding: 15px 20px;
   border-radius: 5pt;
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  background-color: var(--background-medium);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
   .journal-box h3 {
     font-size: 1.25rem;
@@ -154,9 +155,9 @@ button.dropdown-select {
   padding: 0;
   margin: 0;
   border: none;
-  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
-  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
   .dropdown-menu li {
     line-height: 1.5;
