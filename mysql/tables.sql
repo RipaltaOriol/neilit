@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS entries;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS timeframes;
 DROP TABLE IF EXISTS goals;
+DROP TABLE IF EXISTS stripe_users;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS currencies;
 DROP TABLE IF EXISTS languages;
@@ -55,7 +56,6 @@ CREATE TABLE users
     role_id INT NOT NULL,
     password VARCHAR(4000) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    expiration DATE DEFAULT NULL,
     currency_id INT NOT NULL,
     balance DECIMAL(10,4) NOT NULL,
     showProfits BOOLEAN DEFAULT false NOT NULL,
@@ -69,6 +69,17 @@ CREATE TABLE users
     FOREIGN KEY (role_id) REFERENCES roles(id),
     FOREIGN KEY (currency_id) REFERENCES currencies(id)
   );
+
+CREATE TABLE stripe_users
+(
+  user_id INT NOT NULL,
+  stripeCustomerPaymentMethodId VARCHAR(500),
+  expiration DATE,
+  last4 VARCHAR(4),
+  figerprint VARCHAR(500),
+  billingDetails VARCHAR(500),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
 
 CREATE TABLE pairs
 (

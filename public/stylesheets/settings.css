@@ -189,17 +189,6 @@ hr.profile {
       opacity: .8;
       transition-duration: .25s;
     }
-  /* Invoice's status: Clear or Pending */
-  .clear {
-    background: #cbf6e5;
-    color: #2c946c;
-    border-radius: .25rem;
-  }
-  .pending {
-    background: #fce6e5;
-    color: #fd5e74;
-    border-radius: .25rem;
-  }
 
 .switch {
   position: relative;

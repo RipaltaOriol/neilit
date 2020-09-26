@@ -272,6 +272,7 @@
 	"Backtesting": "Backtesting",
 	"Section for the backtesting of new strategies and ideas.": "Section for the backtesting of new strategies and ideas.",
 	"New": "New",
-	"Remaining days": "Remaining days",
-	"days": "days"
+	"Next invoice": "Next invoice",
+	"days": "days",
+	"This are the last 4 digits of the card that is currently used for billing": "This are the last 4 digits of the card that is currently used for billing"
 }

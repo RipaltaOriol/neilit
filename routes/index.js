@@ -11,6 +11,7 @@ const saltRounds  = 10;
 // Global Program Variables
 let plans      = require('../models/plans');
 let strategies = require('../models/strategies');
+let middleware = require('../middleware/home');
 let connection = require('../models/connectDB');
 let selectPlan;
 // node native promisify
@@ -69,56 +70,91 @@ router.post("/signup", passport.authenticate('local-signup', {
     var saveStripeCustomerId = await query('UPDATE users SET stripeCustomerId = ? WHERE email = ?', [customer.id, req.user.email])
     res.redirect("/signup/select-plan");
   } catch (e) {
-    req.flash('error', 'There was an issue with the registration. Please, try again later.')
+    req.flash('error', 'There was an issue with the registration process. Please, try again later.')
     res.redirect('/signup');
   }
 })
 
 // SELECT PLAN ROUTE
-router.get("/signup/select-plan", (req, res) => {
-  if (req.user) {
-    res.render("select", {priceList:plans.price_id})
-  } else {
-    req.flash('error', 'You must signup before choosing a plan.')
-    res.redirect('/signup');
-  }
+router.get("/signup/select-plan", middleware.isLoggedIn, (req, res) => {
+  res.render("select", {priceList:plans.price_id})
 })
 
 // SELECT PLAN LOGIC
-router.post("/signup/select-plan", (req, res) => {
-  if (req.user) {
-    if (req.body.priceId != '') {
-      selectPlan = req.body.priceId
-      res.redirect('/signup/select-plan/checkout')
-    } else {
-      res.redirect("/" + req.user.username)
-    }
+router.post("/signup/select-plan", middleware.isLoggedIn, (req, res) => {
+  if (req.body.priceId != '') {
+    selectPlan = req.body.priceId
+    res.redirect('/signup/select-plan/checkout')
   } else {
-    req.flash('error', 'You must signup before choosing a plan.')
-    res.redirect('/signup');
+    res.redirect("/" + req.user.username)
   }
 })
 
 // CHECKOUT ROUTE
-router.get("/signup/select-plan/checkout", (req, res) => {
-  if (req.user) {
-    res.render('checkout',
-      {
-        customerId: req.user.stripeCustomerId,
-        priceId: selectPlan
-      }
-    )
-  } else {
-    req.flash('error', 'You must signup before you checkout');
-    res.redirect('/signup');
-  }
+router.get("/signup/select-plan/checkout", middleware.isLoggedIn, (req, res) => {
+  res.render('checkout',
+    {
+      customerId: req.user.stripeCustomerId,
+      priceId: selectPlan
+    }
+  );
 })
 
-router.post('/create-subscription', async (req, res) => {
-  // Attach the payment method to the customer
+// STRIPE USER LOGIC
+router.post('/create-stripeUser', middleware.isLoggedIn, async (req, res) => {
+  // Checks if the current user has a payment method
+  let getStripeUser = await query('SELECT stripeCustomerPaymentMethodId FROM stripe_users WHERE user_id = ?', req.user.id);
+  if (getStripeUser.length > 0) {
+    // If is has a payment method, THEN it updates it
+    let updateStripeUser = await query('UPDATE stripe_users SET stripeCustomerPaymentMethodId = ? WHERE user_id = ?;', [req.body.paymentMethodId, req.user.id])
+  } else {
+    // If it doesn't have a payment method, THEN it creates one
+    var newStripeUser = {user_id: req.user.id, stripeCustomerPaymentMethodId: req.body.paymentMethodId}
+    let createStripeUser = await query('INSERT INTO stripe_users SET ?', newStripeUser);
+  }
+  res.end();
+})
+
+// RETRY INVOICE LOGIC
+router.post('/retry-invoice', async (req, res) => {
+  // Set the default payment method on the customer
   try {
     await stripe.paymentMethods.attach(req.body.paymentMethodId, {
       customer: req.body.customerId,
+    });
+    await stripe.customers.update(req.body.customerId, {
+      invoice_settings: {
+        default_payment_method: req.body.paymentMethodId,
+      },
+    });
+    console.log('it workssss...');
+  } catch (error) {
+    // in case card_decline error
+    console.log('card got declined');
+    return res
+      .status('402')
+      .send({ result: { error: { message: error.message } } });
+  }
+
+  const invoice = await stripe.invoices.retrieve(req.body.invoiceId, {
+    expand: ['payment_intent'],
+  });
+  res.send(invoice);
+});
+
+// SUBSCRIPTION LOGIC
+router.post('/create-subscription', middleware.isLoggedIn, async (req, res) => {
+  // Create a new customer object if user doesn't have one
+  if (req.user.stripeCustomerId == null) {
+    const customer = await stripe.customers.create({
+      email: req.user.email,
+    });
+    var saveStripeCustomerId = await query('UPDATE users SET stripeCustomerId = ? WHERE email = ?', [customer.id, req.user.email])
+  }
+  // Attach the payment method to the customer
+  try {
+    await stripe.paymentMethods.attach(req.body.paymentMethodId, {
+      customer: req.user.stripeCustomerId,
     });
   } catch (error) {
     return res.status('402').send({ error: { message: error.message } });
@@ -138,10 +174,14 @@ router.post('/create-subscription', async (req, res) => {
     items: [{ price: 'price_1HTUBMFaIcvTY5RCKZixDYVk' }],
     expand: ['latest_invoice.payment_intent'],
   });
-  var saveUserPlan = await query('UPDATE users SET stripeSubscriptionId = ?, stripeProductId = ?, role_id = 2, expiration = CURDATE() + INTERVAL 1 MONTH WHERE id = ?;', [subscription.id, subscription.plan.product, req.user.id]);
+  // Retrieves the payment method
+  const paymentMethod = await stripe.paymentMethods.retrieve(
+    req.body.paymentMethodId
+  );
+  var saveUserPlan = await query('UPDATE users SET stripeSubscriptionId = ?, stripeProductId = ?, role_id = 2 WHERE id = ?;', [subscription.id, subscription.plan.product, req.user.id]);
+  var saverPaymentDigits = await query('UPDATE stripe_users SET last4 = ? WHERE user_id = ?;', [paymentMethod.card.last4, req.user.id]);
   res.send(subscription);
 });
-
 
 // LOGOUT ROUTE
 router.get("/logout", (req, res) => {

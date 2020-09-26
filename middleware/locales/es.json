@@ -267,6 +267,7 @@
 	"Backtesting": "Backtesting",
 	"Section for the backtesting of new strategies and ideas.": "Sección para el backtesting the nuevas estrategias e ideas.",
 	"Get to know the behavior of your assets and test your strategies": "Conoce el comportamiento de tu activos y pon a prueba tus estrategias",
-	"Remaining days": "Remaining days",
-	"days": "days"
+	"Next invoice": "Próximo pago",
+	"days": "dias",
+	"This are the last 4 digits of the card that is currently used for billing": "Estos son los últimos 4 dígitos de la tarjeta que está actualmente en uso para la facturación"
 }

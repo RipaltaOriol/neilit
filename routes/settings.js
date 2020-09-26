@@ -112,7 +112,8 @@ router.get("/change-plan", middleware.isLoggedIn, (req, res) => {
   res.render('user/change', {username: req.user.username})
 })
 
-router.post('/cancel-subscription', async (req, res) => {
+// CANCEL SUBSCRIPTION ROUTE
+router.post('/cancel-subscription', middleware.isLoggedIn, async (req, res) => {
   // Delete the subscription
   const deletedSubscription = await stripe.subscriptions.del(
     req.user.stripeSubscriptionId
@@ -121,5 +122,14 @@ router.post('/cancel-subscription', async (req, res) => {
   res.send(deletedSubscription);
 });
 
+// UPDATE PAYMENT ROUTE
+router.get('/update-payment', middleware.isLoggedIn, (req, res) => {
+  res.render('checkout',
+    {
+      customerId: req.user.stripeCustomerId,
+      priceId: 'price_1HTUBMFaIcvTY5RCKZixDYVk'
+    }
+  )
+})
 
 module.exports = router;

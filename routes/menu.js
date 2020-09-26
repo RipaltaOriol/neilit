@@ -7,10 +7,24 @@ let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware');
 let connection = require('../models/connectDB');
 
+// COMBAK: Set your secret key. Remember to switch to your live secret key in production!
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVcs6jWWvowXuRqXQKvFCK6pYG7Q8NRSy9NQ8uCjHADKAHd36Mfosx006ajk0pov');
+
 // SETTINGS ROUTE
-router.get("/settings", middleware.isLoggedIn, (req, res) => {
+router.get("/settings", middleware.isLoggedIn, async (req, res) => {
   var selectGoals = 'SELECT goal FROM goals WHERE user_id = ?';
   var selectRole = 'SELECT role FROM roles WHERE id = ?';
+  var selectPaymentInfo = 'SELECT last4 from stripe_users WHERE user_id = ?';
+  let invoice;
+  if (req.user.stripeSubscriptionId) {
+    invoice = await stripe.invoices.retrieveUpcoming({
+      customer: req.user.stripeCustomerId,
+      subscription: req.user.stripeSubscriptionId
+    });
+  } else {
+    invoice = { total: 0, next_payment_attempt: 0 }
+  }
   var goals = []
   connection.query(selectGoals, req.user.id, (err, getGoals) => {
     getGoals.forEach((result) => {
@@ -19,14 +33,21 @@ router.get("/settings", middleware.isLoggedIn, (req, res) => {
     connection.query(selectRole, req.user.role_id, (err, getRole) => {
       if (err) throw err;
       var role = getRole[0].role;
-      res.render("user/settings",
-        {
-          strategies: userStrategies,
-          currencies: currencies,
-          goals: goals,
-          role: role
-        }
-      );
+      connection.query(selectPaymentInfo, req.user.id, (err, getPaymentInfo) => {
+        if (err) throw err;
+        if (getPaymentInfo.length > 0) { var last4 = getPaymentInfo[0].last4 } else { var last4 = null }
+        res.render("user/settings",
+          {
+            strategies: userStrategies,
+            currencies: currencies,
+            goals: goals,
+            role: role,
+            last: last4,
+            amount: invoice.total,
+            next: invoice.next_payment_attempt
+          }
+        );
+      })
     })
   })
 })

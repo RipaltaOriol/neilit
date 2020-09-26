@@ -91,6 +91,7 @@ app.use((req, res, next) => {
 // COMBAK: set your secret key. Remember to switch to your live secret key in production!
 const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVcs6jWWvowXuRqXQKvFCK6pYG7Q8NRSy9NQ8uCjHADKAHd36Mfosx006ajk0pov');
 
+// COMBAK: figure out what this part of the code does
 app.post(
   '/stripe-webhook',
   bodyParser.raw({ type: 'application/json' }),

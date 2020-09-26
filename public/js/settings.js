@@ -175,6 +175,7 @@ function cancelSubscription() {
     });
 }
 
+// cancels the susbscription
 var form = document.getElementById('cancel-form');
 if (form) {
   form.addEventListener('submit', function (ev) {
