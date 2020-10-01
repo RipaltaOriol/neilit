@@ -39,3 +39,23 @@ function showEntries() {
     allEntries[i].classList.remove('d-none')
   }
 }
+
+// Removes all tas on INDEX comment route
+function noneTas() {
+  document.getElementById('remove-tas').classList.add('d-none')
+  document.getElementById('show-tas').classList.remove('d-none')
+  var allTas = document.getElementsByClassName('comment-tas');
+  for (var i = 0; i < allTas.length; i++) {
+    allTas[i].classList.add('d-none')
+  }
+}
+
+// Shows all tas on INDEX comment route
+function showTas() {
+  document.getElementById('remove-tas').classList.remove('d-none')
+  document.getElementById('show-tas').classList.add('d-none')
+  var allTas = document.getElementsByClassName('comment-tas');
+  for (var i = 0; i < allTas.length; i++) {
+    allTas[i].classList.remove('d-none')
+  }
+}

@@ -8,11 +8,13 @@
 :root {
   --invert-white:       #ffffff;
   --invert-black:       #000000;
+  --white-none:         rgba(255,255,255,1);
   --neilit-permanent:   #ff8818;
   --neilit-default:     #ff8818;
   --neilit-altern:      #f57700;
   --neilit-white:       #ff8818;
   --neilit-black:       #ff8818;
+  --neilit-soft:        #ff8818;
   --white-neilit:       #ffffff;
   --background-strong:  #ffffff;
   --background-medium:  #ffffff;
@@ -33,10 +35,12 @@
 :root.dark-mode {
   --invert-white:       #121212;
   --invert-black:       #ffffff;
+  --white-none:         rgba(0,0,0,0);
   --neilit-default:     #272727;
   --neilit-white:       #ffffff;
-  --white-neilit:       #ff8818;
   --neilit-black:       #000000;
+  --neilit-soft:        #ffc085;
+  --white-neilit:       #ff8818;
   --background-strong:  #121212;
   --background-medium:  #272727;
   --background-soft:    #474747;

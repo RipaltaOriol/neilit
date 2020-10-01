@@ -55,14 +55,6 @@ var connection = mysql.createConnection({
   multipleStatements: true
 });
 
-// Set DB language to Spanish
-// FIXME: how can you change DB on region/language
-// FIXME: change DB language when changing Neilit language
-var sqlToES = 'SET lc_time_names = "es_ES"';
-connection.query(sqlToES, function(err) {
-  if (err) throw err;
-})
-
 // Global Program Variable
 // FIXME: set the rest of the varibles. Some are defined after LOGIN as assynchronously
 // FIXME: can modules be grouped?

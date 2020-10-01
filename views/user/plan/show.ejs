@@ -81,7 +81,7 @@
               <% if (strategies[property].main.backtest_id != null) { %>
                 <li>
                   <label class="mr-1 font-weight-bold">Backtest Sheet:</label>
-                  <span class="user-field"><%= strategies[property].main.backtest_id %></span>
+                  <span class="user-field"><a href="/<%= currentUser.username %>/journal/backtest/<%= strategies[property].main.backtest_id %>">display</a></span>
                 </li>
               <% } %>
               <% if (strategies[property].rules.length > 0) { %>

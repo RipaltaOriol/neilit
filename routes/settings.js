@@ -98,9 +98,9 @@ router.post("/changeMode", middleware.isLoggedIn, (req, res) => {
 
 // UPDATE LANGUAGE ROUTE
 router.post("/changeLanguage", middleware.isLoggedIn, (req, res) => {
-  var updateMode = 'UPDATE users SET language = ? WHERE id = ?'
-  // updates the mode from the DB
-  connection.query(updateMode, [req.body.lang, req.user.id], (err) => {
+  var updateLanguage = 'UPDATE users SET language = ? WHERE id = ?'
+  // updates the user's language in the DB
+  connection.query(updateLanguage, [req.body.lang, req.user.id], (err) => {
     if (err) throw err;
     language = req.body.lang;
     res.end();

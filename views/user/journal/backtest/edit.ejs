@@ -8,96 +8,146 @@
         <h3 class="mx-3"><%= backtest.title %></h3>
         <hr>
         <div class="form-row mx-3">
-          <div class="col-auto mr-3">
-            <label class="mb-0">Número de operación</label>
+          <div class="col-auto mr-3 mb-2">
+            <label class="mb-0"><%= __('Trade number') %></label>
             <h5 id="row-index" class="text-right p-2 bg-hover">
               <%= data[0].length + 1 %>
             </h5>
           </div>
-          <div class="col-auto mr-3">
-            <label class="mb-0">Direction</label>
-            <select id="row-direction" class="custom-select">
-              <% if ('direction' in backtest) { %>
-                <option><%= backtest.direction %></option>
-              <% } else { %>
-                <option value="long">LONG</option>
-                <option value="short">SHORT</option>
-              <% } %>
-            </select>
+          <div class="col-auto mr-3 mb-2">
+            <label class="mb-0"><%= __('Direction') %></label>
+            <!-- dropdown -->
+            <div class="dropdown">
+              <button id="dropdown-label" class="direction dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <% if ('direction' in backtest) { %>
+                  <%= backtest.direction %>
+                <% } else { %>
+                  <%= __('long') %>
+                <% } %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search d-none" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <% if ('direction' in backtest) { %>
+                  <li><%= backtest.direction %></li>
+                <% } else { %>
+                  <li><%= __('long') %></li>
+                  <li><%= __('short') %></li>
+                <% } %>
+              </ul>
+            </div>
           </div>
-          <div class="col-auto mr-3">
-            <label class="mb-0">Pair</label>
-            <select id="row-pair" class="custom-select">
-            <% if ('pair' in backtest) { %>
-              <option><%= currencies[Number(backtest.pair) - 1] %></option>
-            <% } else { %>
-              <% for (var i = 0; i < currencies.length; i++) { %>
-                <option><%= currencies[i] %></option>
-              <% } %>
-            <% } %>
-            </select>
+          <div class="col-auto mr-3 mb-2">
+            <label class="mb-0"><%= __('Pair') %></label>
+            <!-- dropdown -->
+            <div class="dropdown">
+              <button id="dropdown-label" class="pair dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <% if ('pair' in backtest) { %>
+                  <%= currencies[Number(backtest.pair) - 1] %>
+                <% } else { %>
+                  <%= currencies[0] %>
+                <% } %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <% if ('pair' in backtest) { %>
+                  <li><%= currencies[Number(backtest.pair) - 1] %></li>
+                <% } else { %>
+                  <% for (var i = 0; i < currencies.length; i++) { %>
+                    <li><%= currencies[i] %></li>
+                  <% } %>
+                <% } %>
+              </ul>
+            </div>
           </div>
-          <div class="col-auto">
-            <label class="mb-0">Resultado</label>
+          <div class="col-auto mb-2">
+            <label class="mb-0"><%= ('Outcome') %></label>
             <input type="number" id="row-result" class="d-block bg-hover p-2">
           </div>
         </div>
         <div class="form-row mx-3">
-          <div class="col-auto mr-3">
-            <label class="mb-0">Strategies</label>
-            <select id="row-strategy" class="custom-select">
-            <% if ('strategy' in backtest) { %>
-              <option><%= backtest.strategy %></option>
-            <% } else { %>
-              <% for (var i = 0; i < strategies.length; i++) { %>
-                <option><%= strategies[i] %></option>
-              <% } %>
-            <% } %>
-            </select>
+          <div class="col-auto mr-3 mb-2">
+            <label class="mb-0"><%= __('Strategy') %></label>
+            <!-- dropdown -->
+            <div class="dropdown">
+              <button id="dropdown-label" class="strategy dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <% if ('strategy' in backtest) { %>
+                  <%= backtest.strategy %>
+                <% } else { %>
+                  <%= strategies[0] %>
+                <% } %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <% if ('strategy' in backtest) { %>
+                  <li><%= backtest.strategy %></li>
+                <% } else { %>
+                  <% for (var i = 0; i < strategies.length; i++) { %>
+                    <li><%= strategies[i] %></li>
+                  <% } %>
+                <% } %>
+              </ul>
+            </div>
           </div>
-          <div class="col-auto mr-3">
-            <label class="mb-0">Timeframe</label>
-            <select id="row-timeframe"  class="custom-select">
-            <% if ('timeframe' in backtest) { %>
-              <option><%= timeframes[Number(backtest.timeframe) - 1] %></option>
-            <% } else { %>
-              <% for (var i = 0; i < timeframes.length; i++) { %>
-                <option><%= timeframes[i] %></option>
-              <% } %>
-            <% } %>
-            </select>
+          <div class="col-auto mr-3 mb-2">
+            <label class="mb-0"><% __('Timeframe') %></label>
+            <!-- dropdown -->
+            <div class="dropdown">
+              <button id="dropdown-label" class="timeframe dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <% if ('timeframe' in backtest) { %>
+                  <%= timeframes[Number(backtest.timeframe) - 1] %>
+                <% } else { %>
+                  <%= timeframes[0] %>
+                <% } %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <% if ('timeframe' in backtest) { %>
+                  <li><%= timeframes[Number(backtest.timeframe) - 1] %></li>
+                <% } else { %>
+                  <% for (var i = 0; i < timeframes.length; i++) { %>
+                    <li><%= timeframes[i] %></li>
+                  <% } %>
+                <% } %>
+              </ul>
+            </div>
           </div>
-          <div class="col-auto mt-auto">
-            <button id="update-row" type="button" class="btn-neilit mb-0 d-none" onclick="updateRow()">Modificar</button>
-            <button id="new-row" type="button" class="btn-inverted mb-0 d-none" onclick="newRow(1)">New</button>
-            <button id="create-row" type="button" class="btn-neilit mb-0 d-inline" onclick="createRow()">Create</button>
+          <div class="col-auto mt-auto mb-2">
+            <button id="update-row" type="button" class="btn-neilit mb-0 d-none" onclick="updateRow()"><%= __('Edit') %></button>
+            <button id="new-row" type="button" class="btn-inverted mb-0 d-none" onclick="newRow(1)"><%= __('New') %></button>
+            <button id="create-row" type="button" class="btn-neilit mb-0 d-inline" onclick="createRow()"><%= __('Create') %></button>
           </div>
         </div>
         <% if ('addons' in backtest) { %>
           <div class="form-row mx-3 mt-3">
             <% for (var i = 0; i < backtest.addons.length; i++) { %>
-              <div class="col-auto mr-3">
+              <div class="col-auto mr-3 mb-2">
                 <label class="mb-0"><%= backtest.addons[i] %></label>
                 <% if (backtest.addonsType[i] == 1) { %>
-                  <input type="number" class="d-block bg-hover p-2 addon-edit">
+                  <input type="number" class="addon d-block bg-hover p-2" step="0.01">
                 <% } else { %>
-                  <select class="custom-select addon-edit">
-                    <% for (var o = 0; o < 6; o++) { %>
-                      <% if (backtest.addonsOptions[i][o] != null) { %>
-                        <option><%= backtest.addonsOptions[i][o] %></option>
+                  <!-- dropdown -->
+                  <div class="dropdown">
+                    <button id="dropdown-label" class="addon dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= backtest.addonsOptions[i][0] %>
+                    </button>
+                    <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                      <% for (var o = 0; o < 6; o++) { %>
+                        <% if (backtest.addonsOptions[i][o] != null) { %>
+                          <li><%= backtest.addonsOptions[i][o] %></li>
+                        <% } %>
                       <% } %>
-                    <% } %>
-                  </select>
+                    </ul>
+                  </div>
                 <% } %>
               </div>
             <% } %>
           </div>
         <% } %>
         <br>
-        <h3 class="mx-3">Backtest Table</h3>
+        <h3 class="mx-3"><%= __('Backtest Table') %></h3>
         <hr>
         <div class="mx-3">
-          <label>Count:
+          <label><%= __('Count') %>:
             <span id="table-count"></span>
           </label>
           <div class="table-responsive-md">
@@ -105,17 +155,17 @@
               <thead>
                 <tr class="table-header">
                   <th scope="col">#</th>
-                  <th scope="col">Direction</th>
-                  <th scope="col">Result</th>
-                  <th scope="col">Pair</th>
-                  <th scope="col">Strategy</th>
-                  <th scope="col">Timeframe</th>
+                  <th scope="col"><%= __('Direction') %></th>
+                  <th scope="col"><%= __('Result') %></th>
+                  <th scope="col"><%= __('Pair') %></th>
+                  <th scope="col"><%= __('Strategy') %></th>
+                  <th scope="col"><%= __('Timeframe') %></th>
                   <% if ('addons' in backtest) { %>
                     <% backtest.addons.forEach((addon, i) => { %>
-                      <th scope="col" class="non-wrap" data-toggle="tooltip" data-placement="top" title="<%= addon %>">Addon <%= i + 1 %></th>
+                      <th scope="col" class="non-wrap" data-toggle="tooltip" data-placement="top" title="<%= addon %>"><%= __('Addon') %> <%= i + 1 %></th>
                     <% }) %>
                   <% } %>
-                  <th scope="col">Action</th>
+                  <th scope="col"><%= __('Action') %></th>
                 </tr>
               </thead>
               <tbody>
@@ -151,11 +201,13 @@
                         <%= timeframes[Number(data[4][i]) - 1] %>
                       <% } %>
                     </td>
-                    <% backtest.addons.forEach((col, n) => { %>
-                      <td class="text-right">
-                        <%= data[n + 5][i] %>
-                      </td>
-                    <% }) %>
+                    <% if ('addons' in backtest) { %>
+                      <% backtest.addons.forEach((col, n) => { %>
+                        <td class="text-right">
+                          <%= data[n + 5][i] %>
+                        </td>
+                      <% }) %>
+                    <% } %>
                     <td class="text-center">
                       <button type="button" class="table-action delete-row" onclick="deleteRow(this)">
                         <img src="/imgs/icons/delete.svg" alt="delete row">
@@ -172,8 +224,8 @@
         </div>
         <br>
         <div class="d-flex justify-content-end mx-3">
-          <a href="javascript:history.back()" class="btn-inverted ml-2">Cancelar</a>
-          <button type="submit" id="update-backtest" class="btn-neilit ml-2">Guardar</button>
+          <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Cancel') %></a>
+          <button type="submit" id="update-backtest" class="btn-neilit ml-2"><%= __('Save') %></button>
         </div>
       </form>
     </div>

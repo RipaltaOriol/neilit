@@ -19,6 +19,8 @@ var serverRJournal    = document.getElementById("server-rjournal");
 var clientRPlan       = document.getElementById("client-rplan");
 var serverRPlan       = document.getElementById("server-rplan");
 
+var connectFocus;
+
 // behavior for components on positioning
 checkTitle.click(() => {
   if (checkTitle.prop('checked')) {
@@ -191,6 +193,9 @@ if (window.localStorage.getItem('components') != null) {
       document.getElementsByClassName('assets')[i].style.display = preferences.assets;
       document.getElementsByClassName('risk')[i].style.display = preferences.risk;
       document.getElementsByClassName('backtest')[i].style.display = preferences.backtest;
+      document.getElementsByClassName('strategy-backtest')[i].onclick = () => {
+        connectFocus = i;
+      }
       document.getElementsByClassName('rules')[i].style.display = preferences.rules;
 
       // sets default input value for timeframe and pair to send sever
@@ -263,6 +268,15 @@ function addRule(type, id) {
     document.getElementsByClassName('input-order')[currentRule].value = 'market';
   }
   document.getElementsByClassName('description')[currentRule].style.display = preferences.description;
+}
+
+// connects a backtest to the plan's strategies
+function connectBacktest(index) {
+  var connectedId = backtests.id[index]
+  $('.backtest-input')[connectFocus].value = connectedId;
+  $('.plan-backtest')[connectFocus].classList.remove('d-none')
+  $('.plan-backtest')[connectFocus].classList.add('d-block')
+  $('.connect-backtest')[connectFocus].textContent = backtests.title[index];
 }
 
 // allows changes on the timeframes of a strategy

@@ -1,7 +1,8 @@
-input { }
+input {
+  color: var(--invert-black);
+}
   input.dropdown-search[type=text] {
     background-color: var(--background-medium);
-    color: var(--invert-black);
     border-bottom: 1px solid var(--invert-black);
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;

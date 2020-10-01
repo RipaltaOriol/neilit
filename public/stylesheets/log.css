@@ -1,12 +1,3 @@
-:root{
-  --gris-flojo: #F7F7F7;
-  --gris-medio: #EEEEEE;
-  --gris-fuerte: #E5E5E5;
-  --gris-texto: #7B7B7B;
-  --rojo-fuerte: #EE0000;
-  --azul-primario: #007BFF;
-}
-
 /* || General styles */
 table {
   position: relative;
@@ -32,8 +23,8 @@ table {
 tr { }
   tr th {
     text-align: center;
-    background-color: white;
-    color: grey;
+    background-color: var(--background-soft);
+    color: var(--text-grey);
     width: 40px;
     border: 1px solid #ff8818;
   }
@@ -44,17 +35,18 @@ tr { }
   }
 
 td{
-  border-radius: 7px;
+  color: var(--text-contrast);
+  border-radius: .15rem;
 }
   td:hover{
-    background: var(--gris-medio);
+    background: var(--background-hover);
   }
     td a{
-      color: black;
+      color: red;
     }
       td a:hover{
         text-decoration: none;
-        color: black;
+        color: red;
       }
 
 /* th {
@@ -66,17 +58,15 @@ span .checkbox-orange {
   font-size: 18px;
 }
 
-.journal-box .btn-neilit {
-  color: white;
-}
-  .journal-box .btn-neilit:hover {
-    text-decoration: none;
+.journal-box { }
+  .journal-box .btn-neilit {
+    color: white;
   }
   .journal-box .btn-inverted {
-    color: #ff8818;
+    color: var(--neilit-white);
   }
-    .journal-box .btn-inverted:hover {
-      color: white;
+    .journal-box .btn-neilit:hover {
+      text-decoration: none;
     }
 
 .table { }
@@ -138,10 +128,7 @@ span .checkbox-orange {
   color: #ff8818;
 }
 
-.dropdown-menu {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.23);
-  border: none;
-}
+.dropdown-menu { }
   .dropdown-menu a {
     border-radius: .25rem;
   }
@@ -188,24 +175,37 @@ span .checkbox-orange {
   white-space: nowrap;
 }
 
+.comment-entry {
+  background-color: var(--background-strong);
+}
+
+.comment-tas {
+  color: var(--neilit-whtie);
+  border: 1px solid var(--neilit-white);
+  border-radius: 5pt;
+}
+
 .table-action {
   background: none;
   border: none;
   padding: 0;
 }
+  .dark-mode .table-action img {
+    filter: invert();
+  }
 
 #client-comment {
-  color: black;
+  color: var(--invert-black);
 }
   #client-comment:focus {
-    color: black;
-    background-color: #f7f7f7;
+    color: var(--invert-black);
+    background-color: var(--background-hover);
     border-radius: .25rem;
     outline: none;
   }
   #client-comment[placeholder]:empty:before {
     content: attr(placeholder);
-    color: #7b7b7b;
+    color: var(--text-grey);
   }
   #client-comment[placeholder]:empty:focus:before {
     content: "";
@@ -275,16 +275,27 @@ span .checkbox-orange {
     cursor: pointer;
   }
 
+#addon {
+  color: var(--black-inverted);
+  background: none;
+  border: none;
+}
+  .dark-mode #addon img {
+    filter: invert();
+  }
+
 #addons { }
   #addons label {
     font-size: 18px;
   }
 
-#addon {
-  background: none;
-  border: none;
-}
-
 #row-index {
   min-height: 40px;
 }
+
+#dropdown-label { }
+  #dropdown-label.disabled {
+    color: var(--invert-white);
+    background: var(--grey-strong);
+    cursor: no-drop;
+  }

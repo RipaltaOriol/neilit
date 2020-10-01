@@ -157,6 +157,7 @@ router.post('/create-subscription', middleware.isLoggedIn, async (req, res) => {
       customer: req.user.stripeCustomerId,
     });
   } catch (error) {
+    // COMBAK: display error message where card is declined
     return res.status('402').send({ error: { message: error.message } });
   }
   // Change the default invoice settings on the customer to the new payment method

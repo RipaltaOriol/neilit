@@ -4,7 +4,7 @@
   <div class="container mt-3 mx-auto">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/comment/<%= comment.id %>?_method=PUT" method="POST">
-        <h3 class="mx-3">Comentatio creado el <%= comment.date %></h3>
+        <h3 class="mx-3"><%= __('Comment created the') %> <%= comment.date %></h3>
         <hr>
         <div class="mb-2 mx-3">
           <div id="client-comment" contenteditable="true"><%= comment.comment %></div>
@@ -12,8 +12,8 @@
         <textarea id="server-comment" name="comment" class="d-none">Hello</textarea>
         <br>
         <div class="text-right mx-3">
-          <a href="javascript:history.back()" class="btn-inverted ml-2">Cancelar</a>
-          <button id="store-comment" type="submit" class="btn-neilit ml-2">Guardar</button>
+          <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Cancel') %></a>
+          <button id="store-comment" type="submit" class="btn-neilit ml-2"><%= __('Save') %></button>
         </div>
       </form>
     </div>

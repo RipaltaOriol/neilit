@@ -31,22 +31,22 @@ function strategyHtml() {
     <div>
       <p class="strategy-title d-inline-block mb-2"></p>
       <input type="text" name="strategies" class="strategy-input d-none">
-      <div class="about">
+      <div class="about mb-1">
         <span>About</span>
         <div class="client-about diveditable bg-hover w-75 p-1" placeholder="What is this strategy about?" contenteditable="true"></div>
       </div>
-      <textarea name="about" class="d-none server-about"></textarea>
+      <textarea name="about" class="d-none server-about mb-1"></textarea>
       <div class="howto">
         <span>How to Use</span>
         <div class="client-howto diveditable bg-hover w-75 p-1" placeholder="How do you use this strategy?" contenteditable="true"></div>
       </div>
-      <textarea name="howto" class="d-none server-howto"></textarea>
+      <textarea name="howto" class="d-none server-howto mb-1"></textarea>
       <div class="strategyNote">
         <span>Key Notes</span>
         <div class="client-keynotes diveditable bg-hover w-75 p-1" placeholder="Any additional description?" contenteditable="true"></div>
       </div>
-      <textarea name="keyNotes" class="d-none server-keynotes"></textarea>
-      <div class="timeframe">
+      <textarea name="keyNotes" class="d-none server-keynotes mb-1"></textarea>
+      <div class="timeframe mb-1">
         <span>Timeframes</span>
         <div class="dropdown">
           <button id="dTF" class="dd-tfs dropdown-select bg-hover" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,7 +62,7 @@ function strategyHtml() {
           </ul>
         </div>
       </div>
-      <div class="assets">
+      <div class="assets mb-1">
         <span>Assets</span>
         <div class="dropdown">
           <button id="dPairs" class="dd-pairs dropdown-select bg-hover" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,12 +78,17 @@ function strategyHtml() {
           </ul>
         </div>
       </div>
-      <div class="risk">
+      <div class="risk mb-1">
         <span>Risk Tolerance [%]:</span>
         <input type="number" class="bg-hover w-75 p-1 ml-1" name="risk" placeholder="what is you risk per operation in %?" min="0" max="100" step="0.01">
       </div>
-      <div class="backtest">
-        <button class="btn-neilit" type="button" data-toggle="modal" data-target=".modal-backtest">Connect to Backtest item</button>
+      <div class="backtest mb-1">
+        <button class="strategy-backtest btn-neilit" type="button" data-toggle="modal" data-target=".modal-backtest">Connect to Backtest item</button>
+        <span class="plan-backtest d-none">
+          <label class="mt-2 mb-0">Strategy backtested on the:</label>
+          <p class="d-inline bg-hover orange px-1 connect-backtest"></p>
+          <input type="text" name="planBacktest" class="d-none backtest-input">
+        </span>
       </div>
 
       <div class="rules mt-3">

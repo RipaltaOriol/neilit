@@ -29,7 +29,7 @@ router.get("/components", middleware.isLoggedIn, (req, res) => {
 
 // NEW PLAN ROUTE
 router.get("/new", middleware.isLoggedIn, (req, res) => {
-  var selectBacktests = 'SELECT id, pair_id, DATE_FORMAT(created_at, "%d de %M %Y") AS date FROM backtest WHERE user_id = ?;'
+  var selectBacktests = 'SELECT id, DATE_FORMAT(created_at, "%d de %M %Y") AS date, result FROM backtest WHERE user_id = ?;'
   var allBacktests = {
     id: [],
     title: []
@@ -39,7 +39,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     // stores each backtest to an object array
     results.forEach((backtest) => {
       allBacktests.id.push(backtest.id);
-      allBacktests.title.push(pairs[Number(backtest.pair_id - 1)] + ', ' + backtest.date)
+      allBacktests.title.push(backtest.date + ' in ' + backtest.result)
     });
     // loads the trading plan elements to an object
     var elements = {
@@ -128,6 +128,7 @@ router.post("/new", middleware.isLoggedIn, (req, res) => {
               var timeframeId = null;
               var pairId = null;
               var risk = null;
+              var backtest_id = null;
               if (req.body.timeframes[i] != '') {
                 timeframeId = timeframes.findIndex(timeframe => timeframe === req.body.timeframes[i]) + 1;
               }
@@ -137,7 +138,10 @@ router.post("/new", middleware.isLoggedIn, (req, res) => {
               if (req.body.risk[i] != '') {
                 risk = req.body.risk[i];
               }
-              newStrategies.push([plan_id, strategyId, req.body.about[i], req.body.howto[i], req.body.keyNotes[i], timeframeId, pairId, risk])
+              if (req.body.planBacktest[i] != '') {
+                backtest_id = req.body.planBacktest[i];
+              }
+              newStrategies.push([plan_id, strategyId, req.body.about[i], req.body.howto[i], req.body.keyNotes[i], timeframeId, pairId, risk, backtest_id])
             });
           }
           // one strategy
@@ -146,6 +150,7 @@ router.post("/new", middleware.isLoggedIn, (req, res) => {
             var timeframeId = null;
             var pairId = null;
             var risk = null;
+            var backtest_id = null;
             if (req.body.timeframes != '') {
               timeframeId = timeframes.findIndex(timeframe => timeframe === req.body.timeframes) + 1;
             }
@@ -155,9 +160,12 @@ router.post("/new", middleware.isLoggedIn, (req, res) => {
             if (req.body.risk != '') {
               risk = req.body.risk;
             }
-            newStrategies.push([plan_id, strategyId, req.body.about, req.body.howto, req.body.keyNotes, timeframeId, pairId, risk])
+            if (req.body.planBacktest != '') {
+              backtest_id = req.body.planBacktest;
+            }
+            newStrategies.push([plan_id, strategyId, req.body.about, req.body.howto, req.body.keyNotes, timeframeId, pairId, risk, backtest_id])
           }
-          var addStrategies = await query('INSERT INTO pln_strategies (plan_id, strategy_id, about, howto, keynotes, timeframe_id, pair_id, risk) VALUES ?', [newStrategies]);
+          var addStrategies = await query('INSERT INTO pln_strategies (plan_id, strategy_id, about, howto, keynotes, timeframe_id, pair_id, risk, backtest_id) VALUES ?', [newStrategies]);
         }
         // saves plan's positioning rules to the DB
         if (req.body.positionTitle != undefined) {

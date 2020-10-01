@@ -6,29 +6,61 @@ let connection = require('../models/connectDB');
 // INDEX COMMENTS ROUTE
 // FIXME: How to optmize when loading a large sample (LOAD AS YOU GO)
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  var getAllComments = 'SELECT DATE_FORMAT(created_at, "%d/%m/%y %H:%i") AS created_at, comment FROM comments WHERE user_id = ?';
-  var getAllEntries = 'SELECT DATE_FORMAT(entry_dt, "%d/%m/%y %H:%i") AS entry_dt, pair FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE user_id = ?';
-  var listComments = {
-    date: [],
-    content: []
-  }
-  listEntries = {
-    date: [],
-    content: []
-  }
+  var getAllComments = 'SELECT id, DATE_FORMAT(created_at, "%Y-%m-%dT%H:%i:%s") AS date, comment FROM comments WHERE user_id = ?';
+  var getAllEntries = 'SELECT entries.id, DATE_FORMAT(entry_dt, "%Y-%m-%dT%H:%i:%s") AS date, comment, pair FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE user_id = ?';
+  var getAllTas = 'SELECT tanalysis.id, DATE_FORMAT(created_at, "%Y-%m-%dT%H:%i:%s") AS date, pair FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ?';
+  var dataList = []
+  // the types classification are: 1-commment, 2-entry, 3-ta
   connection.query(getAllComments, req.user.id, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal');
+    }
     results.forEach((result) => {
-      listComments.date.push(result.created_at);
-      listComments.content.push(result.comment);
+      var comment = {
+        id: result.id,
+        date: new Date(result.date),
+        type: 1,
+        content: result.comment
+      }
+      dataList.push(comment);
     });
     connection.query(getAllEntries, req.user.id, (err, results) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username + '/journal');
+      }
       results.forEach((result) => {
-        listEntries.date.push(result.entry_dt);
-        listEntries.content.push(result.pair);
+        var entry = {
+          id: result.id,
+          pair: result.pair,
+          date: new Date(result.date),
+          type: 2,
+          content: result.comment
+        }
+        dataList.push(entry);
       });
-      res.render("user/journal/comment/index", {historyComment: listComments, historyEntry: listEntries})
+      connection.query(getAllTas, req.user.id, (err, results) => {
+        if (err) {
+          // COMBAK: log error
+          req.flash('error', 'Something went wrong, please try again.')
+          return res.redirect('/' + req.user.username + '/journal');
+        }
+        results.forEach((result) => {
+          var ta = {
+            id: result.id,
+            pair: result.pair,
+            date: new Date(result.date),
+            type: 3
+          }
+          dataList.push(ta);
+        });
+        dataList.sort((a, b) => a.date.getTime() - b.date.getTime());
+        res.render("user/journal/comment/index", {dataList: dataList})
+
+      })
     })
   })
 })
@@ -48,7 +80,11 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
   }
   // save comment to the DB
   connection.query(commentQuery, newcomment, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal/comment/new');
+    }
     //console.log(results.insertId);
     res.redirect('/' + req.user.username + '/journal');
   });
@@ -56,9 +92,13 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 
 // SHOW COMMENT ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
-  var getComment = 'SELECT id, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at, comment FROM comments WHERE id = ?';
+  var getComment = 'SELECT id, DATE_FORMAT(created_at, "%d ' + res.__('of') + ' %M %Y") AS created_at, comment FROM comments WHERE id = ?';
   connection.query(getComment, req.params.id, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal');
+    }
     var commentInfo = {
       id: results[0].id,
       date: results[0].created_at,
@@ -70,9 +110,13 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
 
 // UPDATE COMMENT ROUTE
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
-  var getComment = 'SELECT id, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at, comment FROM comments WHERE id = ?';
+  var getComment = 'SELECT id, DATE_FORMAT(created_at, "%d ' + res.__('of') + ' %M %Y") AS created_at, comment FROM comments WHERE id = ?';
   connection.query(getComment, req.params.id, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal');
+    }
     var commentInfo = {
       id: results[0].id,
       date: results[0].created_at,
@@ -90,7 +134,11 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     comment: req.body.comment
   }
   connection.query('UPDATE comments SET ? WHERE id = ?', [commentbody, req.params.id], (err, updated) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal');
+    }
     console.log('changed ' + updated.changedRows + ' rows');
     res.redirect('/' + req.user.username + '/journal');
   })
@@ -102,7 +150,11 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteQuery = 'DELETE FROM comments WHERE id = ?'
   // Query to delte the entry
   connection.query(deleteQuery, comment2Delete, (err) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal');
+    }
     res.redirect('/' + req.user.username + '/journal');
   })
 })

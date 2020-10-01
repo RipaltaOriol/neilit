@@ -46,7 +46,7 @@
                     </div>
                     <div class="modal-body d-flex flex-column">
                       <% backtests.title.forEach((backtest, i) => { %>
-                        <a class="mt-2 bg-hover" data-dismiss="modal" onclick=""><%= backtest %></a>
+                        <a class="mt-2 bg-hover" data-dismiss="modal" onclick="connectBacktest(<%= i %>)"><%= backtest %></a>
                       <% }); %>
                     </div>
                   </div>
@@ -149,6 +149,7 @@
 
 <script type="text/javascript">
   var elements = <%- JSON.stringify(elements) %>;
+  var backtests = <%- JSON.stringify(backtests) %>;
 </script>
 
 <!-- <section> is inside partials -->

@@ -4,132 +4,156 @@
   <div class="container mt-3 mb-5 mx-auto">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/backtest" method="POST">
-        <h3 class="mx-3">Creat Backtesting</h3>
+        <h3 class="mx-3"><%= __('Create Backtesting') %></h3>
         <hr>
         <div class="mx-3 mb-3">
-          <h5>Divisas</h5>
+          <h5><%= __('Pairs') %></h5>
           <span>
             <label class="checkbox-orange my-auto">
-              Múltiples pares de divisas
+              <%= __('Multiple pairs') %>
               <input type="radio" name="pairs" value="0" onclick="letPair(false);" checked>
               <span class="checkmark"></span>
             </label>
           </span>
           <span class="input-group">
-            <label class="checkbox-orange my-auto">
-              Solo una divisa
+            <label class="checkbox-orange my-auto mr-2">
+              <%= __('Single pair') %>
               <input type="radio" name="pairs" value="1" onclick="letPair(true);">
               <span class="checkmark"></span>
             </label>
-            <select id="backtest-pair" name="selectPair" class="custom-select p-1" disabled>
-              <% for (var i = 0; i < currencies.length; i++) { %>
-                <option value="<%= i %>"><%= currencies[i] %></option>
-              <% } %>
-            </select>
+            <input type="text" name="selectPair" value="1" class="dropdown-server d-none">
+            <!-- dropdown -->
+            <div class="dropdown">
+              <button id="dropdown-label" class="pairs dropdown-select p-0 px-2 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= currencies[0] %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <% for (var i = 0; i < currencies.length; i++) { %>
+                  <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                <% } %>
+              </ul>
+            </div>
           </span>
         </div>
         <div class="mx-3 mb-3">
-          <h5>Dirección</h5>
+          <h5><%= __('Direction') %></h5>
           <span>
             <label class="checkbox-orange my-auto">
-              Compra y Venta
+              <%= __('Long and Short') %>
               <input type="radio" name="direction" value="0" checked>
               <span class="checkmark"></span>
             </label>
           </span>
           <span>
             <label class="checkbox-orange my-auto">
-              Solo Compra
+              <%= __('Only Long') %>
               <input type="radio" name="direction" value="1">
               <span class="checkmark"></span>
             </label>
           </span>
           <span>
             <label class="checkbox-orange my-auto">
-              Solo Venta
+              <%= __('Only Short') %>
               <input type="radio" name="direction" value="-1">
               <span class="checkmark"></span>
             </label>
           </span>
         </div>
         <div class="mx-3 mb-3">
-          <h5>Resultados de las operaciones</h5>
+          <h5><%= __('Operation\'s results') %></h5>
           <span>
             <label class="checkbox-orange my-auto">
-              En Risk-Reward ratio (Rs)
+              <%= __('In Risk-Reward ratio (R)') %>
               <input type="radio" name="outcome" value="R">
               <span class="checkmark"></span>
             </label>
           </span>
           <span>
             <label class="checkbox-orange my-auto">
-              En porcentaje (%)
+              <%= __('In Percentage (%)') %>
               <input type="radio" name="outcome" value="%">
               <span class="checkmark"></span>
             </label>
           </span>
         </div>
         <br>
-        <h3 class="mx-3">Específicos</h3>
+        <h3 class="mx-3"><%= __('Specifics') %></h3>
         <hr>
         <div class="mx-3 mb-3">
-          <h5>Periodo de tiempo</h5>
+          <h5><%= __('Timeframes') %></h5>
           <span>
             <label class="checkbox-orange my-auto">
-              Múltiples periodos de tiempo (timeframes)
+              <%= __('Multiple timeframes') %>
               <input type="radio" name="timeframe" value="0" onclick="letTimeframe(false);" checked>
               <span class="checkmark"></span>
             </label>
           </span>
           <span class="input-group">
-            <label class="checkbox-orange my-auto">
-              Solo un periodo de tiempo (timeframe)
+            <label class="checkbox-orange my-auto mr-2">
+              <%= __('Single timeframe') %>
               <input type="radio" name="timeframe" value="1" onclick="letTimeframe(true);">
               <span class="checkmark"></span>
             </label>
-            <select id="backtest-timeframe" name="selectTimeframe" class="custom-select p-1" disabled>
-              <% for (var i = 0; i < timeframes.length; i++) { %>
-                <option value="<%= i %>"><%= timeframes[i] %></option>
-              <% } %>
-            </select>
+            <input type="text" name="selectTimeframe" value="1" class="dropdown-server d-none">
+            <!-- dropdown -->
+            <div class="dropdown">
+              <button id="dropdown-label" class="timeframes dropdown-select p-0 px-2 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= timeframes[0] %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <% for (var i = 0; i < timeframes.length; i++) { %>
+                  <li class="<%= i + 1 %>"><%= timeframes[i] %></li>
+                <% } %>
+              </ul>
+            </div>
           </span>
         </div>
         <div class="mx-3 mb-3">
-          <h5>Estrategias</h5>
+          <h5><%= __('Strategies') %></h5>
           <span>
             <label class="checkbox-orange my-auto">
-              Múltiples estrategias
+              <%= __('Multiple strategies') %>
               <input type="radio" name="strategy" value="0" onclick="letStrategy(false);" checked>
               <span class="checkmark"></span>
             </label>
           </span>
           <span class="input-group">
-            <label class="checkbox-orange my-auto">
-              Solo una estrategia
+            <label class="checkbox-orange my-auto mr-2">
+              <%= __('Single strategy') %>
               <input type="radio" name="strategy" value="1" onclick="letStrategy(true);">
               <span class="checkmark"></span>
             </label>
-            <select id="backtest-strategy" name="selectStrategy" class="custom-select p-1" disabled>
-              <% for (var i = 0; i < strategies.length; i++) { %>
-                <option value="<%= i %>"><%= strategies[i] %></option>
-              <% } %>
-            </select>
+            <input type="text" name="selectStrategy" value="1" class="dropdown-server d-none">
+            <!-- dropdown -->
+            <div class="dropdown">
+              <button id="dropdown-label" class="strategies dropdown-select p-0 px-2 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= strategies[0] %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <% for (var i = 0; i < strategies.length; i++) { %>
+                  <li class="<%= i + 1 %>"><%= strategies[i] %></li>
+                <% } %>
+              </ul>
+            </div>
           </span>
         </div>
         <br>
-        <h3 class="mx-3">Addons</h3>
+        <h3 class="mx-3"><%= __('Addons') %></h3>
         <hr>
         <div class="mx-3">
           <div id="addons">
             <!-- backtest addons go here -->
           </div>
-          <button id="addon" type="button" onclick="addList();">
-            <img src="/imgs/icons/addon.svg" alt="create a new addon">
-            Añade otro parámetro
+          <button id="addon" class="d-flex align-items-center" type="button" onclick="addList();">
+            <img src="/imgs/icons/addon.svg" class="mr-1" alt="create a new addon">
+            <%= __('Add a parameter') %>
           </button>
         </div>
         <div class="d-flex justify-content-end mx-3">
-          <button id="submit-backtest" type="submit" class="btn-neilit">Crear</button>
+          <button id="submit-backtest" type="submit" class="btn-neilit"><%= __('Create') %></button>
         </div>
       </form>
     </div>
@@ -137,6 +161,7 @@
 
 <script type="text/javascript">
   var addons = <%- JSON.stringify(addons) %>;
+  var backtest = null;
 </script>
 
 <!-- <section> is inside partials -->

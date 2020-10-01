@@ -1,16 +1,19 @@
 let express = require('express');
+const util = require('util');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
 let timeframes = require('../models/timeframes');
 let middleware = require('../middleware')
 let connection = require('../models/connectDB');
+// node native promisify
+const query = util.promisify(connection.query).bind(connection);
 
 // Backtest Addon Options
 var addonBacktest = require('../models/elements/backtest');
 
 // INDEX BACKTEST ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  res.send('You have reached the INDEX ROUTE for BACKTEST');
+  res.send('Index route');
 })
 
 // NEW BACKTEST ROUTE
@@ -32,81 +35,137 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 
 // NEW BACKTEST LOGIC
 router.post("/", middleware.isLoggedIn, (req, res) => {
-  // creates an object with the new backtest main variables
-  var newBacktest = {
-    user_id: req.user.id,
-    result: req.body.outcome
-  }
-  // sets the backtest pair (if constant)
-  if (req.body.pairs == 0) {
-    newBacktest.pair_id = null;
+  if (!(req.body.outcome)) {
+    req.flash('error', 'The results\' type has to be defined.')
+    res.redirect('/' + req.user.username + '/journal/backtest/new');
   } else {
-    newBacktest.pair_id = Number(req.body.selectPair) + 1
-  }
-  // sets the backtest direction (if constant)
-  if (req.body.direction == 0) {
-    newBacktest.direction = null;
-  } else if (req.body.direction == 1) {
-    newBacktest.direction = 'long';
-  } else {
-    newBacktest.direction = 'short';
-  }
-  // sets the backtest strategy (if constant)
-  if (req.body.strategy == 0) {
-    newBacktest.strategy_id = null;
-  } else {
-    newBacktest.strategy_id = userIdStrategies[req.body.selectStrategy]
-  }
-  // sets the backtest timeframe (if constant)
-  if (req.body.timeframe == 0) {
-    newBacktest.timeframe_id = null;
-  } else {
-    newBacktest.timeframe_id = Number(req.body.selectTimeframe) + 1
-  }
-  // stores the principal backtest parametes into the DB
-  connection.query('INSERT INTO backtest SET ?', newBacktest, (err, backtestId) => {
-    if (err) throw err;
-    var backtest_id = backtestId.insertId;
-    if ('varName' in req.body) {
-      var addAddons = 'INSERT INTO backtest_addons (backtest_id, description, is_integers, option1, option2, option3, option4, option5, option6) VALUES ?'
-      // creates an object with the new backtest addons variables
-      var newAddons = []
-      var counterAddon = 0;
-      for (var i = 0; i < req.body.varName.length; i++) {
-        var addon = [backtest_id, req.body.varName[i], req.body.intList[i]]
-        // configures an integers value addon
-        if (req.body.intList[i] == 1) {
-          addon.push(null, null, null, null, null, null)
-        }
-        // configures an options value addons
-        else {
-          for (var y = counterAddon; y < Number(counterAddon) + Number(req.body.arrOption[i]); y++) {
-            addon.push(req.body.varOption[y])
+    // creates an object with the new backtest main variables
+    var newBacktest = {
+      user_id: req.user.id,
+      result: req.body.outcome
+    }
+    // sets the backtest pair (if constant)
+    if (req.body.pairs == 0) {
+      newBacktest.pair_id = null;
+    } else {
+      newBacktest.pair_id = req.body.selectPair
+    }
+    // sets the backtest direction (if constant)
+    if (req.body.direction == 0) {
+      newBacktest.direction = null;
+    } else if (req.body.direction == 1) {
+      newBacktest.direction = 'long';
+    } else {
+      newBacktest.direction = 'short';
+    }
+    // sets the backtest strategy (if constant)
+    if (req.body.strategy == 0) {
+      newBacktest.strategy_id = null;
+    } else {
+      newBacktest.strategy_id = userIdStrategies[Number(req.body.selectStrategy) - 1]
+    }
+    // sets the backtest timeframe (if constant)
+    if (req.body.timeframe == 0) {
+      newBacktest.timeframe_id = null;
+    } else {
+      newBacktest.timeframe_id = req.body.selectTimeframe
+    }
+    // stores the principal backtest parametes into the DB
+    connection.query('INSERT INTO backtest SET ?', newBacktest, (err, backtestId) => {
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username + '/journal/backtest/new');
+      }
+      var backtest_id = backtestId.insertId;
+      if ('varName' in req.body) {
+        var addAddons = 'INSERT INTO backtest_addons (backtest_id, description, is_integers, option1, option2, option3, option4, option5, option6) VALUES ?'
+        // creates an object with the new backtest addons variables
+        var newAddons = []
+        var counterAddon = 0;
+        // multiple addons
+        if (Array.isArray(req.body.varName)) {
+          for (var i = 0; i < req.body.varName.length; i++) {
+            if (req.body.varName[i] == '') {
+              req.flash('error', 'The addons\' title cannot be blank.')
+              return res.redirect('/' + req.user.username + '/journal/backtest/new');
+            }
+            var addon = [backtest_id, req.body.varName[i], req.body.intList[i]]
+            // configures an integers value addon
+            if (req.body.intList[i] == 1) {
+              addon.push(null, null, null, null, null, null)
+            }
+            // configures an options value addons
+            else {
+              if (req.body.varOption[counterAddon] == '') {
+                req.flash('error', 'The addons\' options are required.')
+                return res.redirect('/' + req.user.username + '/journal/backtest/new');
+              }
+              for (var y = counterAddon; y < Number(counterAddon) + Number(req.body.arrOption[i]); y++) {
+                addon.push(req.body.varOption[y])
+              }
+              if (req.body.arrOption[i] < 6) {
+                for (var r = 0; r < 6 - req.body.arrOption[i]; r++) {
+                  addon.push(null)
+                }
+              }
+            }
+            counterAddon += Number(req.body.arrOption[i])
+            newAddons.push(addon);
           }
-          if (req.body.arrOption[i] < 6) {
-            for (var r = 0; r < 6 - req.body.arrOption[i]; r++) {
-              addon.push(null)
+        }
+        // single addon
+        else {
+          if (req.body.varName == '') {
+            req.flash('error', 'The addon\'s title cannot be blank.')
+            return res.redirect('/' + req.user.username + '/journal/backtest/new');
+          }
+          var addon = [backtest_id, req.body.varName, req.body.intList]
+          // configures an integers value addon
+          if (req.body.intList == 1) {
+            addon.push(null, null, null, null, null, null)
+          }
+          // configures an options value addons
+          else {
+            if (req.body.varOption[0] == '') {
+              req.flash('error', 'The addon\'s options are required.')
+              return res.redirect('/' + req.user.username + '/journal/backtest/new');
+            }
+            for (var y = 0; y < req.body.arrOption; y++) {
+              if (!req.body.varOption[y] == '') {
+                addon.push(req.body.varOption[y])
+              } else {
+                addon.push(null)
+              }
+            }
+            if (req.body.arrOption < 6) {
+              for (var r = 0; r < 6 - req.body.arrOption; r++) {
+                addon.push(null)
+              }
             }
           }
+          newAddons.push(addon);
         }
-        counterAddon += Number(req.body.arrOption[i])
-        newAddons.push(addon);
+        // stores the backtest addons into the DB
+        connection.query(addAddons, [newAddons], (err, complete) => {
+          if (err) {
+            // COMBAK: log error
+            req.flash('error', 'Something went wrong, please try again.')
+            return res.redirect('/' + req.user.username + '/journal');
+          }
+          res.redirect("/" + req.user.username + "/journal/backtest/" + backtest_id + "/edit");
+        })
+      } else {
+        res.redirect("/" + req.user.username + "/journal/backtest/" + backtest_id + "/edit");
       }
-      // stores the backtest addons into the DB
-      connection.query(addAddons, [newAddons], (err, complete) => {
-        if (err) throw err;
-        res.redirect("/" + req.user.username + "/backtest/" + backtest_id + "/edit");
-      })
-    } else {
-      res.redirect("/" + req.user.username + "/journal/backtest/" + backtest_id + "/edit");
-    }
-  })
+    })
+  }
 })
 
 // SHOW BACKTEST ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at FROM backtest WHERE id = ?;'
+  var getBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d ' + res.__('of') + ' %M %Y") AS created_at FROM backtest WHERE id = ? AND user_id = ?;'
   var getAddons = 'SELECT description FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
   var getData = 'SELECT direction, result, pair_id, strategy_id, timeframe_id FROM backtest_data WHERE backtest_id = ?;'
   var getAddonsData = 'SELECT * FROM backtest_addons_data WHERE backtest_id = ? ORDER BY backtest_data_id;'
@@ -115,8 +174,12 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // object-list where the backtest data will be stored
   // the array accounts for: direction, result, pair, strategy and timeframe
   var backtestData = [[], [], [], [], []]
-  connection.query(getBacktest, req.params.id, (err, results) => {
-    if (err) throw err;
+  connection.query(getBacktest, [req.params.id, req.user.id], (err, results) => {
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal');
+    }
     backtestInfo.id = results[0].id;
     backtestInfo.title = results[0].created_at + " [" + results[0].result + "]";
     if (results[0].pair_id != null) {
@@ -133,7 +196,11 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     }
     // attemps to get backtest addons if they exits
     connection.query(getAddons, backtestInfo.id, (err, results) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username + '/journal');
+      }
       if (results.length > 0) {
         backtestInfo.addons = [];
         results.forEach((addon) => {
@@ -143,7 +210,11 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
         });
       }
       connection.query(getData, backtestInfo.id, (err, results) => {
-        if (err) throw err;
+        if (err) {
+          // COMBAK: log error
+          req.flash('error', 'Something went wrong, please try again.')
+          return res.redirect('/' + req.user.username + '/journal');
+        }
         results.forEach((entryData) => {
           // FIXME: check whether the value is NULL, and if it isn't then index the array-value
           backtestData[0].push(entryData.direction)
@@ -192,7 +263,11 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // the array accounts for: direction, result, pair, strategy and timeframe
   var backtestData = [[], [], [], [], []]
   connection.query(getBacktest, req.params.id, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal');
+    }
     backtestInfo.id = results[0].id;
     backtestInfo.title = results[0].created_at + " [" + results[0].result + "]";
     if (results[0].pair_id != null) {
@@ -209,7 +284,11 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     }
     // attemps to get backtest addons if they exits
     connection.query(getAddons, backtestInfo.id, (err, results) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username + '/journal');
+      }
       if (results.length > 0) {
         backtestInfo.addons = [];
         backtestInfo.addonsType = [];
@@ -230,7 +309,11 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
         });
       }
       connection.query(getData, backtestInfo.id, (err, results) => {
-        if (err) throw err;
+        if (err) {
+          // COMBAK: log error
+          req.flash('error', 'Something went wrong, please try again.')
+          return res.redirect('/' + req.user.username + '/journal');
+        }
         results.forEach((entryData) => {
           // FIXME: check whether the value is NULL, and if it isn't then index the array-value
           backtestData[0].push(entryData.direction)
@@ -273,6 +356,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
 
 // UPDATE BACKTEST LOGIC
 router.put("/:id", middleware.isLoggedIn, (req, res) => {
+  var addData = 'INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id) VALUES ?'
   // FIXME: the data from the 'req.body' could already be ready for storage, instead of refactoring
   // FIXME: the backtest id can be extracted thruogh 'req.params.id' (easier way)
   var parseData = JSON.parse(req.body.serverData);
@@ -280,63 +364,98 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
   var editBacktest = []
   var editAddons = []
   var counterRow = 1;
+  // stores all the backtest rows in to the 'editBacktest' array
+  // stores all the addons rows in to the 'editAddons' array
+  for (var i = 0; i < parseData.data[0].length; i++) {
+    editBacktest.push([])
+    editBacktest[i].push(counterRow)
+    editBacktest[i].push(backtest_id)
+    //outcome parameter
+    if (parseData.data[1][i] == '') {
+      req.flash('error', 'The outcome field cannot be blank.')
+      return res.redirect('/' + req.user.username + '/journal/backtest/' + backtest_id);
+    }
+    // direction parameter
+    if ('direction' in parseData.backtest) {
+      editBacktest[i].push(null)
+    } else {
+      if (parseData.data[0][i] == 'short' || parseData.data[0][i] == 'venta') {
+        editBacktest[i].push('short')
+      } else {
+        editBacktest[i].push('long')
+      }
+    }
+    // result parameter
+    editBacktest[i].push(parseData.data[1][i])
+    // pair parameter
+    if ('pair' in parseData.backtest) {
+      editBacktest[i].push(null)
+    } else {
+      editBacktest[i].push(Number(parseData.data[2][i]) + 1)
+    }
+    // strategy parameter
+    if ('strategy' in parseData.backtest) {
+      editBacktest[i].push(null)
+    } else {
+      editBacktest[i].push(userIdStrategies[userStrategies.findIndex(strategy => strategy == parseData.data[3][i])])
+    }
+    // timeframe parameter
+    if ('timeframe' in parseData.backtest) {
+      editBacktest[i].push(null)
+    } else {
+      editBacktest[i].push(timeframes.findIndex(timeframe => timeframe == parseData.data[4][i]) + 1)
+    }
+    // checks whether the backtest has any addons
+    if (parseData.data.length > 5) {
+      for (var y = 0; y < parseData.backtest.addons.length; y++) {
+        if (parseData.data[5 + y][i] == '') {
+          req.flash('error', 'Backtest fields cannot be blank.')
+          return res.redirect('/' + req.user.username + '/journal/backtest/' + backtest_id);
+        }
+        editAddons.push([backtest_id, counterRow, y + 1, Number(parseData.data[5 + y][i])])
+      }
+    }
+    counterRow += 1;
+  }
   // deletes the Addons data before sending the new updated data to the DB
   connection.query('DELETE FROM backtest_addons_data WHERE backtest_id = ?', backtest_id, (err, done) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal');
+    }
     // deletes the Backtest data before sending the new updated data to the DB
     connection.query('DELETE FROM backtest_data WHERE backtest_id = ?', backtest_id, (err, done) => {
-      if (err) throw err;
-      // stores all the backtest rows in to the 'editBacktest' array
-      // stores all the addons rows in to the 'editAddons' array
-        for (var i = 0; i < parseData.data[0].length; i++) {
-          editBacktest.push([])
-          editBacktest[i].push(counterRow)
-          editBacktest[i].push(backtest_id)
-          // direction parameter
-          if ('direction' in parseData.backtest) {
-            editBacktest[i].push(null)
-          } else {
-            editBacktest[i].push(parseData.data[0][i])
-          }
-          // result parameter
-          editBacktest[i].push(parseData.data[1][i])
-          // pair parameter
-          if ('pair' in parseData.backtest) {
-            editBacktest[i].push(null)
-          } else {
-            editBacktest[i].push(Number(parseData.data[2][i]) + 1)
-          }
-          // strategy parameter
-          if ('strategy' in parseData.backtest) {
-            editBacktest[i].push(null)
-          } else {
-          editBacktest[i].push(userIdStrategies.findIndex(strategy => strategy == parseData.data[3][i]))
-        }
-        // timeframe parameter
-        if ('timeframe' in parseData.backtest) {
-          editBacktest[i].push(null)
-        } else {
-          editBacktest[i].push(timeframes.findIndex(timeframe => timeframe == parseData.data[4][i]) + 1)
-        }
-        // checks whether the backtest has any addons
-        if (parseData.data.length > 5) {
-          for (var y = 0; y < parseData.backtest.addons.length; y++) {
-            editAddons.push([backtest_id, counterRow, y + 1, Number(parseData.data[5 + y][i])])
-          }
-        }
-        counterRow += 1;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username + '/journal');
       }
-      var addData = 'INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id) VALUES ?'
       // stores the backtest DATA into the DB
-      connection.query(addData, [editBacktest], (err, complete) => {
-        if (err) throw err;
-        var addAddons = 'INSERT INTO backtest_addons_data (backtest_id, backtest_data_id, backtest_addons_id, addon_value) VALUES ?'
-        // stores the backtest ADDONS into the DB
-        connection.query(addAddons, [editAddons], (err, complete) => {
-          if (err) throw err;
+      if (editBacktest.length > 0) {
+        connection.query(addData, [editBacktest], async (err, complete) => {
+          if (err) {
+            // COMBAK: log error
+            req.flash('error', 'Something went wrong, please try again.')
+            return res.redirect('/' + req.user.username + '/journal');
+          }
+          if (editAddons.length > 0) {
+            try {
+              // stores the backtest ADDONS into the DB
+              var addAddons = await query('INSERT INTO backtest_addons_data (backtest_id, backtest_data_id, backtest_addons_id, addon_value) VALUES ?', [editAddons])
+            } catch (err) {
+              // COMBAK: log error
+              req.flash('error', 'Something went wrong, please try again.')
+              return res.redirect('/' + req.user.username + '/journal');
+            }
+          }
+          req.flash('success', 'The backtest was saved successfully.')
           res.redirect("/" + req.user.username + "/journal");
         })
-      })
+      } else {
+        req.flash('success', 'The backtest was saved successfully.')
+        res.redirect("/" + req.user.username + "/journal");
+      }
     })
   })
 })
@@ -349,16 +468,32 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteBacktest = 'DELETE FROM backtest WHERE id = ?'
   // deletes the addons data from the DB
   connection.query(deleteAddonsData, req.params.id, (err) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username + '/journal/');
+    }
     // deletes the backtest data from the DB
     connection.query(deleteBacktestData, req.params.id, (err) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username + '/journal/');
+      }
       // deletes the addons from the DB
       connection.query(deleteAddons, req.params.id, (err) => {
-        if (err) throw err;
+        if (err) {
+          // COMBAK: log error
+          req.flash('error', 'Something went wrong, please try again.')
+          return res.redirect('/' + req.user.username + '/journal/');
+        }
         // deletes the backtest from the DB
         connection.query(deleteBacktest, req.params.id, (err) => {
-          if (err) throw err;
+          if (err) {
+            // COMBAK: log error
+            req.flash('error', 'Something went wrong, please try again.')
+            return res.redirect('/' + req.user.username + '/journal/');
+          }
           res.redirect("/" + req.user.username + "/journal");
         })
       })

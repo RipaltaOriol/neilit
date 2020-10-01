@@ -5,6 +5,7 @@ let currencies = require('../models/currencies');
 let timeframes = require('../models/timeframes');
 let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware');
+let dbLocale   = require('../middleware/sqlTime')
 let connection = require('../models/connectDB');
 
 // COMBAK: Set your secret key. Remember to switch to your live secret key in production!
@@ -31,10 +32,18 @@ router.get("/settings", middleware.isLoggedIn, async (req, res) => {
       goals.push(result.goal)
     });
     connection.query(selectRole, req.user.role_id, (err, getRole) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username);
+      };
       var role = getRole[0].role;
       connection.query(selectPaymentInfo, req.user.id, (err, getPaymentInfo) => {
-        if (err) throw err;
+        if (err) {
+          // COMBAK: log error
+          req.flash('error', 'Something went wrong, please try again.')
+          return res.redirect('/' + req.user.username);
+        }
         if (getPaymentInfo.length > 0) { var last4 = getPaymentInfo[0].last4 } else { var last4 = null }
         res.render("user/settings",
           {
@@ -53,14 +62,18 @@ router.get("/settings", middleware.isLoggedIn, async (req, res) => {
 })
 
 // DASHBOARD USER ROUTE
-router.get("", middleware.isLoggedIn, (req, res) => {
+router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
   var selectUserBase  = 'SELECT currency FROM currencies WHERE id = ?;'
   var selectEntries   = 'SELECT pair_id, profits, fees, result, MONTHNAME(exit_dt) AS month FROM entries WHERE status = 1 AND user_id = ?;'
   var selectOpenOps   = 'SELECT pair_id, size, direction, DATE_FORMAT(entry_dt, "%d/%m/%y") AS date, entry_price FROM entries WHERE status = 0 AND user_id = ?;'
   var selectMonth     = 'SELECT profits, fees FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;'
   var selectWeek      = 'SELECT profits, fees FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;'
   connection.query(selectUserBase, req.user.currency_id, (err, getBase) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/login');
+    }
     // object with dashboad data CURRENT BALANCE, BIGGEST TRADE & TOTAL ENTRIES
     var dashboardData = {
       base: getBase[0].currency,
@@ -87,7 +100,11 @@ router.get("", middleware.isLoggedIn, (req, res) => {
       December:   { outcome: 0, total: 0 }
     }
     connection.query(selectEntries, req.user.id, (err, getEntries) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/login');
+      }
       getEntries.forEach((entry) => {
         // counts the entry to the corresponding metric
         dashboardData.total += 1;
@@ -115,7 +132,11 @@ router.get("", middleware.isLoggedIn, (req, res) => {
         outcomeMonthTotal.push(outcomeMonth[month].total)
       }
       connection.query(selectOpenOps, req.user.id, (err, getOps) => {
-        if (err) throw err;
+        if (err) {
+          // COMBAK: log error
+          req.flash('error', 'Something went wrong, please try again.')
+          return res.redirect('/login');
+        }
         // creates an object for open operations
         var dashboardOps = { }
         getOps.forEach((operation, i) => {
@@ -127,14 +148,22 @@ router.get("", middleware.isLoggedIn, (req, res) => {
           dashboardOps[i].entry = operation.entry_price;
         });
         connection.query(selectMonth, req.user.id, (err, getMonth) => {
-          if (err) throw err;
+          if (err) {
+            // COMBAK: log error
+            req.flash('error', 'Something went wrong, please try again.')
+            return res.redirect('/login');
+          }
           var monthTwenty = 0;
           getMonth.forEach((entry) => {
             var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
             monthTwenty += entryPercent
           });
           connection.query(selectWeek, req.user.id, (err, getWeek) => {
-            if (err) throw err;
+            if (err) {
+              // COMBAK: log error
+              req.flash('error', 'Something went wrong, please try again.')
+              return res.redirect('/login');
+            }
             var weekFive = 0;
             getWeek.forEach((entry) => {
               var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
@@ -159,11 +188,15 @@ router.get("", middleware.isLoggedIn, (req, res) => {
 })
 
 // STATISTICS ROUTE
-router.get("/statistics", middleware.isLoggedIn, (req, res) => {
+router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
   var selectUserBase = 'SELECT currency FROM currencies WHERE id = ?;'
   var selectEntries = 'SELECT pair_id, strategy_id, timeframe_id, direction, result, profits, fees, MONTH(entry_dt) as month, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ?;';
   connection.query(selectUserBase, req.user.currency_id, (err, getBase) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username);
+    }
     var userBase = getBase[0].currency;
     // creates an object to store the asset stats
     var assetStats = {
@@ -184,7 +217,11 @@ router.get("/statistics", middleware.isLoggedIn, (req, res) => {
       percent:  Array(timeframes.length).fill(0)
     }
     connection.query(selectEntries, req.user.id, (err, getEntries) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username);
+      }
       // object with the statiscits from PROFITS, ENTRIES and DIRECTION
       var statistics = {
         profits: {
@@ -317,7 +354,11 @@ router.get("/plan", middleware.isLoggedIn, (req, res) => {
   // COMBAK: ensure that order is descending in terms of created_at
   var selectPlans = 'SELECT id, title, DATE_FORMAT(created_at, "%d/%m/%Y") AS date FROM plans WHERE user_id = ?';
   connection.query(selectPlans, req.user.id, (err, getPlans) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username);
+    }
     // Object to store the Plans
     var plans = {
       id: [],
@@ -336,7 +377,11 @@ router.get("/plan", middleware.isLoggedIn, (req, res) => {
 // RISK CALCULATOR ROUTE
 router.get("/calculator", middleware.isLoggedIn, (req, res) => {
   connection.query('SELECT currency_id FROM users WHERE id = ?', req.user.id, (err, getCurrency) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username);
+    }
     var currency = currencies[getCurrency[0].currency_id - 1]
     res.render("user/calculator",
       {
@@ -349,17 +394,21 @@ router.get("/calculator", middleware.isLoggedIn, (req, res) => {
 
 // JOURNAL ROUTE
 // BUG: problem with so many connections - create a pool - run by JORDI
-router.get("/journal", middleware.isLoggedIn, (req,res) => {
+router.get("/journal", middleware.isLoggedIn, dbLocale.sqlLanguage, (req,res) => {
   // FIXME: table not optimized - JOIN pairs is unecessary
-  var selectTAs = 'SELECT tanalysis.id AS identifier, pair, DATE_FORMAT(tanalysis.created_at, "%d de %M %Y") AS created_at FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY tanalysis.created_at DESC LIMIT 7';
+  var selectTAs = 'SELECT tanalysis.id AS identifier, pair, DATE_FORMAT(tanalysis.created_at, "%d ' + res.__('of') + ' %M %Y") AS created_at FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY tanalysis.created_at DESC LIMIT 7';
   // FIXME: table not optimized - JOIN pairs is unecessary
-  var selectEntrys = 'SELECT entries.id AS identifier, DATE_FORMAT(entry_dt, "%d de %M %Y") AS entry_dt, pair FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 7';
+  var selectEntrys = 'SELECT entries.id AS identifier, DATE_FORMAT(entry_dt, "%d ' + res.__('of') + ' %M %Y") AS entry_dt, pair FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 7';
   var selectComments = 'SELECT id, DATE_FORMAT(created_at, "%d/%m/%y") AS title, comment FROM comments WHERE user_id = ? ORDER BY created_at DESC LIMIT 7';
-  var selectBacktest = 'SELECT id, DATE_FORMAT(created_at, "%d de %M %Y") AS title, result FROM backtest WHERE user_id = ? ORDER BY created_at DESC LIMIT 7;'
+  var selectBacktest = 'SELECT id, DATE_FORMAT(created_at, "%d ' + res.__('of') + ' %M %Y") AS title, result FROM backtest WHERE user_id = ? ORDER BY created_at DESC LIMIT 7;'
   // Defines the max. # of characters allowed when displaying comments
-  var commentsLength = 45
+  let commentsLength = 45
   connection.query(selectTAs, req.user.id, (err, getTas) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username);
+    }
     // Object to store the TAs
     var tasLimited = {
       title: [],
@@ -370,7 +419,11 @@ router.get("/journal", middleware.isLoggedIn, (req,res) => {
       tasLimited.id.push(result.identifier);
     });
     connection.query(selectEntrys, req.user.id, (err, getEntries) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again.')
+        return res.redirect('/' + req.user.username);
+      }
       // Object to store the ENTRIES
       var entriesLimited = {
         title: [],
@@ -381,7 +434,11 @@ router.get("/journal", middleware.isLoggedIn, (req,res) => {
         entriesLimited.id.push(result.identifier);
       })
       connection.query(selectComments, req.user.id, (err, getComments) => {
-        if (err) throw err;
+        if (err) {
+          // COMBAK: log error
+          req.flash('error', 'Something went wrong, please try again.')
+          return res.redirect('/' + req.user.username);
+        }
         // Object to store the COMMENTS
         var commentsLimited = {
           id: [],
@@ -401,7 +458,11 @@ router.get("/journal", middleware.isLoggedIn, (req,res) => {
           }
         })
         connection.query(selectBacktest, req.user.id, (err, getBacktest) => {
-          if (err) throw err;
+          if (err) {
+            // COMBAK: log error
+            req.flash('error', 'Something went wrong, please try again.')
+            return res.redirect('/' + req.user.username);
+          }
           // Object to store the BACKTESTS
           var backtestLimited = {
             title: [],

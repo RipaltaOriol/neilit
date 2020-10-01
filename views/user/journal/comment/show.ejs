@@ -4,15 +4,15 @@
   <div class="container mt-3 mx-auto">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/comment/<%= comment.id %>?_method=DELETE" method="POST">
-        <h3 class="mx-3">Comentatio creado el <%= comment.date %></h3>
+        <h3 class="mx-3"><%= __('Comment created the') %> <%= comment.date %></h3>
         <hr>
         <div class="mb-2 mx-3">
           <div><%= comment.comment %></div>
         </div>
         <div class="text-right mx-3">
-          <a href="javascript:history.back()" class="btn-neilit ml-2">Cancelar</a>
-          <a href="/<%= currentUser.username %>/journal/comment/<%= comment.id %>/edit" class="btn-inverted ml-2">Modificar</a>
-          <button type="submit" class="btn-neilit ml-2">Eliminar</button>
+          <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Back') %></a>
+          <a href="/<%= currentUser.username %>/journal/comment/<%= comment.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
+          <button type="submit" class="btn-neilit ml-2"><%= ('Delete') %></button>
         </div>
       </form>
     </div>

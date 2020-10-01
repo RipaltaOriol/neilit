@@ -92,7 +92,7 @@ a:hover {
 
 .notification {
   color: var(--invert-white);
-  background-color: var(--neilit-white);
+  background-color: var(--neilit-soft);
   font-size: 16px;
 }
   .notification h5 {
@@ -207,11 +207,11 @@ a:hover {
 }
 
 .news{
-  border-radius: 7px;
+  color: var(--neilit-default);
+  background-color: var(--white-none);
   transition-duration: .25s;
   border: 2px solid var(--invert-white);
-  background: white;
-  color: var(--neilit-default);
+  border-radius: .25rem;
 }
   .news:hover{
     color: white;
@@ -222,8 +222,8 @@ a:hover {
 
 .suggest{
   color: var(--invert-white);
-  border: 2px solid var(--neilit-white);
-  border-radius: 7px;
+  border: 2px solid var(--neilit-black);
+  border-radius: .25rem;
   transition-duration: .25s;
 }
   .suggest:hover{

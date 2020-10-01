@@ -41,6 +41,11 @@ button.dropdown-select {
   }
 
 /* || Utilities */
+.btn-neilit:focus {
+  outline: none;
+}
+
+/* || Utilities */
 .w-350 {
   width: 350px;
 }
@@ -243,6 +248,9 @@ button.dropdown-select {
     background-color: #f5bc87;
     border-radius: 0.25rem;
     cursor: pointer;
+  }
+  .user-field a {
+    color: var(--invert-black);
   }
 
 .modal-body a {
