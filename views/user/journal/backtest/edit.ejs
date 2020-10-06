@@ -1,7 +1,7 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="backtest mt-3 mb-5 mx-auto">
+  <div class="backtest mx-auto pt-5 mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=PUT" method="POST">
         <input type="hidden" id="obj" name="serverData">
@@ -9,16 +9,16 @@
         <hr>
         <div class="form-row mx-3">
           <div class="col-auto mr-3 mb-2">
-            <label class="mb-0"><%= __('Trade number') %></label>
+            <label class="mb-0"><%= __('Trade number') %>:</label>
             <h5 id="row-index" class="text-right p-2 bg-hover">
               <%= data[0].length + 1 %>
             </h5>
           </div>
           <div class="col-auto mr-3 mb-2">
-            <label class="mb-0"><%= __('Direction') %></label>
+            <label class="mb-0"><%= __('Direction') %>:</label>
             <!-- dropdown -->
             <div class="dropdown">
-              <button id="dropdown-label" class="direction dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button id="dropdown-label" class="direction dropdown-select p-2 text-left w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <% if ('direction' in backtest) { %>
                   <%= backtest.direction %>
                 <% } else { %>
@@ -26,7 +26,7 @@
                 <% } %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                <input class="dropdown-search d-none" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <input class="dropdown-search d-none" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                 <% if ('direction' in backtest) { %>
                   <li><%= backtest.direction %></li>
                 <% } else { %>
@@ -37,10 +37,10 @@
             </div>
           </div>
           <div class="col-auto mr-3 mb-2">
-            <label class="mb-0"><%= __('Pair') %></label>
+            <label class="mb-0"><%= __('Pair') %>:</label>
             <!-- dropdown -->
             <div class="dropdown">
-              <button id="dropdown-label" class="pair dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button id="dropdown-label" class="pair dropdown-select p-2 text-left w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <% if ('pair' in backtest) { %>
                   <%= currencies[Number(backtest.pair) - 1] %>
                 <% } else { %>
@@ -48,7 +48,7 @@
                 <% } %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                 <% if ('pair' in backtest) { %>
                   <li><%= currencies[Number(backtest.pair) - 1] %></li>
                 <% } else { %>
@@ -66,10 +66,10 @@
         </div>
         <div class="form-row mx-3">
           <div class="col-auto mr-3 mb-2">
-            <label class="mb-0"><%= __('Strategy') %></label>
+            <label class="mb-0"><%= __('Strategy') %>:</label>
             <!-- dropdown -->
             <div class="dropdown">
-              <button id="dropdown-label" class="strategy dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button id="dropdown-label" class="strategy dropdown-select p-2 text-left w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <% if ('strategy' in backtest) { %>
                   <%= backtest.strategy %>
                 <% } else { %>
@@ -77,7 +77,7 @@
                 <% } %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                 <% if ('strategy' in backtest) { %>
                   <li><%= backtest.strategy %></li>
                 <% } else { %>
@@ -89,10 +89,10 @@
             </div>
           </div>
           <div class="col-auto mr-3 mb-2">
-            <label class="mb-0"><% __('Timeframe') %></label>
+            <label class="mb-0"><%= __('Timeframe') %>:</label>
             <!-- dropdown -->
             <div class="dropdown">
-              <button id="dropdown-label" class="timeframe dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button id="dropdown-label" class="timeframe dropdown-select p-2 text-left w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <% if ('timeframe' in backtest) { %>
                   <%= timeframes[Number(backtest.timeframe) - 1] %>
                 <% } else { %>
@@ -100,7 +100,7 @@
                 <% } %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                 <% if ('timeframe' in backtest) { %>
                   <li><%= timeframes[Number(backtest.timeframe) - 1] %></li>
                 <% } else { %>
@@ -127,7 +127,7 @@
                 <% } else { %>
                   <!-- dropdown -->
                   <div class="dropdown">
-                    <button id="dropdown-label" class="addon dropdown-select p-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button id="dropdown-label" class="addon dropdown-select p-2 text-left w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <%= backtest.addonsOptions[i][0] %>
                     </button>
                     <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">

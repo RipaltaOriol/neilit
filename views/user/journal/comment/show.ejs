@@ -1,7 +1,7 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mt-3 mx-auto">
+  <div class="container mx-auto pt-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/comment/<%= comment.id %>?_method=DELETE" method="POST">
         <h3 class="mx-3"><%= __('Comment created the') %> <%= comment.date %></h3>

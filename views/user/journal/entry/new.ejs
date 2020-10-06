@@ -2,107 +2,127 @@
 
   <div id="local-alert" class="container d-none">
     <div class="alert alert-danger mt-2" role="alert">
-      Entry time does not follow the correct format. Time has to be typed in 24-hour clock. For instance, 13:55.
+      The entry time is not valid. Time has to be format in 24-hour clock. For instance, 13:55.
     </div>
   </div>
   <!-- CONTENT -->
-  <div class="container mt-3 mb-5 mx-auto">
+  <div class="container mx-auto pt-5 mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/entry" method="POST" onsubmit="event.preventDefault(); return checkTime(this);">
-        <h3 class="mx-3">Crear Entrada</h3>
+        <h3 class="mx-3"><%= __('Create Entry') %></h3>
         <hr>
         <div class="mb-2 mx-3">
-          <select id="entry-pair" name="pair" class="custom-select p-1" onchange="entryCategory();">
-            <% for (var i = 0; i < currencies.length; i++) { %>
-              <option value="<%= i %>"><%= currencies[i] %></option>
-            <% } %>
-          </select>
-          <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Específicos</h5>
-            <div class="info-fields mt-2">
-              <span class="mb-2">
-                <label>Categoría
-                  <span class="mandatory">*</span>
-                </label>
-                <input id="entry-category" type="text" class="bg-hover orange px-2" name="category" readonly>
-              </span>
-              <span class="input-group mb-2">
-                <label class="my-auto">Estrategia
-                  <span class="mandatory">*</span>
-                </label>
-                <select class="custom-select p-1" name="strategy">
+          <div class="d-flex flex-column mt-2 p-2 entry-input">
+            <h5>Específicos</h5>
+            <span class="mb-2 d-block">
+              <label><%= __('Pair') %>:
+                <span class="mandatory">*</span>
+              </label>
+              <!-- dropdown -->
+              <div class="dropdown d-inline">
+                <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                  <%= currencies[0] %>
+                </button>
+                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                  <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                  <% for (var i = 0; i < currencies.length; i++) { %>
+                    <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                  <% } %>
+                </ul>
+              </div>
+            </span>
+            <span class="mb-2 d-block">
+              <label>Categoría:
+                <span class="mandatory">*</span>
+              </label>
+              <input id="entry-category" type="text" class="bg-hover orange p-1 px-2" name="category" readonly>
+            </span>
+            <span class="mb-2 d-block">
+              <label>Estrategia:
+                <span class="mandatory">*</span>
+              </label>
+              <!-- dropdown -->
+              <div class="dropdown d-inline">
+                <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                  <%= strategies[0] %>
+                </button>
+                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                  <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                   <% for (var i = 0; i < strategies.length; i++) { %>
-                    <option value="<%= i %>" ><%= strategies[i] %></option>
+                    <li class="<%= i + 1 %>"><%= strategies[i] %></li>
                   <% } %>
-                </select>
-              </span>
-              <span class="input-group">
-                <label class="my-auto">Timeframe de Anclaje
-                  <span class="mandatory">*</span>
-                </label>
-                <select class="custom-select p-1" name="timeframe">
+                </ul>
+              </div>
+            </span>
+            <span class="d-block">
+              <label>Timeframe de Anclaje:
+                <span class="mandatory">*</span>
+              </label>
+              <!-- dropdown -->
+              <div class="dropdown d-inline">
+                <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                  <%= timeframes[0] %>
+                </button>
+                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                  <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                   <% for (var i = 0; i < timeframes.length; i++) { %>
-                    <option value="<%= i %>" ><%= timeframes[i] %></option>
+                    <li class="<%= i + 1 %>"><%= timeframes[i] %></li>
                   <% } %>
-                </select>
-              </span>
-            </div>
+                </ul>
+              </div>
+            </span>
           </div>
-          <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Finanzas</h5>
-            <div class="info-fields mt-2">
-              <span class="input-group">
-                <label class="my-auto">Tamaño
-                  <span class="mandatory">*</span>
-                </label>
-                <input type="number" class="bg-hover form-control px-2" name="size" min="0" step="0.01" placeholder="especifique su tamaño de operación en lotes">
-              </span>
-              <span class="input-group">
-                <label class="my-auto">Precio de Entrada
-                  <span class="mandatory">*</span>
-                </label>
-                <input type="number" class="bg-hover form-control px-2" name="entryPrice" min="0" step="0.00001">
-              </span>
-              <span class="input-group">
-                <label class="my-auto">Stop Loss</label>
-                <input type="number" class="bg-hover form-control px-2" name="stopLoss" min="0" step="0.00001">
-              </span>
-              <span class="input-group">
-                <label class="my-auto">Take Profit</label>
-                <input type="number" class="bg-hover form-control px-2" name="takeProfit" min="0" step="0.00001">
-              </span>
-            </div>
+          <div class="d-flex flex-column mt-2 p-2">
+            <h5>Finanzas</h5>
+            <span class="input-group mb-2">
+              <label class="my-auto">Tamaño:
+                <span class="mandatory">*</span>
+              </label>
+              <input type="number" class="bg-hover form-control p-1 px-2" name="size" min="0" step="0.01" placeholder="especifique su tamaño de operación en lotes">
+            </span>
+            <span class="input-group mb-2">
+              <label class="my-auto">Precio de Entrada:
+                <span class="mandatory">*</span>
+              </label>
+              <input type="number" class="bg-hover form-control p-1 px-2" name="entryPrice" min="0" step="0.00001">
+            </span>
+            <span class="input-group mb-2">
+              <label class="my-auto">Stop Loss</label>
+              <input type="number" class="bg-hover form-control p-1 px-2" name="stopLoss" min="0" step="0.00001">
+            </span>
+            <span class="input-group">
+              <label class="my-auto">Take Profit</label>
+              <input type="number" class="bg-hover form-control p-1 px-2" name="takeProfit" min="0" step="0.00001">
+            </span>
           </div>
-          <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Logística</h5>
-            <div class="info-fields mt-2">
-              <span class="input-group">
-                <label class="my-auto">Fecha de Entrada
-                  <span class="mandatory">*</span>
+          <div class="d-flex flex-column mt-2 p-2">
+            <h5>Logística</h5>
+            <span class="input-group mb-2">
+              <label class="my-auto">Fecha de Entrada
+                <span class="mandatory">*</span>
+              </label>
+              <input type="date" class="bg-hover form-control p-1 px-2" name="entryDate">
+            </span>
+            <span class="input-group mb-2">
+              <label class="my-auto">Hora de Entrada</label>
+              <input id="entry-time" type="text" class="bg-hover form-control p-1 px-2" name="entryTime">
+            </span>
+            <span class="mb-2">
+              <div class="form-check form-check-inline">
+                <label class="checkbox-orange mb-0">
+                  Compra
+                  <input type="radio" name="direction" value="1">
+                  <span class="checkmark"></span>
                 </label>
-                <input type="date" class="bg-hover form-control px-2" name="entryDate">
-              </span>
-              <span class="input-group mb-1">
-                <label class="my-auto">Hora de Entrada</label>
-                <input id="entry-time" type="text" class="bg-hover form-control px-2" name="entryTime">
-              </span>
-              <span class="mb-2">
-                <div class="form-check form-check-inline">
-                  <label class="checkbox-orange mb-0">
-                    Compra
-                    <input type="radio" name="direction" value="1">
-                    <span class="checkmark"></span>
-                  </label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <label class="checkbox-orange mb-0">
-                    Venta
-                    <input type="radio" name="direction" value="-1">
-                    <span class="checkmark"></span>
-                  </label>
-                </div>
-              </span>
-            </div>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="checkbox-orange mb-0">
+                  Venta
+                  <input type="radio" name="direction" value="-1">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </span>
           </div>
         </div>
         <br>
@@ -148,7 +168,7 @@
         <h3 class="mx-3">Comentarios</h3>
         <hr>
         <div class="mx-3">
-          <div id="client-comment" class="px-2" placeholder="Utilice este espacio para escribir algún comentario adicional" contenteditable="true"></div>
+          <div id="client-comment" class="editcontent px-2" placeholder="Utilice este espacio para escribir algún comentario adicional" contenteditable="true"></div>
         </div>
         <textarea id="server-comment" name="comment" class="d-none"></textarea>
         <br>
@@ -211,7 +231,7 @@
   var tas = <%- JSON.stringify(tas) %>;
 </script>
 
-<!-- <section> is inside partials -->
+<!-- <section> is inside partia9ls -->
 </section>
 
 <!-- JQUERY -->

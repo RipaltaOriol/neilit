@@ -5,31 +5,31 @@
     <div class="container mt-3 mb-5 mx-auto">
       <div class="journal-box px-0">
         <form action="/<%= currentUser.username %>/plan/new" method="GET">
-          <h3 class="mx-3">Trading plan components</h3>
+          <h3 class="mx-3"><%= __('Trading plan components') %></h3>
           <hr>
 
           <div class="container">
             <div class="row">
               <div class="col-4 px-3 mb-3">
                 <!-- General Information -->
-                <h5 class="mb-2">General Information</h5>
+                <h5 class="mb-2"><%= __('General Information') %></h5>
                 <label class="checkbox-orange font-20 my-1">
-                  Broker
+                  <%= __('Broker') %>
                   <input id="broker" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Charts
+                  <%= __('Charts') %>
                   <input id="charts" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Trading Capital
+                  <%= __('Trading Capital') %>
                   <input id="capital" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Business Routine
+                  <%= __('Business Routine') %>
                   <input id="routine" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
@@ -37,10 +37,10 @@
 
               <div class="col-4 px-3 mb-3">
                 <!-- Strategies -->
-                <h5 class="mb-2">Strategies</h5>
+                <h5 class="mb-2"><%= __('Strategies') %></h5>
                 <div class="dropright mb-2">
                   <a class="btn-neilit dropdown-toggle py-1" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Add you strategies
+                    <%= __('Add you strategies') %>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <% strategies.forEach((strategy, i) => { %>
@@ -52,37 +52,37 @@
 
                 </div>
                 <label class="checkbox-orange font-20 my-1">
-                  About
+                  <%= __('About') %>
                   <input id="about" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  How to use
+                  <%= __('How to use') %>
                   <input id="howto" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Key Notes
+                  <%= __('Key Notes') %>
                   <input id="strategy-notes" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Timeframes
+                  <%= __('Timeframes') %>
                   <input id="timeframe" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Assets
+                  <%= __('Assets') %>
                   <input id="assets" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Risk Tolerance
+                  <%= __('Risk Tolerance') %>
                   <input id="risk" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Connet with backtest
+                  <%= __('Connect with backtest') %>
                   <input id="backtest" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
@@ -90,29 +90,29 @@
 
               <div class="col-4 px-3 mb-3">
                 <!-- Positioning -->
-                <h5 class="mb-2">Positioning</h5>
+                <h5 class="mb-2"><%= __('Positioning') %></h5>
                 <label class="checkbox-orange font-20 my-1">
-                  Add positioning rules to strategies (SL/TP)
+                  <%= __('Add positioning rules to strategies (SL/TP)') %>
                   <input id="rules" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Positioning rule title
+                  <%= __('Positioning rule title') %>
                   <input id="title" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Amount
+                  <%= __('Amount') %>
                   <input id="amount" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Order type
+                  <%= __('Order type') %>
                   <input id="order-type" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Description
+                  <%= __('Description') %>
                   <input id="description" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
@@ -120,14 +120,14 @@
 
               <div class="col-4 px-3 mb-3">
                 <!-- Psychology -->
-                <h5 class="mb-2">Psychology</h5>
+                <h5 class="mb-2"><%= __('Psychology') %></h5>
                 <label class="checkbox-orange font-20 my-1">
-                  Add Notes
+                  <%= __('Add Notes') %>
                   <input id="psychology-notes" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Generate standard trading psychology tips
+                  <%= __('Generate standard trading psychology tips') %>
                   <input id="tips" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
@@ -135,14 +135,14 @@
 
               <div class="col-4 px-3 mb-3">
                 <!-- Journaling -->
-                <h5 class="mb-2">Journaling</h5>
+                <h5 class="mb-2"><%= __('Journaling') %></h5>
                 <label class="checkbox-orange font-20 my-1">
-                  Write journaling process
+                  <%= __('Write journaling process') %>
                   <input id="journaling" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-auto">
-                  Add a checklist for the journaling process
+                  <%= __('Add a checklist for the journaling process') %>
                   <input id="checklist" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
@@ -150,14 +150,14 @@
 
               <div class="col-4 px-3 mb-3">
                 <!-- Objectives -->
-                <h5 class="mb-2">Objectives</h5>
+                <h5 class="mb-2"><%= __('Objectives') %></h5>
                 <label class="checkbox-orange font-20 my-1">
-                  Add non-financial objectives
+                  <%= __('Add non-financial objectives') %>
                   <input id="non-financial" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Add financial objectives
+                  <%= __('Add financial objectives') %>
                   <input id="financial" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
@@ -165,19 +165,19 @@
 
               <div class="col-4 px-3 mb-3">
                 <!-- Others -->
-                <h5 class="mb-2">Others</h5>
+                <h5 class="mb-2"><%= __('Others') %></h5>
                 <label class="checkbox-orange font-20 my-1">
-                  Add strategy revision rules/notes
+                  <%= __('Add strategy revision rules/notes') %>
                   <input id="journal-revision" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Add journal revision rules/notes
+                  <%= __('Add journal revision rules/notes') %>
                   <input id="strategy-revision" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
                 <label class="checkbox-orange font-20 my-1">
-                  Add trading plan revision rules/notes
+                  <%= __('Add trading plan revision rules/notes') %>
                   <input id="plan-revision" type="checkbox">
                   <span class="checkmark"></span>
                 </label>
@@ -186,7 +186,7 @@
           </div>
 
           <div class="d-flex justify-content-end mx-3">
-            <button type="submit" class="btn-neilit" onclick="storeComponents();">Crear</button>
+            <button type="submit" class="btn-neilit" onclick="storeComponents();"><%= __('Create') %></button>
           </div>
         </form>
       </div>

@@ -10,25 +10,25 @@ let connection = require('../models/connectDB');
 
 // INDEX ENTRIES ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  var getAllEntries = 'SELECT *, DATE_FORMAT(entry_dt, "%d de %M %Y") AS created_long FROM entries ORDER BY entry_dt DESC;'
-  var listEntries = {
-    id: [],
-    title: [],
-    result: [],
-    strategy: [],
-    status: []
-  }
+  var getAllEntries = 'SELECT *, DATE_FORMAT(entry_dt, "%d ' + res.__('of') + ' %M %Y") AS date FROM entries ORDER BY entry_dt DESC;'
+  var dataList = []
   connection.query(getAllEntries, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username);
+    }
     results.forEach((result) => {
-      listEntries.id.push(result.id);
-      listEntries.title.push(pairs[Number(result.pair_id) - 1] + ", " + result.created_long);
-      listEntries.result.push(result.result);
-      var strategyIndex = userIdStrategies.findIndex(strategy => strategy == result.strategy_id);
-      listEntries.strategy.push(userStrategies[strategyIndex]);
-      listEntries.status.push(result.status);
+      dataList.push({
+        id: result.id,
+        pair: pairs[Number(result.pair_id) - 1],
+        date: result.date,
+        result: result.result,
+        status: result.status,
+        strategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
+        timeframe: timeframes[Number(result.timeframe_id) - 1]
+      })
     })
-    res.render("user/journal/entry/index", {historyEntry: listEntries});
+    res.render("user/journal/entry/index", {dataList: dataList});
   })
 })
 

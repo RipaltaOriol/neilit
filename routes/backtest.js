@@ -13,7 +13,26 @@ var addonBacktest = require('../models/elements/backtest');
 
 // INDEX BACKTEST ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  res.send('Index route');
+  var getAllBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d/%m/%y") AS date FROM backtest WHERE user_id = ? ORDER BY created_at;';
+  var dataList = []
+  // retrieves all backtest
+  connection.query(getAllBacktest, req.user.id, (err, results) => {
+    if (err) {
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username);
+    }
+    results.forEach(async (result) => {
+      dataList.push({
+        id: result.id,
+        date: result.date,
+        result: result.result,
+        aPair: pairs[result.pair_id - 1],
+        aStrategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
+        aTimeframe: timeframes[result.timeframe_id - 1]
+      })
+    });
+    res.render("user/journal/backtest/index", {dataList: dataList});
+  })
 })
 
 // NEW BACKTEST ROUTE
@@ -151,7 +170,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', 'Something went wrong, please try again.')
-            return res.redirect('/' + req.user.username + '/journal');
+            return res.redirect('/' + req.user.username + '/journal/backtest');
           }
           res.redirect("/" + req.user.username + "/journal/backtest/" + backtest_id + "/edit");
         })
@@ -178,7 +197,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
-      return res.redirect('/' + req.user.username + '/journal');
+      return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     backtestInfo.id = results[0].id;
     backtestInfo.title = results[0].created_at + " [" + results[0].result + "]";
@@ -199,7 +218,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
-        return res.redirect('/' + req.user.username + '/journal');
+        return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       if (results.length > 0) {
         backtestInfo.addons = [];
@@ -213,7 +232,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
-          return res.redirect('/' + req.user.username + '/journal');
+          return res.redirect('/' + req.user.username + '/journal/backtest');
         }
         results.forEach((entryData) => {
           // FIXME: check whether the value is NULL, and if it isn't then index the array-value
@@ -266,7 +285,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
-      return res.redirect('/' + req.user.username + '/journal');
+      return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     backtestInfo.id = results[0].id;
     backtestInfo.title = results[0].created_at + " [" + results[0].result + "]";
@@ -287,7 +306,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
-        return res.redirect('/' + req.user.username + '/journal');
+        return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       if (results.length > 0) {
         backtestInfo.addons = [];
@@ -312,7 +331,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
-          return res.redirect('/' + req.user.username + '/journal');
+          return res.redirect('/' + req.user.username + '/journal/backtest');
         }
         results.forEach((entryData) => {
           // FIXME: check whether the value is NULL, and if it isn't then index the array-value
@@ -422,14 +441,14 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
-      return res.redirect('/' + req.user.username + '/journal');
+      return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     // deletes the Backtest data before sending the new updated data to the DB
     connection.query('DELETE FROM backtest_data WHERE backtest_id = ?', backtest_id, (err, done) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
-        return res.redirect('/' + req.user.username + '/journal');
+        return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       // stores the backtest DATA into the DB
       if (editBacktest.length > 0) {
@@ -437,7 +456,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', 'Something went wrong, please try again.')
-            return res.redirect('/' + req.user.username + '/journal');
+            return res.redirect('/' + req.user.username + '/journal/backtest');
           }
           if (editAddons.length > 0) {
             try {
@@ -446,15 +465,15 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
             } catch (err) {
               // COMBAK: log error
               req.flash('error', 'Something went wrong, please try again.')
-              return res.redirect('/' + req.user.username + '/journal');
+              return res.redirect('/' + req.user.username + '/journal/backtest');
             }
           }
           req.flash('success', 'The backtest was saved successfully.')
-          res.redirect("/" + req.user.username + "/journal");
+          res.redirect("/" + req.user.username + "/journal/backtest");
         })
       } else {
         req.flash('success', 'The backtest was saved successfully.')
-        res.redirect("/" + req.user.username + "/journal");
+        res.redirect("/" + req.user.username + "/journal/backtest");
       }
     })
   })
@@ -471,30 +490,31 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
-      return res.redirect('/' + req.user.username + '/journal/');
+      return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     // deletes the backtest data from the DB
     connection.query(deleteBacktestData, req.params.id, (err) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
-        return res.redirect('/' + req.user.username + '/journal/');
+        return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       // deletes the addons from the DB
       connection.query(deleteAddons, req.params.id, (err) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
-          return res.redirect('/' + req.user.username + '/journal/');
+          return res.redirect('/' + req.user.username + '/journal/backtest');
         }
         // deletes the backtest from the DB
         connection.query(deleteBacktest, req.params.id, (err) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', 'Something went wrong, please try again.')
-            return res.redirect('/' + req.user.username + '/journal/');
+            return res.redirect('/' + req.user.username + '/journal/backtest');
           }
-          res.redirect("/" + req.user.username + "/journal");
+          req.flash('success', 'Backtest was deleted successfully.')
+          res.redirect("/" + req.user.username + "/journal/backtest");
         })
       })
     })

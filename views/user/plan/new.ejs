@@ -5,36 +5,36 @@
     <div class="container mt-3 mb-5 mx-auto">
       <div class="journal-box px-0">
         <form action="/<%= currentUser.username %>/plan/new" method="POST">
-          <input id="title" class="w-100 mx-3" type="text" name="title" placeholder="Title for the Trading Plan">
+          <input id="title" class="w-100 mx-3" type="text" name="title" placeholder="<%= __('Title for the Trading Plan') %>">
           <hr>
           <div class="d-flex justify-content-between mx-3">
             <div id="document" class="w-75 pr-3">
 
               <!-- General Information -->
               <div id="general" class="mb-4">
-                <h5>General Information:</h5>
+                <h5><%= __('General Information') %></h5>
                 <div id="broker">
-                  <span>Broker:</span>
-                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="broker" placeholder="name of your broker">
+                  <span><%= __('Broker') %>:</span>
+                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="broker" placeholder="<%= __('name of your broker') %>">
                 </div>
                 <div id="charts">
-                  <span>Charts:</span>
-                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="charts" placeholder="what charts do you use?">
+                  <span><%= __('Charts') %>:</span>
+                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="charts" placeholder="<%= __('what charts do you use?') %>">
                 </div>
                 <div id="capital">
-                  <span>Trading Capital:</span>
-                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="capital" placeholder="trading capital available (in account base currency)">
+                  <span><%= __('Trading Capital') %>:</span>
+                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="capital" placeholder="<%= __('trading capital available (in account base currency)') %>">
                 </div>
                 <div id="routine">
-                  <span>Business Routine</span>
-                  <div id="client-routine" class="diveditable bg-hover w-75 p-1" placeholder="Explain your business routine" contenteditable="true"></div>
+                  <span><%= __('Business Routine') %></span>
+                  <div id="client-routine" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Explain your business routine') %>" contenteditable="true"></div>
                 </div>
                 <textarea id="server-routine" name="routine" class="d-none"></textarea>
               </div>
 
               <!-- Strategies -->
               <div id="strategy" class="mb-4">
-                <h5>Strategies</h5>
+                <h5><%= __('Strategies') %></h5>
 
               </div>
               <!-- backtest modal -->
@@ -42,7 +42,7 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content text-center">
                     <div class="modal-header">
-                      <h5 class="modal-title mx-auto">Seleccione un <span class="orange">backtest</span> para conectar a esta estrategia</h5>
+                      <h5 class="modal-title mx-auto"><%= __('Select a') %> <span class="orange"><%= __('backtest') %></span> <%= __('to cononect to the current strategy') %></h5>
                     </div>
                     <div class="modal-body d-flex flex-column">
                       <% backtests.title.forEach((backtest, i) => { %>
@@ -55,53 +55,53 @@
 
               <!-- Psychology -->
               <div id="psychology" class="mb-4">
-                <h5>Psychology</h5>
+                <h5><%= __('Psychology') %></h5>
                 <div id="psychology-notes">
-                  <span>Notes</span>
-                  <div id="client-psychology" class="diveditable bg-hover w-75 p-1" placeholder="Any additional notes on trading psychology?" contenteditable="true"></div>
+                  <span><%= __('Notes') %></span>
+                  <div id="client-psychology" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Any additional notes on trading psychology?') %>'" contenteditable="true"></div>
                 </div>
                 <textarea id="server-psychology" name="psychology" class="d-none"></textarea>
-                <input id="tips" type="checkbox" name="tips" value="false" class="d-none" checked>
+                <input id="tips" type="checkbox" name="tips" class="d-none" checked>
               </div>
 
               <!-- Journaling -->
               <div id="journal" class="mb-4">
-                <h5>Journaling</h5>
+                <h5><%= __('Journaling') %></h5>
                 <div id="journaling">
-                  <span>Journaling Process</span>
-                  <div id="client-journaling" class="diveditable bg-hover w-75 p-1" placeholder="How do you plan to journal?" contenteditable="true"></div>
+                  <span><%= __('Journaling Process') %></span>
+                  <div id="client-journaling" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('How do you plan to journal?') %>'" contenteditable="true"></div>
                 </div>
                 <textarea id="server-journaling" name="journaling" class="d-none"></textarea>
                 <div id="checklist">
                   <span class="d-flex align-items-center">
-                    Journaling Checklist
-                    <img class="info ml-2" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="What items do you want to keep track of in your journal">
+                    <%= __('Journaling Checklist') %>
+                    <img class="info ml-2" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('What items do you want to keep track of in your journal?') %>">
                   </span>
-                  <input id="addTrack" class="bg-hover w-75 p-1" type="text" placeholder="Add something to include in you jouranl entries">
+                  <input id="addTrack" class="bg-hover w-75 p-1" type="text" placeholder="<%= __('Add something to include in you jouranl entries') %>">
                   <ul id="listJournalItems" class="pl-0 mb-2">
 
                   </ul>
-                  <button class="btn-neilit" type="button" onclick="resetChecklist();">Reset checklist</button>
+                  <button class="btn-neilit" type="button" onclick="resetChecklist();"><%= __('Reset checklist') %></button>
                 </div>
               </div>
 
               <!-- Objectives -->
               <div id="goals" class="mb-4">
-                <h5>Objectives</h5>
+                <h5><%= __('Objectives') %></h5>
                 <div id="" class="input-group mb-2">
-                  <input id="objective" type="text" class="form-control bg-hover p-1" aria-label="Choose an objective type" placeholder="New Objective">
+                  <input id="objective" type="text" class="form-control bg-hover p-1" aria-label="Choose an objective type" placeholder="<%= __('New Objective') %>">
                   <div class="input-group-append dropdown">
-                    <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Type</button>
+                    <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= __('Type') %></button>
                     <div id="dd-objectives" class="dropdown-menu py-0">
-                      <a id="nonFinancialBtn" class="dropdown-item py-1" onclick="addGoal('objectiveNonfin')" href="#!">Financial Goal</a>
+                      <a id="nonFinancialBtn" class="dropdown-item py-1" onclick="addGoal('objectiveNonfin')" href="#!">F<%= __('inancial Goal') %></a>
                       <div role="separator" class="dropdown-divider"></div>
-                      <a id="financialBtn" class="dropdown-item py-1" onclick="addGoal('objectiveFin')" href="#!">Non-Financial Goal</a>
+                      <a id="financialBtn" class="dropdown-item py-1" onclick="addGoal('objectiveFin')" href="#!"><%= __('Non-Financial Goal') %></a>
                     </div>
                   </div>
                 </div>
                 <div id="nonFinancialGoals">
                   <p class="mb-1">
-                    <strong>Non-Financial Objectives</strong>
+                    <strong><%= __('Non-Financial Objectives') %></strong>
                   </p>
                   <ul id="objectiveNonfin" class="pl-0">
 
@@ -109,7 +109,7 @@
                 </div>
                 <div id="financialGoals">
                   <p class="mb-1">
-                    <strong>Financial Objectives</strong>
+                    <strong><%= __('Financial Objectives') %></strong>
                   </p>
                   <ul id="objectiveFin" class="pl-0">
 
@@ -119,20 +119,20 @@
 
               <!-- Others -->
               <div id="others" class="mb-2">
-                <h5>Others</h5>
+                <h5><%= __('Others') %></h5>
                 <div id="strategy-revision">
-                  <span>Strategy Revision</span>
-                  <div id="client-rstrategy" class="diveditable bg-hover w-75 p-1" placeholder="Notes on the strategy revision process" contenteditable="true"></div>
+                  <span><%= __('Strategy Revision') %></span>
+                  <div id="client-rstrategy" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Notes on the strategy revision process') %>" contenteditable="true"></div>
                 </div>
                 <textarea id="server-rstrategy" name="revisionStrategy" class="d-none"></textarea>
                 <div id="journal-revision">
-                  <span>Journal Revision</span>
-                  <div id="client-rjournal" class="diveditable bg-hover w-75 p-1" placeholder="Notes on the journal revision process" contenteditable="true"></div>
+                  <span><%= __('Journal Revision') %></span>
+                  <div id="client-rjournal" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Notes on the journal revision process') %>" contenteditable="true"></div>
                 </div>
                 <textarea id="server-rjournal" name="revisionJournal" class="d-none"></textarea>
                 <div id="plan-revision">
-                  <span>Trading Plan Revision</span>
-                  <div id="client-rplan" class="diveditable bg-hover w-75 p-1" placeholder="Notes on the trading plan revision process" contenteditable="true"></div>
+                  <span><%= __('Trading Plan Revision') %></span>
+                  <div id="client-rplan" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Notes on the trading plan revision process') %>" contenteditable="true"></div>
                 </div>
                 <textarea id="server-rplan" name="revisionPlan" class="d-none"></textarea>
               </div>

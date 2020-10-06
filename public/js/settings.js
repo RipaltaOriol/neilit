@@ -138,6 +138,7 @@ $('#dark').change(() => {
   var data = {mode: changeMode}
   $.post('/' + currentUser.username + '/settings/changeMode', data)
     .done((data) => {
+    window.localStorage.setItem('mode', '1');
     location.reload();
   })
     .fail(() => {
@@ -182,4 +183,13 @@ if (form) {
     ev.preventDefault();
     cancelSubscription();
   })
+}
+
+// refresh page on setting's settings after mode change
+if (window.localStorage.getItem('mode')) {
+  $('#profile').removeClass('active')
+  $('#settings').addClass('active')
+  $('.nav-link')[0].classList.remove('active')
+  $('.nav-link')[2].classList.add('active')
+  window.localStorage.removeItem('mode');
 }

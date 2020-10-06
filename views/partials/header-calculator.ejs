@@ -35,10 +35,28 @@
               <span class="pl-2"><%= __('Statistics') %></span>
             </div>
           </a>
-          <a href="/<%= currentUser.username %>/journal">
+          <a href="/<%= currentUser.username %>/journal/entry">
             <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/journal.svg" alt="journal">
-              <span class="pl-2"><%= __('Journal') %></span>
+              <img src="/imgs/icons/entry.svg" alt="journal">
+              <span class="pl-2"><%= __('Entries') %></span>
+            </div>
+          </a>
+          <a href="/<%= currentUser.username %>/journal/ta">
+            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
+              <img src="/imgs/icons/ta.svg" alt="journal">
+              <span class="pl-2"><%= __('TA') %></span>
+            </div>
+          </a>
+          <a href="/<%= currentUser.username %>/journal/backtest">
+            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
+              <img src="/imgs/icons/backtest.svg" alt="journal">
+              <span class="pl-2"><%= __('Backtest') %></span>
+            </div>
+          </a>
+          <a href="/<%= currentUser.username %>/journal/comment">
+            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
+              <img src="/imgs/icons/comment.svg" alt="journal">
+              <span class="pl-2"><%= __('Comments') %></span>
             </div>
           </a>
           <a href="/<%= currentUser.username %>/plan">

@@ -106,6 +106,7 @@ a:hover {
     background: var(--background-hover);
     cursor: pointer;
   }
+
 .ui-state-default {
   color: var(--text-grey);
 }

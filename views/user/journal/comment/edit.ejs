@@ -1,15 +1,15 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mt-3 mx-auto">
+  <div class="container mx-auto pt-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/comment/<%= comment.id %>?_method=PUT" method="POST">
         <h3 class="mx-3"><%= __('Comment created the') %> <%= comment.date %></h3>
         <hr>
         <div class="mb-2 mx-3">
-          <div id="client-comment" contenteditable="true"><%= comment.comment %></div>
+          <div id="client-comment" class="editcontent" contenteditable="true"><%= comment.comment %></div>
         </div>
-        <textarea id="server-comment" name="comment" class="d-none">Hello</textarea>
+        <textarea id="server-comment" name="comment" class="d-none"></textarea>
         <br>
         <div class="text-right mx-3">
           <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Cancel') %></a>

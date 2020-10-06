@@ -1,48 +1,48 @@
 <%- include("../../../partials/header-log") %>
 
 <!-- CONTENT -->
-<div class="container mt-3 mx-auto">
-  <div class="journal-box px-0">
-    <span class="d-flex justify-content-between mx-3">
-      <h3>Últimas entradas</h3>
-      <a href="#!" class="text-decoration-none">Filtrar</a>
-    </span>
-    <hr>
-    <div class="mx-3">
-      <% historyEntry.id.forEach((id, i) => { %>
-        <div class="row mb-1">
-          <div class="col-5">
-            <!-- fix: fix naming -->
-            <a href="/<%= currentUser.username %>/journal/entry/<%= id %>" class="text-decoration-none">
-              <span class="bg-hover px-2"><%= historyEntry.title[i] %></span>
-            </a>
-          </div>
-          <div class="col-2 text-center">
-            <% if (historyEntry.result[i] === "win") { %>
-              <span class="tag win"><%= historyEntry.result[i].toUpperCase(); %></span>
-            <% } else if (historyEntry.result[i] === "loss") { %>
-              <span class="tag loss"><%= historyEntry.result[i].toUpperCase(); %></span>
-            <% } else if (historyEntry.result[i] === "be") { %>
-              <span class="tag be"><%= historyEntry.result[i].toUpperCase(); %></span>
-            <% } %>
-          </div>
-          <div class="col-4">
-            <span class="orange"><%= historyEntry.strategy[i] %></span>
-          </div>
-          <div class="col-1">
-            <% if (historyEntry.status[i] == 0) { %>
-              <span>
-                <a href="/<%= currentUser.username %>/journal/entry/<%= id %>">
-                  <img src="/imgs/icons/open-ops.svg" alt="open entry">
-                </a>
-              </span>
-            <% } %>
-          </div>
+<div class="pt-4 mx-4">
+  <section>
+    <div class="container">
+      <h2 class="mx-auto"><%= __('Entries') %></h2>
+      <div class="journal-box px-0">
+        <span class="d-flex justify-content-end mx-3">
+          <a href="#!" class="d-none text-decoration-none mb-2"><%= __('Filter') %></a>
+          <a href="#!" class="text-decoration-none mb-2">[Somthing In Progres Here]</a>
+        </span>
+        <hr>
+        <table id="index-table" class="table table-borderless table-hover">
+          <tbody>
+            <% dataList.forEach((entry) => { %>
+              <tr onclick="document.location = '/<%= currentUser.username %>/journal/entry/<%= entry.id %>'">
+                <td class="orange mandatory"><%= entry.pair %></td>
+                <td class="orange mandatory"><%= entry.date %></td>
+                <% if (entry.status) { %>
+                  <% if (entry.result == 'win') { %>
+                    <td><span class="pill pill-green d-block"><%= entry.result.toUpperCase() %></span></td>
+                  <% } else if (entry.result == 'loss') { %>
+                    <td><span class="pill pill-red d-block"><%= entry.result.toUpperCase() %></span></td>
+                  <% } else { %>
+                    <td><span class="pill pill-yellow"><%= entry.result.toUpperCase() %></span></td>
+                  <% } %>
+                <% } else { %>
+                  <td><img src="/imgs/icons/open-ops.svg" alt=""></td>
+                <% } %>
+                <td><%= entry.strategy %></td>
+                <td><%= entry.timeframe %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <hr>
+        <div class="d-flex mx-3">
+          <a href="/<%= currentUser.username %>/journal/entry/new" class="btn-neilit"><%= __('New') %></a>
         </div>
-      <% }) %>
+      </div>
     </div>
-  </div>
+  </section>
 </div>
+
 <!-- <section> is inside partials -->
 </section>
 

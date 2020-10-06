@@ -14,12 +14,17 @@ var addonHtml = `
       <span class="checkmark"></span>
     </label>
     <span class="input-group my-2">
+
       <label class="mr-2">Campos de respuesta:</label>
+
       <div class="d-flex flex-column option">
         <input type="number" name="arrOption" class="d-none option-array">
         <input type="text" name="varOption" class="option-list px-2 mb-2" placeholder="E.g. Yes" onkeypress="return newOption(this);">
         <input type="text" name="varOption" class="option-list px-2 mb-2" placeholder="E.g. No" onkeypress="return newOption(this);">
       </div>
+      <span class="float-right ml-2">
+        <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="To add more fields press enter inside the last available field. Up to a 6 at maximum.">
+      </span>
     </span>
   </div>
   `;

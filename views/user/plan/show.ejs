@@ -6,32 +6,32 @@
       <div class="journal-box px-3">
         <h2 id="plan-title"><%= plan.title %></h2>
         <br>
-        <% if (plan.broker != null || plan.charts != null || plan.capital != null || plan.routine != null) { %>
-          <h4 class="orange">General Information</h4>
+        <% if (plan.broker != '' || plan.charts != '' || plan.capital != '' || plan.routine != '') { %>
+          <h4 class="orange"><%= __('General Information') %></h4>
           <div>
             <ul class="px-0">
-              <% if (plan.broker != null) { %>
+              <% if (plan.broker != '') { %>
                 <li>
-                  <label class="mr-1 font-weight-bold">Broker:</label>
+                  <label class="mr-1 font-weight-bold"><%= __('Broker') %>:</label>
                   <span class="user-field"><%= plan.broker %></span>
                 </li>
               <% } %>
-              <% if (plan.charts != null) { %>
+              <% if (plan.charts != '') { %>
                 <li>
-                  <label class="mr-1 font-weight-bold">Charts:</label>
+                  <label class="mr-1 font-weight-bold"><%= __('Charts') %>:</label>
                   <span class="user-field"><%= plan.charts %></span>
                 </li>
               <% } %>
-              <% if (plan.capital != null) { %>
+              <% if (plan.capital != '') { %>
                 <li>
-                  <label class="mr-1 font-weight-bold">Capital:</label>
+                  <label class="mr-1 font-weight-bold"><%= __('Capital') %>:</label>
                   <span class="user-field"><%= plan.capital %></span>
                 </li>
               <% } %>
-              <% if (plan.routine != null) { %>
+              <% if (plan.routine != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Business Routine:</label>
-                  <p>Bacon ipsum dolor amet short loin flank landjaeger beef ribs t-bone, pastrami short ribs sausage bacon shank pancetta cow filet mignon jowl frankfurter. Ham hock turducken hamburger flank capicola pork loin chicken fatback. T-bone turkey doner, pig pancetta pork chop tenderloin shankle alcatra cow bacon. Chuck sirloin hamburger, tri-tip meatloaf boudin cupim ribeye. Swine turkey frankfurter hamburger flank, t-bone tri-tip. Salami andouille sirloin ground round, meatloaf sausage turkey flank alcatra cow porchetta tail corned beef picanha ball tip.</p>
+                  <label class="font-weight-bold mb-0"><%= __('Business Routine') %>:</label>
+                  <p><%= plan.routine %></p>
                 </li>
               <% } %>
             </ul>
@@ -44,49 +44,49 @@
             <ul class="px-0">
               <% if (strategies[property].main.about != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">About:</label>
+                  <label class="font-weight-bold mb-0"><%= __('About') %>:</label>
                   <p><%= strategies[property].main.about %></p>
                 </li>
               <% } %>
               <% if (strategies[property].main.howto != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">How to Use:</label>
+                  <label class="font-weight-bold mb-0"><%= __('How to Use') %>:</label>
                   <p><%= strategies[property].main.howto %></p>
                 </li>
               <% } %>
               <% if (strategies[property].main.keynotes != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Key Notes:</label>
+                  <label class="font-weight-bold mb-0"><%= __('Key Notes') %>:</label>
                   <p><%= strategies[property].main.keynotes %></p>
                 </li>
               <% } %>
               <% if (strategies[property].main.timeframe_id != null) { %>
                 <li>
-                  <label class="mr-1 font-weight-bold">Timeframes:</label>
+                  <label class="mr-1 font-weight-bold"><%= __('Timeframes') %>:</label>
                   <span class="user-field"><%= timeframes[strategies[property].main.timeframe_id - 1] %></span>
                 </li>
               <% } %>
               <% if (strategies[property].main.pair_id != null) { %>
                 <li>
-                  <label class="mr-1 font-weight-bold">Assets:</label>
-                  <span class="user-field"><%= timeframes[strategies[property].main.pair_id - 1] %></span>
+                  <label class="mr-1 font-weight-bold"><%= __('Assets') %>:</label>
+                  <span class="user-field"><%= pairs[strategies[property].main.pair_id - 1] %></span>
                 </li>
               <% } %>
               <% if (strategies[property].main.risk != null) { %>
                 <li>
-                  <label class="mr-1 font-weight-bold">Risk Tolerance:</label>
+                  <label class="mr-1 font-weight-bold"><%= __('Risk Tolerance') %>:</label>
                   <span class="user-field"><%= strategies[property].main.risk %></span>
                 </li>
               <% } %>
               <% if (strategies[property].main.backtest_id != null) { %>
                 <li>
-                  <label class="mr-1 font-weight-bold">Backtest Sheet:</label>
-                  <span class="user-field"><a href="/<%= currentUser.username %>/journal/backtest/<%= strategies[property].main.backtest_id %>">display</a></span>
+                  <label class="mr-1 font-weight-bold"><%= __('Backtest Sheet') %>:</label>
+                  <a href="/<%= currentUser.username %>/journal/backtest/<%= strategies[property].main.backtest_id %>" class="user-field"><%= __('open') %></a>
                 </li>
               <% } %>
               <% if (strategies[property].rules.length > 0) { %>
                 <li>
-                  <label class="font-weight-bold mb-2">Positioning Rules:</label>
+                  <label class="font-weight-bold mb-2"><%= __('Positioning Rules') %>:</label>
                   <ol class="neilit-numbers">
                     <% strategies[property].rules.forEach((rule) => { %>
                       <li>
@@ -94,36 +94,36 @@
                           <h5 class="orange d-inline-block ml-2"><%= rule.title %></h5>
                         <% } %>
                         <div class="ml-2">
-                          <label class="mr-1 font-weight-bold">Positioning Type:</label>
+                          <label class="mr-1 font-weight-bold"><%= __('Positioning Type') %>:</label>
                           <% if (rule.rule_type == 'tp-f') { %>
-                            <span class="user-field">Absolute Take Profit</span>
+                            <span class="user-field"><% __('Absolute Take Profit') %></span>
                           <% } else if (rule.rule_type == 'tp-p') { %>
-                            <span class="user-field">Partial Take Profit</span>
+                            <span class="user-field"><% __('Partial Take Profit') %></span>
                           <% } else if (rule.rule_type == 'sl-f') { %>
-                            <span class="user-field">Absolute Stop Loss</span>
+                            <span class="user-field"><% __('Absolute Stop Loss') %></span>
                           <% } else { %>
-                            <span class="user-field">Partial Stop Loss</span>
+                            <span class="user-field"><% __('Partial Stop Loss') %></span>
                           <% } %>
                         </div>
                         <% if (rule.amount != null) { %>
                           <div class="ml-2">
-                            <label class="mr-1 font-weight-bold">Amount:</label>
+                            <label class="mr-1 font-weight-bold"><%= __('Amount') %>:</label>
                             <span class="user-field"><%= rule.amount %>%</span>
                           </div>
                         <% } %>
                         <% if (rule.order_type != null) { %>
                           <div class="ml-2">
-                            <label class="mr-1 font-weight-bold">Order Type:</label>
+                            <label class="mr-1 font-weight-bold"><%= __('Order Type') %>:</label>
                             <% if (rule.order_type == 'market') { %>
-                              <span class="user-field">Market order</span>
+                              <span class="user-field"><%= __('Market order') %></span>
                             <% } else { %>
-                              <span class="user-field">Limit order</span>
+                              <span class="user-field"><%= __('Limit order') %></span>
                             <% } %>
                           </div>
                         <% } %>
                         <% if (rule.description != '') { %>
                           <div class="ml-2">
-                            <label class="mr-1 font-weight-bold mb-0">Description:</label>
+                            <label class="mr-1 font-weight-bold mb-0"><%= __('Description') %>:</label>
                             <p><%= rule.description %></p>
                           </div>
                         <% } %>
@@ -137,68 +137,68 @@
           <br>
         <% } %>
         <% if (plan.psy_notes != '' || plan.psy_tips != 0) { %>
-          <h4 class="orange">Psychology</h4>
+          <h4 class="orange"><%= __('Psychology') %></h4>
           <div>
             <ul class="px-0">
               <% if (plan.psy_notes != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Psychology Notes:</label>
+                  <label class="font-weight-bold mb-0"><%= __('Psychology Notes') %>:</label>
                   <p><%= plan.psy_notes %></p>
                 </li>
               <% } %>
               <% if (plan.psy_tips != 0) { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Psychology Tips:</label>
+                  <label class="font-weight-bold mb-0"><%= __('Psychology Tips') %>:</label>
                   <ol>
                     <li class="mb-2">
-                      It is <span class="orange">more important to make money</span> than to <span class="orange">be right</span>. Therefore, there is nothing too expensive or too cheap.
-                      Ever.Remember that oil went down to negative on 2020.
+                      <%= __('It is') %> <span class="orange"><%= __('more important to make money') %></span> <%= __('than to') %> <span class="orange"><%= __('be right') %></span>. <%= __('Therefore, there is nothing too expensive or too cheap') %>.
+                      <%= __('Ever. Remember that oil went down to negative on 2020') %>.
                     </li>
                     <li class="mb-2">
-                      A game plan is a must. Before entering any operation, you have to know where will you take profit and where will you place your stop loss.
-                      And it has to be as objective as possible.
+                      <%= __('A game plan is a must. Before entering any operation, you have to know where will you take profit and where will you place your stop loss') %>.
+                      <%= __('And it has to be as objective as possible') %>.
                     </li>
                     <li class="mb-2">
-                      <span class="orange">Trust you edge.</span> You will have 4 losing trades in a row and it is okay. <span class="orange">
-                      Do not change your attitude</span> towards trading. This is how a profit graph could potentially look:<img class="d-block w-350" src="/imgs/profit_graph.png" alt="Profits Graph">
+                      <span class="orange"><%= __('Trust your edge') %>.</span> <%= __('You will have 4 losing trades in a row and it is okay') %>. <span class="orange">
+                      <%= __('Do not change your attitude') %></span> <%= __('towards trading. This is how a profit graph could potentially look') %>:<img class="d-block w-350" src="/imgs/profit_graph.png" alt="Profits Graph">
                     </li>
                     <li class="mb-2">
-                      Be aware that <span class="orange">being uncomfortable when trading is completely okay</span>. It will never get easier.
-                      You have to incomplete information; therefore, you will bever be 100% comfortable.
+                      <%= __('Be aware that') %> <span class="orange"><%= __('being uncomfortable when trading is completely okay') %></span>. <%= __('It will never get easier') %>.
+                      <%= __('You have to incomplete information; therefore, you will never be 100% comfortable') %>.
                     </li>
                     <li class="mb-2">
-                      <span class="orange">Do not</span> try to make money by catching tops and bottoms.
+                      <span class="orange"><%= __('Do not') %></span> <%= __('try to make money by catching tops and bottoms') %>.
                     </li>
                     <li class="mb-2">
-                      Always remember that you, as a trader, also have the <span class="orange">right to make money</span> (inner psychology).
+                      <%= __('Always remember that you, as a trader, also have the') %> <span class="orange"><%= __('right to make money') %></span> (<%= __('inner psychology') %>).
                     </li>
                     <li class="mb-2">
-                      <span class="orange">Do not</span> be scared to change sides in the middle of a trade. Switch your directional bias when convenient and necessary.
-                      Do not marry a side.
+                      <span class="orange"><%= __('Do not') %></span> <%= __('be scared to change sides in the middle of a trade. Switch your directional bias when convenient and necessary') %>.
+                      <%= __('Do not marry a side') %>.
                     </li>
                     <li class="mb-2">
-                      <span class="orange">Do not FOMO!</span> The market will open again tomorrow. It does not make sense to beat yourself over missing on something.
-                      <span class="orange">New opportunities will come.</span>
+                      <span class="orange"><%= __('Do not FOMO') %>!</span> <%= __('The market will open again tomorrow. It does not make sense to beat yourself over missing on something') %>.
+                      <span class="orange"><%= __('New opportunities will come') %>.</span>
                     </li>
                     <li class="mb-2">
-                      Do not <span class="orange">EVER EVER EVER</span> add to a losing position.
+                      <%= __('Do not') %> <span class="orange"><%= __('EVER EVER EVER') %></span> <%= __('add to a losing position') %>.
                     </li>
                     <li class="mb-2">
-                      Cash is the goal. But never the measure of success. For instance, a measure of success would be: <span class="orange">did I follow my rules today?</span>
-                      Even if it is a negative day in terms of cash flows it can still be a successful day.
+                      <%= __('Cash is the goal. But never the measure of success. For instance, a measure of success would be') %>: <span class="orange"><%= __('did I follow my rules today') %>?</span>
+                      <%= __('Even if it is a negative day in terms of cash flows it can still be a successful day') %>.
                     </li>
                     <li class="mb-2">
-                      <span>Read the right side of the chart instead of the left</span> (it takes practice). Everybody knows how to see a Head and Shoulders after it has formed.
+                      <span class="orange"><%= __('Read the right side of the chart instead of the left') %></span> (<%= __('it takes practice') %>). <%= __('Everybody knows how to see a Head and Shoulders after it has formed') %>.
                       Start by trying to anticipate the next candles of your most traded asset.
                     </li>
                     <li class="mb-2">
-                      You should be able to explain your edge to someone else in an elevator ride. <span>Otherwise you do not have an edge</span>.
+                      <%= __('You should be able to explain your edge to someone else in an elevator ride') %>. <span class="orange"><%= __('Otherwise you do not have an edge') %></span>.
                     </li>
                     <li class="mb-2">
-                      Losing a trade does not make you a loser.
+                      <%= __('Losing a trade does not make you a loser') %>.
                     </li>
                     <li class="mb-2">
-                      The original conviction on an active trade <span class="orange">must remain</span> unless something major changes.
+                      <%= __('The original conviction on an active trade') %> <span class="orange"><%= __('must remain') %></span> <%= __('unless something major changes') %>.
                     </li>
                   </ol>
                 </li>
@@ -208,18 +208,18 @@
           <br>
         <% } %>
         <% if (plan.jrn_process != '' || checklist.length > 0) { %>
-          <h4 class="orange">Journaling</h4>
+          <h4 class="orange"><%= __('Journaling') %></h4>
           <div>
             <ul class="px-0">
               <% if (plan.jrn_process != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Journaling Process:</label>
+                  <label class="font-weight-bold mb-0"><%= __('Journaling Process') %>:</label>
                   <p><%= plan.jrn_process %></p>
                 </li>
               <% } %>
               <% if (checklist.length > 0) { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Journal Checklist:</label>
+                  <label class="font-weight-bold mb-0"><%= __('Journal Checklist') %>:</label>
                   <ol>
                     <% checklist.forEach((item) => { %>
                       <li><%= item %></li>
@@ -232,12 +232,12 @@
           <br>
         <% } %>
         <% if (nonfinObjectives.length > 0 ||finObjectives.length > 0) { %>
-          <h4 class="orange">Objectives</h4>
+          <h4 class="orange"><%= __('Objectives') %></h4>
           <div>
             <ul class="px-0">
               <% if (nonfinObjectives.length > 0) { %>
                 <li>
-                  <label class="mr-1 mb-0 font-weight-bold">Non-Financial Objectives:</label>
+                  <label class="mr-1 mb-0 font-weight-bold"><%= __('Non-Financial Objectives') %>:</label>
                   <ul class="neilit-bullets mb-3">
                     <% nonfinObjectives.forEach((goal) => { %>
                       <li><%= goal %></li>
@@ -247,7 +247,7 @@
               <% } %>
               <% if (finObjectives.length > 0) { %>
                 <li>
-                  <label class="mr-1 mb-0 font-weight-bold">Financial Objectives:</label>
+                  <label class="mr-1 mb-0 font-weight-bold"><%= __('Financial Objectives') %>:</label>
                   <ul class="neilit-bullets mb-3">
                     <% finObjectives.forEach((goal) => { %>
                       <li><%= goal %></li>
@@ -260,24 +260,24 @@
           <br>
         <% } %>
         <% if (plan.str_revision != '' || plan.jrn_revision != '' || plan.pln_revision != '') { %>
-          <h4 class="orange">Others</h4>
+          <h4 class="orange"><%= __('Others') %></h4>
           <div>
             <ul class="px-0">
               <% if (plan.str_revision != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Strategy Revision:</label>
+                  <label class="font-weight-bold mb-0"><%= __('Strategy Revision') %>:</label>
                   <p><%= plan.str_revision %></p>
                 </li>
               <% } %>
               <% if (plan.jrn_revision != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Journal Revision:</label>
+                  <label class="font-weight-bold mb-0"><%= __('Journal Revision') %>:</label>
                   <p><%= plan.jrn_revision %></p>
                 </li>
               <% } %>
               <% if (plan.pln_revision != '') { %>
                 <li>
-                  <label class="font-weight-bold mb-0">Trading Plan Revision:</label>
+                  <label class="font-weight-bold mb-0"><%= __('Trading Plan Revision') %>:</label>
                   <p><%= plan.pln_revision %></p>
                 </li>
               <% } %>

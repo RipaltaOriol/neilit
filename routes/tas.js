@@ -12,6 +12,27 @@ var textTA = require('../models/elements/text');
 var imageTA = require('../models/elements/image');
 var strategyTA = require('../models/elements/strategy');
 
+// INDEX TECHNICAL ANALYSIS ROUTE
+router.get("/", middleware.isLoggedIn, (req, res) => {
+  getAllTas = 'SELECT tanalysis.id, DATE_FORMAT(created_at, "%d/%m/%y") AS date, pair FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at;'
+  var dataList = []
+  connection.query(getAllTas, req.user.id, (err, results) => {
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', 'Something went wrong, please try again.')
+      return res.redirect('/' + req.user.username);
+    }
+    results.forEach((result) => {
+      dataList.push({
+        id: result.id,
+        date: result.date,
+        pair: result.pair
+      })
+    });
+    res.render("user/journal/ta/index", {dataList: dataList})
+  })
+})
+
 // NEW TECHNICAL ANALYSIS ROUTE
 router.get("/new", middleware.isLoggedIn, (req, res) => {
   // loads the technical analysis elements to an object

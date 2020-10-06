@@ -49,16 +49,17 @@ function strategyHtml() {
       <div class="timeframe mb-1">
         <span>Timeframes</span>
         <div class="dropdown">
-          <button id="dTF" class="dd-tfs dropdown-select bg-hover" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button id="dTF" class="dd-tfs dropdown-select bg-hover" type="button" data-toggle="dropdown">
           `
-            + timeframes[0] +
+          + timeframes[0] +
           `
           </button>
           <input type="text" name="timeframes" class="input-tfs d-none">
-          <ul class="list-tfs dropdown-menu" aria-labelledby="dTF">
-          `
+          <ul id="dropdown-items" class="list-tfs dropdown-menu" aria-labelledby="dTF">
+            <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+            `
             + listTFs +
-          `
+            `
           </ul>
         </div>
       </div>
@@ -67,14 +68,15 @@ function strategyHtml() {
         <div class="dropdown">
           <button id="dPairs" class="dd-pairs dropdown-select bg-hover" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           `
-            + pairs[0] +
+          + pairs[0] +
           `
           </button>
           <input type="text" name="pairs" class="input-pairs d-none">
-          <ul class="list-pairs dropdown-menu" aria-labelledby="dPairs">
-          `
+          <ul id="dropdown-items" class="list-pairs dropdown-menu" aria-labelledby="dPairs">
+            <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+            `
             + listPairs +
-          `
+            `
           </ul>
         </div>
       </div>
@@ -101,6 +103,7 @@ function strategyHtml() {
               Add positioning item
             </a>
             <div class="dropdown-menu rulesBtns" aria-labelledby="dropdownMenuLink">
+              <input class="dropdown-search d-none">
               <a class="dropdown-item" href="#!" onclick="addRule('tp-f', this.parentElement)">Absolute TP (Full Profits)</a>
               <a class="dropdown-item" href="#!" onclick="addRule('tp-p', this.parentElement)">Partial TP (Scalling Out Profits)</a>
               <a class="dropdown-item" href="#!" onclick="addRule('sl-f', this.parentElement)">Absolute SL (Full Loss)</a>
@@ -133,6 +136,7 @@ var newPositionPlan = `
       </button>
       <input class="input-order d-none" name="orderType">
       <ul id="dd-order-type" class="list-orders dropdown-menu" aria-labelledby="dOrderType">
+        <input class="dropdown-search d-none">
         <li onclick="changeOrder('market', this)">Market order</li>
         <li onclick="changeOrder('limit', this)">Limit order</li>
       </ul>

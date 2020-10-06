@@ -2,6 +2,11 @@ var storeBacktest = document.getElementById("submit-backtest");
 var updateBacktest = document.getElementById("update-backtest");
 const serverData = { backtest: backtest }
 
+// Enables tooltips
+$(document).ready(function() {
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+});
+
 // toggles the pair selection when the multiples checkbox is clicked
 function letPair(bool) {
   if (bool) {
@@ -62,7 +67,9 @@ function searchDropdown(id) {
 
 // adds a new list parameter to the backtest
 function addList() {
-  $('#addons').append(addons.list);
+  if ($('#addons').children().length < 6) {
+    $('#addons').append(addons.list);
+  }
 }
 
 // changes the addon parameter to integer based list
@@ -126,7 +133,7 @@ function countTableRows() {
   var backtestRowCount = document.getElementById('backtest-table').rows.length;
   var backtestCountLabel = document.getElementById('table-count');
   if (backtestCountLabel != null) {
-    backtestCountLabel.innerHTML = backtestRowCount;
+    backtestCountLabel.innerHTML = backtestRowCount - 1;
   }
 }
 
@@ -242,7 +249,7 @@ function createRow() {
   var currentStrategy = $('.strategy')[0].textContent || $('.strategy')[0].innerText;
   var currentTimeframe = $('.timeframe')[0].textContent || $('.timeframe')[0].innerText;
   var row = table.insertRow(currentRow);
-  var indexCell = row.insertCell().innerHTML = currentRow;
+  var indexCell = row.insertCell().innerHTML = currentRow + 1;
   var directionCell = row.insertCell().innerHTML = currentDirection;
   var resultCell = row.insertCell();
   resultCell.innerHTML = currentResult.value;
@@ -269,6 +276,7 @@ function createRow() {
       }
       addonCell.className = 'text-right';
     }
+    countTableRows();
   }
   // add the edit and delete values to the new row
   var buttonsCell = row.insertCell();

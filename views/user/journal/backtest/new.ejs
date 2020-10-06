@@ -1,7 +1,7 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mt-3 mb-5 mx-auto">
+  <div class="container mx-auto pt-5 mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/backtest" method="POST">
         <h3 class="mx-3"><%= __('Create Backtesting') %></h3>
@@ -17,7 +17,7 @@
           </span>
           <span class="input-group">
             <label class="checkbox-orange my-auto mr-2">
-              <%= __('Single pair') %>
+              <%= __('Single pair') %>:
               <input type="radio" name="pairs" value="1" onclick="letPair(true);">
               <span class="checkmark"></span>
             </label>
@@ -28,7 +28,7 @@
                 <%= currencies[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                 <% for (var i = 0; i < currencies.length; i++) { %>
                   <li class="<%= i + 1 %>"><%= currencies[i] %></li>
                 <% } %>
@@ -91,7 +91,7 @@
           </span>
           <span class="input-group">
             <label class="checkbox-orange my-auto mr-2">
-              <%= __('Single timeframe') %>
+              <%= __('Single timeframe') %>:
               <input type="radio" name="timeframe" value="1" onclick="letTimeframe(true);">
               <span class="checkmark"></span>
             </label>
@@ -102,7 +102,7 @@
                 <%= timeframes[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                 <% for (var i = 0; i < timeframes.length; i++) { %>
                   <li class="<%= i + 1 %>"><%= timeframes[i] %></li>
                 <% } %>
@@ -121,7 +121,7 @@
           </span>
           <span class="input-group">
             <label class="checkbox-orange my-auto mr-2">
-              <%= __('Single strategy') %>
+              <%= __('Single strategy') %>:
               <input type="radio" name="strategy" value="1" onclick="letStrategy(true);">
               <span class="checkmark"></span>
             </label>
@@ -132,7 +132,7 @@
                 <%= strategies[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                 <% for (var i = 0; i < strategies.length; i++) { %>
                   <li class="<%= i + 1 %>"><%= strategies[i] %></li>
                 <% } %>

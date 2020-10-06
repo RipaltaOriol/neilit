@@ -8,11 +8,6 @@ input {
     border-bottom-right-radius: 0px;
   }
 
-/* || Bootstrap class */
-.container {
-  max-width: 1025px;
-}
-
 .backtest {
   max-width: 90%;
 }
@@ -24,6 +19,13 @@ input {
 }
 
 /* || Bootstrap class */
+.form-control {
+  background-color: var(--background-medium);
+}
+  .form-control:focus {
+    background-color: var(--background-hover);
+  }
+
 .input-group .form-control:not(:first-child){
   font-size: 18px;
   color: #ff8818;
@@ -76,6 +78,7 @@ input {
     color: var(--text-grey);
   }
 
+/* || Custom checkbox */
 .checkbox-orange {
   display: block;
   position: relative;
@@ -164,7 +167,7 @@ input {
 #dropdown-label {
   color: var(--invert-black);
   background: var(--background-strong);
-  border: 1px solid var(--neilit-permanent);
+  border: none;
   border-radius: .25rem;
 }
   #dropdown-label:hover {

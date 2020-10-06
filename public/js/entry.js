@@ -13,29 +13,6 @@ var storeEntry = document.getElementById('submit-entry')
 var clientComment = document.getElementById("client-comment");
 var serverComment = document.getElementById("server-comment");
 
-// Gets the pair information from the JOURNAL route
-if (window.localStorage.getItem('entry-pair') != null) {
-  // prevents the pair from chading on the edit route
-  if (!($('.edit').length > 0)) {
-    document.getElementById('entry-pair').value = window.localStorage.getItem('entry-pair');
-    entryCategory();
-  }
-}
-
-// Gets the direction information from the JOURNAL route
-if (window.localStorage.getItem('entry-direction') != null) {
-  // prevents the pair from chading on the edit route
-  if ((!($('.edit').length > 0)) && window.localStorage.getItem('entry-direction') != 0) {
-    var direction = window.localStorage.getItem('entry-direction');
-    var directionInputs = document.getElementsByName('direction');
-    directionInputs.forEach((input) => {
-      if (input.value == direction) {
-        input.checked = true;
-      }
-    });
-  }
-}
-
 // Sets placeholder for comment input
 jQuery(function($){
   $("#client-comment").focusout(function(){

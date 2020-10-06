@@ -116,7 +116,7 @@ function storeComponents() {
     orderType: $('#order-type').is(':checked') ? 'block' : 'none',
     description: $('#description').is(':checked') ? 'block' : 'none',
     psychologyNotes: $('#psychology-notes').is(':checked') ? 'block' : 'none',
-    tips: $('#tips').is(':checked') ? 'true' : 'false',
+    tips: $('#tips').is(':checked') ? '1' : '0',
     journaling: $('#journaling').is(':checked') ? 'block' : 'none',
     checklist: $('#checklist').is(':checked') ? 'block' : 'none',
     nonFinancial: $('#non-financial').is(':checked') ? 'block' : 'none',
@@ -214,9 +214,9 @@ if (window.localStorage.getItem('components') != null) {
     $('#strategy').hide()
   }
   // psychology section
+  document.getElementById('tips').value = preferences.tips;
   if (preferences.psychologyNotes == 'block') {
     document.getElementById('psychology-notes').style.display = preferences.psychologyNotes;
-    document.getElementById('tips').value = preferences.tips;
   } else {
     $('#psychology').hide()
   }
@@ -277,6 +277,24 @@ function connectBacktest(index) {
   $('.plan-backtest')[connectFocus].classList.remove('d-none')
   $('.plan-backtest')[connectFocus].classList.add('d-block')
   $('.connect-backtest')[connectFocus].textContent = backtests.title[index];
+}
+
+// search bar for the dropdown
+function searchDropdown(id) {
+  var input, search, dropdownItems, val;
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index(id.parentElement)
+  input = document.getElementsByClassName('dropdown-search')[current];
+  search = input.value.toUpperCase();
+  dropdownItems = document.getElementsByClassName('dropdown-menu')[current].getElementsByTagName('li');
+  for (var i = 0; i < dropdownItems.length; i++) {
+    val = dropdownItems[i].textContent || dropdownItems[i].innerText;
+    if (val.toUpperCase().indexOf(search) > -1) {
+      dropdownItems[i].style.display = "";
+    } else {
+      dropdownItems[i].style.display = "none";
+    }
+  }
 }
 
 // allows changes on the timeframes of a strategy

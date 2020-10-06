@@ -1,7 +1,7 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="backtest mt-3 mb-5 mx-auto">
+  <div class="backtest mx-auto pt-5 mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=DELETE" method="POST">
         <h3 class="mx-3"><%= backtest.title %></h3>

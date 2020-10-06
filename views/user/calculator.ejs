@@ -4,7 +4,7 @@
   <div class="pt-4 mx-4">
     <section id="calculator">
       <div class="container">
-        <h2><%= __('Position Size Calculator') %></h2>
+        <h2 class="w-75 mx-auto"><%= __('Position Size Calculator') %></h2>
         <% if (currentUser.currency_id == null) { %>
           <div id="local-alert">
             <div class="alert alert-danger mt-2" role="alert">
@@ -12,7 +12,7 @@
             </div>
           </div>
         <% } %>
-        <div class="journal-box px-0 w-50">
+        <div class="journal-box px-0 w-75 mx-auto">
           <h3 class="mx-3"><%= __('Account information') %></h3>
           <hr>
           <div class="mx-3">
@@ -38,7 +38,7 @@
                 <%= currencies[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                <input id="dropdown-search" class="p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown()">
+                <input id="dropdown-search" class="p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown()">
                 <% for (var i = 0; i < currencies.length; i++) { %>
                   <li><%= currencies[i] %></li>
                 <% } %>
