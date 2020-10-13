@@ -1,6 +1,5 @@
 // Trading Plan Element: STRATEGY
 let pairs = require("../pairs");
-let timeframes = require("../timeframes");
 
 // -- CREATE ADD BEGINNING
 var componentStrategyBeg = `

@@ -1,8 +1,8 @@
 // MIDDLEWARE DEPENDENCIES
-const util = require('util'); 
-let connection = require('../models/connectDB');
+const util = require('util');
+let db = require('../models/dbConfig');
 // node native promisify
-const query = util.promisify(connection.query).bind(connection);
+const query = util.promisify(db.query).bind(db);
 
 // MIDDLEWARE METHODS
 var middlewareObj = { };

@@ -1,3 +1,4 @@
+// sets colours on graph axes
 var axesColor = 'rgba(0,0,0,0.1)'
 var doughnutBorderColor = 'rgb(255,255,255)'
 if (currentUser.darkMode) {
@@ -28,6 +29,13 @@ var bestAssetPercent = document.getElementById('best-asset-percent');
 var bestAssetAmount = document.getElementById('best-asset-amount');
 var timeframesBody = document.getElementById('timeframes-body');
 var assetsBody = document.getElementById('assets-body');
+
+// keeps track of the custom data that wants to be obtained
+var selectTable = 'none';
+// updates the value of the custom table data
+function updateSelectTable(data) {
+  selectTable = data;
+}
 
 // checks if the given dates are valid
 function isValidDate(d) {
@@ -180,64 +188,100 @@ function getCustomBestAsset(from, to) {
   }
 }
 
+// updates the values of the strategies table
+function updateStrategiesTable(data) {
+  for (const property in data) {
+    var sData = data;
+    document.getElementById(property + '-quantity').innerHTML = sData[property].quantity;
+    if (sData[property].quantity == 0) {
+      document.getElementById(property + '-average').innerHTML = "0"
+    } else {
+      if (sData[property].percent/sData[property].quantity >= 0) {
+        document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-verde">'
+          + sData[property].percent/sData[property].quantity + '%</p>'
+      } else {
+        document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-roja">'
+          + sData[property].percent/sData[property].quantity + '%</p>'
+      }
+    }
+    document.getElementById(property + '-win').innerHTML = sData[property].win;
+    document.getElementById(property + '-be').innerHTML = sData[property].be;
+    document.getElementById(property + '-loss').innerHTML = sData[property].loss;
+  }
+}
+
+
 // retrieves data based on strategies from selected period
 function getStrategies(period) {
   // makes AJAX call with the corresponding data period
   $.get('/' + currentUser.username + '/statistics/strategies/' + period)
     .done((data) => {
-      for (const property in data.strategyStats) {
-        var sData = data.strategyStats;
-        document.getElementById(property + '-quantity').innerHTML = sData[property].quantity;
-        if (sData[property].quantity == 0) {
-          document.getElementById(property + '-average').innerHTML = "0"
-        } else {
-          if (sData[property].percent/sData[property].quantity >= 0) {
-            document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-verde">'
-              + sData[property].percent/sData[property].quantity + '%</p>'
-          } else {
-            document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-roja">'
-              + sData[property].percent/sData[property].quantity + '%</p>'
-          }
-        }
-        document.getElementById(property + '-win').innerHTML = sData[property].win;
-        document.getElementById(property + '-be').innerHTML = sData[property].be;
-        document.getElementById(property + '-loss').innerHTML = sData[property].loss;
-      }
+      updateStrategiesTable(data.strategyStats);
   })
     .fail(() => {
       // error
   })
 }
 
+// updates the values of the assets table
+function updateAssetsTable(data) {
+  assetsBody.innerHTML = '';
+  for (var i = 6; i > -1; i--) {
+    var average = ''
+    if (data.showcase[i][0] == 0) {
+      average = '0';
+    } else {
+      if (data.percent[data.showcase[i][1]]/data.showcase[i][0] >= 0) {
+        average = '<p class="mb-0 pill pill-verde">' + data.percent[data.showcase[i][1]]/data.showcase[i][0]
+        + '%</p>';
+      } else {
+        average = '<p class="mb-0 pill pill-roja">' + data.percent[data.showcase[i][1]]/data.showcase[i][0]
+        + '%</p>';
+      }
+    }
+    assetsBody.innerHTML += '<tr><th scope="row" class="align-middle"><a href="#" class="grey">'
+      + pairs[data.showcase[i][1]] + '</a></th><td>' + data.showcase[i][0]
+      + '</td><td>' + average + '</td><td>' + data.win[data.showcase[i][1]]
+      + '</td><td>' + data.be[data.showcase[i][1]]
+      + '</td><td>' + data.loss[data.showcase[i][1]] + '</td></tr>';
+  }
+}
+
+
 // retrieves data based on assets from selected period
 function getAssets(period) {
   // makes AJAX call with the corresponding data period
   $.get('/' + currentUser.username + '/statistics/assets/' + period)
     .done((data) => {
-      assetsBody.innerHTML = '';
-      for (var i = 6; i > -1; i--) {
-        var average = ''
-        if (data.assetStats.showcase[i][0] == 0) {
-          average = '0';
-        } else {
-          if (data.assetStats.percent[data.assetStats.showcase[i][1]]/data.assetStats.showcase[i][0] >= 0) {
-            average = '<p class="mb-0 pill pill-verde">' + data.assetStats.percent[data.assetStats.showcase[i][1]]/data.assetStats.showcase[i][0]
-            + '%</p>';
-          } else {
-            average = '<p class="mb-0 pill pill-roja">' + data.assetStats.percent[data.assetStats.showcase[i][1]]/data.assetStats.showcase[i][0]
-            + '%</p>';
-          }
-        }
-        assetsBody.innerHTML += '<tr><th scope="row" class="align-middle"><a href="#" class="grey">'
-          + pairs[data.assetStats.showcase[i][1]] + '</a></th><td>' + data.assetStats.showcase[i][0]
-          + '</td><td>' + average + '</td><td>' + data.assetStats.win[data.assetStats.showcase[i][1]]
-          + '</td><td>' + data.assetStats.be[data.assetStats.showcase[i][1]]
-          + '</td><td>' + data.assetStats.loss[data.assetStats.showcase[i][1]] + '</td></tr>';
-      }
+      updateAssetsTable(data.assetStats);
   })
     .fail(() => {
       // error
   })
+}
+
+/// updates the values of the timeframes table
+function updateTimeframesTable(data) {
+  timeframesBody.innerHTML = '';
+  for (var i = 6; i > -1; i--) {
+    var average = ''
+    if (data.showcase[i][0] == 0) {
+      average = '0';
+    } else {
+      if (data.percent[data.showcase[i][1]]/data.showcase[i][0] >= 0) {
+        average = '<p class="mb-0 pill pill-verde">' + data.percent[data.showcase[i][1]]/data.showcase[i][0]
+        + '%</p>';
+      } else {
+        average = '<p class="mb-0 pill pill-roja">' + data.percent[data.showcase[i][1]]/data.showcase[i][0]
+        + '%</p>';
+      }
+    }
+    timeframesBody.innerHTML += '<tr><th scope="row" class="align-middle"><a href="#" class="grey">'
+      + timeframes[data.showcase[i][1]] + '</a></th><td>' + data.showcase[i][0]
+      + '</td><td>' + average + '</td><td>' + data.win[data.showcase[i][1]]
+      + '</td><td>' + data.be[data.showcase[i][1]]
+      + '</td><td>' + data.loss[data.showcase[i][1]] + '</td></tr>';
+  }
 }
 
 // retrieves data based on timeframes from selected period
@@ -245,30 +289,32 @@ function getTimeframes(period) {
   // makes AJAX call with the corresponding data period
   $.get('/' + currentUser.username + '/statistics/timeframes/' + period)
     .done((data) => {
-      timeframesBody.innerHTML = '';
-      for (var i = 6; i > -1; i--) {
-        var average = ''
-        if (data.timeframeStats.showcase[i][0] == 0) {
-          average = '0';
-        } else {
-          if (data.timeframeStats.percent[data.timeframeStats.showcase[i][1]]/data.timeframeStats.showcase[i][0] >= 0) {
-            average = '<p class="mb-0 pill pill-verde">' + data.timeframeStats.percent[data.timeframeStats.showcase[i][1]]/data.timeframeStats.showcase[i][0]
-            + '%</p>';
-          } else {
-            average = '<p class="mb-0 pill pill-roja">' + data.timeframeStats.percent[data.timeframeStats.showcase[i][1]]/data.timeframeStats.showcase[i][0]
-            + '%</p>';
-          }
-        }
-        timeframesBody.innerHTML += '<tr><th scope="row" class="align-middle"><a href="#" class="grey">'
-          + timeframes[data.timeframeStats.showcase[i][1]] + '</a></th><td>' + data.timeframeStats.showcase[i][0]
-          + '</td><td>' + average + '</td><td>' + data.timeframeStats.win[data.timeframeStats.showcase[i][1]]
-          + '</td><td>' + data.timeframeStats.be[data.timeframeStats.showcase[i][1]]
-          + '</td><td>' + data.timeframeStats.loss[data.timeframeStats.showcase[i][1]] + '</td></tr>';
-      }
+      updateTimeframesTable(data.timeframeStats);
   })
     .fail(() => {
       // error
   })
+}
+
+// updates the values of the timeframe table
+function updateDaysTable(data) {
+  for (const property in data) {
+    document.getElementById(property + '-quantity').innerHTML = data[property].quantity;
+    if (data[property].quantity == 0) {
+      document.getElementById(property + '-average').innerHTML = "0"
+    } else {
+      if (data[property].percent/data[property].quantity >= 0) {
+        document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-verde">'
+          + data[property].percent/data[property].quantity + '%</p>'
+      } else {
+        document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-roja">'
+          + data[property].percent/data[property].quantity + '%</p>'
+      }
+    }
+    document.getElementById(property + '-win').innerHTML = data[property].win;
+    document.getElementById(property + '-be').innerHTML = data[property].be;
+    document.getElementById(property + '-loss').innerHTML = data[property].loss;
+  }
 }
 
 // retrieves data based on weekdays from the selected period
@@ -276,27 +322,42 @@ function getDays(period) {
   // makes AJAX call with the corresponding data period
   $.get('/' + currentUser.username + '/statistics/days/' + period)
     .done((data) => {
-      for (const property in data.dayWeekStats) {
-        document.getElementById(property + '-quantity').innerHTML = data.dayWeekStats[property].quantity;
-        if (data.dayWeekStats[property].quantity == 0) {
-          document.getElementById(property + '-average').innerHTML = "0"
-        } else {
-          if (data.dayWeekStats[property].percent/data.dayWeekStats[property].quantity >= 0) {
-            document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-verde">'
-              + data.dayWeekStats[property].percent/data.dayWeekStats[property].quantity + '%</p>'
-          } else {
-            document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-roja">'
-              + data.dayWeekStats[property].percent/data.dayWeekStats[property].quantity + '%</p>'
-          }
-        }
-        document.getElementById(property + '-win').innerHTML = data.dayWeekStats[property].win;
-        document.getElementById(property + '-be').innerHTML = data.dayWeekStats[property].be;
-        document.getElementById(property + '-loss').innerHTML = data.dayWeekStats[property].loss;
-      }
+      updateDaysTable(data.dayWeekStats);
   })
     .fail(() => {
       // error
   })
+}
+
+// retrieves the corresponding table data from a custom time period
+function getCustomTable(from, to) {
+  var dFrom = new Date(from.value);
+  var dTo = new Date(to.value);
+  if (isValidDate(dFrom) && isValidDate(dTo)) {
+    dFrom = from.value.replace(/\//g, '-');
+    dTo = to.value.replace(/\//g, '-');
+    // makes an AJAX call with the custom data period
+    $.get('/' + currentUser.username + '/statistics/' + selectTable + '/custom/' + dFrom + '/' + dTo)
+      .done((data) => {
+        switch (selectTable) {
+          case 'strategies':
+            updateStrategiesTable(data.data);
+            break;
+          case 'assets':
+            updateAssetsTable(data.data);
+            break;
+          case 'timeframes':
+            updateTimeframesTable(data.data);
+            break;
+          case 'days':
+            updateDaysTable(data.data);
+            break;
+        }
+    })
+      .fail(() => {
+        // error
+    })
+  }
 }
 
 // retrieves entry directions from the selected time period
@@ -484,7 +545,6 @@ var orderDirection = new Chart(orderDirection,{
 
 // graph for direction and results metric
 var orderDirectionResults = document.getElementById('orderDirectionResults').getContext('2d');
-var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguts', 'September', 'October', 'November', 'December']
 var orderDirectionResults = new Chart(orderDirectionResults,{
 
   //Determinamos que tipo de gráfico va a ser. En este caso, un gráfico de barras.

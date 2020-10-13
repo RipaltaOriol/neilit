@@ -1,7 +1,7 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mt-3 mb-5 mx-auto">
+  <div class="container mx-auto pt-5 mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/entry/<%= entry.id %>?_method=DELETE" method="POST">
         <h3 class="mx-3"><%= entry.title %></h3>
@@ -9,17 +9,17 @@
         <div class="row mx-3">
           <div class="col-6">
             <!-- GENERAL ENTRY INFORMATION -->
-            <h5>General</h5>
+            <h5><%= __('General Information') %></h5>
             <div>
-              <label>Activo</label>
+              <label><%= __('Asset') %></label>
               <input type="text" class="bg-hover orange px-2" value="<%= currencies[entry.pair] %>" readonly>
             </div>
             <span>
-              <label>Categoría</label>
+              <label><%= __('Category') %></label>
               <input type="text" class="bg-hover orange px-2" value="<%= entry.category %>" readonly>
             </span>
             <div>
-              <label>Dirección</label>
+              <label><%= __('Direction') %></label>
               <% if (entry.direction == 'long') { %>
                 <input type="text" class="bg-hover orange px-2" value="Compra" readonly>
               <% } else { %>
@@ -27,21 +27,21 @@
               <% } %>
             </div>
             <div>
-              <label>Fecha de entrada</label>
+              <label><%= __('Entry date') %></label>
               <input type="text" class="bg-hover orange px-2" value="<%= entry.entryDate %>" readonly>
             </div>
             <% if ('entryTime' in entry) { %>
               <div>
-                <label>Hora de entrada</label>
+                <label><%= __('Entry time') %></label>
                 <input type="text" class="bg-hover orange px-2" value="<%= entry.entryTime %>" readonly>
               </div>
             <% } %>
           </div>
           <!-- SPECIFIC ENTRY INFORMATION -->
           <div class="col-6">
-            <h5>Específica</h5>
+            <h5><%= __('Specific Information') %></h5>
             <div>
-              <label>Tamaño</label>
+              <label><%= __('Size') %></label>
               <input type="text" class="bg-hover orange px-2" value="<%= entry.size %>" readonly>
             </div>
             <div>
@@ -49,22 +49,22 @@
               <input type="text" class="bg-hover orange px-2" value="<%= strategies[entry.strategy] %>" readonly>
             </div>
             <div>
-              <label>Timeframe de Anclaje</label>
+              <label><%= __('Timeframe') %></label>
               <input type="text" class="bg-hover orange px-2" value="<%= timeframes[entry.timeframe] %>" readonly>
             </div>
             <div>
-              <label>Entrada</label>
+              <label><%= __('Entry price') %></label>
               <input type="text" class="bg-hover orange px-2" value="<%= entry.entryPrice %>" readonly>
             </div>
             <% if ('stopLoss' in entry) { %>
               <div>
-                <label>Stop Loss</label>
+                <label><%= __('Stop Loss') %></label>
                 <input type="text" class="bg-hover orange px-2" value="<%= entry.stopLoss %>" readonly>
               </div>
             <% } %>
             <% if ('takeProfit' in entry) { %>
               <div>
-                <label>Take Profit</label>
+                <label><%= __('Take Profit') %></label>
                 <input type="text" class="bg-hover orange px-2" value="<%= entry.takeProfit %>" readonly>
               </div>
             <% } %>
@@ -73,26 +73,26 @@
         <% if (entry.status != 0 && 'exitPrice' in entry) { %>
           <div class="row mx-3">
             <div class="col-6">
-              <h5>Resultado</h5>
+              <h5><%= __('Results') %></h5>
               <div>
-                <label>Salida</label>
+                <label><%= __('Exit price') %></label>
                 <input type="text" class="bg-hover orange px-2" value="<%= entry.exitPrice %>" readonly>
               </div>
               <% if ('exitDate' in entry) { %>
                 <div>
-                  <label>Fecha de salida</label>
+                  <label><%= __('Exit date') %></label>
                   <input type="text" class="bg-hover orange px-2" value="<%= entry.exitDate %>" readonly>
                 </div>
               <% } %>
               <div>
-                <label>Resultado</label>
+                <label><%= __('Result') %></label>
                 <input type="text" class="bg-hover orange px-2" value="<%= entry.result.toUpperCase() %>" readonly>
               </div>
             </div>
           </div>
         <% } %>
         <br>
-        <h3 class="mx-3">Comentarios</h3>
+        <h3 class="mx-3"><%= __('Comments') %></h3>
         <hr>
         <div class="mx-3">
           <% if ('comment' in entry) { %>
@@ -100,18 +100,18 @@
           <% } %>
         </div>
         <br>
-        <h3 class="mx-3">Análisis Técnico</h3>
+        <h3 class="mx-3"><%= __('Technical Analysis') %></h3>
         <hr>
         <span class="mx-3">
-          <label><strong>Ir al análisis técnico asociado:</strong></label>
+          <label><strong><%= __('Go to the linked technical analysis') %>:</strong></label>
           <a href="/<%= currentUser.username %>/journal/ta/<%= entry.taId %>" class="text-decoration-none">
-            <span class="bg-hover orange px-2">Click</span>
+            <span class="bg-hover orange px-2"><%= __('Click') %></span>
           </a>
         </span>
         <div class="d-flex justify-content-end mx-3">
-          <a href="javascript:history.back()" class="btn-neilit ml-2">Cancelar</a>
-          <a href="/<%= currentUser.username %>/journal/entry/<%= entry.id %>/edit" class="btn-inverted ml-2">Modificar</a>
-          <button type="submit" class="btn-neilit ml-2">Eliminar</button>
+          <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Cancel') %></a>
+          <a href="/<%= currentUser.username %>/journal/entry/<%= entry.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
+          <button type="submit" class="btn-neilit ml-2"><%= __('Delete') %></button>
         </div>
       </form>
     </div>

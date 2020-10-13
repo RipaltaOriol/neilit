@@ -1,0 +1,129 @@
+<%- include("../../partials/header-statistics") %>
+  <!-- CONTENT -->
+  <div class="pt-4 mx-4 mb-5">
+    <section>
+      <div class="container">
+        <!-- strategies x month graph -->
+        <div class="neilit-widget widget-one mb-4">
+          <div class="d-flex align-items-center pt-3 mx-2">
+            <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="Monthly Strategies Outcome">
+            <h5 class="mb-0"><%= __('Monthly Strategies Outcome') %></h5>
+          </div>
+          <div class="px-3 mt-2">
+            <canvas id="resultsStrategiesMonth" height="300"></canvas>
+          </div>
+          <hr class="mb-0">
+          <div class="px-3 py-1">
+            <a href="#!">
+              <div class="text-right">
+                <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Strategy outcomes distributed through a monthly grid.') %>">
+              </div>
+            </a>
+          </div>
+        </div>
+        <!-- 2nd row: three widget square -->
+        <div class="d-flex justify-content-between mb-4">
+          <!-- strategies outcome radar -->
+          <div class="neilit-widget widget-three-2 mr-2">
+            <div class="d-flex align-items-start mt-3 mx-2">
+              <img src="/imgs/icons/bubble.svg" class="mx-2 image-widget" alt="Outcome Strategies">
+              <h5 class="mb-0"><%= __('Strategies Outcome') %></h5>
+            </div>
+            <div class="mt-4 mb-3">
+              <canvas id="resultsStrategiesRadar" height="100"></canvas>
+            </div>
+            <hr class="mb-0">
+            <div class="px-3 py-1">
+              <a href="#!">
+                <div class="text-right">
+                  <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Strategy\'s outcome distributed in a radar chart.') %>">
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- strategies table -->
+        <div class="neilit-widget widget-one mb-4">
+          <div class="d-flex align-items-center pt-3 mx-2">
+              <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="Strategies">
+              <h5 class="mb-0 no-wrap"><%= __('Strategies') %></h5>
+          </div>
+          <div class="px-3 mt-3">
+            <table class="table table-hover table-borderless font-16 text-center">
+              <thead>
+                <tr class="pb-4">
+                  <th scope="col"><%= __('Strategy') %></th>
+                  <th scope="col"><%= __('Entries') %></th>
+                  <th scope="col"><%= __('Avg. return') %></th>
+                  <th scope="col"><%= __('Wins') %></th>
+                  <th scope="col"><%= __('Break evens') %></th>
+                  <th scope="col"><%= __('Losses') %></th>
+                  <th scope="col"><%= __('Win rate') %></th>
+                  <th scope="col"><%= __('Expected return') %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (const property in strategyStats) { %>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#!" class="grey"><%= strategyStats[property].name %></a></th>
+                    <td id="<%= property %>-quantity"><%= strategyStats[property].quantity %></td>
+                    <td id="<%= property %>-average">
+                      <% if (strategyStats[property].quantity == 0) { %>
+                        0
+                      <% } else { %>
+                        <% if (strategyStats[property].percent/strategyStats[property].quantity >= 0) { %>
+                          <p class="mb-0 pill pill-verde">
+                            <%= strategyStats[property].percent/strategyStats[property].quantity %>%
+                          </p>
+                        <% } else { %>
+                          <p class="mb-0 pill pill-roja">
+                            <%= strategyStats[property].percent/strategyStats[property].quantity %>%
+                          </p>
+                        <% } %>
+                      <% } %>
+                    </td>
+                    <td id="<%= property %>-win"><%= strategyStats[property].win %></td>
+                    <td id="<%= property %>-be"><%= strategyStats[property].be %></td>
+                    <td id="<%= property %>-loss"><%= strategyStats[property].loss %></td>
+                    <td id="<%= property %>-rate">
+                      <% if (strategyStats[property].quantity > 0) { %>
+                        <%= Math.round(strategyStats[property].win / strategyStats[property].quantity * 10000) / 100 %>%
+                      <% } else { %>
+                        0%
+                      <% } %>
+                    </td>
+                    <td id="<%= property %>-expected">
+                      <% if (!isNaN(strategyStats[property].expected)) { %>
+                        <%= Math.round(strategyStats[property].expected * 100) / 100 %>%
+                      <% } else { %>
+                        N/A
+                      <% } %>
+                    </td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+          <hr class="mb-0">
+          <div class="px-3 py-1">
+            <a href="#!">
+              <div class="text-right">
+                <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Results breakout based on the account\'s strategies.') %>">
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<script type="text/javascript">
+  var currentUser = <%- JSON.stringify(currentUser); %>
+  var strategyStats = <%- JSON.stringify(strategyStats); %>
+  var months = <%- JSON.stringify(months); %>
+</script>
+
+<!-- <section> is inside partials -->
+</section>
+
+<%- include("../../partials/footer-statistics-details") %>

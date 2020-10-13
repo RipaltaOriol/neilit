@@ -5,9 +5,10 @@ let express         = require('express'),
     bodyParser      = require('body-parser'),
     flash           = require('connect-flash'),
     passport        = require('passport'),
-    passportConfig  = require('./models/passportConfig')
-    expressSession  = require('express-session'),
-    mysql           = require('mysql');
+    passportConfig  = require('./models/passportConfig'),
+    db              = require('./models/dbConfig'),
+    expressSession  = require('express-session');
+
 
 // Routes Dependencies
 let indexRoutes       = require('./routes/index'),
@@ -46,21 +47,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 
-// Connect to DB
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    : 'root',
-  password: 'ripaltus',
-  database: 'neilit_db',
-  multipleStatements: true
-});
-
 // Global Program Variable
 // FIXME: set the rest of the varibles. Some are defined after LOGIN as assynchronously
 // FIXME: can modules be grouped?
 // FIXME: categories should be maped to pairs, but it cannot be pased to front-end JS
 let pairs = require("./models/pairs");
-let timeframes = require("./models/timeframes");
 let categories = require("./models/categoriesPairs");
 let strategies = require("./models/strategies");
 
@@ -70,7 +61,6 @@ global.userStrategies = [];
 global.userIdStrategies = [];
 global.notification = true;
 global.language = 'en';
-
 // #### MIDDLEWARES ####
 // MIDDLEWARE to have USER INFORMATION on all routes
 app.use((req, res, next) => {

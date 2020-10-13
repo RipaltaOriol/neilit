@@ -1,0 +1,118 @@
+<%- include("./partials/header-home") %>
+
+<div id="pricing">
+  <div>
+    <nav class="navbar">
+    <!-- email -->
+    <ul class="navbar-nav">
+      <li class="nav-item ml-2">
+        <p class="mb-0">
+          <img src="/imgs/icons/email.svg" alt="email">
+          info@neilit.com
+        </p>
+      </li>
+    </ul>
+    <!-- language -->
+     <ul class="navbar-nav">
+       <li class="nav-item">
+          <a data-toggle="modal" data-target=".modal-language-lg" class="cursor-pointer ml-5">
+            <img src="/imgs/icons/language.svg" alt="language">
+            <span><%= __('Language')%></span>
+          </a>
+          <!-- language modal -->
+          <div class="modal modal-language-lg fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+              <div class="modal-content text-center">
+                <div class="modal-body py-2">
+                  <form action="/language/en" method="POST">
+                    <button type="submit"><%= __('English')%></button>
+                  </form>
+                  <form action="/language/es" method="POST">
+                    <button type="submit"><%= __('Spanish')%></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+     <!-- social media -->
+     <ul class="navbar-nav ml-auto">
+       <li class="nav-item social">
+         <p class="mb-0">
+           <!-- facebook -->
+           <!-- <img src="/imgs/icons/fb.svg" alt="facebook" class="ml-2"> -->
+           <!-- instagram -->
+           <!-- <img src="/imgs/icons/ig.svg" alt="instagram" class="ml-2"> -->
+           <!-- youtube -->
+           <!-- <img src="/imgs/icons/yt.svg" alt="youtube" class="ml-2"> -->
+           <!-- linkedin -->
+           <!-- <img src="/imgs/icons/linkedin.svg" alt="linkedin" class="ml-2"> -->
+           <!-- twitter -->
+           <!-- <img src="/imgs/icons/twitter.svg" alt="twitter" class="ml-2"> -->
+         </p>
+       </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="sticky-top">
+    <nav class="navbar" id="sticky-nav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="/" class="btn-nav mr-4"><%= __('Home')%></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="/features" class="btn-nav mr-4"><%= __('Features')%></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="/pricing" class="btn-nav mr-4"><%= __('Pricing')%></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a href="/resources" class="btn-nav mr-4"><%= __('Resources')%></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <!-- login -->
+          <a class="btn-neilit ml-3" href="/login">Login</a>
+          <!-- signup -->
+          <a class="btn-inverted ml-3" href="/signup">Sign Up</a>
+        </li>
+      </ul>
+    </nav>
+    <p id="beta" class="mb-0"><strong><%= __('We are in BETA') %></strong></p>
+  </div>
+  
+  <div class="h-75 d-flex justify-content-around">
+    <div class="plan p-5 text-center free align-self-center">
+      <h3 class="mb-0"><%= __('Free') %></h3>
+      <span class="d-block"><%= __('Give Neilit a go') %></span>
+      <span class="d-block my-2">
+        <span class="pricing">0</span>
+        <span>€ / month</span>
+      </span>
+      <ul class="text-left mx-3 px-3 mb-4">
+        <li class="mb-1"><span class="mr-5"><%= __('Entries') %></span><span class="ml-3 float-right orange"><%= __('Unlimited') %></span></li>
+        <li class="mb-1"><span class="mr-5"><%= __('Comments') %></span><span class="ml-3 float-right orange"><%= __('Unlimited') %></span></li>
+        <li class="mb-1"><span class="mr-5"><%= __('Statistics') %></span><span class="ml-3 float-right"><%= __('Default') %></span></li>
+        <li class="mb-1"><span class="mr-5"><%= __('Custom Statistics') %></span><span class="ml-3 float-right"><img src="/imgs/icons/check.svg"></span></li>
+        <li class="mb-1"><span class="mr-5"><%= __('Technical Analysis') %></span><span class="ml-3 float-right orange"><%= __('Unlimited') %></span></li>
+        <li class="mb-1"><span class="mr-5"><%= __('Elements on TA') %></span><span class="ml-3 float-right orange"><%= __('Unlimited') %></span></li>
+        <li class="mb-1"><span class="mr-5"><%= __('Backtesting addons') %></span><span class="ml-3 float-right">6</span></li>
+      </ul>
+      <form action="/signup/select-plan" method="POST">
+        <button class="btn-neilit" type="submit" name="button"><%= __('Select') %></button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<%- include("./partials/footer-home") %>

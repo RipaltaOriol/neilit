@@ -1,4 +1,5 @@
 let express       = require('express');
+const path        = require('path');
 const util        = require('util');
 let router        = express.Router();
 let passport      = require('passport');
@@ -6,16 +7,27 @@ let async         = require('async');
 let nodemailer    = require('nodemailer');
 let crypto        = require('crypto');
 let bcrypt        = require('bcrypt');
+
+// Hashing Salt
 const saltRounds  = 10;
 
+// I18N library to translate the files inside the modules directory
+const i18n = require('i18n');
+// I18N config
+i18n.configure({
+  locales: ['en', 'de'],
+  directory: path.join('./middleware/locales')
+})
+
 // Global Program Variables
-let plans      = require('../models/plans');
-let strategies = require('../models/strategies');
-let middleware = require('../middleware/home');
-let connection = require('../models/connectDB');
+let plans           = require('../models/plans');
+let timeframesFunc  = require("../models/timeframes");
+let strategies      = require('../models/strategies');
+let middleware      = require('../middleware/home');
+let db              = require('../models/dbConfig');
 let selectPlan;
 // node native promisify
-const query = util.promisify(connection.query).bind(connection);
+const query = util.promisify(db.query).bind(db);
 
 // COMBAK: set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -50,6 +62,8 @@ router.post("/login", passport.authenticate('local-login', {
 }), (req, res) => {
   strategies(req.user.id);
   language = req.user.language;
+  i18n.setLocale(language)
+  timeframes = timeframesFunc();
   res.redirect("/" + req.user.username)
 })
 
@@ -62,17 +76,18 @@ router.get("/signup", (req, res) => {
 router.post("/signup", passport.authenticate('local-signup', {
   failureRedirect: '/signup'
 }), async (req, res) => {
-  try {
-    // Create a new customer object
-    const customer = await stripe.customers.create({
-      email: req.user.email,
-    });
-    var saveStripeCustomerId = await query('UPDATE users SET stripeCustomerId = ? WHERE email = ?', [customer.id, req.user.email])
-    res.redirect("/signup/select-plan");
-  } catch (e) {
-    req.flash('error', 'There was an issue with the registration process. Please, try again later.')
-    res.redirect('/signup');
-  }
+  // try {
+  //   // Create a new customer object
+  //   const customer = await stripe.customers.create({
+  //     email: req.user.email,
+  //   });
+  //   var saveStripeCustomerId = await query('UPDATE users SET stripeCustomerId = ? WHERE email = ?', [customer.id, req.user.email])
+  //   res.redirect("/signup/select-plan");
+  // } catch (e) {
+  //   req.flash('error', res.__('There was an issue with the registration process. Please, try again later.'))
+  //   res.redirect('/signup');
+  // }
+  res.redirect("/" + req.user.username)
 })
 
 // SELECT PLAN ROUTE
@@ -187,7 +202,7 @@ router.post('/create-subscription', middleware.isLoggedIn, async (req, res) => {
 // LOGOUT ROUTE
 router.get("/logout", (req, res) => {
   req.logout();
-  req.flash("success", "Successfully logged out!")
+  req.flash("success", res.__("Successfully logged out!"))
   res.redirect("/")
 })
 
@@ -209,11 +224,11 @@ router.post("/forgot-password", (req, res, next) => {
     },
     // search for the given email in the DB and get the user id and email
     (token, done) => {
-      connection.query('SELECT id, email FROM users WHERE email = ?', req.body.email, (err, getId) => {
+      db.query('SELECT id, email FROM users WHERE email = ?', req.body.email, (err, getId) => {
         if (err) throw err;
         // if email does not exists then send error
         if (getId.length < 1) {
-          req.flash('error', 'No account with that email address exists.');
+          req.flash('error', res.__('No account with that email address exists.'));
           return res.redirect('/forgot-password')
         }
         var user = getId[0];
@@ -221,7 +236,7 @@ router.post("/forgot-password", (req, res, next) => {
         expireDate.setHours(expireDate.getHours() + 1); // 1 hour
         var setTokenInfo = 'UPDATE users SET resetPasswordToken = ?, resetPasswordExpire = ? WHERE id = ?'
         // stores the reset password token in the DB
-        connection.query(setTokenInfo, [token, expireDate, user.id], (err) => {
+        db.query(setTokenInfo, [token, expireDate, user.id], (err) => {
           if (err) throw err;
           done(err, token, user);
         });
@@ -251,7 +266,7 @@ router.post("/forgot-password", (req, res, next) => {
       };
       // send email
       smtpTransport.sendMail(mailOptions, (err) => {
-        req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+        req.flash('success', res.__('An e-mail has been sent to ') + user.email + res.__(' with further instructions.'));
         done(err, 'done');
       });
     }
@@ -264,10 +279,10 @@ router.post("/forgot-password", (req, res, next) => {
 // RESET PASSWORD ROUTE
 router.get('/reset/:token', (req, res) => {
   selectTokenExpire = 'SELECT resetPasswordExpire FROM users WHERE resetPasswordToken = ?;'
-  connection.query(selectTokenExpire, req.params.token, (err, getExpire) => {
+  db.query(selectTokenExpire, req.params.token, (err, getExpire) => {
     if (err) throw err;
     if (getExpire.length < 1 || getExpire[0].resetPasswordExpire < new Date()) {
-      req.flash('error', 'Password reset token is invalid or has expired.');
+      req.flash('error', res.__('Password reset token is invalid or has expired.'));
       return res.redirect('/forgot-password')
     }
     res.render('reset-password', {token: req.params.token});
@@ -279,10 +294,10 @@ router.post('/reset/:token', (req, res, next) => {
   async.waterfall([
     (done) => {
       selectTokenExpire = 'SELECT email, resetPasswordExpire FROM users WHERE resetPasswordToken = ?;'
-      connection.query(selectTokenExpire, req.params.token, (err, getExpire) => {
+      db.query(selectTokenExpire, req.params.token, (err, getExpire) => {
         if (err) throw err;
         if (getExpire.length < 1 || getExpire[0].resetPasswordExpire < new Date()) {
-          req.flash('error', 'Password reset token is invalid or has expired.');
+          req.flash('error', res.__('Password reset token is invalid or has expired.'));
           return res.redirect('back')
         }
         var user = getExpire[0];
@@ -290,13 +305,13 @@ router.post('/reset/:token', (req, res, next) => {
           // COMBAK: move the password hashing to module exports
           bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
             var resetPassword = 'UPDATE users SET password = ?, resetPasswordToken = ?, resetPasswordExpire =? WHERE resetPasswordToken = ?;'
-            connection.query(resetPassword, [hash, null, null, req.params.token], (err) => {
+            db.query(resetPassword, [hash, null, null, req.params.token], (err) => {
               if (err) throw err;
               done(err, user)
             })
           })
         } else {
-          req.flash('error', 'Passwords do not match.');
+          req.flash('error', res.__('Passwords do not match.'));
           return res.redirect('back');
         }
       })
@@ -322,7 +337,7 @@ router.post('/reset/:token', (req, res, next) => {
       };
       smtpTransport.sendMail(mailOptions, (err) => {
         if (err) throw err;
-        req.flash('success', 'Success! Your password has been changed.');
+        req.flash('success', res.__('Success! Your password has been changed.'));
         done(err);
       });
     }

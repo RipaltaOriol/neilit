@@ -186,11 +186,6 @@ input[type=search] {
     }
 
 /* || Utility */
-.cursor-pointer {
-  cursor: pointer;
-}
-
-/* || Utility */
 .outline-none { }
   .outline-none:focus {
     outline: none;

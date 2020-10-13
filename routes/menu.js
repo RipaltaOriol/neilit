@@ -2,11 +2,11 @@ let express = require('express');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
 let currencies = require('../models/currencies');
-let timeframes = require('../models/timeframes');
+//let timeframes = require('../models/timeframes');
 let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware');
 let dbLocale   = require('../middleware/sqlTime')
-let connection = require('../models/connectDB');
+let db = require('../models/dbConfig');
 
 // COMBAK: Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -27,21 +27,21 @@ router.get("/settings", middleware.isLoggedIn, async (req, res) => {
     invoice = { total: 0, next_payment_attempt: 0 }
   }
   var goals = []
-  connection.query(selectGoals, req.user.id, (err, getGoals) => {
+  db.query(selectGoals, req.user.id, (err, getGoals) => {
     getGoals.forEach((result) => {
       goals.push(result.goal)
     });
-    connection.query(selectRole, req.user.role_id, (err, getRole) => {
+    db.query(selectRole, req.user.role_id, (err, getRole) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username);
       };
       var role = getRole[0].role;
-      connection.query(selectPaymentInfo, req.user.id, (err, getPaymentInfo) => {
+      db.query(selectPaymentInfo, req.user.id, (err, getPaymentInfo) => {
         if (err) {
           // COMBAK: log error
-          req.flash('error', 'Something went wrong, please try again.')
+          req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username);
         }
         if (getPaymentInfo.length > 0) { var last4 = getPaymentInfo[0].last4 } else { var last4 = null }
@@ -63,15 +63,16 @@ router.get("/settings", middleware.isLoggedIn, async (req, res) => {
 
 // DASHBOARD USER ROUTE
 router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
+  let months = [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')]
   var selectUserBase  = 'SELECT currency FROM currencies WHERE id = ?;'
   var selectEntries   = 'SELECT pair_id, profits, fees, result, MONTHNAME(exit_dt) AS month FROM entries WHERE status = 1 AND user_id = ?;'
-  var selectOpenOps   = 'SELECT pair_id, size, direction, DATE_FORMAT(entry_dt, "%d/%m/%y") AS date, entry_price FROM entries WHERE status = 0 AND user_id = ?;'
+  var selectOpenOps   = 'SELECT id, pair_id, size, direction, DATE_FORMAT(entry_dt, "%d/%m/%y") AS date, entry_price FROM entries WHERE status = 0 AND user_id = ?;'
   var selectMonth     = 'SELECT profits, fees FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;'
   var selectWeek      = 'SELECT profits, fees FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;'
-  connection.query(selectUserBase, req.user.currency_id, (err, getBase) => {
+  db.query(selectUserBase, req.user.currency_id, (err, getBase) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/login');
     }
     // object with dashboad data CURRENT BALANCE, BIGGEST TRADE & TOTAL ENTRIES
@@ -99,10 +100,10 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
       November:   { outcome: 0, total: 0 },
       December:   { outcome: 0, total: 0 }
     }
-    connection.query(selectEntries, req.user.id, (err, getEntries) => {
+    db.query(selectEntries, req.user.id, (err, getEntries) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/login');
       }
       getEntries.forEach((entry) => {
@@ -131,53 +132,58 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
         outcomeMonthAmount.push(outcomeMonth[month].outcome)
         outcomeMonthTotal.push(outcomeMonth[month].total)
       }
-      connection.query(selectOpenOps, req.user.id, (err, getOps) => {
+      db.query(selectOpenOps, req.user.id, (err, getOps) => {
         if (err) {
           // COMBAK: log error
-          req.flash('error', 'Something went wrong, please try again.')
+          req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/login');
         }
         // creates an object for open operations
         var dashboardOps = { }
         getOps.forEach((operation, i) => {
           dashboardOps[i] = { }
+          dashboardOps[i].id = operation.id;
           dashboardOps[i].pair = pairs[operation.pair_id - 1];
           dashboardOps[i].lot = operation.size;
           dashboardOps[i].direction = operation.direction;
           dashboardOps[i].date = operation.date;
           dashboardOps[i].entry = operation.entry_price;
         });
-        connection.query(selectMonth, req.user.id, (err, getMonth) => {
+        db.query(selectMonth, req.user.id, (err, getMonth) => {
           if (err) {
             // COMBAK: log error
-            req.flash('error', 'Something went wrong, please try again.')
+            req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/login');
           }
-          var monthTwenty = 0;
+          var monthPer = 0;
+          var monthCount = 0;
           getMonth.forEach((entry) => {
             var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
-            monthTwenty += entryPercent
+            monthPer += entryPercent;
+            monthCount++;
           });
-          connection.query(selectWeek, req.user.id, (err, getWeek) => {
+          db.query(selectWeek, req.user.id, (err, getWeek) => {
             if (err) {
               // COMBAK: log error
-              req.flash('error', 'Something went wrong, please try again.')
+              req.flash('error', res.__('Something went wrong, please try again.'))
               return res.redirect('/login');
             }
-            var weekFive = 0;
+            var weekPer = 0;
             getWeek.forEach((entry) => {
               var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
-              weekFive += entryPercent
+              weekPer += entryPercent
             });
             res.render("user/user",
               {
-                notification:notification,
-                dashboardData:dashboardData,
-                outcomeMonthAmount:outcomeMonthAmount,
-                outcomeMonthTotal:outcomeMonthTotal,
-                dashboardOps:dashboardOps,
-                monthTwenty:monthTwenty,
-                weekFive:weekFive,
+                notification: notification,
+                dashboardData: dashboardData,
+                outcomeMonthAmount: outcomeMonthAmount,
+                outcomeMonthTotal: outcomeMonthTotal,
+                dashboardOps: dashboardOps,
+                monthCount: monthCount,
+                monthPer: monthPer,
+                weekPer: weekPer,
+                months: months
               }
             );
           })
@@ -189,12 +195,13 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
 
 // STATISTICS ROUTE
 router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
+  let months = [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')]
   var selectUserBase = 'SELECT currency FROM currencies WHERE id = ?;'
   var selectEntries = 'SELECT pair_id, strategy_id, timeframe_id, direction, result, profits, fees, MONTH(entry_dt) as month, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ?;';
-  connection.query(selectUserBase, req.user.currency_id, (err, getBase) => {
+  db.query(selectUserBase, req.user.currency_id, (err, getBase) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
     var userBase = getBase[0].currency;
@@ -216,10 +223,10 @@ router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
       amount:   Array(timeframes.length).fill(0),
       percent:  Array(timeframes.length).fill(0)
     }
-    connection.query(selectEntries, req.user.id, (err, getEntries) => {
+    db.query(selectEntries, req.user.id, (err, getEntries) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username);
       }
       // object with the statiscits from PROFITS, ENTRIES and DIRECTION
@@ -335,14 +342,15 @@ router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
       statistics.profits.percent = Math.round(((statistics.profits.amount / req.user.balance) * 100 + Number.EPSILON) * 100) / 100
       res.render("user/statistics",
         {
-          pairs:pairs,
-          timeframes:timeframes,
-          userBase:userBase,
-          statistics:statistics,
-          assetStats:assetStats,
-          timeframeStats:timeframeStats,
-          strategyStats:strategyStats,
-          dayWeekStats:dayWeekStats
+          pairs: pairs,
+          timeframes: timeframes,
+          userBase: userBase,
+          statistics: statistics,
+          assetStats: assetStats,
+          timeframeStats: timeframeStats,
+          strategyStats: strategyStats,
+          dayWeekStats: dayWeekStats,
+          months: months
         }
       );
     })
@@ -353,10 +361,10 @@ router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
 router.get("/plan", middleware.isLoggedIn, (req, res) => {
   // COMBAK: ensure that order is descending in terms of created_at
   var selectPlans = 'SELECT id, title, DATE_FORMAT(created_at, "%d/%m/%Y") AS date FROM plans WHERE user_id = ?';
-  connection.query(selectPlans, req.user.id, (err, getPlans) => {
+  db.query(selectPlans, req.user.id, (err, getPlans) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
     // Object to store the Plans
@@ -376,10 +384,10 @@ router.get("/plan", middleware.isLoggedIn, (req, res) => {
 
 // RISK CALCULATOR ROUTE
 router.get("/calculator", middleware.isLoggedIn, (req, res) => {
-  connection.query('SELECT currency_id FROM users WHERE id = ?', req.user.id, (err, getCurrency) => {
+  db.query('SELECT currency_id FROM users WHERE id = ?', req.user.id, (err, getCurrency) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
     var currency = currencies[getCurrency[0].currency_id - 1]

@@ -158,6 +158,11 @@ input {
     filter: invert();
   }
 
+.simple-img { }
+  .dark-mode .simple-img {
+    filter: invert();
+  }
+
 .comment-date {
   text-align: right;
   color: var(--text-grey);

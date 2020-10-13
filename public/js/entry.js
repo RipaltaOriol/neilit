@@ -23,6 +23,37 @@ jQuery(function($){
   });
 });
 
+// dropdown to select a time period for statistics
+$('.dropdown-menu li').on('click', function() {
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  if ($('.dropdown-server')[current]) {
+    $('.dropdown-server')[current].value = this.className;
+  }
+  if ($('.dropdown-select')[current]) {
+    $('.dropdown-select')[current].innerHTML = getValue;
+  }
+});
+
+// search bar for the dropdown
+function searchDropdown(id) {
+  var input, search, dropdownItems, val;
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index(id.parentElement)
+  input = document.getElementsByClassName('dropdown-search')[current];
+  search = input.value.toUpperCase();
+  dropdownItems = document.getElementsByClassName('dropdown-menu')[current].getElementsByTagName('li');
+  for (var i = 0; i < dropdownItems.length; i++) {
+    val = dropdownItems[i].textContent || dropdownItems[i].innerText;
+    if (val.toUpperCase().indexOf(search) > -1) {
+      dropdownItems[i].style.display = "";
+    } else {
+      dropdownItems[i].style.display = "none";
+    }
+  }
+}
+
 // Dispaly fields for entry close
 function displayClose(close) {
   if (close == 0) {
@@ -32,12 +63,6 @@ function displayClose(close) {
     document.getElementById('entry-closure').classList.remove("d-none");
     document.getElementById('entry-closure').classList.add("d-flex");
   }
-}
-
-// Sets the category that corresponds to the selected pair
-function entryCategory() {
-  var category = document.getElementById('entry-category')
-  category.value = categories[document.getElementById('entry-pair').value]
 }
 
 // Connects a technical analysis to the entry
@@ -53,13 +78,6 @@ function connectTa(index) {
 $('#noneTa').click(() => {
   $('#entry-ta').addClass('d-none')
 })
-
-// Toggles the display of the information box's input fields
-function toggleDisplay(box) {
-  var currentBox = $('.cursor-pointer').index(box);
-  var allBoxes = document.getElementsByClassName('info-fields');
-  allBoxes[currentBox].classList.toggle('d-none');
-}
 
 // Checks the format of entry time before the form submisison
 function checkTime(form) {
@@ -90,9 +108,6 @@ function checkTime(form) {
 // Runs before making the POST request
 if (storeEntry != null) {
   storeEntry.addEventListener('click', () => {
-    // deletes localStorage on submit
-    window.localStorage.removeItem('entry-pair');
-    window.localStorage.removeItem('entry-direction');
     // sends the comment to the server
     serverComment.value = clientComment.textContent || clientComment.innerText;
   })

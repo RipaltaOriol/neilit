@@ -1,14 +1,23 @@
 :root {
-  --red-soft: #FDDFDD;
-  --yellow-soft: #fff3cd;
-  --yellow-hard: #856404;
-  --green-light: #CBF6E5;
+  --yellow-soft:   #fff3cd;
+  --yellow-strong:   #856404;
+  --yellow-border: #ffeeba;
+  --red-soft:      #fddfdd;
+  --red-border:    #f5c6cb;
+  --green-soft:    #cbf6e5;
+  --green-strong:  #155724;
+  --green-border:  #c3e6cb;
 }
 
 /* || Utility */
 button {
   background: none;
   border: none;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 /* || Utility */
@@ -21,36 +30,29 @@ td {
   font-weight: 200;
 }
 
-/* || Utility */
-a:hover {
-  text-decoration: none;
+tbody {
+  cursor: pointer;
+}
+
+hr {
+  border-color: var(--grey-medium);
 }
 
 /* || Utility */
-.font-16{
-  font-size: 16px;
-}
+a { }
+  a:hover {
+    text-decoration: none;
+  }
 
 /* || Utility */
-.white{
+.white {
   color: white;
 }
 
 /* || Utility */
-.no-wrap{
+.no-wrap {
   white-space: nowrap;
 }
-
-/* || Utility */
-.container-global{
-  max-width: 1000px;
-  /* background: red; */
-}
-
-/* || Utility */
-.font-16{
-    font-size: 16px;
-  }
 
 /* || Utility */
 .grey {
@@ -64,24 +66,24 @@ a:hover {
   .grey a {
     color: #7b7b7b;
   }
-  .grey a:hover{
-    color: black;
-  }
-  .grey:hover img{
+    .grey a:hover{
+      color: black;
+    }
+  .grey:hover img {
     opacity: 1;
   }
 
-.imagen-widget {
+.image-widget {
   width: 20px;
   height: auto;
   opacity: .6;
 }
-  .dark-mode .imagen-widget {
+  .dark-mode .image-widget {
     filter: invert();
   }
 
-.imagen-info { }
-  .imagen-info:hover {
+.image-info { }
+  .image-info:hover {
     opacity: 1;
   }
 
@@ -92,7 +94,7 @@ a:hover {
 
 .notification {
   color: var(--invert-white);
-  background-color: var(--neilit-soft);
+  background-color: var(--neilit-permanent);
   font-size: 16px;
 }
   .notification h5 {
@@ -103,45 +105,44 @@ a:hover {
       opacity: 1;
     }
 
-.imagen-widget-change {
+.image-widget-change {
   width: 25px;
   height: auto;
   opacity: .6;
   border-radius: 7px;
   transition-duration: .25s;
 }
-  .imagen-widget-change:hover {
+  .image-widget-change:hover {
     opacity: 1;
     transition-duration: .25s;
     cursor: pointer;
   }
 
-.imagen-widget-grande {
+.image-widget-grande {
   width: 25px;
 }
 
 /* || Utility */
 .pill {
-  padding: 1px 10px;
-  border-radius: 7px;
+  border-radius: 5pt;
+  padding: 0 20px 0 20px;
+  border: 1px solid transparent
 }
-
-.pill-verde {
-  background: var(--green-light);
-  color: green;
-}
-
-.pill-yellow {
-  background: var(--yellow-soft);
-  color: var(--yellow-hard);
-}
-
-.pill-roja {
-  background: var(--red-soft);
-  color: red;
-}
-
-.pill-activo { }
+  .pill-green {
+    color: var(--green-strong);
+    background: var(--green-soft);
+    border-color: var(--green-border);
+  }
+  .pill-red {
+    color: var(--red-strong);
+    background: var(--red-soft);
+    border-color: var(--red-border);
+  }
+  .pill-yellow {
+    color: var(--yellow-strong);
+    background: var(--yellow-soft);
+    border-color: var(--yellow-border);
+  }
 
 .dropdown-menu {
   padding: 0;
@@ -188,69 +189,63 @@ a:hover {
 .modal-body { }
   .modal-body input {
     color: var(--invert-black);
+    border-radius: 5pt;
+    background: var(--background-hover);
+    padding: 5px;
   }
+    .modal-body input:focus {
+      border-color: var(--invert-black);
+    }
 
-.widget-100{
+.widget-one {
   width: 100%;
-  border-radius: 7px;
+  border-radius: 5pt;
   -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
 
-.widget-tercio {
+.widget-three {
   width: 33.33%;
-  border-radius: 7px;
+  border-radius: 5pt;
   -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
 
-.news{
+.news {
   color: var(--neilit-default);
   background-color: var(--white-none);
   transition-duration: .25s;
   border: 2px solid var(--invert-white);
   border-radius: .25rem;
 }
-  .news:hover{
+  .news:hover {
     color: white;
     border: 2px solid var(--neilit-default);
     background: var(--neilit-default);
     transition-duration: .25s;
   }
 
-.suggest{
+.suggest {
   color: var(--invert-white);
   border: 2px solid var(--neilit-black);
   border-radius: .25rem;
   transition-duration: .25s;
 }
-  .suggest:hover{
+  .suggest:hover {
     color: var(--invert-whtie);
     border: 2px solid var(--invert-white);
     transition-duration: .25s;
   }
 
-.pill-direction{
-  width: 100px;
-}
-
 .progress {
+  font-family: RobotoMono;
   height: 20px;
 }
-  .progress {
-    font-family: RobotoMono;
-  }
 
-.progress-bar-orange{
+.progress-bar-orange {
   background-color: var(--neilit-permanent);
-}
-
-.inferior-widget {
-  border-top: 1px solid var(--grey-medium);
-  position: relative;
-  bottom: 0px;
 }
 
 .neilit-widget {
@@ -261,6 +256,46 @@ a:hover {
   color: var(--invert-black);
   font-weight: 500;
 }
+
+/* || JQuery UI class */
+.ui-datepicker {
+  background: var(--background-strong);
+  border-radius: .25rem;
+  box-shadow: 0 3px 6px var(--box-shadow);
+  padding: 10px 10px;
+}
+
+.ui-datepicker-title {
+  text-align: center;
+  font-weight: 500;
+}
+
+.ui-datepicker-prev {
+  display: block;
+  text-align: center;
+  border-radius: .25rem;
+}
+  .ui-datepicker-prev:hover {
+    background: var(--background-hover);
+    cursor: pointer;
+  }
+
+.ui-datepicker-next {
+  display: block;
+  text-align: center;
+  border-radius: .25rem;
+}
+  .ui-datepicker-next:hover {
+    background: var(--background-hover);
+    cursor: pointer;
+  }
+
+.ui-state-default {
+  color: var(--text-grey);
+}
+  .ui-state-default:hover {
+    color: var(--invert-black);
+  }
 
 #dd {
   border-radius: .25rem;

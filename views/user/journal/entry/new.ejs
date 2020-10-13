@@ -2,22 +2,23 @@
 
   <div id="local-alert" class="container d-none">
     <div class="alert alert-danger mt-2" role="alert">
-      The entry time is not valid. Time has to be format in 24-hour clock. For instance, 13:55.
+      <%= __('The entry time is not valid. Time has to be formatted in 24-hour clock. For instance, 13:55.') %>
     </div>
   </div>
   <!-- CONTENT -->
   <div class="container mx-auto pt-5 mb-5">
-    <div class="journal-box px-0">
+    <div class="journal-box px-0 entry-input">
       <form action="/<%= currentUser.username %>/journal/entry" method="POST" onsubmit="event.preventDefault(); return checkTime(this);">
         <h3 class="mx-3"><%= __('Create Entry') %></h3>
         <hr>
         <div class="mb-2 mx-3">
-          <div class="d-flex flex-column mt-2 p-2 entry-input">
-            <h5>Específicos</h5>
+          <div class="d-flex flex-column mt-2 p-2">
+            <h5><%= __('Specific') %></h5>
             <span class="mb-2 d-block">
               <label><%= __('Pair') %>:
                 <span class="mandatory">*</span>
               </label>
+              <input type="text" name="pair" value="1" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
@@ -32,15 +33,16 @@
               </div>
             </span>
             <span class="mb-2 d-block">
-              <label>Categoría:
+              <label><%= __('Category') %>:
                 <span class="mandatory">*</span>
               </label>
-              <input id="entry-category" type="text" class="bg-hover orange p-1 px-2" name="category" readonly>
+              <input type="text" class="bg-hover orange p-1 px-2" name="category" value="Forex" readonly>
             </span>
             <span class="mb-2 d-block">
-              <label>Estrategia:
+              <label><%= __('Strategy') %>:
                 <span class="mandatory">*</span>
               </label>
+              <input type="text" name="strategy" value="0" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
@@ -49,15 +51,16 @@
                 <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                   <% for (var i = 0; i < strategies.length; i++) { %>
-                    <li class="<%= i + 1 %>"><%= strategies[i] %></li>
+                    <li class="<%= i %>"><%= strategies[i] %></li>
                   <% } %>
                 </ul>
               </div>
             </span>
             <span class="d-block">
-              <label>Timeframe de Anclaje:
+              <label><%= __('Timeframe') %>:
                 <span class="mandatory">*</span>
               </label>
+              <input type="text" name="timeframe" value="1" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
@@ -73,51 +76,54 @@
             </span>
           </div>
           <div class="d-flex flex-column mt-2 p-2">
-            <h5>Finanzas</h5>
+            <h5><%= __('Finance') %></h5>
             <span class="input-group mb-2">
-              <label class="my-auto">Tamaño:
+              <label class="my-auto"><%= __('Size') %>:
                 <span class="mandatory">*</span>
               </label>
-              <input type="number" class="bg-hover form-control p-1 px-2" name="size" min="0" step="0.01" placeholder="especifique su tamaño de operación en lotes">
+              <input type="number" class="bg-hover form-control p-1 px-2" name="size" min="0" step="0.001" placeholder="<%= __('state the size of your operation in lots') %>">
             </span>
             <span class="input-group mb-2">
-              <label class="my-auto">Precio de Entrada:
+              <label class="my-auto"><%= __('Entry Price') %>:
                 <span class="mandatory">*</span>
               </label>
               <input type="number" class="bg-hover form-control p-1 px-2" name="entryPrice" min="0" step="0.00001">
             </span>
             <span class="input-group mb-2">
-              <label class="my-auto">Stop Loss</label>
+              <label class="my-auto"><%= __('Stop Loss') %>:</label>
               <input type="number" class="bg-hover form-control p-1 px-2" name="stopLoss" min="0" step="0.00001">
             </span>
             <span class="input-group">
-              <label class="my-auto">Take Profit</label>
+              <label class="my-auto"><%= __('Take Profit') %>:</label>
               <input type="number" class="bg-hover form-control p-1 px-2" name="takeProfit" min="0" step="0.00001">
             </span>
           </div>
           <div class="d-flex flex-column mt-2 p-2">
-            <h5>Logística</h5>
+            <h5><%= __('Logistics') %></h5>
             <span class="input-group mb-2">
-              <label class="my-auto">Fecha de Entrada
+              <label class="my-auto"><%= __('Date of Entry') %>:
                 <span class="mandatory">*</span>
               </label>
               <input type="date" class="bg-hover form-control p-1 px-2" name="entryDate">
             </span>
             <span class="input-group mb-2">
-              <label class="my-auto">Hora de Entrada</label>
+              <label class="my-auto"><%= __('Time of Entry') %>:</label>
               <input id="entry-time" type="text" class="bg-hover form-control p-1 px-2" name="entryTime">
+              <span class="ml-2 my-auto">
+                <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="bottom" title="<%= __('The entry time has to be typed in military time. For instnace, 14:45.') %>'">
+              </span>
             </span>
             <span class="mb-2">
               <div class="form-check form-check-inline">
                 <label class="checkbox-orange mb-0">
-                  Compra
+                  <%= ('Long') %>
                   <input type="radio" name="direction" value="1">
                   <span class="checkmark"></span>
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="checkbox-orange mb-0">
-                  Venta
+                  <%= ('Short') %>
                   <input type="radio" name="direction" value="-1">
                   <span class="checkmark"></span>
                 </label>
@@ -126,25 +132,25 @@
           </div>
         </div>
         <br>
-        <h3 class="mx-3">Asociar Análisis Técnico</h3>
+        <h3 class="mx-3"><%= ('Connect a Technical Analysis') %></h3>
         <hr>
         <div class="mx-3">
           <span class="d-block">
             <label class="checkbox-orange mb-0">
-              Entrada sin análisis técnico
+              <%= __('Entry without a Technical Analysis') %>
               <input id="noneTa" type="radio" name="selectTa" value="none" checked>
               <span class="checkmark"></span>
             </label>
           </span>
           <span class="d-block">
             <label class="checkbox-orange mb-0">
-              Conectar a análisis técnico
+              <%= __('Connect a Technical Analysis') %>
               <input id="selectTa" type="radio" name="selectTa" value="select" data-toggle="modal" data-target=".modal-ta">
               <span class="checkmark"></span>
             </label>
           </span>
           <span id="entry-ta" class="d-none">
-            <label class="mt-2 mb-0"><strong>Entrada connectada a:</strong></label>
+            <label class="mt-2 mb-0"><strong><%= __('Entry connected to') %>:</strong></label>
             <p id="connect-ta" class="d-inline bg-hover orange px-2"></p>
             <input id="ta" type="text" name="entryTa" class="d-none">
           </span>
@@ -154,7 +160,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content text-center">
               <div class="modal-header">
-                <h5 class="modal-title mx-auto">Seleccione un <span class="orange">análisis técnico</span> para conectar a esta entrada</h5>
+                <h5 class="modal-title mx-auto"><%= __('Select a') %> <span class="orange"><%= __('Technical Analysis') %></span> <%= __('to connect to this entry') %></h5>
               </div>
               <div class="modal-body d-flex flex-column">
                 <% tas.title.forEach((ta, i) => { %>
@@ -165,60 +171,69 @@
           </div>
         </div>
         <br>
-        <h3 class="mx-3">Comentarios</h3>
+        <h3 class="mx-3"><%= __('Comments') %></h3>
         <hr>
         <div class="mx-3">
-          <div id="client-comment" class="editcontent px-2" placeholder="Utilice este espacio para escribir algún comentario adicional" contenteditable="true"></div>
+          <div id="client-comment" class="editcontent px-2" placeholder="<%= __('Use this spece to write anything outstanding during the operation') %>" contenteditable="true"></div>
         </div>
         <textarea id="server-comment" name="comment" class="d-none"></textarea>
         <br>
-        <h3 class="mx-3">Cerrar Entrada</h3>
+        <h3 class="mx-3"><%= __('Close Entry') %></h3>
         <hr>
         <div class="mx-3 mb-3">
           <span class="d-block">
             <label class="checkbox-orange mb-0 font-18">
-              La entrada continua abierta
+              <%= __('The operation remains open') %>
               <input id="entry-open" type="radio" name="status" value="0" onclick="displayClose(this.value)" checked>
               <span class="checkmark"></span>
             </label>
           </span>
           <span class="d-block">
             <label class="checkbox-orange mb-0">
-              La entrada esta cerrada
+              <%= __('The operation is closed') %>
               <input id="entry-close" type="radio" name="status" value="1" onclick="displayClose(this.value)">
               <span class="checkmark"></span>
             </label>
           </span>
         </div>
-        <div id="entry-closure" class="flex-column mx-3 w-50 d-none">
-          <span class="mb-2">
-            <label class="mb-0">Fecha de Salida</label>
-            <input type="date" class="bg-hover orange px-2" name="exitDate">
+        <div id="entry-closure" class="flex-column mx-3 w-50 d-none mt-2">
+          <span class="input-group mb-2">
+            <label class="my-auto"><%= __('Exit Date') %>:</label>
+            <input type="date" class="bg-hover form-control p-1 px-2" name="exitDate">
           </span>
-          <span class="mb-2">
-            <label class="mb-0">Precio de Salida</label>
-            <input type="number" class="bg-hover orange px-2" name="closePrice" min="0" step="0.00001">
+          <span class="input-group mb-2">
+            <label class="my-auto"><%= __('Exit Price') %>:
+            </label>
+            <input type="number" class="bg-hover form-control p-1 px-2" name="closePrice" min="0" step="0.00001">
           </span>
-          <span class="mb-2">
-            <label class="mb-0">Beneficios</label>
-            <input type="number" class="bg-hover orange px-2" name="profits" placeholder="en divisa base de cuenta" min="0" step="0.0001">
-              <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="En case de dejarlo en blanco Neilit calculara por ti los beneficios de la operación.">
+          <span class="input-group mb-2">
+            <label class="my-auto"><%= __('Profits') %>:</label>
+            <input type="number" class="bg-hover form-control p-1 px-2" name="profits" placeholder="en divisa base de cuenta" min="0" step="0.0001">
+            <span class="ml-2 my-auto">
+              <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('In case of leaving this field blank, Neilit will calculate the profits of the operation for you.') %>'">
+            </span>
           </span>
-          <span class="mb-2">
-            <label class="mb-0">Comisiones</label>
-            <input type="number" class="bg-hover orange px-2" name="fees" min="0" step="0.01">
+          <span class="input-group mb-2">
+            <label class="my-auto"><%= __('Fees') %>:</label>
+            <input type="number" class="bg-hover form-control px-2" name="fees" min="0" step="0.01">
           </span>
-          <span class="mb-2">
-            <label class="mb-0">Resultado</label>
-            <select id="entry-result" name="result" class="custom-select p-1 w-auto">
-              <option value="win">Win</option>
-              <option value="be">Break Even</option>
-              <option value="loss">Loss</option>
-            </select>
+          <span class="mb-2 d-block">
+            <label><%= __('Results') %>:</label>
+            <input type="text" name="result" value="win" class="dropdown-server d-none">
+            <div class="dropdown d-inline">
+              <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                <%= __('Win') %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <li class="win"><%= __('Win') %></li>
+                <li class="loss"><%= __('Loss') %></li>
+                <li class="be"><%= __('Break Even') %></li>
+              </ul>
+            </div>
           </span>
         </div>
         <div class="d-flex justify-content-end mx-3">
-          <button id="submit-entry" type="submit" class="btn-neilit">Crear</button>
+          <button id="submit-entry" type="submit" class="btn-neilit"><%= __('Create') %></button>
         </div>
       </form>
     </div>
@@ -226,7 +241,6 @@
 
 <script type="text/javascript">
   var currencies = <%- JSON.stringify(currencies) %>;
-  var categories = <%- JSON.stringify(categories) %>;
   var strategies = <%- JSON.stringify(strategies) %>;
   var tas = <%- JSON.stringify(tas) %>;
 </script>

@@ -18,11 +18,11 @@
           </select>
           <div class="d-flex flex-column mt-2">
             <span>
-              <label>Categoría</label>
+              <label><%= ('Category') %>:</label>
               <input type="text" class="bg-hover orange px-2" value="<%= ta.category %>" readonly>
             </span>
             <span>
-              <label>Fecha</label>
+              <label><%= ('Date') %>:</label>
               <input type="date" class="bg-hover orange px-2" value="<%= ta.date %>" readonly>
             </span>
           </div>
@@ -34,11 +34,11 @@
           <%- ta.content %>
         </div>
         <!-- END: user content -->
-        
+
         <div class="d-flex justify-content-end mx-3">
-          <a href="javascript:history.back()" class="btn-neilit ml-2">Cancelar</a>
-          <a href="/<%= currentUser.username %>/journal/ta/<%= ta.id %>/edit" class="btn-inverted ml-2">Modificar</a>
-          <button type="submit" class="btn-neilit ml-2">Eliminar</button>
+          <a href="javascript:history.back()" class="btn-neilit ml-2"><%= ('Cancel') %></a>
+          <a href="/<%= currentUser.username %>/journal/ta/<%= ta.id %>/edit" class="btn-inverted ml-2"><%= ('Edit') %></a>
+          <button type="submit" class="btn-neilit ml-2"><%= ('Delete') %></button>
         </div>
       </form>
     </div>

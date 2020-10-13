@@ -9,7 +9,7 @@
       <link rel="stylesheet" href="/utilities/bootstrap/css/bootstrap.min.css">
       <!-- CSS -->
       <link rel="stylesheet" href="/stylesheets/app.css">
-      <link rel="stylesheet" href="/stylesheets/stats.css">
+      <link rel="stylesheet" href="/stylesheets/statistics.css">
 
       <title>Neilit || <%= currentUser.username %></title>
     </head>
@@ -29,7 +29,7 @@
               <span class="pl-2"><%= __('Home') %></span>
             </div>
           </a>
-          <a href="#!">
+          <a href="/<%= currentUser.username %>/statistics">
             <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
               <img src="/imgs/icons/donut.svg" alt="statistics">
               <span class="pl-2"><%= __('Statistics') %></span>
@@ -72,11 +72,11 @@
             </div>
           </a>
         </div>
-        <div class="mt-auto text-center">
+        <!-- <div class="mt-auto text-center">
           <button class="btn-upgrade w-75">
             <strong><%= __('Upgrade to Legacy') %>!</strong>
           </button>
-        </div>
+        </div> -->
       </div>
 
       <section id="content" class="mt-4">

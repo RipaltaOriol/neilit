@@ -3,16 +3,15 @@ let fetch = require('node-fetch');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
 let currencies = require('../models/currencies');
-let timeframes = require('../models/timeframes');
 let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware')
-let connection = require('../models/connectDB');
+let db = require('../models/dbConfig');
 
 // INDEX ENTRIES ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
   var getAllEntries = 'SELECT *, DATE_FORMAT(entry_dt, "%d ' + res.__('of') + ' %M %Y") AS date FROM entries ORDER BY entry_dt DESC;'
   var dataList = []
-  connection.query(getAllEntries, (err, results) => {
+  db.query(getAllEntries, (err, results) => {
     if (err) {
       req.flash('error', 'Something went wrong, please try again.')
       return res.redirect('/' + req.user.username);
@@ -39,7 +38,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     id: [],
     title: []
   }
-  connection.query(selectTas, req.user.id, (err, results) => {
+  db.query(selectTas, req.user.id, (err, results) => {
     if (err) throw err;
     // stores each technical analysis to an object array
     results.forEach((ta) => {
@@ -49,7 +48,6 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     res.render("user/journal/entry/new",
       {
         currencies:pairs,
-        categories:categories,
         strategies:userStrategies,
         timeframes:timeframes,
         tas:allTas
@@ -63,23 +61,23 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
   // checks whether the entry contains the required fields
   if (req.body.size == '') {
     req.flash("error", "Position size cannot be blank.")
-    res.redirect("/" + req.user.username + "/journal/entry/new")
+    return res.redirect("/" + req.user.username + "/journal/entry/new")
   } else if (req.body.entryPrice == '') {
     req.flash("error", "Entry price cannot be blank.")
-    res.redirect("/" + req.user.username + "/journal/entry/new")
+    return res.redirect("/" + req.user.username + "/journal/entry/new")
   } else if (req.body.entryDate == '') {
     req.flash("error", "Entry date cannot be blank.")
-    res.redirect("/" + req.user.username + "/journal/entry/new")
+    return res.redirect("/" + req.user.username + "/journal/entry/new")
   }
   // creates an object with the new entry variables
   else {
     var newEntry = {
       user_id: req.user.id,
-      pair_id: Number(req.body.pair) + 1,
+      pair_id: req.body.pair,
       category: req.body.category,
       size: Number(req.body.size),
       strategy_id: userIdStrategies[req.body.strategy],
-      timeframe_id: Number(req.body.timeframe) + 1,
+      timeframe_id: req.body.timeframe,
       entry_price: req.body.entryPrice
     }
     // sets the entry date and time of the entry
@@ -97,7 +95,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
       newEntry.direction = 'short';
     } else {
       req.flash("error", "Entry direction cannot be blank.")
-      res.redirect("/" + req.user.username + "/journal/entry/new")
+      return res.redirect("/" + req.user.username + "/journal/entry/new")
     }
     // sets the stop loss of the entry
     if (req.body.stopLoss != '') {
@@ -109,7 +107,12 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     }
     // connects a technical analysis to the entry (if any)
     if (req.body.selectTa == 'select') {
-      newEntry.ta_id = req.body.entryTa;
+      if (req.body.entryTa != '') {
+        newEntry.ta_id = req.body.entryTa;
+      } else {
+        req.flash("error", "The entry was not connected to any TA. Please, try again.")
+        return res.redirect("/" + req.user.username + "/journal/entry/new")
+      }
     }
     // sets the comment field of the entry
     if (req.body.comment != '') {
@@ -124,7 +127,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
       }
       if (req.body.closePrice == '') {
         req.flash("error", "Exit price cannot be blank for closed entries.")
-        res.redirect("/" + req.user.username + "/journal/entry/new")
+        return res.redirect("/" + req.user.username + "/journal/entry/new")
       } else {
         newEntry.exit_price = req.body.closePrice;
       }
@@ -153,16 +156,22 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
           newEntry.profits = data["rates"][base] * entryAmount;
         })
         .catch((err) => {
-          if (err) throw err;
+          if (err) {
+            // COMBAK: log error
+            req.flash('error', 'Something went wrong, please try again later.')
+            return res.redirect('/' + req.user.username + "/journal/entry");
+          }
         })
       }
     }
     // saves the entry to the DB
-    connection.query('INSERT INTO entries SET ?', newEntry, (err, response) => {
-      if (err) throw err;
-      // prints the ID of the new created entry
-      // console.log(response.insertId);
-      res.redirect("/" + req.user.username + "/journal");
+    db.query('INSERT INTO entries SET ?', newEntry, (err, response) => {
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', 'Something went wrong, please try again later.')
+        return res.redirect('/' + req.user.username + "/journal/entry");
+      }
+      res.redirect("/" + req.user.username + "/journal/entry");
     })
   }
 })
@@ -173,7 +182,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, "%d de %M %Y") AS created_long, DATE_FORMAT(entry_dt, "%Y-%m-%d") AS created_short, DATE_FORMAT(entry_dt, "%H:%i") AS created_time, DATE_FORMAT(exit_dt, "%Y-%m-%d") AS closed_short FROM entries WHERE id = ?;'
   // object where the entry information will be stored
   var entryInfo = { }
-  connection.query(getEntry, req.params.id, (err, results) => {
+  db.query(getEntry, req.params.id, (err, results) => {
     if (err) throw err;
     // mandatory entry fields
     entryInfo.id = results[0].id;
@@ -236,7 +245,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     id: [],
     title: [],
   }
-  connection.query(getEntry, req.params.id, (err, results) => {
+  db.query(getEntry, req.params.id, (err, results) => {
     if (err) throw err;
     // mandatory entry fields
     entryInfo.id = results[0].id;
@@ -276,7 +285,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
       entryInfo.taId = results[0].ta_id;
     }
     // gets the technical analysis from the user
-    connection.query(selectTas, req.user.id, (err, results) => {
+    db.query(selectTas, req.user.id, (err, results) => {
       if (err) throw err;
       // stores each technical analysis to an object array
       results.forEach((ta) => {
@@ -373,11 +382,11 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
       newEntry.result = req.body.result;
     }
     // updated the entry on the DB
-    connection.query('UPDATE entries SET ? WHERE id = ?', [newEntry, req.params.id], (err, response) => {
+    db.query('UPDATE entries SET ? WHERE id = ?', [newEntry, req.params.id], (err, response) => {
       if (err) throw err;
       // prints the # of rows that were changed (should be one)
       // console.log(response.changedRows);
-      res.redirect("/" + req.user.username + "/journal");
+      res.redirect("/" + req.user.username + "/journal/entry");
     })
   }
 })
@@ -386,7 +395,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
 router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteEntry = 'DELETE FROM entries WHERE id = ?'
   // deletes the technical analysis from the DB
-  connection.query(deleteEntry, req.params.id, (err) => {
+  db.query(deleteEntry, req.params.id, (err) => {
     if (err) throw err;
     res.redirect("/" + req.user.username + "/journal");
   })

@@ -15,9 +15,6 @@ input[type="date"]:focus {
   box-shadow: none;
 }
 
-/* || Tables utilities */
-table{ }
-
 tr {
   padding-bottom: 5px!important;
 }
@@ -36,6 +33,10 @@ td {
   padding: 5px!important;
 }
 
+hr {
+  border-color: var(--grey-medium);
+}
+
 /* Cambia el color al hacer hover en las tablas */
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: var(--background-hover);
@@ -47,8 +48,8 @@ a:hover {
 }
 
 /* || Utility */
-.wpx-100 {
-  height: 100px;
+.no-wrap {
+  white-space: nowrap;
 }
 
 /* || Utility */
@@ -152,33 +153,25 @@ a:hover {
   /* background: red; */
 }
 
-.widget-tercio {
+.widget-three {
   width: 33.33%;
-  border-radius: 7px;
+  border-radius: 5pt;
   -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
 
-.widget-50 {
-  width: 50%;
-  border-radius: 7px;
-  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-}
-
-.widget-dos-tercios {
+.widget-three-2 {
   width: 66.66%;
-  border-radius: 7px;
+  border-radius: 5pt;
   -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
 
-.widget-100 {
+.widget-one {
   width: 100%;
-  border-radius: 7px;
+  border-radius: 5pt;
   -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
@@ -191,12 +184,12 @@ a:hover {
     font-size: 20px;
   }
 
-.imagen-widget {
+.image-widget {
   width: 20px;
   height: auto;
   opacity: .6;
 }
-  .dark-mode .imagen-widget {
+  .dark-mode .image-widget {
     filter: invert();
   }
 
@@ -207,20 +200,9 @@ a:hover {
     opacity: 1!important;
   }
 
-.imagen-widget-grande {
+.image-widget-grande {
   width: 25px;
 }
-
-.opacity-1 {
-  opacity: 1;
-}
-
-.background-change {
-  border-radius: 7px;
-}
-  .background-change:hover {
-    background-color: var(--background-hover);
-  }
 
 .caret {
   float: right;
@@ -283,15 +265,9 @@ a:hover {
 .container-user-goals a {
   color: var(--text-grey);
 }
-.container-user-goals a:hover {
-  color: black;
-}
-
-.inferior-widget {
-  border-top: 1px solid var(--grey-medium);
-  position: relative;
-  bottom: 0px;
-}
+  .container-user-goals a:hover {
+    color: black;
+  }
 
 .neilit-widget {
   background-color: var(--background-medium);

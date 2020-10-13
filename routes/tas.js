@@ -1,10 +1,9 @@
 let express = require('express');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
-let timeframes = require('../models/timeframes');
 let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware');
-let connection = require('../models/connectDB');
+let db = require('../models/dbConfig');
 
 // Technical Analysis Elements
 var titleTA = require('../models/elements/title');
@@ -16,7 +15,7 @@ var strategyTA = require('../models/elements/strategy');
 router.get("/", middleware.isLoggedIn, (req, res) => {
   getAllTas = 'SELECT tanalysis.id, DATE_FORMAT(created_at, "%d/%m/%y") AS date, pair FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at;'
   var dataList = []
-  connection.query(getAllTas, req.user.id, (err, results) => {
+  db.query(getAllTas, req.user.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -69,11 +68,11 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
       user_id: req.user.id
     }
     // stores the constants of the technical analysis variables into the DB
-    connection.query('INSERT INTO tanalysis SET ?', newTa, (err, taId) => {
+    db.query('INSERT INTO tanalysis SET ?', newTa, (err, taId) => {
       if (err) throw err;
       var ta_id = taId.insertId;
       // extracts all the element types from the DB and maps them in a hash
-      connection.query('SELECT * FROM telements', (err, allElements) => {
+      db.query('SELECT * FROM telements', (err, allElements) => {
         if (err) throw err;
         let aElements = new Map();
         for (var i = 0; i < allElements.length; i++) {
@@ -192,7 +191,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
         }
         var addElements = 'INSERT INTO telementanalysis (ta_id, order_at, element_id, content, file, strategy_id, timeframe_id) VALUES ?'
         // stores the TA elements into the DB
-        connection.query(addElements, [data], (err, complete) => {
+        db.query(addElements, [data], (err, complete) => {
           if (err) throw err;
           res.redirect("/" + req.user.username + "/journal");
         })
@@ -210,7 +209,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
   // object where the technical analysis information will be stored
   var taInfo = { }
-  connection.query(getTa, req.params.id, (err, results) => {
+  db.query(getTa, req.params.id, (err, results) => {
     if (err) throw err;
     taInfo.id = results[0].id;
     taInfo.title = pairs[Number(results[0].pair_id) - 1] + ', ' + results[0].created_long;
@@ -220,7 +219,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     // creates variable to concatenate the HTML of the technical analysis elements
     var elementsHtml = ``;
     // loads the technical analysis elements
-    connection.query(getElementsTa, req.params.id, (err, elementsTa) => {
+    db.query(getElementsTa, req.params.id, (err, elementsTa) => {
       if (err) throw err;
       elementsTa.forEach((element) => {
         var appendHtml;
@@ -278,7 +277,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
   // object where the technical analysis information will be stored
   var taInfo = { }
-  connection.query(getTa, req.params.id, (err, results) => {
+  db.query(getTa, req.params.id, (err, results) => {
     if (err) throw err;
     taInfo.id = results[0].id;
     taInfo.title = pairs[Number(results[0].pair_id) - 1] + ', ' + results[0].created_long;
@@ -288,7 +287,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     // creates variable to concatenate the HTML of the technical analysis elements
     var elementsHtml = ``;
     // loads the technical analysis elements
-    connection.query(getElementsTa, req.params.id, (err, elementsTa) => {
+    db.query(getElementsTa, req.params.id, (err, elementsTa) => {
       if (err) throw err;
       elementsTa.forEach((element) => {
         var appendHtml;
@@ -348,7 +347,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
       user_id: req.user.id
     }
     // stores the constants of the technical analysis into the DB
-    connection.query('UPDATE tanalysis SET ? WHERE id = ?', [editTa, req.params.id], (err, taId) => {
+    db.query('UPDATE tanalysis SET ? WHERE id = ?', [editTa, req.params.id], (err, taId) => {
       if (err) throw err;
       var ta_id = taId.insertId;
       // checks if the route technical analysis id match the id from the update query
@@ -356,14 +355,14 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
         throw new Error("The updated TA doesn't match with the current TA")
       }
       // extracts all the element types from the DB and maps them in a hash
-      connection.query('SELECT * FROM telements', (err, allElements) => {
+      db.query('SELECT * FROM telements', (err, allElements) => {
         if (err) throw err;
         let aElements = new Map();
         for (var i = 0; i < allElements.length; i++) {
           aElements.set(allElements[i].type, allElements[i].id)
         }
         // deletes the old technical analysis before storing the updated elements
-        connection.query('DELETE FROM telementanalysis WHERE ta_id = ?', ta_id, (err) => {
+        db.query('DELETE FROM telementanalysis WHERE ta_id = ?', ta_id, (err) => {
           if (err) throw err;
           // stores the TA elements before sending them to the DB
           var data = []
@@ -476,7 +475,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
           }
           var addElements = 'INSERT INTO telementanalysis (ta_id, order_at, element_id, content, file, strategy_id, timeframe_id) VALUES ?'
           // stores the TA elements into the DB
-          connection.query(addElements, [data], (err, complete) => {
+          db.query(addElements, [data], (err, complete) => {
             if (err) throw err;
             res.redirect("/" + req.user.username + "/journal");
           })
@@ -491,10 +490,10 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteElementsTa = 'DELETE FROM telementanalysis WHERE ta_id = ?'
   var deleteTa = 'DELETE FROM tanalysis WHERE id = ?'
   // deletes the technical analysis elements from the DB
-  connection.query(deleteElementsTa, req.params.id, (err) => {
+  db.query(deleteElementsTa, req.params.id, (err) => {
     if (err) throw err;
     // deletes the technical analysis from the DB
-    connection.query(deleteTa, req.params.id, (err) => {
+    db.query(deleteTa, req.params.id, (err) => {
       if (err) throw err;
       res.redirect("/" + req.user.username + "/journal");
     })

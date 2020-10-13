@@ -1,7 +1,7 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mt-3 mb-5 mx-auto">
+  <div class="container mx-auto pt-5 mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/entry/<%= entry.id %>?_method=PUT" method="POST">
         <h3 class="mx-3"><%= entry.title %></h3>
@@ -17,16 +17,16 @@
             <% } %>
           </select>
           <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Específicos</h5>
+            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);"><%= __('Specific') %></h5>
             <div class="info-fields mt-2">
               <span class="mb-2">
-                <label>Categoría
+                <label><%= __('Category') %>:
                   <span class="mandatory">*</span>
                 </label>
                 <input id="entry-category" type="text" class="bg-hover orange px-2" name="category" value="<%= entry.category %>" readonly>
               </span>
               <span class="input-group mb-2">
-                <label class="my-auto">Estrategia
+                <label class="my-auto"><%= __('Strategy') %>:
                   <span class="mandatory">*</span>
                 </label>
                 <select class="custom-select p-1" name="strategy">
@@ -40,7 +40,7 @@
                 </select>
               </span>
               <span class="input-group">
-                <label class="my-auto">Timeframe de Anclaje
+                <label class="my-auto"><%= __('Timeframe') %>:
                   <span class="mandatory">*</span>
                 </label>
                 <select class="custom-select p-1" name="timeframe">
@@ -56,47 +56,47 @@
             </div>
           </div>
           <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Finanzas</h5>
+            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);"><%= __('Finance') %></h5>
             <div class="info-fields mt-2">
               <span class="input-group">
-                <label class="my-auto">Tamaño
+                <label class="my-auto"><%= __('Size') %>:
                   <span class="mandatory">*</span>
                 </label>
                 <input type="number" class="bg-hover form-control px-2" name="size" min="0" step="0.1" value="<%= entry.size %>">
               </span>
               <span class="input-group">
-                <label class="my-auto">Precio de Entrada
+                <label class="my-auto"><%= __('Entry Price') %>:
                   <span class="mandatory">*</span>
                 </label>
                 <input type="number" class="bg-hover form-control px-2" name="entryPrice" min="0" step="0.00001" value="<%= entry.entryPrice %>">
               </span>
               <span class="input-group">
-                <label class="my-auto">Stop Loss</label>
+                <label class="my-auto"><%= __('Stop Loss') %>:</label>
                 <input type="number" class="bg-hover form-control px-2" name="stopLoss" min="0" step="0.00001" value="<%= entry.stopLoss %>">
               </span>
               <span class="input-group">
-                <label class="my-auto">Take Profit</label>
+                <label class="my-auto"><%= __('Take Profit') %>:</label>
                 <input type="number" class="bg-hover form-control px-2" name="takeProfit" min="0" step="0.00001" value="<%= entry.takeProfit %>">
               </span>
             </div>
           </div>
           <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);">Logística</h5>
+            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);"><%= __('Logistics') %></h5>
             <div class="info-fields mt-2">
               <span class="input-group">
-                <label class="my-auto">Fecha de Entrada
+                <label class="my-auto"><%= __('Date of Entry') %>:
                   <span class="mandatory">*</span>
                 </label>
                 <input type="date" class="bg-hover form-control px-2" name="entryDate" value="<%= entry.entryDate %>">
               </span>
               <span class="input-group mb-1">
-                <label class="my-auto">Hora de Entrada</label>
+                <label class="my-auto"><%= __('Time of Entry') %>:</label>
                 <input id="entry-time" type="text" class="bg-hover form-control px-2" name="entryTime" value="<%= entry.entryTime %>">
               </span>
               <span class="mb-2">
                 <div class="form-check form-check-inline">
                   <label class="checkbox-orange mb-0">
-                    Compra
+                    <%= ('Long') %>
                     <% if (entry.direction === 'long') { %>
                       <input type="radio" name="direction" value="1" checked>
                     <% } else { %>
@@ -107,7 +107,7 @@
                 </div>
                 <div class="form-check form-check-inline">
                   <label class="checkbox-orange mb-0">
-                    Venta
+                    <%= ('Short') %>
                     <% if (entry.direction === 'short') { %>
                       <input type="radio" name="direction" value="-1" checked>
                     <% } else { %>
@@ -121,12 +121,12 @@
           </div>
         </div>
         <br>
-        <h3 class="mx-3">Asociar Análisis Técnico</h3>
+        <h3 class="mx-3"><%= ('Connect a Technical Analysis') %></h3>
         <hr>
         <div class="mx-3">
           <span class="d-block">
             <label class="checkbox-orange mb-0">
-              Entrada sin análisis técnico
+              <%= __('Entry without a Technical Analysis') %>
               <% if ('taId' in entry) { %>
                 <input id="noneTa" type="radio" name="selectTa" value="none">
               <% } else { %>
@@ -137,7 +137,7 @@
           </span>
           <span class="d-block">
             <label class="checkbox-orange mb-0">
-              Conectar a análisis técnico
+              <%= __('Connect a Technical Analysis') %>
               <% if ('taId' in entry) { %>
                 <input id="selectTa" type="radio" name="selectTa" value="select" data-toggle="modal" data-target=".modal-ta" checked>
               <% } else { %>
@@ -148,7 +148,7 @@
           </span>
           <% if ('taId' in entry) { %>
             <span id="entry-ta">
-              <label class="mt-2 mb-0"><strong>Entrada connectada a:</strong></label>
+              <label class="mt-2 mb-0"><strong><%= __('Entry connected to') %>:</strong></label>
               <% for (var i = 0; i < tas.id.length; i++) { %>
                 <% if (entry.taId === tas.id[i]) { %>
                   <p id="connect-ta" class="d-inline bg-hover orange px-2"><%= tas.title[i] %></p>
@@ -158,7 +158,7 @@
             </span>
           <% } else { %>
             <span id="entry-ta" class="d-none">
-              <label class="mt-2 mb-0"><strong>Entrada connectada a:</strong></label>
+              <label class="mt-2 mb-0"><strong><%= __('Entry connected to') %>:</strong></label>
               <p id="connect-ta" class="d-inline bg-hover orange px-2"></p>
               <input id="ta" type="text" name="entryTa" class="d-none">
             </span>
@@ -169,7 +169,7 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content text-center">
               <div class="modal-header">
-                <h5 class="modal-title mx-auto">Seleccione un <span class="orange">análisis técnico</span> para conectar a esta entrada</h5>
+                <h5 class="modal-title mx-auto"><%= __('Select a') %> <span class="orange"><%= __('Technical Analysis') %></span> <%= __('to connect to this entry') %></h5>
               </div>
               <div class="modal-body d-flex flex-column">
                 <% tas.title.forEach((ta, i) => { %>
@@ -180,19 +180,19 @@
           </div>
         </div>
         <br>
-        <h3 class="mx-3">Comentarios</h3>
+        <h3 class="mx-3"><%= __('Comments') %></h3>
         <hr>
         <div class="mx-3">
           <div id="client-comment" placeholder="Utilice este espacio para escribir algún comentario adicional" contenteditable="true"><%= entry.comment %></div>
         </div>
         <textarea id="server-comment" name="comment" class="d-none" value="<%= entry.comment %>"></textarea>
         <br>
-        <h3 class="mx-3">Cerrar Entrada</h3>
+        <h3 class="mx-3"><%= __('Close Entry') %></h3>
         <hr>
         <div class="mx-3 mb-3">
           <span class="d-block">
             <label class="checkbox-orange mb-0 font-18">
-              La entrada continua abierta
+              <%= __('The operation remains open') %>
               <% if ('status' in entry) { %>
                 <input id="entry-open" type="radio" name="status" value="0" onclick="displayClose(this.value)" checked>
               <% } else { %>
@@ -203,7 +203,7 @@
           </span>
           <span class="d-block">
             <label class="checkbox-orange mb-0">
-              La entrada esta cerrada
+              <%= __('The operation is closed') %>
               <% if ('status' in entry) { %>
                 <input id="entry-close" type="radio" name="status" value="1" onclick="displayClose(this.value)">
               <% } else { %>
@@ -216,55 +216,55 @@
         <% if ('status' in entry) { %>
           <div id="entry-closure" class="flex-column mx-3 w-50 d-none">
             <span class="mb-2">
-              <label class="mb-0">Fecha de Salida</label>
+              <label class="mb-0"><%= __('Exit Date') %>:</label>
               <input type="date" class="bg-hover orange px-2" name="exitDate">
             </span>
             <span class="mb-2">
-              <label class="mb-0">Precio de Salida</label>
+              <label class="mb-0"><%= __('Exit Price') %>:</label>
               <input type="number" class="bg-hover orange px-2" name="closePrice" min="0" step="0.00001">
             </span>
             <span class="mb-2">
-              <label class="mb-0">Resultado</label>
+              <label class="mb-0"><%= __('Results') %>:</label>
               <select id="entry-result" name="result" class="custom-select p-1 w-auto">
-                <option value="win">Win</option>
-                <option value="be">Break Even</option>
-                <option value="loss">Loss</option>
+                <option value="win"><%= __('Win') %></option>
+                <option value="loss"><%= __('Loss') %></option>
+                <option value="be"><%= __('Break Even') %></option>
               </select>
             </span>
           </div>
         <% } else { %>
           <div id="entry-closure" class="d-flex flex-column mx-3 w-50">
             <span class="mb-2">
-              <label class="mb-0">Fecha de Salida</label>
+              <label class="mb-0"><%= __('Exit Date') %>:</label>
               <input type="date" class="bg-hover orange px-2" name="exitDate" value="<%= entry.exitDate %>">
             </span>
             <span class="mb-2">
-              <label class="mb-0">Precio de Salida</label>
+              <label class="mb-0"><%= __('Exit Price') %>:</label>
               <input type="number" class="bg-hover orange px-2" name="closePrice" min="0" step="0.00001" value="<%= entry.exitPrice %>">
             </span>
             <span class="mb-2">
-              <label class="mb-0">Resultado</label>
+              <label class="mb-0"><%= __('Results') %>:</label>
               <select id="entry-result" name="result" class="custom-select p-1 w-auto">
                 <% if (entry.result == 'loss') { %>
-                  <option value="win">Win</option>
-                  <option value="be">Break Even</option>
-                  <option value="loss" selected>Loss</option>
+                  <option value="win"><%= __('Win') %></option>
+                  <option value="loss" selected><%= __('Loss') %></option>
+                  <option value="be"><%= __('Break Even') %></option>
                 <% } else if (entry.result == 'be') { %>
-                  <option value="win">Win</option>
-                  <option value="be" selected>Break Even</option>
-                  <option value="loss">Loss</option>
+                  <option value="win"><%= __('Win') %></option>
+                  <option value="loss"><%= __('Loss') %></option>
+                  <option value="be" selected><%= __('Break Even') %></option>
                 <% } else { %>
-                  <option value="win">Win</option>
-                  <option value="be">Break Even</option>
-                  <option value="loss">Loss</option>
+                  <option value="win"><%= __('Win') %></option>
+                  <option value="be"><%= __('Loss') %></option>
+                  <option value="loss"><%= __('Break Even') %></option>
                 <% } %>
               </select>
             </span>
           </div>
         <% } %>
         <div class="d-flex justify-content-end mx-3">
-          <a href="javascript:history.back()" class="btn-inverted ml-2">Cancelar</a>
-          <button type="submit" class="btn-neilit ml-2">Guardar</button>
+          <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Cancel') %></a>
+          <button type="submit" class="btn-neilit ml-2"><%= __('Save') %></button>
         </div>
       </form>
     </div>

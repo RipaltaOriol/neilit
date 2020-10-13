@@ -2,12 +2,11 @@ var express = require('express');
 const util = require('util');
 var router = express.Router({mergeParams: true});
 let pairs = require("../models/pairs");
-let timeframes = require("../models/timeframes");
 let categories = require("../models/categoriesPairs");
 let middleware = require('../middleware');
-let connection = require('../models/connectDB');
+let db = require('../models/dbConfig');
 // node native promisify
-const query = util.promisify(connection.query).bind(connection);
+const query = util.promisify(db.query).bind(db);
 
 // Trading Plan Elements
 var strategyPlan = require('../models/elements/plan');
@@ -34,7 +33,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     id: [],
     title: []
   }
-  connection.query(selectBacktests, req.user.id, (err, results) => {
+  db.query(selectBacktests, req.user.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -81,7 +80,7 @@ router.post("/new", middleware.isLoggedIn, (req, res) => {
     newPlan.title = "Undefined"
   }
   // stores the plan's parameters into the DB
-  connection.query('INSERT INTO plans SET ?', newPlan, (err, planId) => {
+  db.query('INSERT INTO plans SET ?', newPlan, (err, planId) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -235,14 +234,14 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   var finObjectives = []
   var nonfinObjectives = []
   var strategies = { }
-  connection.query(selectPlan, [req.params.id, req.user.id], (err, getPlan) => {
+  db.query(selectPlan, [req.params.id, req.user.id], (err, getPlan) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
       return res.redirect('/' + req.user.username + '/plan');
     }
     var planInfo = getPlan[0];
-    connection.query(selectChecklist, req.params.id, (err, getChecklist) => {
+    db.query(selectChecklist, req.params.id, (err, getChecklist) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
@@ -251,7 +250,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
       getChecklist.forEach((result) => {
         checklist.push(result.checklist)
       });
-      connection.query(selectGoals, req.params.id, (err, getGoals) => {
+      db.query(selectGoals, req.params.id, (err, getGoals) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
@@ -264,7 +263,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
             nonfinObjectives.push(result.objective);
           }
         });
-        connection.query(selectStrategy, req.params.id, (err, getStrategy) => {
+        db.query(selectStrategy, req.params.id, (err, getStrategy) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', 'Something went wrong, please try again.')
@@ -273,7 +272,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
           getStrategy.forEach((strategy) => {
             strategies[strategy.strategy_id] = {name: userStrategies[userIdStrategies.findIndex(strategyId => strategyId === strategy.strategy_id)] ,main: strategy, rules: []}
           });
-          connection.query(selectPositioning, req.params.id, (err, getPositioning) => {
+          db.query(selectPositioning, req.params.id, (err, getPositioning) => {
             if (err) {
               // COMBAK: log error
               req.flash('error', 'Something went wrong, please try again.')
@@ -310,35 +309,35 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteStrategiesPlan = 'DELETE FROM pln_strategies WHERE plan_id = ?;'
   var deletePositionsPlan = 'DELETE FROM pln_positions WHERE plan_id = ?;'
   // deletes the positioning rules from the DB
-  connection.query(deletePositionsPlan, req.params.id, (err) => {
+  db.query(deletePositionsPlan, req.params.id, (err) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
       return res.redirect('/' + req.user.username + '/plan');
     }
     // deletes the strategies on the plan from the DB
-    connection.query(deleteStrategiesPlan, req.params.id, (err) => {
+    db.query(deleteStrategiesPlan, req.params.id, (err) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
         return res.redirect('/' + req.user.username + '/plan');
       }
       // deletes the objectives from the the DB
-      connection.query(deleteObjectivesPlan, req.params.id, (err) => {
+      db.query(deleteObjectivesPlan, req.params.id, (err) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
           return res.redirect('/' + req.user.username + '/plan');
         }
         // deletes the checklist from the DB
-        connection.query(deleteChecklistPlan, req.params.id, (err) => {
+        db.query(deleteChecklistPlan, req.params.id, (err) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', 'Something went wrong, please try again.')
             return res.redirect('/' + req.user.username + '/plan');
           }
           // deletes the plan from the DB
-          connection.query(deletePlan, req.params.id, (err) => {
+          db.query(deletePlan, req.params.id, (err) => {
             if (err) {
               // COMBAK: log error
               req.flash('error', 'Something went wrong, please try again.')

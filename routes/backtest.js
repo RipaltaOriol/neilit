@@ -2,11 +2,10 @@ let express = require('express');
 const util = require('util');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
-let timeframes = require('../models/timeframes');
 let middleware = require('../middleware')
-let connection = require('../models/connectDB');
+let db = require('../models/dbConfig');
 // node native promisify
-const query = util.promisify(connection.query).bind(connection);
+const query = util.promisify(db.query).bind(db);
 
 // Backtest Addon Options
 var addonBacktest = require('../models/elements/backtest');
@@ -16,7 +15,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
   var getAllBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d/%m/%y") AS date FROM backtest WHERE user_id = ? ORDER BY created_at;';
   var dataList = []
   // retrieves all backtest
-  connection.query(getAllBacktest, req.user.id, (err, results) => {
+  db.query(getAllBacktest, req.user.id, (err, results) => {
     if (err) {
       req.flash('error', 'Something went wrong, please try again.')
       return res.redirect('/' + req.user.username);
@@ -90,7 +89,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
       newBacktest.timeframe_id = req.body.selectTimeframe
     }
     // stores the principal backtest parametes into the DB
-    connection.query('INSERT INTO backtest SET ?', newBacktest, (err, backtestId) => {
+    db.query('INSERT INTO backtest SET ?', newBacktest, (err, backtestId) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
@@ -166,7 +165,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
           newAddons.push(addon);
         }
         // stores the backtest addons into the DB
-        connection.query(addAddons, [newAddons], (err, complete) => {
+        db.query(addAddons, [newAddons], (err, complete) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', 'Something went wrong, please try again.')
@@ -193,7 +192,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // object-list where the backtest data will be stored
   // the array accounts for: direction, result, pair, strategy and timeframe
   var backtestData = [[], [], [], [], []]
-  connection.query(getBacktest, [req.params.id, req.user.id], (err, results) => {
+  db.query(getBacktest, [req.params.id, req.user.id], (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -214,7 +213,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
       backtestInfo.timeframe = timeframes[Number(results[0].timeframe_id) - 1];
     }
     // attemps to get backtest addons if they exits
-    connection.query(getAddons, backtestInfo.id, (err, results) => {
+    db.query(getAddons, backtestInfo.id, (err, results) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
@@ -228,7 +227,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
           backtestData.push([])
         });
       }
-      connection.query(getData, backtestInfo.id, (err, results) => {
+      db.query(getData, backtestInfo.id, (err, results) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
@@ -243,7 +242,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
           backtestData[4].push(timeframes[Number(entryData.timeframe_id) - 1])
         });
         if ('addons' in backtestInfo) {
-          connection.query(getAddonsData, backtestInfo.id, (err, results) => {
+          db.query(getAddonsData, backtestInfo.id, (err, results) => {
             results.forEach((addonsData) => {
               // adds the addon value to the corresponding array in backtestData
               backtestData[Number(4 + addonsData.backtest_addons_id)].push(addonsData.addon_value);
@@ -281,7 +280,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // object-list where the backtest data will be stored
   // the array accounts for: direction, result, pair, strategy and timeframe
   var backtestData = [[], [], [], [], []]
-  connection.query(getBacktest, req.params.id, (err, results) => {
+  db.query(getBacktest, req.params.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -302,7 +301,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
       backtestInfo.timeframe = results[0].timeframe_id;
     }
     // attemps to get backtest addons if they exits
-    connection.query(getAddons, backtestInfo.id, (err, results) => {
+    db.query(getAddons, backtestInfo.id, (err, results) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
@@ -327,7 +326,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
           backtestData.push([])
         });
       }
-      connection.query(getData, backtestInfo.id, (err, results) => {
+      db.query(getData, backtestInfo.id, (err, results) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
@@ -342,7 +341,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
           backtestData[4].push(entryData.timeframe_id)
         });
         if ('addons' in backtestInfo) {
-          connection.query(getAddonsData, backtestInfo.id, (err, results) => {
+          db.query(getAddonsData, backtestInfo.id, (err, results) => {
             results.forEach((addonsData) => {
               // adds the addon value to the corresponding array in backtestData
               backtestData[Number(4 + addonsData.backtest_addons_id)].push(addonsData.addon_value);
@@ -437,14 +436,14 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     counterRow += 1;
   }
   // deletes the Addons data before sending the new updated data to the DB
-  connection.query('DELETE FROM backtest_addons_data WHERE backtest_id = ?', backtest_id, (err, done) => {
+  db.query('DELETE FROM backtest_addons_data WHERE backtest_id = ?', backtest_id, (err, done) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     // deletes the Backtest data before sending the new updated data to the DB
-    connection.query('DELETE FROM backtest_data WHERE backtest_id = ?', backtest_id, (err, done) => {
+    db.query('DELETE FROM backtest_data WHERE backtest_id = ?', backtest_id, (err, done) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
@@ -452,7 +451,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
       }
       // stores the backtest DATA into the DB
       if (editBacktest.length > 0) {
-        connection.query(addData, [editBacktest], async (err, complete) => {
+        db.query(addData, [editBacktest], async (err, complete) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', 'Something went wrong, please try again.')
@@ -486,28 +485,28 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteAddons = 'DELETE FROM backtest_addons WHERE backtest_id = ?'
   var deleteBacktest = 'DELETE FROM backtest WHERE id = ?'
   // deletes the addons data from the DB
-  connection.query(deleteAddonsData, req.params.id, (err) => {
+  db.query(deleteAddonsData, req.params.id, (err) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     // deletes the backtest data from the DB
-    connection.query(deleteBacktestData, req.params.id, (err) => {
+    db.query(deleteBacktestData, req.params.id, (err) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
         return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       // deletes the addons from the DB
-      connection.query(deleteAddons, req.params.id, (err) => {
+      db.query(deleteAddons, req.params.id, (err) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
           return res.redirect('/' + req.user.username + '/journal/backtest');
         }
         // deletes the backtest from the DB
-        connection.query(deleteBacktest, req.params.id, (err) => {
+        db.query(deleteBacktest, req.params.id, (err) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', 'Something went wrong, please try again.')

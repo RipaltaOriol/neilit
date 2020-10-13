@@ -9,6 +9,7 @@
   --neilit-altern: #f57700;
   --neilit-disable: #ffc58f;
   --yellow: #ffcf18;
+  --red: #a10000;
   --green-strong: #4daa57;
   --blue-strong:#151B26;
   --background-hover: #f7f7f7;
@@ -48,6 +49,9 @@ h5 {
 a { }
   a:hover{
     text-decoration: none;
+  }
+  a h4 {
+    color: var(--neilit-default);
   }
 
 strong {
@@ -93,6 +97,22 @@ form { }
     outline: none;
   }
 
+/* || Features grid */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  text-align: center;
+  width: 33.33%;
+  padding: 15px;
+}
+
+td + td,
+th + th { border-left: 1px solid var(--grey); }
+tr + tr { border-top: 1px solid var(--grey); }
+
 .card-error {
   width: 300px;
   margin: 0 auto;
@@ -116,6 +136,65 @@ form { }
 .jumbotron {
   background-color: var(--yellow);
   background-image: linear-gradient(to left, var(--yellow), var(--neilit-default));
+}
+
+.bg-neilit {
+  background-color: var(--neilit-default);
+  background-image: linear-gradient(to left, var(--neilit-altern), var(--neilit-default));
+}
+  .bg-neilit h1 {
+    color: white;
+  }
+  .bg-neilit p {
+    color: white;
+  }
+
+.bg-grey {
+  background-color: #f4ede4;
+}
+
+.border-box {
+  width: 100%;
+  border-radius: .25rem;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+}
+
+.bio {
+  font-weight: normal;
+  margin-bottom: 0px;
+}
+
+.tag {
+  font-size: 14px;
+  color: white;
+  background-color: grey;
+  border-radius: 10rem;
+  padding-right: .6rem;
+  padding-left: .6rem;
+}
+
+.story-heading { }
+  .story-heading h2 {
+    text-align: left;
+  }
+  .story-heading .numbered {
+    height: 100%;
+    font-size: 58px;
+  }
+
+.color-icon {
+  color: red;
+}
+
+.story-img {
+  width: 100%;
+  max-width: 800px;
+  border-radius: .25rem;
+  -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
+  box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
 
 /* || Bootstrap class */
@@ -162,13 +241,8 @@ form { }
   }
 
 /* || Utility */
-.font-20 {
-  font-size: 20px;
-}
-
-/* || Utility */
-.font-16 {
-  font-size: 16px;
+.font-13{
+  font-size: 13px;
 }
 
 /* || Utility */
@@ -177,8 +251,13 @@ form { }
 }
 
 /* || Utility */
-.font-13{
-  font-size: 13px;
+.font-16 {
+  font-size: 16px;
+}
+
+/* || Utility */
+.font-20 {
+  font-size: 20px;
 }
 
 /* || Utility */
@@ -334,7 +413,7 @@ form { }
 
 /* || Plan box */
 .plan {
-  border-radius: 7px;
+  border-radius: 5pt;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
@@ -346,6 +425,12 @@ form { }
 .pricing {
   font-size: 32px;
 }
+
+/* || Plan box - FREE */
+.free {
+  background-color: white;
+}
+
 /* || Plan box - PAYED */
 .payed {
   color: white;
@@ -416,32 +501,6 @@ form { }
     display: none;
   }
 
-#sticky-nav {
-  background-color: rgba(0, 0, 0, 0);
-  padding: 15px 30px;
-}
-  @media (min-width: 768px) {
-    #sticky-nav {
-      background: white;
-      padding: 15px 60px;
-      box-shadow: 0px -4px 23px 21px rgba(0,0,0,0.08)
-    }
-  }
-  @media (min-width: 992px) {
-    #sticky-nav {
-      padding: 15px 100px;
-    }
-  }
-
-#home {
-  height: 85vh;
-  min-height: 450px;
-  background-color: white;
-  background-image: url("/imgs/home-bg.jpg");
-  background-position: center;
-  background-size: cover;
-}
-
 .container-steps{
   width: 100%;
 }
@@ -510,6 +569,41 @@ form { }
   margin-top: 20vh;
 }
 
+#sticky-nav {
+  background-color: rgba(0, 0, 0, 0);
+  padding: 15px 30px;
+}
+  @media (min-width: 768px) {
+    #sticky-nav {
+      background: white;
+      padding: 15px 60px;
+      box-shadow: 0px -4px 23px 21px rgba(0,0,0,0.08)
+    }
+  }
+  @media (min-width: 992px) {
+    #sticky-nav {
+      padding: 15px 100px;
+    }
+  }
+
+#home {
+  height: 85vh;
+  min-height: 450px;
+  background-color: white;
+  background-image: url("/imgs/home-bg.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+#pricing {
+  height: 100vh;
+  min-height: 450px;
+  background-color: white;
+  background-image: url("/imgs/pricing-bg.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
 #demo-statistics {
   border-radius: 7px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -528,7 +622,7 @@ form { }
 
 #beta {
   color: white;
-  background-color: #ba3302;
+  background-color: var(--red);
   padding: 5px 0px;
   text-align: center;
 }

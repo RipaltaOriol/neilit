@@ -1,0 +1,131 @@
+<%- include("../../partials/header-statistics") %>
+  <!-- CONTENT -->
+  <div class="pt-4 mx-4 mb-5">
+    <section>
+      <div class="container">
+        <!-- win ratio of most traded timeframes -->
+        <div class="neilit-widget widget-one mb-4">
+          <div class="d-flex align-items-center pt-3 mx-2">
+            <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="Monthly Strategies Outcome">
+            <h5 class="mb-0"><%= __('Win Ratio of Most Traded Timeframes') %></h5>
+          </div>
+          <div class="px-3 mt-2">
+            <canvas id="resultsRatioTimeframeCount" height="300"></canvas>
+          </div>
+          <hr class="mb-0">
+          <div class="px-3 py-1">
+            <a href="#!">
+              <div class="text-right">
+                <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Win ratio of the most traded timeframes.') %>">
+              </div>
+            </a>
+          </div>
+        </div>
+        <!-- 2nd row: three widget square -->
+        <div class="d-flex justify-content-between mb-4">
+          <!-- strategies best performing assets -->
+          <div class="neilit-widget widget-three mr-2">
+            <div class="d-flex align-items-start mt-3 mx-2">
+              <img src="/imgs/icons/bubble.svg" class="mx-2 image-widget" alt="Outcome Strategies">
+              <h5 class="mb-0"><%= __('Best Performing Timeframes') %></h5>
+            </div>
+            <div class="mt-4 mb-3">
+              <canvas id="resultsPerformanceTimeframes" height="100"></canvas>
+            </div>
+            <hr class="mb-0">
+            <div class="px-3 py-1">
+              <a href="#!">
+                <div class="text-right">
+                  <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Outcome of the best performing timeframes') %>">
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- strategies table -->
+        <div class="neilit-widget widget-one mb-4">
+          <div class="d-flex align-items-center pt-3 mx-2">
+              <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="Strategies">
+              <h5 class="mb-0 no-wrap"><%= __('Timeframes') %></h5>
+          </div>
+          <div class="px-3 mt-3">
+            <table class="table table-hover table-borderless font-16 text-center">
+              <thead>
+                <tr class="pb-4">
+                  <th scope="col"><%= __('Timeframe') %></th>
+                  <th scope="col"><%= __('Entries') %></th>
+                  <th scope="col"><%= __('Avg. return') %></th>
+                  <th scope="col"><%= __('Wins') %></th>
+                  <th scope="col"><%= __('Break evens') %></th>
+                  <th scope="col"><%= __('Losses') %></th>
+                  <th scope="col"><%= __('Win rate') %></th>
+                  <th scope="col"><%= __('Expected return') %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% timeframeStats.quantity.forEach((tf, i) => { %>
+                  <tr>
+                    <th scope="row" class="align-middle"><a href="#!" class="grey"><%= timeframes[i] %></a></th>
+                    <td><%= timeframeStats.quantity[i] %></td>
+                    <td>
+                      <% if (timeframeStats.quantity[i] == 0) { %>
+                        0
+                      <% } else { %>
+                        <% if (timeframeStats.percent[i] / timeframeStats.quantity[i] >= 0) { %>
+                          <p class="mb-0 pill pill-verde">
+                            <%= timeframeStats.percent[i]/timeframeStats.quantity[i] %>%
+                          </p>
+                        <% } else { %>
+                          <p class="mb-0 pill pill-roja">
+                            <%= timeframeStats.percent[i]/timeframeStats.quantity[i] %>%
+                          </p>
+                        <% } %>
+                      <% } %>
+                    </td>
+                    <td><%= timeframeStats.win[i] %></td>
+                    <td><%= timeframeStats.be[i] %></td>
+                    <td><%= timeframeStats.loss[i] %></td>
+                    <td>
+                      <% if (timeframeStats.quantity[i] > 0) { %>
+                        <%= Math.round(timeframeStats.win[i] / timeframeStats.quantity[i] * 10000) / 100 %>%
+                      <% } else { %>
+                        0%
+                      <% } %>
+                    </td>
+                    <td>
+                      <% if (!isNaN(timeframeStats.expected[i])) { %>
+                        <%= Math.round(timeframeStats.expected[i] * 100) / 100 %>%
+                      <% } else { %>
+                        N/A
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+          <hr class="mb-0">
+          <div class="px-3 py-1">
+            <a href="#!">
+              <div class="text-right">
+                <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Results breakout based on timeframes.') %>">
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<script type="text/javascript">
+  var currentUser = <%- JSON.stringify(currentUser); %>
+  var timeframes = <%- JSON.stringify(timeframes); %>
+  var timeframeStats = <%- JSON.stringify(timeframeStats); %>
+  var tfByCount = <%- JSON.stringify(tfByCount); %>
+  var tfByOutcome = <%- JSON.stringify(tfByOutcome); %>
+</script>
+
+<!-- <section> is inside partials -->
+</section>
+
+<%- include("../../partials/footer-statistics-details") %>

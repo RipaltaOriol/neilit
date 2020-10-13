@@ -179,7 +179,7 @@
                         <%= data[0][i] %>
                       <% } %>
                     </td>
-                    <td class="text-right"><%= result %></td>
+                    <td class="text-right"><%= result.toFixed(2) %></td>
                     <td>
                       <% if ('pair' in backtest) { %>
                         <%= currencies[Number(backtest.pair) - 1] %>

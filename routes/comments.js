@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router({mergeParams: true});
 let middleware = require('../middleware');
-let connection = require('../models/connectDB');
+let db = require('../models/dbConfig');
 
 // INDEX COMMENTS ROUTE
 // FIXME: How to optmize when loading a large sample (LOAD AS YOU GO)
@@ -11,7 +11,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
   var getAllTas = 'SELECT tanalysis.id, DATE_FORMAT(created_at, "%Y-%m-%dT%H:%i:%s") AS date, pair FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ?';
   var dataList = []
   // the classification types are: 1-commment, 2-entry, 3-ta
-  connection.query(getAllComments, req.user.id, (err, results) => {
+  db.query(getAllComments, req.user.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -26,7 +26,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
       }
       dataList.push(comment);
     });
-    connection.query(getAllEntries, req.user.id, (err, results) => {
+    db.query(getAllEntries, req.user.id, (err, results) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', 'Something went wrong, please try again.')
@@ -42,7 +42,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
         }
         dataList.push(entry);
       });
-      connection.query(getAllTas, req.user.id, (err, results) => {
+      db.query(getAllTas, req.user.id, (err, results) => {
         if (err) {
           // COMBAK: log error
           req.flash('error', 'Something went wrong, please try again.')
@@ -79,21 +79,21 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     comment: req.body.comment
   }
   // save comment to the DB
-  connection.query(commentQuery, newcomment, (err, results) => {
+  db.query(commentQuery, newcomment, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
       return res.redirect('/' + req.user.username + '/journal/comment/new');
     }
-    //console.log(results.insertId);
-    res.redirect('/' + req.user.username + '/journal');
+    req.flash('success', 'Comment was created successfully.')
+    res.redirect('/' + req.user.username + '/journal/comment');
   });
 })
 
 // SHOW COMMENT ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   var getComment = 'SELECT id, DATE_FORMAT(created_at, "%d ' + res.__('of') + ' %M %Y") AS created_at, comment FROM comments WHERE id = ?';
-  connection.query(getComment, req.params.id, (err, results) => {
+  db.query(getComment, req.params.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -111,7 +111,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
 // UPDATE COMMENT ROUTE
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   var getComment = 'SELECT id, DATE_FORMAT(created_at, "%d ' + res.__('of') + ' %M %Y") AS created_at, comment FROM comments WHERE id = ?';
-  connection.query(getComment, req.params.id, (err, results) => {
+  db.query(getComment, req.params.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -133,7 +133,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     created_at: new Date(),
     comment: req.body.comment
   }
-  connection.query('UPDATE comments SET ? WHERE id = ?', [commentbody, req.params.id], (err, updated) => {
+  db.query('UPDATE comments SET ? WHERE id = ?', [commentbody, req.params.id], (err, updated) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')
@@ -150,7 +150,7 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var comment2Delete = req.params.id
   var deleteQuery = 'DELETE FROM comments WHERE id = ?'
   // Query to delte the entry
-  connection.query(deleteQuery, comment2Delete, (err) => {
+  db.query(deleteQuery, comment2Delete, (err) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', 'Something went wrong, please try again.')

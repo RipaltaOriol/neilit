@@ -1,10 +1,10 @@
 :root {
   --yellow-soft:   #fff3cd;
-  --yellow-hard:   #856404;
+  --yellow-strong:   #856404;
   --yellow-border: #ffeeba;
-  --red-soft:      #f8d7da;
+  --red-soft:      #fddfdd;
   --red-border:    #f5c6cb;
-  --green-soft:    #d4edda;
+  --green-soft:    #cbf6e5;
   --green-strong:  #155724;
   --green-border:  #c3e6cb;
 }
@@ -66,7 +66,7 @@ span .checkbox-orange {
     border-color: var(--red-border);
   }
   .pill-yellow {
-    color: var(--yellow-hard);
+    color: var(--yellow-strong);
     background: var(--yellow-soft);
     border-color: var(--yellow-border);
   }
@@ -259,7 +259,7 @@ span .checkbox-orange {
     text-decoration: underline;
   }
     #ta-content .title:hover {
-      background-color: #f7f7f7;
+      background-color: var(--background-hover);
     }
   #ta-content .text {
     width: 100%;
@@ -267,13 +267,13 @@ span .checkbox-orange {
     overflow: auto;
   }
     #ta-content .text:hover {
-      background-color: #f7f7f7;
+      background-color: var(--background-hover);
     }
     #ta-content .image div {
       border-radius: .25rem;
     }
       #ta-content .image div:hover {
-        background-color: #f7f7f7;
+        background-color: var(--background-hover);
       }
     #ta-content .image input {
       max-width: 300px;
@@ -288,7 +288,7 @@ span .checkbox-orange {
     border-radius: .25rem;
   }
     #ta-content .strategy div:hover {
-      background-color: #f7f7f7;
+      background-color: var(--background-hover);
     }
   #ta-content .move{
     display: inline;

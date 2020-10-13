@@ -109,7 +109,7 @@
             <h4 class="pb-1 mb-3"><%= __('My Plan') %></h4>
             <div class="d-flex flex-row justify-content-between align-items-baseline mb-2">
               <h5 class="mb-1"><%= role.toUpperCase() %></h5>
-              <a href="/plans" class="bg-hover px-1 font-16"><%= __('What does the plan include?') %></a>
+              <a href="/plans" class="d-none bg-hover px-1 font-16"><%= __('What does the plan include?') %></a>
             </div>
             <% if (currentUser.role_id == 2) { %>
               <div class="d-flex flex-row justify-content-between align-items-baseline">
@@ -118,7 +118,7 @@
                 <p href="#!" class="mb-0 pb-0 font-16 grey"><%= Math.round((new Date(next * 1000) - new Date()) / (24 * 60 * 60 * 1000)) %> <%= __('days') %></p>
               </div>
             <% } %>
-            <div class="text-right mt-3">
+            <div class="d-none text-right mt-3">
               <a href="/<%= currentUser.username %>/settings/change-plan" class="btn-inverted font-16">
                 <%= __('Change plan') %>
               </a>
@@ -282,12 +282,10 @@
               <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('Frequently Asked Question(s)') %>'">
             </h4>
             <div class="d-flex flex-column">
-              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create an entry') %></a>
-              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to backtest') %></a>
+              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create an entry') %>?</a>
+              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to backtest') %>?</a>
               <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Interpret statistics') %></a>
               <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Upgrade your plan') %></a>
-              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Random questions') %></a>
-              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create an entry') %></a>
             </div>
           </div>
 

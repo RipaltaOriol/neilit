@@ -244,7 +244,9 @@ function createRow() {
   var table = document.getElementById("backtest-table").getElementsByTagName('tbody')[0];
   var currentRow = document.getElementsByTagName('tr').length - 1;
   var currentDirection = $('.direction')[0].textContent || $('.direction')[0].innerText;
-  var currentResult = document.getElementById('row-result');
+  var currentResult = document.getElementById('row-result').value;
+  // early exit if result is no defined
+  if (currentResult == '') { return; }
   var currentPair = $('.pair')[0].textContent || $('.pair')[0].innerText;
   var currentStrategy = $('.strategy')[0].textContent || $('.strategy')[0].innerText;
   var currentTimeframe = $('.timeframe')[0].textContent || $('.timeframe')[0].innerText;
@@ -252,7 +254,7 @@ function createRow() {
   var indexCell = row.insertCell().innerHTML = currentRow + 1;
   var directionCell = row.insertCell().innerHTML = currentDirection;
   var resultCell = row.insertCell();
-  resultCell.innerHTML = currentResult.value;
+  resultCell.innerHTML = parseFloat(currentResult).toFixed(2);
   resultCell.className = 'text-right';
   var pairCell = row.insertCell().innerHTML = currentPair;
   var strategyCell = row.insertCell();
@@ -271,7 +273,7 @@ function createRow() {
         addonCell.innerHTML = currentAddon.value;
       } else {
         currentAddon = currentAddon.textContent || currentAddon.innerText;
-        var currentIndex = backtest.addonsOptions[i].indexOf()
+        var currentIndex = backtest.addonsOptions[i].indexOf(currentAddon.trim())
         addonCell.innerHTML = currentIndex + 1;
       }
       addonCell.className = 'text-right';
