@@ -1,18 +1,11 @@
 // Load necessary requirements and connenctions
 const LocalStrategy  = require('passport-local').Strategy;
-const mysql          = require('mysql');
 const bcrypt         = require('bcrypt');
 const currencies     = require(__dirname + '/currencies.js')
 const saltRounds     = 10;
 
 // Connect to DB
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    : 'root',
-  password: 'ripaltus',
-  database: 'neilit_db',
-  multipleStatements: true
-});
+let db = require('.dbConfig')
 
 
 // Start AUTHENTICATION
@@ -27,7 +20,7 @@ module.exports = function(passport) {
 
   // Deserialize the user for the session
   passport.deserializeUser(function(id, done) {
-    connection.query('SELECT * FROM users WHERE id = ?', id, (err, rows) => {
+    db.query('SELECT * FROM users WHERE id = ?', id, (err, rows) => {
       if (err) throw err;
       done(err, rows[0]);
     });
@@ -40,7 +33,7 @@ module.exports = function(passport) {
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
   function(req, email, password, done) {
-    connection.query('SELECT * FROM users WHERE email = ?', email, function(err, rows) {
+    db.query('SELECT * FROM users WHERE email = ?', email, function(err, rows) {
       if (err) return done(err);
       if (rows.length > 0) {
         return done(null, false, req.flash("error", "An account with this email already exists."));
@@ -77,7 +70,7 @@ module.exports = function(passport) {
         });
         hashingPassword.then(function(hash) {
           newUserMysql.password = hash;
-          connection.query("INSERT INTO users SET ?", newUserMysql, (err, rows) => {
+          db.query("INSERT INTO users SET ?", newUserMysql, (err, rows) => {
             if (err) throw err;
             newUserMysql.id = rows.insertId;
             newUserMysql.password = null;
@@ -96,7 +89,7 @@ module.exports = function(passport) {
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
   function(req, email, password, done) {
-    connection.query("SELECT * FROM users WHERE email = ?", email, (err, rows) => {
+    db.query("SELECT * FROM users WHERE email = ?", email, (err, rows) => {
       if (err) return done(err);
       if (!rows.length) {
       // User not found

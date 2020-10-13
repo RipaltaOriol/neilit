@@ -1,17 +1,12 @@
-var mysql = require('mysql');
+// This file contians/calls global variables.
+// Calls: all user's STRATEGIES
 // Connect to DB
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    : 'root',
-  password: 'ripaltus',
-  database: 'neilit_db',
-  multipleStatements: true
-});
+let db = require('./dbConfig');
 
 function getStrategies(id) {
   var strategies = []
   var idStrategies = []
-  connection.query("SELECT id, strategy FROM strategies WHERE user_id = ?", id, (err, results) => {
+  db.query("SELECT id, strategy FROM strategies WHERE user_id = ?", id, (err, results) => {
     if (err) throw err;
     results.forEach((strategy, i) => {
       strategies.push(strategy.strategy)
