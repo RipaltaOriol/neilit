@@ -11,19 +11,12 @@ i18n.configure({
 })
 
 // Connect to DB
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-  host    : 'localhost',
-  user    : 'root',
-  password: 'ripaltus',
-  database: 'neilit_db',
-  multipleStatements: true
-});
+let db = require('./dbConfig')
 
 // Create the variable that will be returned
 var timeframesList = [];
 // Query to the DB
-connection.query("SELECT timeframe FROM timeframes", (err, results) => {
+db.query("SELECT timeframe FROM timeframes", (err, results) => {
   if (err) throw err;
   results.forEach((result) => {
     timeframesList.push(result.timeframe)
