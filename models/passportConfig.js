@@ -5,7 +5,7 @@ const currencies     = require(__dirname + '/currencies.js')
 const saltRounds     = 10;
 
 // Connect to DB
-let db = require('.dbConfig')
+let db = require('./dbConfig')
 
 
 // Start AUTHENTICATION
