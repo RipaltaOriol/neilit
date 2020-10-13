@@ -278,5 +278,18 @@
 	"Forgot Your Password?": "Forgot Your Password?",
 	"We'll send a link to your email to reset your password": "We'll send a link to your email to reset your password",
 	"Back to log in": "Back to log in",
-	"Send": "Send"
+	"Send": "Send",
+	"Something went wrong, please try again.": "Something went wrong, please try again.",
+	"Already a member?": "Already a member?",
+	"Log in": "Log in",
+	"Join Neilit": "Join Neilit",
+	"Create a new account": "Create a new account",
+	"Confirm Password": "Confirm Password",
+	"Account's Base Currency": "Account's Base Currency",
+	"Account Balance": "Account Balance",
+	"Continue": "Continue",
+	"By clicking “Next step” above, you acknowledge that you have read and understood, and agree to Neilit's": "By clicking “Next step” above, you acknowledge that you have read and understood, and agree to Neilit's",
+	"Terms & Conditions": "Terms & Conditions",
+	"and": "and",
+	"Privacy Policy": "Privacy Policy"
 }

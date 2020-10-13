@@ -73,7 +73,7 @@ CREATE TABLE users
 CREATE TABLE stripe_users
 (
   user_id INT NOT NULL,
-  stripeCustomerPaymentMethodId VARCHAR(500),
+  stripeCustomerPaymentMethodId VARCHAR(500) PRIMARY KEY,
   expiration DATE,
   last4 VARCHAR(4),
   figerprint VARCHAR(500),
@@ -130,8 +130,10 @@ CREATE TABLE tanalysis
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+-- not sure about the drawbacks of having id/primary key on telementanalysis
 CREATE TABLE telementanalysis
 (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   ta_id INT NOT NULL,
   order_at INT NOT NULL,
   element_id INT NOT NULL,
@@ -215,7 +217,7 @@ CREATE TABLE backtest_addons
 
 CREATE TABLE backtest_data
 (
-  identifier INT NOT NULL,
+  identifier INT PRIMARY KEY NOT NULL,
   backtest_id INT NOT NULL,
   direction ENUM('long', 'short'),
   result FLOAT NOT NULL,
@@ -228,8 +230,10 @@ CREATE TABLE backtest_data
   FOREIGN KEY (timeframe_id) REFERENCES timeframes(id)
 );
 
+-- not sure about the drawbacks of having id/primary key on telementanalysis
 CREATE TABLE backtest_addons_data
 (
+  id INT PRIMARY KEY AUTO_INCREMENT,
   backtest_id INT NOT NULL,
   backtest_data_id INT NOT NULL,
   backtest_addons_id INT NOT NULL,
@@ -294,8 +298,10 @@ CREATE TABLE pln_positions
   FOREIGN KEY (strategy_id) REFERENCES strategies(id)
 );
 
+-- not sure about the drawbacks of having id/primary key on telementanalysis
 CREATE TABLE objectives
 (
+  id INT PRIMARY KEY AUTO_INCREMENT,
   plan_id INT NOT NULL,
   type ENUM('fin', 'nonfin'),
   objective VARCHAR(100),
@@ -304,6 +310,7 @@ CREATE TABLE objectives
 
 CREATE TABLE checklists
 (
+  id INT PRIMARY KEY AUTO_INCREMENT,
   plan_id INT NOT NULL,
   checklist VARCHAR(100),
   FOREIGN KEY (plan_id) REFERENCES plans(id)

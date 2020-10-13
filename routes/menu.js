@@ -66,7 +66,7 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
   let months = [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')]
   var selectUserBase  = 'SELECT currency FROM currencies WHERE id = ?;'
   var selectEntries   = 'SELECT pair_id, profits, fees, result, MONTHNAME(exit_dt) AS month FROM entries WHERE status = 1 AND user_id = ?;'
-  var selectOpenOps   = 'SELECT id, pair_id, size, direction, DATE_FORMAT(entry_dt, "%d/%m/%y") AS date, entry_price FROM entries WHERE status = 0 AND user_id = ?;'
+  var selectOpenOps   = 'SELECT id, pair_id, size, direction, DATE_FORMAT(entry_dt, \'%d/%m/%y\') AS date, entry_price FROM entries WHERE status = 0 AND user_id = ?;'
   var selectMonth     = 'SELECT profits, fees FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;'
   var selectWeek      = 'SELECT profits, fees FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;'
   db.query(selectUserBase, req.user.currency_id, (err, getBase) => {
@@ -133,7 +133,9 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
         outcomeMonthTotal.push(outcomeMonth[month].total)
       }
       db.query(selectOpenOps, req.user.id, (err, getOps) => {
+
         if (err) {
+          console.log(err);
           // COMBAK: log error
           req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/login');
