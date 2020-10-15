@@ -28,7 +28,7 @@ router.get("/components", middleware.isLoggedIn, (req, res) => {
 
 // NEW PLAN ROUTE
 router.get("/new", middleware.isLoggedIn, (req, res) => {
-  var selectBacktests = 'SELECT id, DATE_FORMAT(created_at, "%d ' + res.__('of') + ' %M %Y") AS date, result FROM backtest WHERE user_id = ?;'
+  var selectBacktests = 'SELECT id, DATE_FORMAT(created_at, \'%d ' + res.__('of') + ' %M %Y\') AS date, result FROM backtest WHERE user_id = ?;'
   var allBacktests = {
     id: [],
     title: []

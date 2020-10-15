@@ -199,7 +199,7 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
 router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
   let months = [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')]
   var selectUserBase = 'SELECT currency FROM currencies WHERE id = ?;'
-  var selectEntries = 'SELECT pair_id, strategy_id, timeframe_id, direction, result, profits, fees, MONTH(entry_dt) as month, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ?;';
+  var selectEntries = 'SELECT pair_id, strategy_id, timeframe_id, direction, result, profits, fees, MONTH(entry_dt) as month, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE status = 1 AND user_id = ?;';
   db.query(selectUserBase, req.user.currency_id, (err, getBase) => {
     if (err) {
       // COMBAK: log error
@@ -362,7 +362,7 @@ router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
 // TRADING PLAN ROUTE
 router.get("/plan", middleware.isLoggedIn, (req, res) => {
   // COMBAK: ensure that order is descending in terms of created_at
-  var selectPlans = 'SELECT id, title, DATE_FORMAT(created_at, "%d/%m/%Y") AS date FROM plans WHERE user_id = ?';
+  var selectPlans = 'SELECT id, title, DATE_FORMAT(created_at, \'%d/%m/%Y\') AS date FROM plans WHERE user_id = ?';
   db.query(selectPlans, req.user.id, (err, getPlans) => {
     if (err) {
       // COMBAK: log error

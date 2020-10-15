@@ -797,28 +797,28 @@ router.get("/days/:period", middleware.isLoggedIn, (req, res) => {
     try {
       switch (req.params.period) {
         case 'today':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE entry_dt > CURDATE() AND status = 1 AND user_id = ?;', req.user.id);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE entry_dt > CURDATE() AND status = 1 AND user_id = ?;', req.user.id);
           break;
         case 'cweek':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;', req.user.id);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;', req.user.id);
           break;
         case 'lweek':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE() - INTERVAL 1 WEEK, 1) AND status = 1 AND user_id = ?;', req.user.id);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE() - INTERVAL 1 WEEK, 1) AND status = 1 AND user_id = ?;', req.user.id);
           break;
         case 'cmonth':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;', req.user.id);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;', req.user.id);
           break;
         case 'lmonth':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE() - INTERVAL 1 MONTH) AND MONTH(entry_dt) = MONTH(CURDATE() - INTERVAL 1 MONTH) AND status = 1 AND user_id = ?;', req.user.id);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE() - INTERVAL 1 MONTH) AND MONTH(entry_dt) = MONTH(CURDATE() - INTERVAL 1 MONTH) AND status = 1 AND user_id = ?;', req.user.id);
           break;
         case 'cquarter':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND QUARTER(entry_dt) = QUARTER(CURDATE()) AND status = 1 AND user_id = ?;', req.user.id);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND QUARTER(entry_dt) = QUARTER(CURDATE()) AND status = 1 AND user_id = ?;', req.user.id);
           break;
         case 'lquarter':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE() - INTERVAL 1 QUARTER) AND QUARTER(entry_dt) = QUARTER(CURDATE() - INTERVAL 1 QUARTER) AND status = 1 AND user_id = ?;', req.user.id);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE() - INTERVAL 1 QUARTER) AND QUARTER(entry_dt) = QUARTER(CURDATE() - INTERVAL 1 QUARTER) AND status = 1 AND user_id = ?;', req.user.id);
           break;
         case 'all':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ?;', req.user.id);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE status = 1 AND user_id = ?;', req.user.id);
           break;
       }
       getEntries.forEach((entry) => {
@@ -949,7 +949,7 @@ router.get("/:table/custom/:from/:to", middleware.isLoggedIn, (req, res) => {
           break;
 
         case 'days':
-          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, "%W") AS date FROM entries WHERE status = 1 AND user_id = ? AND entry_dt > ? AND entry_dt < ?;', [req.user.id, req.params.from, req.params.to]);
+          var getEntries = await query('SELECT result, profits, fees, DATE_FORMAT(entry_dt, \'%W\') AS date FROM entries WHERE status = 1 AND user_id = ? AND entry_dt > ? AND entry_dt < ?;', [req.user.id, req.params.from, req.params.to]);
           // creates an object to store the day of the week stats
           var data = {
             Monday:     { name:'Monday',    quantity:0, win:0, loss:0, be:0, percent:0 },

@@ -13,7 +13,7 @@ var strategyTA = require('../models/elements/strategy');
 
 // INDEX TECHNICAL ANALYSIS ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  getAllTas = 'SELECT tanalysis.id, DATE_FORMAT(created_at, "%d/%m/%y") AS date, pair FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at;'
+  getAllTas = 'SELECT tanalysis.id, DATE_FORMAT(created_at, \'%d/%m/%y\') AS date, pair FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at;'
   var dataList = []
   db.query(getAllTas, req.user.id, (err, results) => {
     if (err) {
@@ -204,7 +204,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 // SHOW TECHNICAL ANALYSIS ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a varialbe - too long
-  var getTa = 'SELECT id, pair_id, category, tanalysis.category, DATE_FORMAT(created_at, "%Y-%m-%d") AS created_short, DATE_FORMAT(created_at, "%d de %M %Y") AS created_long FROM tanalysis WHERE id = ?';
+  var getTa = 'SELECT id, pair_id, category, tanalysis.category, DATE_FORMAT(created_at, \'%Y-%m-%d\') AS created_short, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_long FROM tanalysis WHERE id = ?';
   // OPTIMIZE: could another type of JOIN improve the query?
   var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
   // object where the technical analysis information will be stored
@@ -272,7 +272,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     strategy: strategyTA.html(userStrategies)
   }
   // inserts DB queries to a varialbe - too long
-  var getTa = 'SELECT id, pair_id, category, tanalysis.category, DATE_FORMAT(created_at, "%Y-%m-%d") AS created_short, DATE_FORMAT(created_at, "%d de %M %Y") AS created_long FROM tanalysis WHERE id = ?';
+  var getTa = 'SELECT id, pair_id, category, tanalysis.category, DATE_FORMAT(created_at, \'%Y-%m-%d\') AS created_short, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_long FROM tanalysis WHERE id = ?';
   // OPTIMIZE: could another type of JOIN improve the query?
   var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
   // object where the technical analysis information will be stored

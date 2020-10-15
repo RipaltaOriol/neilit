@@ -12,7 +12,7 @@ var addonBacktest = require('../models/elements/backtest');
 
 // INDEX BACKTEST ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  var getAllBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d/%m/%y") AS date FROM backtest WHERE user_id = ? ORDER BY created_at;';
+  var getAllBacktest = 'SELECT *, DATE_FORMAT(created_at, \'%d/%m/%y\') AS date FROM backtest WHERE user_id = ? ORDER BY created_at;';
   var dataList = []
   // retrieves all backtest
   db.query(getAllBacktest, req.user.id, (err, results) => {
@@ -183,7 +183,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 // SHOW BACKTEST ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d ' + res.__('of') + ' %M %Y") AS created_at FROM backtest WHERE id = ? AND user_id = ?;'
+  var getBacktest = 'SELECT *, DATE_FORMAT(created_at, \'%d ' + res.__('of') + ' %M %Y\') AS created_at FROM backtest WHERE id = ? AND user_id = ?;'
   var getAddons = 'SELECT description FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
   var getData = 'SELECT direction, result, pair_id, strategy_id, timeframe_id FROM backtest_data WHERE backtest_id = ?;'
   var getAddonsData = 'SELECT * FROM backtest_addons_data WHERE backtest_id = ? ORDER BY backtest_data_id;'
@@ -271,7 +271,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
 // UPDATE BACKTEST ROUTE
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = 'SELECT *, DATE_FORMAT(created_at, "%d de %M %Y") AS created_at FROM backtest WHERE id = ?;'
+  var getBacktest = 'SELECT *, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_at FROM backtest WHERE id = ?;'
   var getAddons = 'SELECT description, is_integers, option1, option2, option3, option4, option5, option6 FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
   var getData = 'SELECT direction, result, pair_id, strategy_id, timeframe_id FROM backtest_data WHERE backtest_id = ?;'
   var getAddonsData = 'SELECT * FROM backtest_addons_data WHERE backtest_id = ? ORDER BY backtest_data_id;'

@@ -9,7 +9,7 @@ let db = require('../models/dbConfig');
 
 // INDEX ENTRIES ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  var getAllEntries = 'SELECT *, DATE_FORMAT(entry_dt, "%d ' + res.__('of') + ' %M %Y") AS date FROM entries ORDER BY entry_dt DESC;'
+  var getAllEntries = 'SELECT *, DATE_FORMAT(entry_dt, \'%d ' + res.__('of') + ' %M %Y\') AS date FROM entries ORDER BY entry_dt DESC;'
   var dataList = []
   db.query(getAllEntries, (err, results) => {
     if (err) {
@@ -33,7 +33,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 
 // NEW ENTRY ROUTE
 router.get("/new", middleware.isLoggedIn, (req, res) => {
-  var selectTas = 'SELECT id, pair_id, DATE_FORMAT(created_at, "%d de %M %Y") AS created_long FROM tanalysis WHERE user_id = ?;'
+  var selectTas = 'SELECT id, pair_id, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_long FROM tanalysis WHERE user_id = ?;'
   var allTas = {
     id: [],
     title: []
@@ -179,7 +179,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 // SHOW ENTRY ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, "%d de %M %Y") AS created_long, DATE_FORMAT(entry_dt, "%Y-%m-%d") AS created_short, DATE_FORMAT(entry_dt, "%H:%i") AS created_time, DATE_FORMAT(exit_dt, "%Y-%m-%d") AS closed_short FROM entries WHERE id = ?;'
+  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%d de %M %Y\') AS created_long, DATE_FORMAT(entry_dt, \'%Y-%m-%d\') AS created_short, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time, DATE_FORMAT(exit_dt, \'%Y-%m-%d\') AS closed_short FROM entries WHERE id = ?;'
   // object where the entry information will be stored
   var entryInfo = { }
   db.query(getEntry, req.params.id, (err, results) => {
@@ -236,8 +236,8 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
 // UPDATE ENTRY ROUTE
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, "%d de %M %Y") AS created_long, DATE_FORMAT(entry_dt, "%Y-%m-%d") AS created_short, DATE_FORMAT(entry_dt, "%H:%i") AS created_time, DATE_FORMAT(exit_dt, "%Y-%m-%d") AS closed_short FROM entries WHERE id = ?;'
-  var selectTas = 'SELECT id, pair_id, DATE_FORMAT(created_at, "%d de %M %Y") AS created_long FROM tanalysis WHERE user_id = ?;'
+  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%d de %M %Y\') AS created_long, DATE_FORMAT(entry_dt, \'%Y-%m-%d\') AS created_short, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time, DATE_FORMAT(exit_dt, \'%Y-%m-%d\') AS closed_short FROM entries WHERE id = ?;'
+  var selectTas = 'SELECT id, pair_id, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_long FROM tanalysis WHERE user_id = ?;'
   // object where the entry information will be stored
   var entryInfo = { }
   // object where the existing technical analysis will be stored
