@@ -18,7 +18,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
   db.query(getAllTas, req.user.id, (err, results) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
     results.forEach((result) => {
@@ -56,7 +56,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 router.post("/", middleware.isLoggedIn, (req, res) => {
   // checks if date is valid
   if (req.body.date == "") {
-    req.flash("error", "Date cannot be blank.")
+    req.flash("error", res.__("Date cannot be blank."))
     res.redirect("/" + req.user.username + "/journal/ta/new")
   }
   // creates an object with the new technical analysis variables
@@ -335,7 +335,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
 router.put("/:id", middleware.isLoggedIn, (req, res) => {
   // checks if date is valid
   if (req.body.date == "") {
-    req.flash("error", "Date cannot be blank.")
+    req.flash("error", res.__("Date cannot be blank."))
     res.redirect("/" + req.user.username + "/journal/ta/" + req.params.id)
   }
   // creates an object with the updated technical analysis variables

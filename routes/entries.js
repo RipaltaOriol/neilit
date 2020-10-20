@@ -13,7 +13,8 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
   var dataList = []
   db.query(getAllEntries, (err, results) => {
     if (err) {
-      req.flash('error', 'Something went wrong, please try again.')
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
     results.forEach((result) => {
@@ -39,7 +40,11 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     title: []
   }
   db.query(selectTas, req.user.id, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again.'))
+      return res.redirect('/' + req.user.username + '/journal/entry');
+    }
     // stores each technical analysis to an object array
     results.forEach((ta) => {
       allTas.id.push(ta.id);
@@ -57,16 +62,16 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 })
 
 // NEW ENTRY LOGIC
-router.post("/", middleware.isLoggedIn, (req, res) => {
+router.post("/", middleware.isLoggedIn, async (req, res) => {
   // checks whether the entry contains the required fields
   if (req.body.size == '') {
-    req.flash("error", "Position size cannot be blank.")
+    req.flash("error", res.__('Position size cannot be blank.'))
     return res.redirect("/" + req.user.username + "/journal/entry/new")
   } else if (req.body.entryPrice == '') {
-    req.flash("error", "Entry price cannot be blank.")
+    req.flash("error", res.__('Entry price cannot be blank.'))
     return res.redirect("/" + req.user.username + "/journal/entry/new")
   } else if (req.body.entryDate == '') {
-    req.flash("error", "Entry date cannot be blank.")
+    req.flash("error", res.__('Entry date cannot be blank.'))
     return res.redirect("/" + req.user.username + "/journal/entry/new")
   }
   // creates an object with the new entry variables
@@ -94,7 +99,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     } else if (req.body.direction == -1) {
       newEntry.direction = 'short';
     } else {
-      req.flash("error", "Entry direction cannot be blank.")
+      req.flash("error", res.__('Entry direction cannot be blank.'))
       return res.redirect("/" + req.user.username + "/journal/entry/new")
     }
     // sets the stop loss of the entry
@@ -110,7 +115,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
       if (req.body.entryTa != '') {
         newEntry.ta_id = req.body.entryTa;
       } else {
-        req.flash("error", "The entry was not connected to any TA. Please, try again.")
+        req.flash("error", res.__('The entry was not connected to any TA. Please, try again.'))
         return res.redirect("/" + req.user.username + "/journal/entry/new")
       }
     }
@@ -126,7 +131,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
         newEntry.exit_dt = req.body.exitDate + ' 00:00:00'
       }
       if (req.body.closePrice == '') {
-        req.flash("error", "Exit price cannot be blank for closed entries.")
+        req.flash("error", res.__('Exit price cannot be blank for closed entries.'))
         return res.redirect("/" + req.user.username + "/journal/entry/new")
       } else {
         newEntry.exit_price = req.body.closePrice;
@@ -140,11 +145,11 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
       }
       // sets the profits of the entry
       if (req.body.profits != '') {
-        newEntry.pofits = req.body.profits;
+        newEntry.profits = req.body.profits;
       } else {
         var base = currencies[req.user.currency_id - 1]
         var trade = pairs[Number(req.body.pair)].substring(4,7);
-        fetch(`https://api.exchangeratesapi.io/latest?base=${trade}`)
+        await fetch(`https://api.exchangeratesapi.io/latest?base=${trade}`)
         .then(res => res.json())
         .then((data) => {
           var entryAmount;
@@ -158,7 +163,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
         .catch((err) => {
           if (err) {
             // COMBAK: log error
-            req.flash('error', 'Something went wrong, please try again later.')
+            req.flash('error', res.__('Something went wrong, please try again later.'))
             return res.redirect('/' + req.user.username + "/journal/entry");
           }
         })
@@ -168,9 +173,10 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     db.query('INSERT INTO entries SET ?', newEntry, (err, response) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again later.')
+        req.flash('error', res.__('Something went wrong, please try again later.'))
         return res.redirect('/' + req.user.username + "/journal/entry");
       }
+      req.flash('success', res.__('The entry was created successfully.'))
       res.redirect("/" + req.user.username + "/journal/entry");
     })
   }
@@ -183,7 +189,11 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // object where the entry information will be stored
   var entryInfo = { }
   db.query(getEntry, req.params.id, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again later.'))
+      return res.redirect('/' + req.user.username + "/journal/entry");
+    }
     // mandatory entry fields
     entryInfo.id = results[0].id;
     entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ', ' + results[0].created_long;
@@ -196,6 +206,8 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     entryInfo.entryTime = results[0].created_time;
     entryInfo.direction = results[0].direction;
     entryInfo.entryPrice = results[0].entry_price;
+    entryInfo.fees = results[0].fees;
+    entryInfo.profits = results[0].profits;
     // optional mandatory fields
     // checks the entry's stop loss value
     if (results[0].stop_loss != null) {
@@ -246,7 +258,11 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     title: [],
   }
   db.query(getEntry, req.params.id, (err, results) => {
-    if (err) throw err;
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again later.'))
+      return res.redirect('/' + req.user.username + "/journal/entry");
+    }
     // mandatory entry fields
     entryInfo.id = results[0].id;
     entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ', ' + results[0].created_long;
@@ -259,6 +275,8 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     entryInfo.entryTime = results[0].created_time;
     entryInfo.direction = results[0].direction;
     entryInfo.entryPrice = results[0].entry_price;
+    entryInfo.fees = results[0].fees;
+    entryInfo.profits = results[0].profits;
     // optional mandatory fields
     // checks the entry's stop loss value
     if (results[0].stop_loss != null) {
@@ -286,7 +304,11 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     }
     // gets the technical analysis from the user
     db.query(selectTas, req.user.id, (err, results) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', res.__('Something went wrong, please try again later.'))
+        return res.redirect('/' + req.user.username + "/journal/entry");
+      }
       // stores each technical analysis to an object array
       results.forEach((ta) => {
         allTas.id.push(ta.id);
@@ -307,29 +329,27 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
 })
 
 // UPDATE ENTRY LOGIC
-router.put("/:id", middleware.isLoggedIn, (req, res) => {
-  console.log('Body: ');
-  console.log(req.body);
+router.put("/:id", middleware.isLoggedIn, async (req, res) => {
   // checks whether the entry contains the required fields
   if (req.body.size == '') {
-    req.flash("error", "Position size cannot be blank.")
-    res.redirect("/" + req.user.username + "/journal/entry/new")
+    req.flash("error", res.__('Position size cannot be blank.'))
+    res.redirect("/" + req.user.username + "/journal/entry/" + req.params.id + "/edit")
   } else if (req.body.entryPrice == '') {
-    req.flash("error", "Entry price cannot be blank.")
-    res.redirect("/" + req.user.username + "/journal/entry/new")
+    req.flash("error", res.__('Entry price cannot be blank.'))
+    res.redirect("/" + req.user.username + "/journal/entry/" + req.params.id + "/edit")
   } else if (req.body.entryDate == '') {
-    req.flash("error", "Entry date cannot be blank.")
-    res.redirect("/" + req.user.username + "/journal/entry/new")
+    req.flash("error", res.__('Entry date cannot be blank.'))
+    res.redirect("/" + req.user.username + "/journal/entry/" + req.params.id + "/edit")
   }
   // creates an object with the new entry variables
   else {
     var newEntry = {
       user_id: req.user.id,
-      pair_id: Number(req.body.pair) + 1,
+      pair_id: req.body.pair,
       category: req.body.category,
       size: Number(req.body.size),
       strategy_id: userIdStrategies[req.body.strategy],
-      timeframe_id: Number(req.body.timeframe) + 1,
+      timeframe_id: req.body.timeframe,
       entry_price: req.body.entryPrice,
     }
     // sets the entry date and time of the entry
@@ -346,8 +366,8 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     } else if (req.body.direction == -1) {
       newEntry.direction = 'short';
     } else {
-      req.flash("error", "Entry direction cannot be blank.")
-      res.redirect("/" + req.user.username + "/journal/entry/new")
+      req.flash("error", res.__('Entry direction cannot be blank.'))
+      res.redirect("/" + req.user.username + "/journal/entry/" + req.params.id + "/edit")
     }
     // sets the stop loss of the entry
     if (req.body.stopLoss != '') {
@@ -359,7 +379,12 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     }
     // connects a technical analysis to the entry (if any)
     if (req.body.selectTa == 'select') {
-      newEntry.ta_id = req.body.entryTa;
+      if (req.body.entryTa != '') {
+        newEntry.ta_id = req.body.entryTa;
+      } else {
+        req.flash("error", res.__('The entry was not connected to any TA. Please, try again.'))
+        return res.redirect("/" + req.user.username + "/journal/entry/" + req.params.id + "/edit")
+      }
     }
     // sets the comment field of the entry
     if (req.body.comment != '') {
@@ -373,19 +398,55 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
         newEntry.exit_dt = req.body.exitDate + ' 00:00:00'
       }
       if (req.body.closePrice == '') {
-        req.flash("error", "Exit price cannot be blank for closed entries.")
-        res.redirect("/" + req.user.username + "/journal/entry/new")
+        req.flash("error", res.__('Exit price cannot be blank for closed entries.'))
+        res.redirect("/" + req.user.username + "/journal/entry/" + req.params.id + "/edit")
       } else {
         newEntry.exit_price = req.body.closePrice;
       }
       newEntry.status = req.body.status;
+      newEntry.fees = 0;
       newEntry.result = req.body.result;
+      // sets the fees of the entry
+      if (req.body.fees != '') {
+        newEntry.fees = req.body.fees;
+      }
+      // sets the profits of the entry
+      if (req.body.profits != '') {
+        newEntry.profits = req.body.profits;
+      } else {
+        var base = currencies[req.user.currency_id - 1]
+        var trade = pairs[Number(req.body.pair)].substring(4,7);
+        await fetch(`https://api.exchangeratesapi.io/latest?base=${trade}`)
+        .then(res => res.json())
+        .then((data) => {
+          var entryAmount;
+          if (req.body.direction == 1) {
+            entryAmount = Math.round(((req.body.closePrice - req.body.entryPrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
+          } else {
+            entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
+          }
+          newEntry.profits = data["rates"][base] * entryAmount;
+        })
+        .catch((err) => {
+          if (err) {
+            // COMBAK: log error
+            req.flash('error', res.__('Something went wrong, please try again later.'))
+            return res.redirect('/' + req.user.username + "/journal/entry");
+          }
+        })
+      }
     }
     // updated the entry on the DB
     db.query('UPDATE entries SET ? WHERE id = ?', [newEntry, req.params.id], (err, response) => {
-      if (err) throw err;
+      if (err) {
+        // COMBAK: log error
+        console.log(err);
+        req.flash('error', res.__('Something went wrong, please try again later.'))
+        return res.redirect('/' + req.user.username + "/journal/entry");
+      }
       // prints the # of rows that were changed (should be one)
       // console.log(response.changedRows);
+      req.flash('success', res.__('The entry was updated successfully.'))
       res.redirect("/" + req.user.username + "/journal/entry");
     })
   }
@@ -396,8 +457,12 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   var deleteEntry = 'DELETE FROM entries WHERE id = ?'
   // deletes the technical analysis from the DB
   db.query(deleteEntry, req.params.id, (err) => {
-    if (err) throw err;
-    res.redirect("/" + req.user.username + "/journal");
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again later.'))
+      return res.redirect('/' + req.user.username + "/journal/entry");
+    }
+    res.redirect("/" + req.user.username + "/journal/entry");
   })
 })
 

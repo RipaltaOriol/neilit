@@ -45,8 +45,19 @@ span .checkbox-orange {
   }
 
 /* || Utility */
+.form-fields { }
+  .form-fields label {
+    width: 165px;
+  }
+  .form-fields .form-input {
+    width: 500px;
+    background-color: var(--background-hover);
+    border-radius: .25rem;
+    flex: none;
+  }
+
 .mandatory {
-  font-weight: bold
+  font-weight: 500;
 }
 
 /* || Utility */
@@ -70,6 +81,17 @@ span .checkbox-orange {
     background: var(--yellow-soft);
     border-color: var(--yellow-border);
   }
+
+/* || Bootstrap class */
+.modal-content {
+  background-color: var(--background-soft);
+}
+
+.modal-body { }
+  .modal-body a { }
+    .modal-body a:hover {
+      color: var(--neilit-permanent)
+    }
 
 /* || JQuery UI class */
 .ui-datepicker {

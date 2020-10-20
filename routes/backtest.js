@@ -17,7 +17,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
   // retrieves all backtest
   db.query(getAllBacktest, req.user.id, (err, results) => {
     if (err) {
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
     results.forEach(async (result) => {
@@ -54,7 +54,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 // NEW BACKTEST LOGIC
 router.post("/", middleware.isLoggedIn, (req, res) => {
   if (!(req.body.outcome)) {
-    req.flash('error', 'The results\' type has to be defined.')
+    req.flash('error', res.__('The results\' type has to be defined.'))
     res.redirect('/' + req.user.username + '/journal/backtest/new');
   } else {
     // creates an object with the new backtest main variables
@@ -92,7 +92,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     db.query('INSERT INTO backtest SET ?', newBacktest, (err, backtestId) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest/new');
       }
       var backtest_id = backtestId.insertId;
@@ -105,7 +105,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
         if (Array.isArray(req.body.varName)) {
           for (var i = 0; i < req.body.varName.length; i++) {
             if (req.body.varName[i] == '') {
-              req.flash('error', 'The addons\' title cannot be blank.')
+              req.flash('error', res.__('The addons\' title cannot be blank.'))
               return res.redirect('/' + req.user.username + '/journal/backtest/new');
             }
             var addon = [backtest_id, req.body.varName[i], req.body.intList[i]]
@@ -116,7 +116,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
             // configures an options value addons
             else {
               if (req.body.varOption[counterAddon] == '') {
-                req.flash('error', 'The addons\' options are required.')
+                req.flash('error', res.__('The addons\' options are required.'))
                 return res.redirect('/' + req.user.username + '/journal/backtest/new');
               }
               for (var y = counterAddon; y < Number(counterAddon) + Number(req.body.arrOption[i]); y++) {
@@ -135,7 +135,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
         // single addon
         else {
           if (req.body.varName == '') {
-            req.flash('error', 'The addon\'s title cannot be blank.')
+            req.flash('error', res.__('The addon\'s title cannot be blank.'))
             return res.redirect('/' + req.user.username + '/journal/backtest/new');
           }
           var addon = [backtest_id, req.body.varName, req.body.intList]
@@ -146,7 +146,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
           // configures an options value addons
           else {
             if (req.body.varOption[0] == '') {
-              req.flash('error', 'The addon\'s options are required.')
+              req.flash('error', res.__('The addon\'s options are required.'))
               return res.redirect('/' + req.user.username + '/journal/backtest/new');
             }
             for (var y = 0; y < req.body.arrOption; y++) {
@@ -168,7 +168,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
         db.query(addAddons, [newAddons], (err, complete) => {
           if (err) {
             // COMBAK: log error
-            req.flash('error', 'Something went wrong, please try again.')
+            req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username + '/journal/backtest');
           }
           res.redirect("/" + req.user.username + "/journal/backtest/" + backtest_id + "/edit");
@@ -195,7 +195,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   db.query(getBacktest, [req.params.id, req.user.id], (err, results) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     backtestInfo.id = results[0].id;
@@ -216,7 +216,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     db.query(getAddons, backtestInfo.id, (err, results) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       if (results.length > 0) {
@@ -230,7 +230,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
       db.query(getData, backtestInfo.id, (err, results) => {
         if (err) {
           // COMBAK: log error
-          req.flash('error', 'Something went wrong, please try again.')
+          req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username + '/journal/backtest');
         }
         results.forEach((entryData) => {
@@ -283,7 +283,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   db.query(getBacktest, req.params.id, (err, results) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     backtestInfo.id = results[0].id;
@@ -304,7 +304,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     db.query(getAddons, backtestInfo.id, (err, results) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       if (results.length > 0) {
@@ -329,7 +329,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
       db.query(getData, backtestInfo.id, (err, results) => {
         if (err) {
           // COMBAK: log error
-          req.flash('error', 'Something went wrong, please try again.')
+          req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username + '/journal/backtest');
         }
         results.forEach((entryData) => {
@@ -390,7 +390,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     editBacktest[i].push(backtest_id)
     //outcome parameter
     if (parseData.data[1][i] == '') {
-      req.flash('error', 'The outcome field cannot be blank.')
+      req.flash('error', res.__('The outcome field cannot be blank.'))
       return res.redirect('/' + req.user.username + '/journal/backtest/' + backtest_id);
     }
     // direction parameter
@@ -427,7 +427,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     if (parseData.data.length > 5) {
       for (var y = 0; y < parseData.backtest.addons.length; y++) {
         if (parseData.data[5 + y][i] == '') {
-          req.flash('error', 'Backtest fields cannot be blank.')
+          req.flash('error', res.__('Backtest fields cannot be blank.'))
           return res.redirect('/' + req.user.username + '/journal/backtest/' + backtest_id);
         }
         editAddons.push([backtest_id, counterRow, y + 1, Number(parseData.data[5 + y][i])])
@@ -439,14 +439,14 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
   db.query('DELETE FROM backtest_addons_data WHERE backtest_id = ?', backtest_id, (err, done) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     // deletes the Backtest data before sending the new updated data to the DB
     db.query('DELETE FROM backtest_data WHERE backtest_id = ?', backtest_id, (err, done) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       // stores the backtest DATA into the DB
@@ -454,7 +454,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
         db.query(addData, [editBacktest], async (err, complete) => {
           if (err) {
             // COMBAK: log error
-            req.flash('error', 'Something went wrong, please try again.')
+            req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username + '/journal/backtest');
           }
           if (editAddons.length > 0) {
@@ -463,15 +463,15 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
               var addAddons = await query('INSERT INTO backtest_addons_data (backtest_id, backtest_data_id, backtest_addons_id, addon_value) VALUES ?', [editAddons])
             } catch (err) {
               // COMBAK: log error
-              req.flash('error', 'Something went wrong, please try again.')
+              req.flash('error', res.__('Something went wrong, please try again.'))
               return res.redirect('/' + req.user.username + '/journal/backtest');
             }
           }
-          req.flash('success', 'The backtest was saved successfully.')
+          req.flash('success', res.__('The backtest was saved successfully.'))
           res.redirect("/" + req.user.username + "/journal/backtest");
         })
       } else {
-        req.flash('success', 'The backtest was saved successfully.')
+        req.flash('success', res.__('The backtest was saved successfully.'))
         res.redirect("/" + req.user.username + "/journal/backtest");
       }
     })
@@ -488,31 +488,31 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   db.query(deleteAddonsData, req.params.id, (err) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     // deletes the backtest data from the DB
     db.query(deleteBacktestData, req.params.id, (err) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       // deletes the addons from the DB
       db.query(deleteAddons, req.params.id, (err) => {
         if (err) {
           // COMBAK: log error
-          req.flash('error', 'Something went wrong, please try again.')
+          req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username + '/journal/backtest');
         }
         // deletes the backtest from the DB
         db.query(deleteBacktest, req.params.id, (err) => {
           if (err) {
             // COMBAK: log error
-            req.flash('error', 'Something went wrong, please try again.')
+            req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username + '/journal/backtest');
           }
-          req.flash('success', 'Backtest was deleted successfully.')
+          req.flash('success', res.__('Backtest was deleted successfully.'))
           res.redirect("/" + req.user.username + "/journal/backtest");
         })
       })

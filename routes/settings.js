@@ -37,7 +37,7 @@ router.post("/newStrategy", middleware.isLoggedIn, (req, res) => {
   db.query('INSERT INTO strategies SET ?', newStrategy, (err, done) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong. Please, try again later.')
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
     res.end();
@@ -51,7 +51,7 @@ router.post("/deleteStrategy", middleware.isLoggedIn, (req, res) => {
   db.query(deleteStrategy, req.body.strategy, (err) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong. Please, try again later.')
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
     res.end();
@@ -69,7 +69,7 @@ router.post("/newGoal", middleware.isLoggedIn, (req, res) => {
   db.query('INSERT INTO goals SET ?', newGoal, (err, done) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong. Please, try again later.')
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
     res.end();
@@ -83,7 +83,7 @@ router.post("/deleteGoal", middleware.isLoggedIn, (req, res) => {
   db.query(deleteGoal, req.body.goal, (err) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong. Please, try again later.')
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
     res.end();
@@ -98,7 +98,7 @@ router.post("/changeCurrency", middleware.isLoggedIn, (req, res) => {
   db.query(updateCurrency, [currency, req.user.id], (err) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong. Please, try again later.')
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
     res.end();
@@ -112,7 +112,7 @@ router.post("/changeShowProfits", middleware.isLoggedIn, (req, res) => {
   db.query(updateShowProfits, [req.body.showProfits, req.user.id], (err) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong. Please, try again later.')
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
     res.end();
@@ -126,7 +126,7 @@ router.post("/changeMode", middleware.isLoggedIn, (req, res) => {
   db.query(updateMode, [req.body.mode, req.user.id], (err) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong. Please, try again later.')
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
     res.end();
@@ -140,7 +140,7 @@ router.post("/changeLanguage", middleware.isLoggedIn, (req, res) => {
   db.query(updateLanguage, [req.body.lang, req.user.id], (err) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong. Please, try again later.')
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
     language = req.body.lang;

@@ -133,7 +133,6 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
         outcomeMonthTotal.push(outcomeMonth[month].total)
       }
       db.query(selectOpenOps, req.user.id, (err, getOps) => {
-
         if (err) {
           console.log(err);
           // COMBAK: log error

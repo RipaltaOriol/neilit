@@ -267,11 +267,11 @@
                     <% } else { %>
                       <% if (strategyStats[property].percent/strategyStats[property].quantity >= 0) { %>
                         <p class="mb-0 pill pill-verde">
-                          <%= strategyStats[property].percent/strategyStats[property].quantity %>%
+                          <%= (strategyStats[property].percent/strategyStats[property].quantity).toFixed(2) %>%
                         </p>
                       <% } else { %>
                         <p class="mb-0 pill pill-roja">
-                          <%= strategyStats[property].percent/strategyStats[property].quantity %>%
+                          <%= (strategyStats[property].percent/strategyStats[property].quantity).toFixed(2) %>%
                         </p>
                       <% } %>
                     <% } %>
@@ -444,11 +444,11 @@
                     <% } else { %>
                       <% if (timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] >= 0) { %>
                         <p class="mb-0 pill pill-verde">
-                          <%= timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] %>%
+                          <%= (timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0]).toFixed(2) %>%
                         </p>
                       <% } else { %>
                         <p class="mb-0 pill pill-roja">
-                          <%= timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0] %>%
+                          <%= (timeframeStats.percent[timeframeStats.showcase[i][1]]/timeframeStats.showcase[i][0]).toFixed(2) %>%
                         </p>
                       <% } %>
                     <% } %>

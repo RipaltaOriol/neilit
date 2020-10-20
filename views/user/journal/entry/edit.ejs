@@ -2,75 +2,78 @@
 
   <!-- CONTENT -->
   <div class="container mx-auto pt-5 mb-5">
-    <div class="journal-box px-0">
+    <div class="journal-box px-0 entry-input">
       <form action="/<%= currentUser.username %>/journal/entry/<%= entry.id %>?_method=PUT" method="POST">
         <h3 class="mx-3"><%= entry.title %></h3>
         <hr>
         <div class="mb-2 mx-3">
-          <select id="entry-pair" name="pair" class="custom-select p-1" onchange="entryCategory();">
-            <% for (var i = 0; i < currencies.length; i++) { %>
-              <% if (entry.pair == i) { %>
-                <option value="<%= i %>" selected><%= currencies[i] %></option>
-              <% } else { %>
-                <option value="<%= i %>"><%= currencies[i] %></option>
-              <% } %>
-            <% } %>
-          </select>
-          <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);"><%= __('Specific') %></h5>
-            <div class="info-fields mt-2">
-              <span class="mb-2">
-                <label><%= __('Category') %>:
-                  <span class="mandatory">*</span>
-                </label>
-                <input id="entry-category" type="text" class="bg-hover orange px-2" name="category" value="<%= entry.category %>" readonly>
+          <div class="d-flex flex-column mt-2 p-2 form-fields">
+            <h5><%= __('Specific') %></h5>
+            <span class="mb-2 d-block">
+              <label class="mandatory"><%= __('Pair') %>:</label>
+              <input type="text" name="pair" value="1" class="dropdown-server d-none">
+              <!-- dropdown -->
+              <div class="dropdown d-inline">
+                <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                  <%= currencies[0] %>
+                </button>
+                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                  <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                  <% for (var i = 0; i < currencies.length; i++) { %>
+                    <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                  <% } %>
+                </ul>
+              </div>
+            </span>
+            <span class="mb-2 d-block">
+              <label class="mandatory"><%= __('Category') %>:</label>
+              <input type="text" class="bg-hover orange p-1 px-2" name="category" value="Forex" readonly>
+            </span>
+            <span class="mb-2 d-block">
+              <label class="mandatory"><%= __('Strategy') %>:</label>
+              <input type="text" name="strategy" value="0" class="dropdown-server d-none">
+              <!-- dropdown -->
+              <div class="dropdown d-inline">
+                <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                  <%= strategies[0] %>
+                </button>
+                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                  <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                  <% for (var i = 0; i < strategies.length; i++) { %>
+                    <li class="<%= i %>"><%= strategies[i] %></li>
+                  <% } %>
+                </ul>
+              </div>
+            </span>
+            <span class="d-block">
+              <label class="mandatory"><%= __('Timeframe') %>:</label>
+              <input type="text" name="timeframe" value="1" class="dropdown-server d-none">
+              <!-- dropdown -->
+              <div class="dropdown d-inline">
+                <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                  <%= timeframes[0] %>
+                </button>
+                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                  <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                  <% for (var i = 0; i < timeframes.length; i++) { %>
+                    <li class="<%= i + 1 %>"><%= timeframes[i] %></li>
+                  <% } %>
+                </ul>
+              </div>
+            </span>
+          </div>
+          <div class="d-flex flex-column mt-2 p-2 form-fields">
+            <h5><%= __('Finance') %></h5>
+            <div class="mt-2">
+              <span class="input-group mb-2">
+                <label class="my-auto mandatory"><%= __('Size') %>:</label>
+                <input type="number" class="bg-hover form-control px-2" name="size" min="0" step="0.001" value="<%= entry.size %>">
               </span>
               <span class="input-group mb-2">
-                <label class="my-auto"><%= __('Strategy') %>:
-                  <span class="mandatory">*</span>
-                </label>
-                <select class="custom-select p-1" name="strategy">
-                  <% for (var i = 0; i < strategies.length; i++) { %>
-                    <% if (entry.strategy == i) { %>
-                      <option value="<%= i %>" selected><%= strategies[i] %></option>
-                    <% } else { %>
-                      <option value="<%= i %>"><%= strategies[i] %></option>
-                    <% } %>
-                  <% } %>
-                </select>
-              </span>
-              <span class="input-group">
-                <label class="my-auto"><%= __('Timeframe') %>:
-                  <span class="mandatory">*</span>
-                </label>
-                <select class="custom-select p-1" name="timeframe">
-                  <% for (var i = 0; i < timeframes.length; i++) { %>
-                    <% if (entry.timeframe == i) { %>
-                      <option value="<%= i %>" selected><%= timeframes[i] %></option>
-                    <% } else { %>
-                      <option value="<%= i %>"><%= timeframes[i] %></option>
-                    <% } %>
-                  <% } %>
-                </select>
-              </span>
-            </div>
-          </div>
-          <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);"><%= __('Finance') %></h5>
-            <div class="info-fields mt-2">
-              <span class="input-group">
-                <label class="my-auto"><%= __('Size') %>:
-                  <span class="mandatory">*</span>
-                </label>
-                <input type="number" class="bg-hover form-control px-2" name="size" min="0" step="0.1" value="<%= entry.size %>">
-              </span>
-              <span class="input-group">
-                <label class="my-auto"><%= __('Entry Price') %>:
-                  <span class="mandatory">*</span>
-                </label>
+                <label class="my-auto mandatory"><%= __('Entry Price') %>:</label>
                 <input type="number" class="bg-hover form-control px-2" name="entryPrice" min="0" step="0.00001" value="<%= entry.entryPrice %>">
               </span>
-              <span class="input-group">
+              <span class="input-group mb-2">
                 <label class="my-auto"><%= __('Stop Loss') %>:</label>
                 <input type="number" class="bg-hover form-control px-2" name="stopLoss" min="0" step="0.00001" value="<%= entry.stopLoss %>">
               </span>
@@ -80,22 +83,20 @@
               </span>
             </div>
           </div>
-          <div class="d-flex flex-column mt-2 info-box p-2">
-            <h5 class="cursor-pointer mb-0" onclick="toggleDisplay(this);"><%= __('Logistics') %></h5>
+          <div class="d-flex flex-column mt-2 p-2 form-fields">
+            <h5><%= __('Logistics') %></h5>
             <div class="info-fields mt-2">
-              <span class="input-group">
-                <label class="my-auto"><%= __('Date of Entry') %>:
-                  <span class="mandatory">*</span>
-                </label>
+              <span class="input-group mb-2">
+                <label class="my-auto mandatory"><%= __('Date of Entry') %>:</label>
                 <input type="date" class="bg-hover form-control px-2" name="entryDate" value="<%= entry.entryDate %>">
               </span>
-              <span class="input-group mb-1">
+              <span class="input-group mb-2">
                 <label class="my-auto"><%= __('Time of Entry') %>:</label>
                 <input id="entry-time" type="text" class="bg-hover form-control px-2" name="entryTime" value="<%= entry.entryTime %>">
               </span>
               <span class="mb-2">
                 <div class="form-check form-check-inline">
-                  <label class="checkbox-orange mb-0">
+                  <label class="checkbox-orange mb-0 mandatory">
                     <%= ('Long') %>
                     <% if (entry.direction === 'long') { %>
                       <input type="radio" name="direction" value="1" checked>
@@ -106,7 +107,7 @@
                   </label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <label class="checkbox-orange mb-0">
+                  <label class="checkbox-orange mb-0 mandatory">
                     <%= ('Short') %>
                     <% if (entry.direction === 'short') { %>
                       <input type="radio" name="direction" value="-1" checked>
@@ -183,7 +184,7 @@
         <h3 class="mx-3"><%= __('Comments') %></h3>
         <hr>
         <div class="mx-3">
-          <div id="client-comment" placeholder="Utilice este espacio para escribir algún comentario adicional" contenteditable="true"><%= entry.comment %></div>
+          <div id="client-comment" class="editcontent p-2" placeholder="<%= __('Use this spece to write anything outstanding during the operation') %>" contenteditable="true"><%= entry.comment %></div>
         </div>
         <textarea id="server-comment" name="comment" class="d-none" value="<%= entry.comment %>"></textarea>
         <br>
@@ -214,52 +215,82 @@
           </span>
         </div>
         <% if ('status' in entry) { %>
-          <div id="entry-closure" class="flex-column mx-3 w-50 d-none">
-            <span class="mb-2">
-              <label class="mb-0"><%= __('Exit Date') %>:</label>
-              <input type="date" class="bg-hover orange px-2" name="exitDate">
+          <div id="entry-closure" class="flex-column d-none mx-3 form-fields">
+            <span class="input-group mb-2">
+              <label class="my-auto"><%= __('Exit Date') %>:</label>
+              <input type="date" class="bg-hover form-control p-1 px-2" name="exitDate">
             </span>
-            <span class="mb-2">
-              <label class="mb-0"><%= __('Exit Price') %>:</label>
-              <input type="number" class="bg-hover orange px-2" name="closePrice" min="0" step="0.00001">
+            <span class="input-group mb-2">
+              <label class="my-auto mandatory"><%= __('Exit Price') %>:</label>
+              <input type="number" class="bg-hover form-control p-1 px-2" name="closePrice" min="0" step="0.00001">
             </span>
-            <span class="mb-2">
-              <label class="mb-0"><%= __('Results') %>:</label>
-              <select id="entry-result" name="result" class="custom-select p-1 w-auto">
-                <option value="win"><%= __('Win') %></option>
-                <option value="loss"><%= __('Loss') %></option>
-                <option value="be"><%= __('Break Even') %></option>
-              </select>
+            <span class="input-group mb-2">
+              <label class="my-auto"><%= __('Profits') %>:</label>
+              <input type="number" class="bg-hover form-control p-1 px-2" name="profits" placeholder="<%= __('In accont\'s currency') %>" min="0" step="0.0001">
+              <span class="ml-2 my-auto">
+                <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('In case of leaving this field blank, Neilit will calculate the profits of the operation for you.') %>'">
+              </span>
+            </span>
+            <span class="input-group mb-2">
+              <label class="my-auto"><%= __('Fees') %>:</label>
+              <input type="number" class="bg-hover form-control px-2" name="fees" min="0" step="0.01">
+            </span>
+            <span class="mb-2 d-block">
+              <label class="mandatory"><%= __('Results') %>:</label>
+              <input type="text" name="result" value="win" class="dropdown-server d-none">
+              <div class="dropdown d-inline">
+                <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                  <%= __('Win') %>
+                </button>
+                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                  <li class="win"><%= __('Win') %></li>
+                  <li class="loss"><%= __('Loss') %></li>
+                  <li class="be"><%= __('Break Even') %></li>
+                </ul>
+              </div>
             </span>
           </div>
         <% } else { %>
-          <div id="entry-closure" class="d-flex flex-column mx-3 w-50">
-            <span class="mb-2">
-              <label class="mb-0"><%= __('Exit Date') %>:</label>
-              <input type="date" class="bg-hover orange px-2" name="exitDate" value="<%= entry.exitDate %>">
+          <div id="entry-closure" class="d-flex flex-column mx-3 form-fields">
+            <span class="input-group mb-2">
+              <label class="my-auto"><%= __('Exit Date') %>:</label>
+              <input type="date" class="bg-hover form-control px-2" name="exitDate" value="<%= entry.exitDate %>">
             </span>
-            <span class="mb-2">
-              <label class="mb-0"><%= __('Exit Price') %>:</label>
-              <input type="number" class="bg-hover orange px-2" name="closePrice" min="0" step="0.00001" value="<%= entry.exitPrice %>">
+            <span class="input-group mb-2">
+              <label class="my-auto mandatory"><%= __('Exit Price') %>:</label>
+              <input type="number" class="bg-hover form-control px-2" name="closePrice" min="0" step="0.00001" value="<%= entry.exitPrice %>">
             </span>
-            <span class="mb-2">
-              <label class="mb-0"><%= __('Results') %>:</label>
-              <select id="entry-result" name="result" class="custom-select p-1 w-auto">
-                <% if (entry.result == 'loss') { %>
-                  <option value="win"><%= __('Win') %></option>
-                  <option value="loss" selected><%= __('Loss') %></option>
-                  <option value="be"><%= __('Break Even') %></option>
-                <% } else if (entry.result == 'be') { %>
-                  <option value="win"><%= __('Win') %></option>
-                  <option value="loss"><%= __('Loss') %></option>
-                  <option value="be" selected><%= __('Break Even') %></option>
+            <span class="input-group mb-2">
+            <label class="my-auto"><%= __('Profits') %>:</label>
+            <input type="number" class="bg-hover form-control p-1 px-2" name="profits" placeholder="En divisa base de cuenta" min="0" step="0.0001" value="<%= entry.profits %>">
+            <span class="ml-2 my-auto">
+              <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('In case of leaving this field blank, Neilit will calculate the profits of the operation for you.') %>'">
+            </span>
+          </span>
+          <span class="input-group mb-2">
+            <label class="my-auto"><%= __('Fees') %>:</label>
+            <input type="number" class="bg-hover form-control px-2" name="fees" min="0" step="0.01" value="<%= entry.fees %>">
+          </span>
+          <span class="mb-2 d-block">
+            <label class="mandatory"><%= __('Results') %>:</label>
+            <input type="text" name="result" value="win" class="dropdown-server d-none">
+            <div class="dropdown d-inline">
+              <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                <% if (entry.result == 'win') { %>
+                  <%= __('Win') %>
+                <% } else if (entry.result == 'loss') { %>
+                  <%= __('Loss') %>
                 <% } else { %>
-                  <option value="win"><%= __('Win') %></option>
-                  <option value="be"><%= __('Loss') %></option>
-                  <option value="loss"><%= __('Break Even') %></option>
+                  <%= __('Break Even') %>
                 <% } %>
-              </select>
-            </span>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <li class="win"><%= __('Win') %></li>
+                <li class="loss"><%= __('Loss') %></li>
+                <li class="be"><%= __('Break Even') %></li>
+              </ul>
+            </div>
+          </span>
           </div>
         <% } %>
         <div class="d-flex justify-content-end mx-3">

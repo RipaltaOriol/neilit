@@ -23,7 +23,7 @@
                   <% } else if (entry.result == 'loss') { %>
                     <td><span class="pill pill-red d-block"><%= entry.result.toUpperCase() %></span></td>
                   <% } else { %>
-                    <td><span class="pill pill-yellow"><%= entry.result.toUpperCase() %></span></td>
+                    <td><span class="pill pill-yellow d-block"><%= entry.result.toUpperCase() %></span></td>
                   <% } %>
                 <% } else { %>
                   <td><img src="/imgs/icons/open-ops.svg" class="simple-img"></td>
@@ -35,7 +35,7 @@
           </tbody>
         </table>
         <hr>
-        <div class="d-flex mx-3">
+        <div class="d-flex justify-content-end mx-3">
           <a href="/<%= currentUser.username %>/journal/entry/new" class="btn-neilit"><%= __('New') %></a>
         </div>
       </div>

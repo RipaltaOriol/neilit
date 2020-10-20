@@ -12,12 +12,10 @@
         <h3 class="mx-3"><%= __('Create Entry') %></h3>
         <hr>
         <div class="mb-2 mx-3">
-          <div class="d-flex flex-column mt-2 p-2">
+          <div class="d-flex flex-column mt-2 p-2 form-fields">
             <h5><%= __('Specific') %></h5>
             <span class="mb-2 d-block">
-              <label><%= __('Pair') %>:
-                <span class="mandatory">*</span>
-              </label>
+              <label class="mandatory"><%= __('Pair') %>:</label>
               <input type="text" name="pair" value="1" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
@@ -33,15 +31,11 @@
               </div>
             </span>
             <span class="mb-2 d-block">
-              <label><%= __('Category') %>:
-                <span class="mandatory">*</span>
-              </label>
-              <input type="text" class="bg-hover orange p-1 px-2" name="category" value="Forex" readonly>
+              <label class="mandatory"><%= __('Category') %>:</label>
+              <input type="text" class="form-input orange p-1 px-2" name="category" value="Forex" readonly>
             </span>
             <span class="mb-2 d-block">
-              <label><%= __('Strategy') %>:
-                <span class="mandatory">*</span>
-              </label>
+              <label class="mandatory"><%= __('Strategy') %>:</label>
               <input type="text" name="strategy" value="0" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
@@ -57,9 +51,7 @@
               </div>
             </span>
             <span class="d-block">
-              <label><%= __('Timeframe') %>:
-                <span class="mandatory">*</span>
-              </label>
+              <label class="mandatory"><%= __('Timeframe') %>:</label>
               <input type="text" name="timeframe" value="1" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
@@ -75,55 +67,49 @@
               </div>
             </span>
           </div>
-          <div class="d-flex flex-column mt-2 p-2">
+          <div class="d-flex flex-column mt-2 p-2 form-fields">
             <h5><%= __('Finance') %></h5>
             <span class="input-group mb-2">
-              <label class="my-auto"><%= __('Size') %>:
-                <span class="mandatory">*</span>
-              </label>
-              <input type="number" class="bg-hover form-control p-1 px-2" name="size" min="0" step="0.001" placeholder="<%= __('state the size of your operation in lots') %>">
+              <label class="my-auto mandatory"><%= __('Size') %>:</label>
+              <input type="number" class="form-control form-input p-1 px-2" name="size" min="0" step="0.001" placeholder="<%= __('State the size of your operation in lots') %>">
             </span>
             <span class="input-group mb-2">
-              <label class="my-auto"><%= __('Entry Price') %>:
-                <span class="mandatory">*</span>
-              </label>
-              <input type="number" class="bg-hover form-control p-1 px-2" name="entryPrice" min="0" step="0.00001">
+              <label class="my-auto mandatory"><%= __('Entry Price') %>:</label>
+              <input type="number" class="form-control form-input p-1 px-2" name="entryPrice" min="0" step="0.00001">
             </span>
             <span class="input-group mb-2">
               <label class="my-auto"><%= __('Stop Loss') %>:</label>
-              <input type="number" class="bg-hover form-control p-1 px-2" name="stopLoss" min="0" step="0.00001">
+              <input type="number" class="form-control form-input p-1 px-2" name="stopLoss" min="0" step="0.00001">
             </span>
             <span class="input-group">
               <label class="my-auto"><%= __('Take Profit') %>:</label>
-              <input type="number" class="bg-hover form-control p-1 px-2" name="takeProfit" min="0" step="0.00001">
+              <input type="number" class="form-control form-input p-1 px-2" name="takeProfit" min="0" step="0.00001">
             </span>
           </div>
-          <div class="d-flex flex-column mt-2 p-2">
+          <div class="d-flex flex-column mt-2 p-2 form-fields">
             <h5><%= __('Logistics') %></h5>
             <span class="input-group mb-2">
-              <label class="my-auto"><%= __('Date of Entry') %>:
-                <span class="mandatory">*</span>
-              </label>
-              <input type="date" class="bg-hover form-control p-1 px-2" name="entryDate">
+              <label class="my-auto mandatory"><%= __('Date of Entry') %>:</label>
+              <input type="date" class="form-control form-input p-1 px-2" name="entryDate">
             </span>
-            <span class="input-group mb-2">
+            <span class="input-group mb-3">
               <label class="my-auto"><%= __('Time of Entry') %>:</label>
-              <input id="entry-time" type="text" class="bg-hover form-control p-1 px-2" name="entryTime">
+              <input id="entry-time" type="text" class="form-control form-input p-1 px-2" name="entryTime">
               <span class="ml-2 my-auto">
                 <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="bottom" title="<%= __('The entry time has to be typed in military time. For instnace, 14:45.') %>'">
               </span>
             </span>
             <span class="mb-2">
               <div class="form-check form-check-inline">
-                <label class="checkbox-orange mb-0">
-                  <%= ('Long') %>
+                <label class="checkbox-orange mb-0 mandatory">
+                  <%= __('Long') %>
                   <input type="radio" name="direction" value="1">
                   <span class="checkmark"></span>
                 </label>
               </div>
               <div class="form-check form-check-inline">
-                <label class="checkbox-orange mb-0">
-                  <%= ('Short') %>
+                <label class="checkbox-orange mb-0 mandatory">
+                  <%= __('Short') %>
                   <input type="radio" name="direction" value="-1">
                   <span class="checkmark"></span>
                 </label>
@@ -132,7 +118,7 @@
           </div>
         </div>
         <br>
-        <h3 class="mx-3"><%= ('Connect a Technical Analysis') %></h3>
+        <h3 class="mx-3"><%= __('Connect a Technical Analysis') %></h3>
         <hr>
         <div class="mx-3">
           <span class="d-block">
@@ -174,7 +160,7 @@
         <h3 class="mx-3"><%= __('Comments') %></h3>
         <hr>
         <div class="mx-3">
-          <div id="client-comment" class="editcontent px-2" placeholder="<%= __('Use this spece to write anything outstanding during the operation') %>" contenteditable="true"></div>
+          <div id="client-comment" class="editcontent p-2" placeholder="<%= __('Use this spece to write anything outstanding during the operation') %>" contenteditable="true"></div>
         </div>
         <textarea id="server-comment" name="comment" class="d-none"></textarea>
         <br>
@@ -196,29 +182,29 @@
             </label>
           </span>
         </div>
-        <div id="entry-closure" class="flex-column mx-3 w-50 d-none mt-2">
+        <div id="entry-closure" class="flex-column d-none mx-3 mt-2 form-fields">
           <span class="input-group mb-2">
             <label class="my-auto"><%= __('Exit Date') %>:</label>
-            <input type="date" class="bg-hover form-control p-1 px-2" name="exitDate">
+            <input type="date" class="form-control form-input p-1 px-2" name="exitDate">
           </span>
           <span class="input-group mb-2">
-            <label class="my-auto"><%= __('Exit Price') %>:
+            <label class="my-auto mandatory"><%= __('Exit Price') %>:
             </label>
-            <input type="number" class="bg-hover form-control p-1 px-2" name="closePrice" min="0" step="0.00001">
+            <input type="number" class="form-control form-input p-1 px-2" name="closePrice" min="0" step="0.00001">
           </span>
           <span class="input-group mb-2">
             <label class="my-auto"><%= __('Profits') %>:</label>
-            <input type="number" class="bg-hover form-control p-1 px-2" name="profits" placeholder="en divisa base de cuenta" min="0" step="0.0001">
+            <input type="number" class="form-control form-input p-1 px-2" name="profits" placeholder="<%= __('In accont\'s currency') %>" min="0" step="0.0001">
             <span class="ml-2 my-auto">
               <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('In case of leaving this field blank, Neilit will calculate the profits of the operation for you.') %>'">
             </span>
           </span>
           <span class="input-group mb-2">
             <label class="my-auto"><%= __('Fees') %>:</label>
-            <input type="number" class="bg-hover form-control px-2" name="fees" min="0" step="0.01">
+            <input type="number" class="form-control form-input px-2" name="fees" min="0" step="0.01">
           </span>
           <span class="mb-2 d-block">
-            <label><%= __('Results') %>:</label>
+            <label class="mandatory mr-1"><%= __('Results') %>:</label>
             <input type="text" name="result" value="win" class="dropdown-server d-none">
             <div class="dropdown d-inline">
               <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">

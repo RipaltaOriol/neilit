@@ -14,7 +14,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
   db.query(getAllComments, req.user.id, (err, results) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
     results.forEach((result) => {
@@ -29,7 +29,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
     db.query(getAllEntries, req.user.id, (err, results) => {
       if (err) {
         // COMBAK: log error
-        req.flash('error', 'Something went wrong, please try again.')
+        req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username);
       }
       results.forEach((result) => {
@@ -45,7 +45,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
       db.query(getAllTas, req.user.id, (err, results) => {
         if (err) {
           // COMBAK: log error
-          req.flash('error', 'Something went wrong, please try again.')
+          req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username);
         }
         results.forEach((result) => {
@@ -82,10 +82,10 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
   db.query(commentQuery, newcomment, (err, results) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment/new');
     }
-    req.flash('success', 'Comment was created successfully.')
+    req.flash('success', res.__('Comment was created successfully.'))
     res.redirect('/' + req.user.username + '/journal/comment');
   });
 })
@@ -96,7 +96,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
   db.query(getComment, req.params.id, (err, results) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment');
     }
     var commentInfo = {
@@ -114,7 +114,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   db.query(getComment, req.params.id, (err, results) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment');
     }
     var commentInfo = {
@@ -136,11 +136,11 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
   db.query('UPDATE comments SET ? WHERE id = ?', [commentbody, req.params.id], (err, updated) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment');
     }
     console.log('changed ' + updated.changedRows + ' rows');
-    req.flash('success', 'Comment was updated successfully.')
+    req.flash('success', res.__('Comment was updated successfully.'))
     res.redirect('/' + req.user.username + '/journal/comment');
   })
 })
@@ -153,10 +153,10 @@ router.delete("/:id", middleware.isLoggedIn, (req, res) => {
   db.query(deleteQuery, comment2Delete, (err) => {
     if (err) {
       // COMBAK: log error
-      req.flash('error', 'Something went wrong, please try again.')
+      req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment');
     }
-    req.flash('success', 'Comment was deleted successfully.')
+    req.flash('success', res.__('Comment was deleted successfully.'))
     res.redirect('/' + req.user.username + '/journal/comment');
   })
 })

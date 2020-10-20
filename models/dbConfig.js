@@ -11,6 +11,14 @@ var connection = mysql.createConnection({
   multipleStatements: true
 });
 
+// var connection = mysql.createConnection({
+//   host    : 'localhost',
+//   user    : 'root',
+//   password: 'ripaltus',
+//   database: 'neilit_db',
+//   multipleStatements: true
+// });
+
 connection.connect((err) => {
   if (err) {
     console.log('Connection failed!');
