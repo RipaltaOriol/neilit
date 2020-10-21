@@ -11,29 +11,42 @@
           <a href="#!" class="text-decoration-none mb-2">[Somthing In Progres Here]</a>
         </span>
         <hr>
-        <table id="index-table" class="table table-borderless table-hover">
-          <tbody>
-            <% dataList.forEach((entry) => { %>
-              <tr onclick="document.location = '/<%= currentUser.username %>/journal/entry/<%= entry.id %>'">
-                <td class="orange mandatory"><%= entry.pair %></td>
-                <td class="orange mandatory"><%= entry.date %></td>
-                <% if (entry.status) { %>
-                  <% if (entry.result == 'win') { %>
-                    <td><span class="pill pill-green d-block"><%= entry.result.toUpperCase() %></span></td>
-                  <% } else if (entry.result == 'loss') { %>
-                    <td><span class="pill pill-red d-block"><%= entry.result.toUpperCase() %></span></td>
-                  <% } else { %>
-                    <td><span class="pill pill-yellow d-block"><%= entry.result.toUpperCase() %></span></td>
-                  <% } %>
-                <% } else { %>
-                  <td><img src="/imgs/icons/open-ops.svg" class="simple-img"></td>
-                <% } %>
-                <td><%= entry.strategy %></td>
-                <td><%= entry.timeframe %></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
+        <% if (dataList.length > 0) { %>
+          <div class="table-wrapper">
+            <div class="table-scroll">
+              <table id="index-table" class="table table-borderless table-hover">
+                <tbody>
+                  <% dataList.forEach((entry) => { %>
+                    <tr onclick="document.location = '/<%= currentUser.username %>/journal/entry/<%= entry.id %>'">
+                      <td class="orange"><%= entry.pair %></td>
+                      <td class="orange"><%= entry.date %></td>
+                      <% if (entry.status) { %>
+                        <% if (entry.result == 'win') { %>
+                          <td><span class="pill pill-green d-block"><%= entry.result.toUpperCase() %></span></td>
+                        <% } else if (entry.result == 'loss') { %>
+                          <td><span class="pill pill-red d-block"><%= entry.result.toUpperCase() %></span></td>
+                        <% } else { %>
+                          <td><span class="pill pill-yellow d-block"><%= entry.result.toUpperCase() %></span></td>
+                        <% } %>
+                      <% } else { %>
+                        <td><img src="/imgs/icons/open-ops.svg" class="simple-img"></td>
+                      <% } %>
+                      <td><%= entry.strategy %></td>
+                      <td><%= entry.timeframe %></td>
+                  <% }) %>
+                </tbody>
+              </table>
+              <div class="d-flex justify-content-center mb-3">
+                <div id="spinner" class="spinner-border d-none" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } else { %>
+          <p class="text-center placeholder-journal"><%= __('No entries created yet') %></p>
+          <br>
+        <% } %>
         <hr>
         <div class="d-flex justify-content-end mx-3">
           <a href="/<%= currentUser.username %>/journal/entry/new" class="btn-neilit"><%= __('New') %></a>
@@ -42,6 +55,10 @@
     </div>
   </section>
 </div>
+
+<script type="text/javascript">
+  var currentUser = <%- JSON.stringify(currentUser) %>;
+</script>
 
 <!-- <section> is inside partials -->
 </section>

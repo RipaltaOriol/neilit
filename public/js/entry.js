@@ -1,7 +1,7 @@
 $(document).ready(function() {
   // generates the datepicker
   $("input[type=date]").datepicker({
-    dateFormat: 'yy-mm-dd'
+    dateFormat: 'd M yy'
   });
   // prevents the classic datepicker from loading
   $("input[type=date]").on('click', function() {
@@ -53,6 +53,70 @@ function searchDropdown(id) {
     }
   }
 }
+
+// manages the spinner on loading processes
+function loadingState(bool) {
+  if (bool) {
+    $('#spinner').removeClass('d-none')
+  } else {
+    $('#spinner').addClass('d-none')
+  }
+}
+
+// Infinite scroll
+let loadedCount = 25;
+$('.table-scroll').scroll(() => {
+  var $el = $('.table-scroll');
+  var $eh = $('.table-scroll')[0];
+  if ($el.innerHeight() + $el.scrollTop() >= $eh.scrollHeight - 5 && loadedCount) {
+    loadingState(true);
+    $.post('entry/load-index', {offset: loadedCount})
+      .done((data) => {
+        loadedCount+= 25;
+        loadingState(false);
+        // add new data to index table
+        var table = $('tbody')[0];
+        data.dataList.forEach((entry) => {
+          var newRow = table.insertRow();
+          var createHandler = function() { return function() { window.location.href = 'entry/' + entry.id; } }
+          var pair      = newRow.insertCell(0);
+          var date      = newRow.insertCell(1);
+          var status    = newRow.insertCell(2);
+          var strategy  = newRow.insertCell(3);
+          var timeframe = newRow.insertCell(4);
+          newRow.onclick = createHandler();
+          // adds acutal data
+          pair.innerHTML = entry.pair;
+          pair.className = 'orange';
+          date.innerHTML = entry.date;
+          date.className = 'orange';
+          if (entry.status) {
+            if (entry.result = 'win') {
+              status.innerHTML = '<span class="pill pill-green d-block">' + entry.result.toUpperCase() + '</span>'
+            } else if (entry.result = 'loss') {
+              status.innerHTML = '<span class="pill pill-red d-block">' + entry.result.toUpperCase() + '</span>'
+            } else {
+              status.innerHTML = '<span class="pill pill-yellow d-block">' + entry.result.toUpperCase() + '</span>'
+            }
+          } else {
+            var icon = document.createElement('img');
+            icon.src = '/imgs/icons/open-ops.svg';
+            icon.classList = 'simple-img'
+            status.appendChild(icon);
+          }
+          strategy.innerHTML = entry.strategy;
+          timeframe.innerHTML = entry.timeframe;
+        });
+
+        if (data.dataList.length < 25) {
+          loadedCount = 0;
+        }
+    })
+      .fail(() => {
+
+    })
+  }
+})
 
 // Dispaly fields for entry close
 function displayClose(close) {

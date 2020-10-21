@@ -43,11 +43,11 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
   }
   res.render("user/journal/ta/new",
     {
-      currencies:pairs,
-      categories:categories,
-      strategies:userStrategies,
-      timeframes:timeframes,
-      elements:elements
+      currencies: pairs,
+      categories: categories,
+      strategies: userStrategies,
+      timeframes: timeframes,
+      elements: elements
     }
   );
 });

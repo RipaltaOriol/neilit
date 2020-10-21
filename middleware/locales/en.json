@@ -378,5 +378,14 @@
 	"Backtest fields cannot be blank.": "Backtest fields cannot be blank.",
 	"The backtest was saved successfully.": "The backtest was saved successfully.",
 	"Backtest was deleted successfully.": "Backtest was deleted successfully.",
-	"In account's currency": "In account's currency"
+	"In account's currency": "In account's currency",
+	"Create Technical Analysis": "Create Technical Analysis",
+	"Add element": "Add element",
+	"Title": "Title",
+	"Image": "Image",
+	"Text": "Text",
+	"Date": "Date",
+	"Outcome type": "Outcome type",
+	"Multiple": "Multiple",
+	"No entries created yet": "No entries created yet"
 }

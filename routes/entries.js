@@ -9,9 +9,9 @@ let db = require('../models/dbConfig');
 
 // INDEX ENTRIES ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  var getAllEntries = 'SELECT *, DATE_FORMAT(entry_dt, \'%d ' + res.__('of') + ' %M %Y\') AS date FROM entries ORDER BY entry_dt DESC;'
+  var getEntries = 'SELECT *, DATE_FORMAT(entry_dt, \'%d ' + res.__('of') + ' %b %Y\') AS date FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25;'
   var dataList = []
-  db.query(getAllEntries, (err, results) => {
+  db.query(getEntries, req.user.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again.'))
@@ -29,6 +29,31 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
       })
     })
     res.render("user/journal/entry/index", {dataList: dataList});
+  })
+})
+
+// INDEX ENTRIES INFINITE SCROLL LOGIC
+router.post("/load-index", middleware.isLoggedIn, (req, res) => {
+  var getEntries = 'SELECT *, DATE_FORMAT(entry_dt, \'%d ' + res.__('of') + ' %b %Y\') AS date FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25 OFFSET ?;'
+  var dataList = []
+  db.query(getEntries, [req.user.id, Number(req.body.offset)], (err, results) => {
+    if (err) {
+      // COMBAK: log error
+    }
+    results.forEach((result) => {
+      dataList.push({
+        id: result.id,
+        pair: pairs[Number(result.pair_id) - 1],
+        date: result.date,
+        result: result.result,
+        status: result.status,
+        strategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
+        timeframe: timeframes[Number(result.timeframe_id) - 1]
+      })
+    })
+    return res.json({
+      dataList: dataList
+    });
   })
 })
 
@@ -52,10 +77,10 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     })
     res.render("user/journal/entry/new",
       {
-        currencies:pairs,
-        strategies:userStrategies,
-        timeframes:timeframes,
-        tas:allTas
+        currencies: pairs,
+        strategies: userStrategies,
+        timeframes: timeframes,
+        tas: allTas
       }
     );
   })
@@ -185,7 +210,7 @@ router.post("/", middleware.isLoggedIn, async (req, res) => {
 // SHOW ENTRY ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%d de %M %Y\') AS created_long, DATE_FORMAT(entry_dt, \'%Y-%m-%d\') AS created_short, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time, DATE_FORMAT(exit_dt, \'%Y-%m-%d\') AS closed_short FROM entries WHERE id = ?;'
+  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%d de %b %Y\') AS created, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time, DATE_FORMAT(exit_dt, \'%d de %b %Y\') AS closed FROM entries WHERE id = ?;'
   // object where the entry information will be stored
   var entryInfo = { }
   db.query(getEntry, req.params.id, (err, results) => {
@@ -196,13 +221,13 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     }
     // mandatory entry fields
     entryInfo.id = results[0].id;
-    entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ', ' + results[0].created_long;
+    entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ': ' + results[0].created;
     entryInfo.pair = Number(results[0].pair_id) - 1;
     entryInfo.category = results[0].category;
     entryInfo.size = results[0].size;
     entryInfo.strategy = userIdStrategies.findIndex(strategy => strategy == results[0].strategy_id);
     entryInfo.timeframe = Number(results[0].timeframe_id) - 1;
-    entryInfo.entryDate = results[0].created_short;
+    entryInfo.entryDate = results[0].created;
     entryInfo.entryTime = results[0].created_time;
     entryInfo.direction = results[0].direction;
     entryInfo.entryPrice = results[0].entry_price;
@@ -223,7 +248,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     }
     // checks the status of the entry (open or closed)
     if (results[0].status == 1) {
-      entryInfo.exitDate = results[0].closed_short;
+      entryInfo.exitDate = results[0].closed;
       entryInfo.exitPrice = results[0].exit_price;
       entryInfo.result = results[0].result;
     } else {

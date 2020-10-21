@@ -61,6 +61,11 @@ span .checkbox-orange {
 }
 
 /* || Utility */
+.placeholder-journal {
+  color: var(--red-strong);
+}
+
+/* || Utility */
 .pill {
   border-radius: 5pt;
   padding: 0 20px 0 20px;
@@ -190,6 +195,11 @@ span .checkbox-orange {
     filter: invert();
   }
 
+/* || spinner */
+.spinner-border {
+  color: var(--neilit-permanent);
+}
+
 /* || contenteditable */
 .editcontent {
   color: var(--invert-black);
@@ -220,6 +230,15 @@ span .checkbox-orange {
   #add-e:focus {
     box-shadow: none;
   }
+
+.table-wrapper {
+  position: relative;
+}
+
+.table-scroll {
+  max-height: 70vh;
+  overflow: auto;
+}
 
 /* || Index elements table */
 #index-table {

@@ -575,5 +575,6 @@
 	"The outcome field cannot be blank.": "El campo de resultado no puede estar en blanco.",
 	"Backtest fields cannot be blank.": "Los campos de backtest no pueden estar en blanco.",
 	"The backtest was saved successfully.": "El backtest se guardó con éxito.",
-	"Backtest was deleted successfully.": "Backtest was deleted successfully."
+	"Backtest was deleted successfully.": "El backtest se eliminó correctamente.",
+	"No entries created yet": "Aún no se ha creado ninguna entrada"
 }

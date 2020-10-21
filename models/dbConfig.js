@@ -2,22 +2,22 @@
 let mysql = require('mysql');
 
 // Connect to DB
-var connection = mysql.createConnection({
-  host    : 'db-production-neilit-1015-do-user-8160676-0.b.db.ondigitalocean.com',
-  user    : 'doadmin',
-  password: 'nkuvuinnuvg3zvij',
-  port    : 25060,
-  database: 'defaultdb',
-  multipleStatements: true
-});
-
 // var connection = mysql.createConnection({
-//   host    : 'localhost',
-//   user    : 'root',
-//   password: 'ripaltus',
-//   database: 'neilit_db',
+//   host    : 'db-production-neilit-1015-do-user-8160676-0.b.db.ondigitalocean.com',
+//   user    : 'doadmin',
+//   password: 'nkuvuinnuvg3zvij',
+//   port    : 25060,
+//   database: 'defaultdb',
 //   multipleStatements: true
 // });
+
+var connection = mysql.createConnection({
+  host    : 'localhost',
+  user    : 'root',
+  password: 'ripaltus',
+  database: 'neilit_db',
+  multipleStatements: true
+});
 
 connection.connect((err) => {
   if (err) {

@@ -1,5 +1,5 @@
 // Technical Analysis Element: STRATEGY
-let timeframes = require("../timeframes");
+
 // -- CREATE
 function strategyHtml(strategies){
   // loads all strategies
