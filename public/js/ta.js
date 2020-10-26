@@ -1,3 +1,20 @@
+$(document).ready(function() {
+  // sets datepicker
+  $(function() {
+    $('.datepicker').each(function(){
+      $(this).datepicker({
+        altField: "#" + $(this).data('target'),
+        altFormat: "yy-mm-dd" // format for database processing
+      });
+      $(this).datepicker($.datepicker.regional[language]);
+    });
+  });
+  // prevents the classic datepicker from loading
+  $("input[type=date]").on('click', function() {
+    return false;
+  });
+})
+
 var storeTa = document.getElementById("submit-ta");
 
 // Gets the pair information from the JOURNAL route
@@ -88,15 +105,6 @@ $('#ta-content').on('mouseup', () => {
       cancel: 'input, select, [contenteditable]'
   })
 })
-
-// Generates the datepicker for the TA
-$("input[type=date]").datepicker({
-  dateFormat: 'yy-mm-dd'
-});
-// prevents the classic datepicker from loading
-$("input[type=date]").on('click', function() {
-  return false;
-});
 
 // Deletes the corresponding elmenet in the TA
 function whatIndex(id) {

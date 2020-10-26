@@ -15,7 +15,7 @@
               <span class="checkmark"></span>
             </label>
           </span>
-          <span class="input-group">
+          <span class="backtest-fields d-flex">
             <label class="checkbox-orange my-auto mr-2">
               <%= __('Single pair') %>:
               <input type="radio" name="pairs" value="1" onclick="letPair(true);">
@@ -23,8 +23,8 @@
             </label>
             <input type="text" name="selectPair" value="1" class="dropdown-server d-none">
             <!-- dropdown -->
-            <div class="dropdown">
-              <button id="dropdown-label" class="pairs dropdown-select p-0 px-2 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown backtest-input">
+              <button id="dropdown-label" class="pairs dropdown-select p-1 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= currencies[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
@@ -89,7 +89,7 @@
               <span class="checkmark"></span>
             </label>
           </span>
-          <span class="input-group">
+          <span class="backtest-fields d-flex">
             <label class="checkbox-orange my-auto mr-2">
               <%= __('Single timeframe') %>:
               <input type="radio" name="timeframe" value="1" onclick="letTimeframe(true);">
@@ -97,8 +97,8 @@
             </label>
             <input type="text" name="selectTimeframe" value="1" class="dropdown-server d-none">
             <!-- dropdown -->
-            <div class="dropdown">
-              <button id="dropdown-label" class="timeframes dropdown-select p-0 px-2 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown backtest-input">
+              <button id="dropdown-label" class="timeframes dropdown-select p-1 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= timeframes[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
@@ -119,7 +119,7 @@
               <span class="checkmark"></span>
             </label>
           </span>
-          <span class="input-group">
+          <span class="backtest-fields d-flex">
             <label class="checkbox-orange my-auto mr-2">
               <%= __('Single strategy') %>:
               <input type="radio" name="strategy" value="1" onclick="letStrategy(true);">
@@ -127,8 +127,8 @@
             </label>
             <input type="text" name="selectStrategy" value="1" class="dropdown-server d-none">
             <!-- dropdown -->
-            <div class="dropdown">
-              <button id="dropdown-label" class="strategies dropdown-select p-0 px-2 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown backtest-input">
+              <button id="dropdown-label" class="strategies dropdown-select p-1 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= strategies[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
@@ -148,7 +148,7 @@
             <!-- backtest addons go here -->
           </div>
           <button id="addon" class="d-flex align-items-center" type="button" onclick="addList();">
-            <img src="/imgs/icons/addon.svg" class="mr-1" alt="create a new addon">
+            <img src="/imgs/icons/add.svg" class="mr-1" alt="create a new addon">
             <%= __('Add a parameter') %>
           </button>
         </div>

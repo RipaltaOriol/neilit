@@ -9,7 +9,8 @@ let db = require('../models/dbConfig');
 
 // INDEX ENTRIES ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  var getEntries = 'SELECT *, DATE_FORMAT(entry_dt, \'%d ' + res.__('of') + ' %b %Y\') AS date FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25;'
+  var getEntries = 'SELECT * FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25;'
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   var dataList = []
   db.query(getEntries, req.user.id, (err, results) => {
     if (err) {
@@ -21,7 +22,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
       dataList.push({
         id: result.id,
         pair: pairs[Number(result.pair_id) - 1],
-        date: result.date,
+        date: result.entry_dt.toLocaleDateString(req.user.language, options),
         result: result.result,
         status: result.status,
         strategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
@@ -34,8 +35,9 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 
 // INDEX ENTRIES INFINITE SCROLL LOGIC
 router.post("/load-index", middleware.isLoggedIn, (req, res) => {
-  var getEntries = 'SELECT *, DATE_FORMAT(entry_dt, \'%d ' + res.__('of') + ' %b %Y\') AS date FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25 OFFSET ?;'
+  var getEntries = 'SELECT * FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25 OFFSET ?;'
   var dataList = []
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   db.query(getEntries, [req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
       // COMBAK: log error
@@ -44,7 +46,7 @@ router.post("/load-index", middleware.isLoggedIn, (req, res) => {
       dataList.push({
         id: result.id,
         pair: pairs[Number(result.pair_id) - 1],
-        date: result.date,
+        date: result.entry_dt.toLocaleDateString(req.user.language, options),
         result: result.result,
         status: result.status,
         strategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
@@ -59,7 +61,9 @@ router.post("/load-index", middleware.isLoggedIn, (req, res) => {
 
 // NEW ENTRY ROUTE
 router.get("/new", middleware.isLoggedIn, (req, res) => {
-  var selectTas = 'SELECT id, pair_id, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_long FROM tanalysis WHERE user_id = ?;'
+  var selectTas = 'SELECT id, pair_id, created_at FROM tanalysis WHERE user_id = ?;'
+  var selectCurrency = 'SELECT currency FROM currencies WHERE id = ?;'
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   var allTas = {
     id: [],
     title: []
@@ -73,16 +77,24 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     // stores each technical analysis to an object array
     results.forEach((ta) => {
       allTas.id.push(ta.id);
-      allTas.title.push(pairs[Number(ta.pair_id - 1)] + ', ' + ta.created_long)
+      allTas.title.push(pairs[Number(ta.pair_id - 1)] + ' - ' + ta.created_at.toLocaleDateString(req.user.language, options))
     })
-    res.render("user/journal/entry/new",
-      {
-        currencies: pairs,
-        strategies: userStrategies,
-        timeframes: timeframes,
-        tas: allTas
+    db.query(selectCurrency, req.user.currency_id, (err, result) => {
+      if (err) {
+        // COMBAK: log error
+        req.flash('error', res.__('Something went wrong, please try again.'))
+        return res.redirect('/' + req.user.username + '/journal/entry');
       }
-    );
+      res.render("user/journal/entry/new",
+        {
+          currency: result[0].currency,
+          currencies: pairs,
+          strategies: userStrategies,
+          timeframes: timeframes,
+          tas: allTas
+        }
+      );
+    })
   })
 })
 
@@ -210,7 +222,9 @@ router.post("/", middleware.isLoggedIn, async (req, res) => {
 // SHOW ENTRY ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%d de %b %Y\') AS created, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time, DATE_FORMAT(exit_dt, \'%d de %b %Y\') AS closed FROM entries WHERE id = ?;'
+  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time FROM entries WHERE id = ?;'
+  var getCurrency = 'SELECT currency FROM currencies WHERE id = ?;';
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   // object where the entry information will be stored
   var entryInfo = { }
   db.query(getEntry, req.params.id, (err, results) => {
@@ -221,13 +235,13 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     }
     // mandatory entry fields
     entryInfo.id = results[0].id;
-    entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ': ' + results[0].created;
+    entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ' - ' + results[0].entry_dt.toLocaleDateString(req.user.language, options);
     entryInfo.pair = Number(results[0].pair_id) - 1;
     entryInfo.category = results[0].category;
     entryInfo.size = results[0].size;
     entryInfo.strategy = userIdStrategies.findIndex(strategy => strategy == results[0].strategy_id);
     entryInfo.timeframe = Number(results[0].timeframe_id) - 1;
-    entryInfo.entryDate = results[0].created;
+    entryInfo.entryDate = results[0].entry_dt.toLocaleDateString(req.user.language, options);
     entryInfo.entryTime = results[0].created_time;
     entryInfo.direction = results[0].direction;
     entryInfo.entryPrice = results[0].entry_price;
@@ -248,7 +262,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     }
     // checks the status of the entry (open or closed)
     if (results[0].status == 1) {
-      entryInfo.exitDate = results[0].closed;
+      entryInfo.exitDate = results[0].exit_dt.toLocaleDateString(req.user.language, options);
       entryInfo.exitPrice = results[0].exit_price;
       entryInfo.result = results[0].result;
     } else {
@@ -258,23 +272,34 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
     if (results[0].ta_id != null) {
       entryInfo.taId = results[0].ta_id;
     }
-    res.render("user/journal/entry/show",
-      {
-        currencies:pairs,
-        categories:categories,
-        strategies:userStrategies,
-        timeframes:timeframes,
-        entry:entryInfo
+    db.query(getCurrency, req.user.currency_id, (err, result) => {
+      if (err) {
+        // COMBAK: log error
+        console.log(err);
+        req.flash('error', res.__('Something went wrong, please try again later.'))
+        return res.redirect('/' + req.user.username + "/journal/entry");
       }
-    );
+      res.render("user/journal/entry/show",
+        {
+          currency: result[0].currency,
+          currencies: pairs,
+          categories: categories,
+          strategies: userStrategies,
+          timeframes: timeframes,
+          entry: entryInfo
+        }
+      );
+    })
   })
 })
 
 // UPDATE ENTRY ROUTE
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%d de %M %Y\') AS created_long, DATE_FORMAT(entry_dt, \'%Y-%m-%d\') AS created_short, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time, DATE_FORMAT(exit_dt, \'%Y-%m-%d\') AS closed_short FROM entries WHERE id = ?;'
-  var selectTas = 'SELECT id, pair_id, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_long FROM tanalysis WHERE user_id = ?;'
+  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time FROM entries WHERE id = ?;'
+  var selectTas = 'SELECT id, pair_id, created_at FROM tanalysis WHERE user_id = ?;'
+  var selectCurrency = 'SELECT currency FROM currencies WHERE id = ?;'
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   // object where the entry information will be stored
   var entryInfo = { }
   // object where the existing technical analysis will be stored
@@ -290,13 +315,17 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     }
     // mandatory entry fields
     entryInfo.id = results[0].id;
-    entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ', ' + results[0].created_long;
+    entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ' - ' + results[0].entry_dt.toLocaleDateString(req.user.language, options);
     entryInfo.pair = Number(results[0].pair_id) - 1;
     entryInfo.category = results[0].category;
     entryInfo.size = results[0].size;
     entryInfo.strategy = userIdStrategies.findIndex(strategy => strategy == results[0].strategy_id);
     entryInfo.timeframe = Number(results[0].timeframe_id) - 1;
-    entryInfo.entryDate = results[0].created_short;
+    entryInfo.entryDate = results[0].entry_dt.toLocaleDateString(req.user.language, options);
+    var entryD = new Date(results[0].entry_dt);
+    var offset = entryD.getTimezoneOffset()
+    entryD = new Date(entryD.getTime() - (offset * 60 * 1000))
+    entryInfo.entryAltDate = entryD.toISOString().split('T')[0];
     entryInfo.entryTime = results[0].created_time;
     entryInfo.direction = results[0].direction;
     entryInfo.entryPrice = results[0].entry_price;
@@ -317,7 +346,11 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     }
     // checks the status of the entry (open or closed)
     if (results[0].status == 1) {
-      entryInfo.exitDate = results[0].closed_short;
+      entryInfo.exitDate = results[0].exit_dt.toLocaleDateString(req.user.language, options);
+      var exitD = new Date(results[0].exit_dt);
+      var offset = exitD.getTimezoneOffset()
+      exitD = new Date(exitD.getTime() - (offset * 60 * 1000))
+      entryInfo.exitAltDate = exitD.toISOString().split('T')[0];
       entryInfo.exitPrice = results[0].exit_price;
       entryInfo.result = results[0].result;
     } else {
@@ -337,18 +370,26 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
       // stores each technical analysis to an object array
       results.forEach((ta) => {
         allTas.id.push(ta.id);
-        allTas.title.push(pairs[Number(ta.pair_id - 1)] + ', ' + ta.created_long)
+        allTas.title.push(pairs[Number(ta.pair_id - 1)] + ' - ' + results[0].created_at.toLocaleDateString(req.user.language, options))
       })
-      res.render("user/journal/entry/edit",
-        {
-          currencies:pairs,
-          categories:categories,
-          strategies:userStrategies,
-          timeframes:timeframes,
-          entry:entryInfo,
-          tas:allTas
+      db.query(selectCurrency, req.user.currency_id, (err, result) => {
+        if (err) {
+          // COMBAK: log error
+          req.flash('error', res.__('Something went wrong, please try again later.'))
+          return res.redirect('/' + req.user.username + "/journal/entry");
         }
-      );
+        res.render("user/journal/entry/edit",
+          {
+            currency: result[0].currency,
+            currencies: pairs,
+            categories: categories,
+            strategies: userStrategies,
+            timeframes: timeframes,
+            entry: entryInfo,
+            tas: allTas
+          }
+        );
+      })
     })
   })
 })

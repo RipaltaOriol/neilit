@@ -8,32 +8,32 @@
           <input id="title" class="w-100 mx-3" type="text" name="title" placeholder="<%= __('Title for the Trading Plan') %>">
           <hr>
           <div class="d-flex justify-content-between mx-3">
-            <div id="document" class="w-75 pr-3">
+            <div id="document" class="w-100 pr-3">
 
               <!-- General Information -->
-              <div id="general" class="mb-4">
+              <div id="general" class="mb-4 plan-fields">
                 <h5><%= __('General Information') %></h5>
-                <div id="broker">
+                <div id="broker" class="d-flex mb-1">
                   <span><%= __('Broker') %>:</span>
-                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="broker" placeholder="<%= __('name of your broker') %>">
+                  <input type="text" class="plan-input p-1 ml-1" name="broker" placeholder="<%= __('name of your broker') %>">
                 </div>
-                <div id="charts">
+                <div id="charts" class="d-flex mb-1">
                   <span><%= __('Charts') %>:</span>
-                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="charts" placeholder="<%= __('what charts do you use?') %>">
+                  <input type="text" class="plan-input p-1 ml-1" name="charts" placeholder="<%= __('what charts do you use?') %>">
                 </div>
-                <div id="capital">
+                <div id="capital" class="d-flex mb-1">
                   <span><%= __('Trading Capital') %>:</span>
-                  <input type="text" class="bg-hover w-75 p-1 ml-1" name="capital" placeholder="<%= __('trading capital available (in account base currency)') %>">
+                  <input type="text" class="plan-input p-1 ml-1" name="capital" placeholder="<%= __('trading capital available (in account base currency)') %>">
                 </div>
                 <div id="routine">
                   <span><%= __('Business Routine') %></span>
-                  <div id="client-routine" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Explain your business routine') %>" contenteditable="true"></div>
+                  <div id="client-routine" class="diveditable bg-hover p-1" placeholder="<%= __('Explain your business routine') %>" contenteditable="true"></div>
                 </div>
                 <textarea id="server-routine" name="routine" class="d-none"></textarea>
               </div>
 
               <!-- Strategies -->
-              <div id="strategy" class="mb-4">
+              <div id="strategy" class="mb-4 plan-fields">
                 <h5><%= __('Strategies') %></h5>
 
               </div>
@@ -54,22 +54,22 @@
               </div>
 
               <!-- Psychology -->
-              <div id="psychology" class="mb-4">
+              <div id="psychology" class="mb-4 plan-fields">
                 <h5><%= __('Psychology') %></h5>
                 <div id="psychology-notes">
                   <span><%= __('Notes') %></span>
-                  <div id="client-psychology" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Any additional notes on trading psychology?') %>'" contenteditable="true"></div>
+                  <div id="client-psychology" class="diveditable bg-hover p-1" placeholder="<%= __('Any additional notes on trading psychology?') %>'" contenteditable="true"></div>
                 </div>
                 <textarea id="server-psychology" name="psychology" class="d-none"></textarea>
                 <input id="tips" type="checkbox" name="tips" class="d-none" checked>
               </div>
 
               <!-- Journaling -->
-              <div id="journal" class="mb-4">
+              <div id="journal" class="mb-4 plan-fields">
                 <h5><%= __('Journaling') %></h5>
-                <div id="journaling">
+                <div id="journaling" class="mb-2">
                   <span><%= __('Journaling Process') %></span>
-                  <div id="client-journaling" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('How do you plan to journal?') %>'" contenteditable="true"></div>
+                  <div id="client-journaling" class="diveditable bg-hover p-1" placeholder="<%= __('How do you plan to journal?') %>'" contenteditable="true"></div>
                 </div>
                 <textarea id="server-journaling" name="journaling" class="d-none"></textarea>
                 <div id="checklist">
@@ -77,7 +77,12 @@
                     <%= __('Journaling Checklist') %>
                     <img class="info ml-2" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('What items do you want to keep track of in your journal?') %>">
                   </span>
-                  <input id="addTrack" class="bg-hover w-75 p-1" type="text" placeholder="<%= __('Add something to include in you jouranl entries') %>">
+                  <div>
+                    <input id="addTrack" class="plan-input p-1" type="text" placeholder="<%= __('Add something to include in you jouranl entries') %>">
+                    <button type="button" class="float-right icon-btn px-0" onclick="addChecklist()">
+                      <img src="/imgs/icons/add.svg">
+                    </button>
+                  </div>
                   <ul id="listJournalItems" class="pl-0 mb-2">
 
                   </ul>
@@ -120,19 +125,19 @@
               <!-- Others -->
               <div id="others" class="mb-2">
                 <h5><%= __('Others') %></h5>
-                <div id="strategy-revision">
+                <div id="strategy-revision" class="mb-1">
                   <span><%= __('Strategy Revision') %></span>
-                  <div id="client-rstrategy" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Notes on the strategy revision process') %>" contenteditable="true"></div>
+                  <div id="client-rstrategy" class="diveditable bg-hover p-1" placeholder="<%= __('Notes on the strategy revision process') %>" contenteditable="true"></div>
                 </div>
                 <textarea id="server-rstrategy" name="revisionStrategy" class="d-none"></textarea>
-                <div id="journal-revision">
+                <div id="journal-revision" class="mb-1">
                   <span><%= __('Journal Revision') %></span>
-                  <div id="client-rjournal" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Notes on the journal revision process') %>" contenteditable="true"></div>
+                  <div id="client-rjournal" class="diveditable bg-hover p-1" placeholder="<%= __('Notes on the journal revision process') %>" contenteditable="true"></div>
                 </div>
                 <textarea id="server-rjournal" name="revisionJournal" class="d-none"></textarea>
-                <div id="plan-revision">
+                <div id="plan-revision" class="mb-1">
                   <span><%= __('Trading Plan Revision') %></span>
-                  <div id="client-rplan" class="diveditable bg-hover w-75 p-1" placeholder="<%= __('Notes on the trading plan revision process') %>" contenteditable="true"></div>
+                  <div id="client-rplan" class="diveditable bg-hover p-1" placeholder="<%= __('Notes on the trading plan revision process') %>" contenteditable="true"></div>
                 </div>
                 <textarea id="server-rplan" name="revisionPlan" class="d-none"></textarea>
               </div>

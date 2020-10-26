@@ -12,7 +12,8 @@ var addonBacktest = require('../models/elements/backtest');
 
 // INDEX BACKTEST ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  var getAllBacktest = 'SELECT *, DATE_FORMAT(created_at, \'%d/%m/%y\') AS date FROM backtest WHERE user_id = ? ORDER BY created_at;';
+  var getAllBacktest = 'SELECT * FROM backtest WHERE user_id = ? ORDER BY created_at;';
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   var dataList = []
   // retrieves all backtest
   db.query(getAllBacktest, req.user.id, (err, results) => {
@@ -23,7 +24,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
     results.forEach(async (result) => {
       dataList.push({
         id: result.id,
-        date: result.date,
+        date: result.created_at.toLocaleDateString(req.user.language, options),
         result: result.result,
         aPair: pairs[result.pair_id - 1],
         aStrategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
@@ -183,10 +184,11 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 // SHOW BACKTEST ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = 'SELECT *, DATE_FORMAT(created_at, \'%d ' + res.__('of') + ' %M %Y\') AS created_at FROM backtest WHERE id = ? AND user_id = ?;'
+  var getBacktest = 'SELECT * FROM backtest WHERE id = ? AND user_id = ?;'
   var getAddons = 'SELECT description FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
   var getData = 'SELECT direction, result, pair_id, strategy_id, timeframe_id FROM backtest_data WHERE backtest_id = ?;'
   var getAddonsData = 'SELECT * FROM backtest_addons_data WHERE backtest_id = ? ORDER BY backtest_data_id;'
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   // object where the backtest information will be stored
   var backtestInfo = { }
   // object-list where the backtest data will be stored
@@ -199,7 +201,8 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     backtestInfo.id = results[0].id;
-    backtestInfo.title = results[0].created_at + " [" + results[0].result + "]";
+    backtestInfo.date = results[0].created_at.toLocaleDateString(req.user.language, options);
+    backtestInfo.result = results[0].result;
     if (results[0].pair_id != null) {
       backtestInfo.pair = pairs[Number(results[0].pair_id) - 1];
     }
@@ -271,10 +274,11 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
 // UPDATE BACKTEST ROUTE
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = 'SELECT *, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_at FROM backtest WHERE id = ?;'
+  var getBacktest = 'SELECT * FROM backtest WHERE id = ?;'
   var getAddons = 'SELECT description, is_integers, option1, option2, option3, option4, option5, option6 FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
   var getData = 'SELECT direction, result, pair_id, strategy_id, timeframe_id FROM backtest_data WHERE backtest_id = ?;'
   var getAddonsData = 'SELECT * FROM backtest_addons_data WHERE backtest_id = ? ORDER BY backtest_data_id;'
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   // object where the backtest information will be stored
   var backtestInfo = { }
   // object-list where the backtest data will be stored
@@ -287,7 +291,8 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     backtestInfo.id = results[0].id;
-    backtestInfo.title = results[0].created_at + " [" + results[0].result + "]";
+    backtestInfo.date = results[0].created_at.toLocaleDateString(req.user.language, options);
+    backtestInfo.result = results[0].result;
     if (results[0].pair_id != null) {
       backtestInfo.pair = results[0].pair_id;
     }
@@ -453,6 +458,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
       if (editBacktest.length > 0) {
         db.query(addData, [editBacktest], async (err, complete) => {
           if (err) {
+            console.log(err);
             // COMBAK: log error
             req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username + '/journal/backtest');

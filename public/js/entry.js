@@ -1,7 +1,13 @@
 $(document).ready(function() {
-  // generates the datepicker
-  $("input[type=date]").datepicker({
-    dateFormat: 'd M yy'
+  // sets datepicker
+  $(function() {
+    $('.datepicker').each(function(){
+      $(this).datepicker({
+        altField: "#" + $(this).data('target'),
+        altFormat: "yy-mm-dd" // format for database processing
+      });
+      $(this).datepicker($.datepicker.regional[language]);
+    });
   });
   // prevents the classic datepicker from loading
   $("input[type=date]").on('click', function() {

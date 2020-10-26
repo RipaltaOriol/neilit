@@ -151,6 +151,14 @@ $('#addTrack').keypress(function(event) {
   }
 })
 
+// add items to include in the plan's journal section (button version)
+function addChecklist() {
+  // gets the user's input
+  var newItem = $("#addTrack").val();
+  $("#addTrack").val("");
+  $("#listJournalItems").append('<input type="text" name="checklist" class="d-block bg-hover mt-1 px-2" value="' + newItem + '">')
+}
+
 // resets list in the plan's journal section
 function resetChecklist() {
   var checklist = document.getElementById('listJournalItems');

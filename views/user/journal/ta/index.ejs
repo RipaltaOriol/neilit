@@ -6,17 +6,23 @@
       <div class="container">
         <h2 class="mx-auto"><%= __('Technical Analysis') %></h2>
         <div class="journal-box px-0 py-3">
-          <% dataList.forEach((result) => { %>
-            <div class="bg-grey mx-3 p-3 mb-3 rounded">
-              <div class="d-flex justify-content-between mb-2">
-                <span class="orange"><strong><%= result.pair %></strong></span>
-                <span><%= result.date %></span>
+          <% if (dataList.length > 0) { %>
+            <% dataList.forEach((result) => { %>
+              <div class="bg-grey mx-3 p-3 mb-3 rounded">
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="orange"><strong><%= result.pair %></strong></span>
+                  <span><%= result.date %></span>
+                </div>
+                <div class="text-right">
+                  <a href="/<%= currentUser.username %>/journal/ta/<%= result.id %>" class="btn-inverted"><%= __('Go to TA') %></a>
+                </div>
               </div>
-              <div class="text-right">
-                <a href="/<%= currentUser.username %>/journal/ta/<%= result.id %>" class="btn-neilit"><%= __('Go to TA') %></a>
-              </div>
-            </div>
-          <% }); %>
+            <% }); %>
+          <% } else { %>
+            <p class="text-center placeholder-journal"><%= __('No entries created yet') %></p>
+            <br>
+          <% } %>
+          <hr>
           <div class="d-flex justify-content-end mx-3">
             <a href="/<%= currentUser.username %>/journal/ta/new" class="btn-neilit"><%= __('New') %></a>
           </div>

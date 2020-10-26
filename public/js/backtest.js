@@ -111,6 +111,17 @@ function newOption(element) {
   return !(window.event && window.event.keyCode == 13);
 }
 
+// adds a new option for an addon
+function addOption(id) {
+  var count = id.parentElement.previousElementSibling.childElementCount;
+  if (count < 7) {
+    id.parentElement.previousElementSibling.insertAdjacentHTML('beforeend', addons.newOption);
+    if (count == 6) {
+      id.disabled = true;
+    }
+  }
+}
+
 // counts the options for each addon
 function countOptions() {
   var allOptions = $('.option');
@@ -143,36 +154,9 @@ if (storeBacktest != null) {
   })
 }
 
-// sets the fields to add a new row to the backtest
-function newRow(logic) {
-  var updateRow = document.getElementById('update-row');
-  var newRow = document.getElementById('new-row');
-  var createRow = document.getElementById('create-row');
-  if (logic) {
-    updateRow.classList.remove('d-inline');
-    newRow.classList.remove('d-inline');
-    createRow.classList.remove('d-none');
-    updateRow.classList.add('d-none');
-    newRow.classList.add('d-none');
-    createRow.classList.add('d-inline');
-    document.getElementById('row-index').innerHTML = document.getElementsByTagName('tr').length;
-    document.getElementById('row-result').value = '';
-    var addonsList = document.getElementsByClassName('addon-edit');
-    for (var i = 0; i < addonsList.length; i++) {
-      if (backtest.addonsType[i] == 1) {
-        addonsList[i].value = '';
-      } else {
-        addonsList[i].selectedIndex = 0;
-      }
-    }
-  } else {
-    updateRow.classList.remove('d-none');
-    newRow.classList.remove('d-none');
-    createRow.classList.remove('d-inline');
-    updateRow.classList.add('d-inline');
-    newRow.classList.add('d-inline');
-    createRow.classList.add('d-none');
-  }
+// sets the fields of the modal to 0 or origin
+function cleanModal() {
+  // COMBAK: complete function
 }
 
 // selects the given row to be modified
@@ -241,6 +225,7 @@ function updateRow() {
 
 // create a new row with the give value
 function createRow() {
+  cleanModal();
   var table = document.getElementById("backtest-table").getElementsByTagName('tbody')[0];
   var currentRow = document.getElementsByTagName('tr').length - 1;
   var currentDirection = $('.direction')[0].textContent || $('.direction')[0].innerText;
@@ -254,7 +239,7 @@ function createRow() {
   var indexCell = row.insertCell().innerHTML = currentRow + 1;
   var directionCell = row.insertCell().innerHTML = currentDirection;
   var resultCell = row.insertCell();
-  resultCell.innerHTML = parseFloat(currentResult).toFixed(2);
+  resultCell.innerHTML = parseFloat(currentResult).toFixed(2) + ' ' + backtest.result;
   resultCell.className = 'text-right';
   var pairCell = row.insertCell().innerHTML = currentPair;
   var strategyCell = row.insertCell();
@@ -276,7 +261,6 @@ function createRow() {
         var currentIndex = backtest.addonsOptions[i].indexOf(currentAddon.trim())
         addonCell.innerHTML = currentIndex + 1;
       }
-      addonCell.className = 'text-right';
     }
     countTableRows();
   }

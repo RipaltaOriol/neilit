@@ -27,7 +27,7 @@
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Category') %>:</label>
-              <input type="text" class="bg-hover orange p-1 px-2" name="category" value="Forex" readonly>
+              <input type="text" class="form-input orange p-1 px-2" name="category" value="Forex" readonly>
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Strategy') %>:</label>
@@ -67,19 +67,19 @@
             <div class="mt-2">
               <span class="input-group mb-2">
                 <label class="my-auto mandatory"><%= __('Size') %>:</label>
-                <input type="number" class="bg-hover form-control px-2" name="size" min="0" step="0.001" value="<%= entry.size %>">
+                <input type="number" class="form-control form-input p-1 px-2" name="size" min="0" step="0.001" value="<%= entry.size %>">
               </span>
               <span class="input-group mb-2">
                 <label class="my-auto mandatory"><%= __('Entry Price') %>:</label>
-                <input type="number" class="bg-hover form-control px-2" name="entryPrice" min="0" step="0.00001" value="<%= entry.entryPrice %>">
+                <input type="number" class="form-control form-input p-1 px-2" name="entryPrice" min="0" step="0.00001" value="<%= entry.entryPrice %>">
               </span>
               <span class="input-group mb-2">
                 <label class="my-auto"><%= __('Stop Loss') %>:</label>
-                <input type="number" class="bg-hover form-control px-2" name="stopLoss" min="0" step="0.00001" value="<%= entry.stopLoss %>">
+                <input type="number" class="form-control form-input p-1 px-2" name="stopLoss" min="0" step="0.00001" value="<%= entry.stopLoss %>">
               </span>
               <span class="input-group">
                 <label class="my-auto"><%= __('Take Profit') %>:</label>
-                <input type="number" class="bg-hover form-control px-2" name="takeProfit" min="0" step="0.00001" value="<%= entry.takeProfit %>">
+                <input type="number" class="form-control form-input p-1 px-2" name="takeProfit" min="0" step="0.00001" value="<%= entry.takeProfit %>">
               </span>
             </div>
           </div>
@@ -88,16 +88,17 @@
             <div class="info-fields mt-2">
               <span class="input-group mb-2">
                 <label class="my-auto mandatory"><%= __('Date of Entry') %>:</label>
-                <input type="date" class="bg-hover form-control px-2" name="entryDate" value="<%= entry.entryDate %>">
+                <input type="date" class="datepicker form-control form-input p-1 px-2" data-target="entry-date" value="<%= entry.entryDate %>">
+                <input type="date" id="entry-date" class="d-none" name="entryDate" value="<%= entry.entryAltDate %>">
               </span>
               <span class="input-group mb-2">
                 <label class="my-auto"><%= __('Time of Entry') %>:</label>
-                <input id="entry-time" type="text" class="bg-hover form-control px-2" name="entryTime" value="<%= entry.entryTime %>">
+                <input id="entry-time" type="text" class="form-control form-input p-1 px-2" name="entryTime" value="<%= entry.entryTime %>">
               </span>
               <span class="mb-2">
                 <div class="form-check form-check-inline">
                   <label class="checkbox-orange mb-0 mandatory">
-                    <%= ('Long') %>
+                    <%= __('Long') %>
                     <% if (entry.direction === 'long') { %>
                       <input type="radio" name="direction" value="1" checked>
                     <% } else { %>
@@ -108,7 +109,7 @@
                 </div>
                 <div class="form-check form-check-inline">
                   <label class="checkbox-orange mb-0 mandatory">
-                    <%= ('Short') %>
+                    <%= __('Short') %>
                     <% if (entry.direction === 'short') { %>
                       <input type="radio" name="direction" value="-1" checked>
                     <% } else { %>
@@ -218,22 +219,23 @@
           <div id="entry-closure" class="flex-column d-none mx-3 form-fields">
             <span class="input-group mb-2">
               <label class="my-auto"><%= __('Exit Date') %>:</label>
-              <input type="date" class="bg-hover form-control p-1 px-2" name="exitDate">
+              <input type="date" class="datepicker form-control form-input p-1 px-2" data-target="exit-date">
+              <input type="date" id="exit-date" class="d-none" name="exitDate">
             </span>
             <span class="input-group mb-2">
               <label class="my-auto mandatory"><%= __('Exit Price') %>:</label>
-              <input type="number" class="bg-hover form-control p-1 px-2" name="closePrice" min="0" step="0.00001">
+              <input type="number" class="form-control form-input p-1 px-2" name="closePrice" min="0" step="0.00001">
             </span>
             <span class="input-group mb-2">
               <label class="my-auto"><%= __('Profits') %>:</label>
-              <input type="number" class="bg-hover form-control p-1 px-2" name="profits" placeholder="<%= __('In account\'s currency') %>" min="0" step="0.0001">
+              <input type="number" class="form-control form-input p-1 px-2" name="profits" placeholder="<%= __('In account\'s currency') %>: <%= __(currency) %>" step="0.0001">
               <span class="ml-2 my-auto">
                 <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('In case of leaving this field blank, Neilit will calculate the profits of the operation for you.') %>'">
               </span>
             </span>
             <span class="input-group mb-2">
               <label class="my-auto"><%= __('Fees') %>:</label>
-              <input type="number" class="bg-hover form-control px-2" name="fees" min="0" step="0.01">
+              <input type="number" class="form-control form-input p-1 px-2" name="fees" placeholder="<%= __('In account\'s currency') %>: <%= __(currency) %>" step="0.01">
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Results') %>:</label>
@@ -254,22 +256,23 @@
           <div id="entry-closure" class="d-flex flex-column mx-3 form-fields">
             <span class="input-group mb-2">
               <label class="my-auto"><%= __('Exit Date') %>:</label>
-              <input type="date" class="bg-hover form-control px-2" name="exitDate" value="<%= entry.exitDate %>">
+              <input type="date" class="datepicker form-control form-input p-1 px-2" data-target="exit-date" value="<%= entry.exitDate %>">
+              <input type="date" id="exit-date" class="d-none" name="exitDate" value="<%= entry.exitAltDate %>">
             </span>
             <span class="input-group mb-2">
               <label class="my-auto mandatory"><%= __('Exit Price') %>:</label>
-              <input type="number" class="bg-hover form-control px-2" name="closePrice" min="0" step="0.00001" value="<%= entry.exitPrice %>">
+              <input type="number" class="form-control form-input p-1 px-2" name="closePrice" min="0" step="0.00001" value="<%= entry.exitPrice %>">
             </span>
             <span class="input-group mb-2">
             <label class="my-auto"><%= __('Profits') %>:</label>
-            <input type="number" class="bg-hover form-control p-1 px-2" name="profits" placeholder="En divisa base de cuenta" min="0" step="0.0001" value="<%= entry.profits %>">
+            <input type="number" class="form-control form-input p-1 p-1 px-2" name="profits" placeholder="<%= __('In account\'s currency') %>: <%= __(currency) %>" step="0.0001" value="<%= entry.profits %>">
             <span class="ml-2 my-auto">
               <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('In case of leaving this field blank, Neilit will calculate the profits of the operation for you.') %>'">
             </span>
           </span>
           <span class="input-group mb-2">
             <label class="my-auto"><%= __('Fees') %>:</label>
-            <input type="number" class="bg-hover form-control px-2" name="fees" min="0" step="0.01" value="<%= entry.fees %>">
+            <input type="number" class="form-control form-input p-1 px-2" name="fees" placeholder="<%= __('In account\'s currency') %>: <%= __(currency) %>" step="0.01" value="<%= entry.fees %>">
           </span>
           <span class="mb-2 d-block">
             <label class="mandatory"><%= __('Results') %>:</label>
@@ -302,6 +305,7 @@
   </div>
 
 <script type="text/javascript">
+  var language = <%- JSON.stringify(currentUser.language) %>;
   var currencies = <%- JSON.stringify(currencies) %>;
   var categories = <%- JSON.stringify(categories) %>;
   var strategies = <%- JSON.stringify(strategies) %>;
@@ -313,8 +317,10 @@
 
 <!-- JQUERY -->
 <script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
 <script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/datepicker-es.js"></script>
+<script type="text/javascript" src="/utilities/jquery/datepicker-en.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
 <script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
 <!-- LOCAL SCRIPTS -->
 <script type="text/javascript" src="/js/entry.js"></script>

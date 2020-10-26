@@ -13,7 +13,8 @@ var strategyTA = require('../models/elements/strategy');
 
 // INDEX TECHNICAL ANALYSIS ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  getAllTas = 'SELECT tanalysis.id, DATE_FORMAT(created_at, \'%d/%m/%y\') AS date, pair FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at;'
+  getAllTas = 'SELECT tanalysis.id, created_at, pair FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at;';
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   var dataList = []
   db.query(getAllTas, req.user.id, (err, results) => {
     if (err) {
@@ -24,7 +25,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
     results.forEach((result) => {
       dataList.push({
         id: result.id,
-        date: result.date,
+        date: result.created_at.toLocaleDateString(req.user.language, options),
         pair: result.pair
       })
     });
@@ -204,18 +205,19 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 // SHOW TECHNICAL ANALYSIS ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a varialbe - too long
-  var getTa = 'SELECT id, pair_id, category, tanalysis.category, DATE_FORMAT(created_at, \'%Y-%m-%d\') AS created_short, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_long FROM tanalysis WHERE id = ?';
+  var getTa = 'SELECT id, pair_id, category, category, created_at FROM tanalysis WHERE id = ?';
   // OPTIMIZE: could another type of JOIN improve the query?
   var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   // object where the technical analysis information will be stored
   var taInfo = { }
   db.query(getTa, req.params.id, (err, results) => {
     if (err) throw err;
     taInfo.id = results[0].id;
-    taInfo.title = pairs[Number(results[0].pair_id) - 1] + ', ' + results[0].created_long;
+    taInfo.title = pairs[Number(results[0].pair_id) - 1] + ' - ' + results[0].created_at.toLocaleDateString(req.user.language, options);
     taInfo.pair = Number(results[0].pair_id) - 1;
     taInfo.category = results[0].category;
-    taInfo.date = results[0].created_short;
+    taInfo.date = results[0].created_at.toLocaleDateString(req.user.language, options);
     // creates variable to concatenate the HTML of the technical analysis elements
     var elementsHtml = ``;
     // loads the technical analysis elements
@@ -272,18 +274,23 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     strategy: strategyTA.html(userStrategies)
   }
   // inserts DB queries to a varialbe - too long
-  var getTa = 'SELECT id, pair_id, category, tanalysis.category, DATE_FORMAT(created_at, \'%Y-%m-%d\') AS created_short, DATE_FORMAT(created_at, \'%d de %M %Y\') AS created_long FROM tanalysis WHERE id = ?';
+  var getTa = 'SELECT id, pair_id, category, created_at FROM tanalysis WHERE id = ?';
   // OPTIMIZE: could another type of JOIN improve the query?
   var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   // object where the technical analysis information will be stored
   var taInfo = { }
   db.query(getTa, req.params.id, (err, results) => {
     if (err) throw err;
     taInfo.id = results[0].id;
-    taInfo.title = pairs[Number(results[0].pair_id) - 1] + ', ' + results[0].created_long;
+    taInfo.title = pairs[Number(results[0].pair_id) - 1] + ' - ' + results[0].created_at.toLocaleDateString(req.user.language, options);
     taInfo.pair = Number(results[0].pair_id) - 1;
     taInfo.category = results[0].category;
-    taInfo.date = results[0].created_short;
+    taInfo.date = results[0].created_at.toLocaleDateString(req.user.language, options);
+    var date = new Date(results[0].created_at);
+    var offset = date.getTimezoneOffset()
+    date = new Date(date.getTime() - (offset * 60 * 1000))
+    taInfo.altDate = date.toISOString().split('T')[0];
     // creates variable to concatenate the HTML of the technical analysis elements
     var elementsHtml = ``;
     // loads the technical analysis elements
@@ -349,11 +356,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     // stores the constants of the technical analysis into the DB
     db.query('UPDATE tanalysis SET ? WHERE id = ?', [editTa, req.params.id], (err, taId) => {
       if (err) throw err;
-      var ta_id = taId.insertId;
-      // checks if the route technical analysis id match the id from the update query
-      if (ta_id != req.params.id) {
-        throw new Error("The updated TA doesn't match with the current TA")
-      }
+      var ta_id = req.params.id;
       // extracts all the element types from the DB and maps them in a hash
       db.query('SELECT * FROM telements', (err, allElements) => {
         if (err) throw err;

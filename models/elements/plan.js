@@ -27,28 +27,28 @@ function strategyHtml() {
     listTFs += `<li onclick="changeTF('` + timeframe + `', this)">` + timeframe + `</li>`
   });
   return `
-    <div>
+    <div class="plan-fields">
       <p class="strategy-title d-inline-block mb-2"></p>
       <input type="text" name="strategies" class="strategy-input d-none">
       <div class="about mb-1">
         <span>About</span>
-        <div class="client-about diveditable bg-hover w-75 p-1" placeholder="What is this strategy about?" contenteditable="true"></div>
+        <div class="client-about diveditable p-1" placeholder="What is this strategy about?" contenteditable="true"></div>
       </div>
       <textarea name="about" class="d-none server-about mb-1"></textarea>
-      <div class="howto">
+      <div class="howto mb-1">
         <span>How to Use</span>
-        <div class="client-howto diveditable bg-hover w-75 p-1" placeholder="How do you use this strategy?" contenteditable="true"></div>
+        <div class="client-howto diveditable p-1" placeholder="How do you use this strategy?" contenteditable="true"></div>
       </div>
       <textarea name="howto" class="d-none server-howto mb-1"></textarea>
-      <div class="strategyNote">
+      <div class="strategyNote mb-1">
         <span>Key Notes</span>
-        <div class="client-keynotes diveditable bg-hover w-75 p-1" placeholder="Any additional description?" contenteditable="true"></div>
+        <div class="client-keynotes diveditable p-1" placeholder="Any additional description?" contenteditable="true"></div>
       </div>
       <textarea name="keyNotes" class="d-none server-keynotes mb-1"></textarea>
-      <div class="timeframe mb-1">
+      <div class="timeframe d-flex mb-1">
         <span>Timeframes</span>
-        <div class="dropdown">
-          <button id="dTF" class="dd-tfs dropdown-select bg-hover" type="button" data-toggle="dropdown">
+        <div class="dropdown plan-input">
+          <button id="dTF" class="dd-tfs dropdown-select" type="button" data-toggle="dropdown">
           `
           + timeframes[0] +
           `
@@ -62,9 +62,9 @@ function strategyHtml() {
           </ul>
         </div>
       </div>
-      <div class="assets mb-1">
+      <div class="assets d-flex mb-1">
         <span>Assets</span>
-        <div class="dropdown">
+        <div class="dropdown plan-input">
           <button id="dPairs" class="dd-pairs dropdown-select bg-hover" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           `
           + pairs[0] +
@@ -79,17 +79,17 @@ function strategyHtml() {
           </ul>
         </div>
       </div>
-      <div class="risk mb-1">
+      <div class="risk d-flex mb-2">
         <span>Risk Tolerance [%]:</span>
-        <input type="number" class="bg-hover w-75 p-1 ml-1" name="risk" placeholder="what is you risk per operation in %?" min="0" max="100" step="0.01">
+        <input type="number" class="plan-input p-1" name="risk" placeholder="what is you risk per operation in %?" min="0" max="100" step="0.01">
       </div>
       <div class="backtest mb-1">
         <button class="strategy-backtest btn-neilit" type="button" data-toggle="modal" data-target=".modal-backtest">Connect to Backtest item</button>
-        <span class="plan-backtest d-none">
+        <div class="plan-backtest d-none">
           <label class="mt-2 mb-0">Strategy backtested on the:</label>
           <p class="d-inline bg-hover orange px-1 connect-backtest"></p>
           <input type="text" name="planBacktest" class="d-none backtest-input">
-        </span>
+        </div>
       </div>
 
       <div class="rules mt-3">
@@ -119,18 +119,18 @@ function strategyHtml() {
 var newPositionPlan = `
   <hr class="mt-2 positioning">
   <div class="position-title mb-1">
-    <input class="font-20 bg-hover w-75 p-1" type="text" name="positionTitle" placeholder="Title for the positioning rule">
+    <input class="font-20 plan-input p-1" type="text" name="positionTitle" placeholder="Title for the positioning rule">
   </div>
   <input class="position-strategy d-none" name="positionStrategy">
   <input class="position-type d-none" name="positionType">
-  <div class="position-amount">
+  <div class="position-amount plan-fields d-flex mb-1">
     <span>Scalling amount [%]:</span>
-    <input class="input-amount bg-hover w-75 p-1 ml-1" type="number" name="amount" placeholder="what is the amount for your partial order (%)?">
+    <input class="input-amount plan-input p-1" type="number" name="amount" placeholder="what is the amount for your partial order (%)?">
   </div>
-  <div class="order-type">
-    <span>Order Type</span>
-    <div class="dropdown">
-      <button id="dOrderType" class="dd-order-type dropdown-select bg-hover" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <div class="order-type plan-fields d-flex">
+    <span>Order Type:</span>
+    <div class="dropdown plan-input">
+      <button id="dOrderType" class="dd-order-type dropdown-select" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Market order
       </button>
       <input class="input-order d-none" name="orderType">
@@ -142,8 +142,8 @@ var newPositionPlan = `
     </div>
   </div>
   <div class="description">
-    <span>Description</span>
-    <div class="client-description diveditable bg-hover w-75 p-1" placeholder="Any additional notes for this rule?" contenteditable="true"></div>
+    <span>Description:</span>
+    <div class="client-description diveditable p-1" placeholder="Any additional notes for this rule?" contenteditable="true"></div>
   </div>
   <textarea name="description" class="d-none server-description"></textarea>
   `;

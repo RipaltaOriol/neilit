@@ -15,6 +15,7 @@
   --neilit-white:       #ff8818;
   --neilit-black:       #ff8818;
   --neilit-soft:        #ff8818;
+  --neilit-background:  #ffd1a6;
   --white-neilit:       #ffffff;
   --background-strong:  #ffffff;
   --background-medium:  #ffffff;
@@ -50,6 +51,7 @@
   --box-background:     #272727;
   --text-contrast:      #dedad6;
   --red-invert:         #ffffff;
+  --red-strong:         #d0d0d0;
   --grey-medium:        #d0d0d0;
   --grey-strong:        #707070;
   --switch:             #777777;

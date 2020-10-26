@@ -141,6 +141,39 @@ img { }
   padding: .35em;
 }
 
+.icon-btn {
+  color: var(--black-inverted);
+  background: none;
+  border: none;
+  margin: 6px 0;
+}
+  .icon-btn:disabled {
+    opacity: .2;
+  }
+    .dark-mode .icon-btn img {
+      filter: invert();
+    }
+
+/* || Utility */
+.placeholder-plan {
+  color: var(--red-strong);
+}
+
+/* || Utility */
+.plan-fields { }
+  .plan-fields span {
+    width: 195px;
+  }
+  .rules .plan-fields span {
+    width: 225px;
+  }
+
+.plan-input {
+  width: 100%;
+  background-color: var(--background-hover);
+  border-radius: .25rem;
+}
+
 /* || Custom checkbox */
 .checkbox-orange {
   display: block;
@@ -255,10 +288,10 @@ img { }
   /* || contenteditable */
 .diveditable {
   color: var(--neilit-permanent);
+  background-color: var(--background-hover);
 }
   .diveditable:focus {
     color: var(--neilit-permanent);
-    background-color: var(--background-hover);
     border-radius: .25rem;
     outline: none;
   }

@@ -56,6 +56,29 @@ span .checkbox-orange {
     flex: none;
   }
 
+.backtest-fields { }
+  .backtest-fields label {
+    width: 215px;
+  }
+
+.backtest-input {
+  width: 500px;
+  background-color: var(--background-hover);
+  border-radius: .25rem;
+  flex: none;
+}
+
+.modal-fields { }
+  .modal-fields label {
+    width: 50%;
+  }
+
+.modal-input {
+  width: 50%;
+  background-color: var(--background-hover);
+  border-radius: .25rem;
+}
+
 .mandatory {
   font-weight: 500;
 }
@@ -100,6 +123,7 @@ span .checkbox-orange {
 
 /* || JQuery UI class */
 .ui-datepicker {
+  width: 200px;
   background: var(--background-strong);
   border-radius: .25rem;
   box-shadow: 0 3px 6px var(--box-shadow);
@@ -111,23 +135,24 @@ span .checkbox-orange {
   font-weight: 500;
 }
 
-.ui-datepicker-prev {
-  display: block;
-  text-align: center;
-  border-radius: .25rem;
+.ui-datepicker-prev { }
+.ui-datepicker-prev span {
+  padding: 0 10px;
 }
-  .ui-datepicker-prev:hover {
+  .ui-datepicker-prev span:hover {
     background: var(--background-hover);
+    border-radius: .25rem;
     cursor: pointer;
   }
 
-.ui-datepicker-next {
-  display: block;
-  text-align: center;
-  border-radius: .25rem;
+.ui-datepicker-next { }
+.ui-datepicker-next span {
+  padding: 0 10px;
+  float: right;
 }
-  .ui-datepicker-next:hover {
+  .ui-datepicker-next span:hover {
     background: var(--background-hover);
+    border-radius: .25rem;
     cursor: pointer;
   }
 
@@ -137,6 +162,11 @@ span .checkbox-orange {
   .ui-state-default:hover {
     color: var(--invert-black);
   }
+
+.ui-datepicker-calendar {
+  width: 100%;
+  text-align: center;
+}
 
 .date-badge {
   display: block;
@@ -195,6 +225,26 @@ span .checkbox-orange {
     filter: invert();
   }
 
+.icon-btn {
+  color: var(--black-inverted);
+  background: none;
+  border: none;
+}
+  .icon-btn:disabled {
+    opacity: .2;
+  }
+    .dark-mode .icon-btn img {
+      filter: invert();
+    }
+
+.backtest-result {
+  color: var(--neilit-altern);
+  background: var(--neilit-background);
+  border-radius: .25rem;
+  padding: 0 5px;
+  margin: 0 10px
+}
+
 /* || spinner */
 .spinner-border {
   color: var(--neilit-permanent);
@@ -203,10 +253,10 @@ span .checkbox-orange {
 /* || contenteditable */
 .editcontent {
   color: var(--invert-black);
+  background-color: var(--background-hover);
 }
   .editcontent:focus {
     color: var(--invert-black);
-    background-color: var(--background-hover);
     border-radius: .25rem;
     outline: none;
   }
@@ -261,9 +311,20 @@ span .checkbox-orange {
   }
 
 /* || Backtest table */
-#backtest-table { }
+#backtest-table {
+  display: block;
+  overflow-x: scroll;
+}
+  #backtest-table thead {
+    width: 100%;
+  }
+  #backtest-table tbody {
+    width: 100%;
+  }
   #backtest-table > thead > tr > th {
     border: none;
+    white-space: nowrap;
+    padding: 0 20px;
   }
   #backtest-table th {
     position: sticky;
@@ -283,6 +344,8 @@ span .checkbox-orange {
   #backtest-table tr td {
     cursor: pointer;
     text-align: center;
+    white-space: nowrap;
+    padding: 0 15px;
   }
   #backtest-table td {
   color: var(--text-contrast);

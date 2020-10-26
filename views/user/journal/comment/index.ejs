@@ -6,42 +6,44 @@
       <div class="container">
         <h2 class="mx-auto"><%= __('Comments') %></h2>
         <div class="journal-box px-0 py-3">
-          <% dataList.forEach((element) => { %>
-            <% if (element.type == 1) { %>
-              <a href="/<%= currentUser.username %>/journal/comment/<%= element.id %>">
-                <div class="bg-grey mx-3 p-2 mb-3 rounded">
-                  <span class="orange"><%= element.date.toLocaleString() %></span>
-                  <p class="mb-0"><%= element.content %></p>
+          <% if (dataList.length > 0) { %>
+            <% dataList.forEach((element) => { %>
+              <% if (element.type == 1) { %>
+                <a href="/<%= currentUser.username %>/journal/comment/<%= element.id %>">
+                  <div class="bg-grey mx-3 p-2 mb-3 rounded">
+                    <span class="orange"><%= element.display %></span>
+                    <p class="mb-0"><%= element.content %></p>
+                  </div>
+                </a>
+              <% } else if (element.type == 2) { %>
+                <div class="comment-entry ml-auto mr-3 mb-3 journal-box w-75 d-none">
+                  <span class="orange float-right"><%= element.display %></span>
+                  <h5><%= element.pair %></h5>
+                  <p class="card-text"><%= element.content %></p>
+                  <a href="/<%= currentUser.username %>/journal/entry/<%= element.id %>" class="btn-neilit">Go to entry</a>
                 </div>
-              </a>
-            <% } else if (element.type == 2) { %>
-              <div class="comment-entry ml-auto mr-3 mb-3 journal-box w-75 d-none">
-                <span class="orange float-right"><%= element.date.toLocaleString() %></span>
-                <h5><%= element.pair %></h5>
-                <p class="card-text"><%= element.content %></p>
-                <a href="/<%= currentUser.username %>/journal/entry/<%= element.id %>" class="btn-neilit">Go to entry</a>
-              </div>
-            <% } else if (element.type == 3) { %>
-              <div class="comment-tas mx-3 p-2 pb-3 mb-3 w-50 d-none">
-                <div class="mb-3">
-                  <span><strong><%= element.pair %></strong></span>
-                  <span class="float-right"><%= element.date.toLocaleString() %></span>
+              <% } else if (element.type == 3) { %>
+                <div class="comment-tas mx-3 p-2 pb-3 mb-3 w-50 d-none">
+                  <div class="mb-3">
+                    <span><strong><%= element.pair %></strong></span>
+                    <span class="float-right"><%= element.display %></span>
+                  </div>
+                  <a href="/<%= currentUser.username %>/journal/ta/<%= element.id %>" class="btn-neilit">Go to TA</a>
                 </div>
-                <a href="/<%= currentUser.username %>/journal/ta/<%= element.id %>" class="btn-neilit">Go to TA</a>
-              </div>
-            <% } %>
-          <% }); %>
-          <div class="d-flex mx-3 justify-content-between">
-            <span>
-              <a href="/<%= currentUser.username %>/journal/comment/new" class="btn-neilit"><%= __('New') %></a>
-            </span>
-            <span>
-              <button id="remove-tas" type="button" class="btn-inverted ml-2 d-none" onclick="noneTas()"><%= __('Remove TAs') %></button>
-              <button id="show-tas" type="button" class="btn-neilit ml-2" onclick="showTas()"><%= ('Add TAs') %></button>
-              <button id="remove-entries" type="button" class="btn-inverted ml-2 d-none" onclick="noneEntries()"><%= __('Remove Entries') %></button>
-              <button id="show-entries" type="button" class="btn-neilit ml-2" onclick="showEntries()"><%= __('Add Entries') %></button>
-              <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Back') %></a>
-            </span>
+              <% } %>
+            <% }); %>
+          <% } else { %>
+            <p class="text-center placeholder-journal"><%= __('No entries created yet') %></p>
+            <br>
+          <% } %>
+          <hr>
+          <div class="d-flex mx-3 justify-content-end">
+            <button id="remove-tas" type="button" class="btn-inverted ml-2 d-none" onclick="noneTas()"><%= __('Remove TAs') %></button>
+            <button id="show-tas" type="button" class="btn-neilit ml-2" onclick="showTas()"><%= ('Add TAs') %></button>
+            <button id="remove-entries" type="button" class="btn-inverted ml-2 d-none" onclick="noneEntries()"><%= __('Remove Entries') %></button>
+            <button id="show-entries" type="button" class="btn-neilit ml-2" onclick="showEntries()"><%= __('Add Entries') %></button>
+            <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Back') %></a>
+            <a href="/<%= currentUser.username %>/journal/comment/new" class="btn-neilit ml-2"><%= __('New') %></a>
           </div>
         </div>
       </div>

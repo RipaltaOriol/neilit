@@ -84,16 +84,16 @@
                   <input type="text" class="bg-hover orange px-2" value="<%= entry.exitDate %>" readonly>
                 </div>
               <% } %>
-              <div>
-                <label><%= __('Fees') %>:</label>
-                <input type="text" class="bg-hover orange px-2" value="<%= entry.fees %>" readonly>
-              </div>
               <% if (currentUser.showProfits) { %>
                 <div>
                   <label><%= __('Profits') %>:</label>
-                  <input type="text" class="bg-hover orange px-2" value="<%= entry.profits %>" readonly>
+                  <input type="text" class="bg-hover orange px-2" value="<%= entry.profits %> <%= __(currency) %>" readonly>
                 </div>
               <% } %>
+              <div>
+                <label><%= __('Fees') %>:</label>
+                <input type="text" class="bg-hover orange px-2" value="<%= entry.fees %> <%= __(currency) %>" readonly>
+              </div>
               <div>
                 <label><%= __('Result') %></label>
                 <input type="text" class="bg-hover orange px-2" value="<%= entry.result.toUpperCase() %>" readonly>

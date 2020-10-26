@@ -361,7 +361,8 @@ router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
 // TRADING PLAN ROUTE
 router.get("/plan", middleware.isLoggedIn, (req, res) => {
   // COMBAK: ensure that order is descending in terms of created_at
-  var selectPlans = 'SELECT id, title, DATE_FORMAT(created_at, \'%d/%m/%Y\') AS date FROM plans WHERE user_id = ?';
+  var selectPlans = 'SELECT id, title, created_at FROM plans WHERE user_id = ?';
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
   db.query(selectPlans, req.user.id, (err, getPlans) => {
     if (err) {
       // COMBAK: log error
@@ -377,7 +378,7 @@ router.get("/plan", middleware.isLoggedIn, (req, res) => {
     getPlans.forEach((result) => {
       plans.id.push(result.id);
       plans.title.push(result.title);
-      plans.date.push(result.date);
+      plans.date.push(result.created_at.toLocaleDateString(req.user.language, options));
     });
     res.render("user/plan", {plans:plans});
   })

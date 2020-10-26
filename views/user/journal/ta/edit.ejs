@@ -23,7 +23,8 @@
             </span>
             <span>
               <label><%= __('Date') %></label>
-              <input type="date" class="bg-hover orange px-2" name="date" value="<%= ta.date %>">
+              <input type="date" class="datepicker bg-hover orange px-2" data-target="date" value="<%= ta.date %>">
+              <input type="date" id="date" class="d-none" name="date" value="<%= ta.altDate %>">
             </span>
           </div>
         </div>
@@ -56,6 +57,7 @@
 
   <!-- FIX: only use what's necessary -->
   <script>
+    var language = <%- JSON.stringify(currentUser.language) %>;
     var categories = <%- JSON.stringify(categories) %>;
     var strategies = <%- JSON.stringify(strategies) %>;
     var timeframes = <%- JSON.stringify(timeframes) %>;
@@ -64,8 +66,10 @@
 
   <!-- JQUERY -->
   <script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
-  <script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
   <script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="/utilities/jquery/datepicker-es.js"></script>
+  <script type="text/javascript" src="/utilities/jquery/datepicker-en.js"></script>
+  <script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
   <script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
   <!-- LOCAL SCRIPTS -->
   <script type="text/javascript" src="/js/ta.js"></script>
