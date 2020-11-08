@@ -130,8 +130,10 @@ a:hover {
 
 /* || Utility */
 .pill {
-  padding: 1px 10px;
+  max-width: 150px;
   border-radius: 7px;
+  padding: 1px 10px;
+  margin: 0 auto;
 }
 
 .pill-verde {

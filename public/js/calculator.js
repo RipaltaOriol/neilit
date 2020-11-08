@@ -1,5 +1,7 @@
 // Risk Calculator function
 async function calcRisk(base) {
+  // shows spinner
+  $('#spinner-modal').modal('show');
   // API connection
   var base = document.getElementById('base').value;
   const exchangeRatesAPI = `https://api.exchangeratesapi.io/latest?base=${base}`;
@@ -26,6 +28,8 @@ async function calcRisk(base) {
           var lSize = pSize * vPip
           document.getElementById('units-size').innerHTML = (lSize * 100000).toFixed(0);
           document.getElementById('lots-size').innerHTML = (lSize).toFixed(3);
+          // hides spinner
+          $('#spinner-modal').modal('hide');
         // the base currency doesn't appear in the pair or is the first currency
         } else {
           // determines the against currency
@@ -41,6 +45,8 @@ async function calcRisk(base) {
           if (isNaN(lSize)) { lSize = "Error" }
           document.getElementById('units-size').innerHTML = (lSize * 100000).toFixed(0);
           document.getElementById('lots-size').innerHTML = (lSize).toFixed(3);
+          // hides spinner
+          $('#spinner-modal').modal('hide');
         }
       } else {
         return false;
@@ -61,6 +67,8 @@ async function calcRisk(base) {
         if (isNaN(lSize)) { lSize = "Error" }
         document.getElementById('units-size').innerHTML = (lSize * 100000).toFixed(0);
         document.getElementById('lots-size').innerHTML = (lSize).toFixed(3);
+        // hides spinner
+        $('#spinner-modal').modal('hide');
       // the base currency doesn't appear in the pair or is the first currency
       } else {
         // determines the against currency
@@ -76,6 +84,8 @@ async function calcRisk(base) {
         if (isNaN(lSize)) { lSize = "Error" }
         document.getElementById('units-size').innerHTML = (lSize * 100000).toFixed(0);
         document.getElementById('lots-size').innerHTML = (lSize).toFixed(3);
+        // hides spinner
+        $('#spinner-modal').modal('hide');
       }
     } else {
       return false;

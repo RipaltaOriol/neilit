@@ -9,6 +9,10 @@
   --green-border:  #c3e6cb;
 }
 
+:root.dark-mode {
+  --red-strong: #a10000;
+}
+
 /* || Utility */
 button {
   background: none;
@@ -23,6 +27,7 @@ input[type="date"]:focus {
 /* || Utility */
 th {
   color: var(--invert-black);
+  cursor: pointer;
 }
 
 td {
@@ -93,9 +98,12 @@ a { }
 }
 
 .notification {
-  color: var(--invert-white);
-  background-color: var(--neilit-permanent);
   font-size: 16px;
+  border-radius: 5pt;color: var(--invert-white);
+  background-color: var(--neilit-permanent);
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
   .notification h5 {
     color: var(--invert-white);
@@ -103,6 +111,19 @@ a { }
   .notification img { }
     .notification img:hover {
       opacity: 1;
+    }
+  .notification .link {
+    color: var(--neilit-default);
+    background-color: var(--white-none);
+    transition-duration: .25s;
+    border: 2px solid var(--invert-white);
+    border-radius: .25rem;
+  }
+    .notification .link:hover {
+      color: white;
+      border: 2px solid var(--invert-white);
+      background: var(--neilit-default);
+      transition-duration: .25s;
     }
 
 .image-widget-change {
@@ -197,48 +218,6 @@ a { }
       border-color: var(--invert-black);
     }
 
-.widget-one {
-  width: 100%;
-  border-radius: 5pt;
-  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-}
-
-.widget-three {
-  width: 33.33%;
-  border-radius: 5pt;
-  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-}
-
-.news {
-  color: var(--neilit-default);
-  background-color: var(--white-none);
-  transition-duration: .25s;
-  border: 2px solid var(--invert-white);
-  border-radius: .25rem;
-}
-  .news:hover {
-    color: white;
-    border: 2px solid var(--neilit-default);
-    background: var(--neilit-default);
-    transition-duration: .25s;
-  }
-
-.suggest {
-  color: var(--invert-white);
-  border: 2px solid var(--neilit-black);
-  border-radius: .25rem;
-  transition-duration: .25s;
-}
-  .suggest:hover {
-    color: var(--invert-whtie);
-    border: 2px solid var(--invert-white);
-    transition-duration: .25s;
-  }
-
 .progress {
   font-family: RobotoMono;
   height: 20px;
@@ -248,21 +227,38 @@ a { }
   background-color: var(--neilit-permanent);
 }
 
-.neilit-widget {
+.widget-neilit {
   background-color: var(--box-background);
+  border-radius: 5pt;
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  word-wrap: break-word;
 }
 
-.data-widget {
-  color: var(--invert-black);
+.widget-data {
   font-weight: 500;
+  color: var(--invert-black);
+  text-align: center;
 }
 
 /* || JQuery UI class */
+.datepicker { }
+  input.datepicker:focus {
+    border-color: var(--neilit-permanent);
+    box-shadow: none;
+  }
+
 .ui-datepicker {
+  width: 200px;
   background: var(--background-strong);
   border-radius: .25rem;
   box-shadow: 0 3px 6px var(--box-shadow);
-  padding: 10px 10px;
+  padding: 5px;
+}
+
+.ui-datepicker-header {
+  margin-top: 10px;
 }
 
 .ui-datepicker-title {
@@ -270,23 +266,24 @@ a { }
   font-weight: 500;
 }
 
-.ui-datepicker-prev {
-  display: block;
-  text-align: center;
-  border-radius: .25rem;
+.ui-datepicker-prev { }
+.ui-datepicker-prev span {
+  padding: 0 10px;
 }
-  .ui-datepicker-prev:hover {
+  .ui-datepicker-prev span:hover {
     background: var(--background-hover);
+    border-radius: .25rem;
     cursor: pointer;
   }
 
-.ui-datepicker-next {
-  display: block;
-  text-align: center;
-  border-radius: .25rem;
+.ui-datepicker-next { }
+.ui-datepicker-next span {
+  padding: 0 10px;
+  float: right;
 }
-  .ui-datepicker-next:hover {
+  .ui-datepicker-next span:hover {
     background: var(--background-hover);
+    border-radius: .25rem;
     cursor: pointer;
   }
 
@@ -296,6 +293,26 @@ a { }
   .ui-state-default:hover {
     color: var(--invert-black);
   }
+
+.ui-datepicker-calendar {
+  width: 100%;
+  text-align: center;
+}
+
+.ui-state-default {
+  color: var(--text-grey);
+}
+  .ui-state-default:hover {
+    color: var(--invert-black);
+  }
+
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{
+  visibility: hidden !important;
+}
 
 #dd {
   border-radius: .25rem;

@@ -12,6 +12,11 @@ button:disabled {
     box-shadow: none;
   }
 
+/* || Bootstrap class */
+.spinner-border {
+  color: var(--neilit-permanent);
+}
+
 .journal-box {
   padding: 15px 20px;
   background-color: var(--box-background);
@@ -90,7 +95,8 @@ button:disabled {
 
 #lots-size, #units-size {
   font-family: RobotoMono;
-  font-size: 18px;
+  font-size: 16px;
+  background-color: var(--background-hover)
 }
 
 #dropdown-label {

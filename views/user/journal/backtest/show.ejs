@@ -30,9 +30,9 @@
                     <td class="table-index"><%= i + 1 %></td>
                     <td>
                       <% if ('direction' in backtest) { %>
-                        <%= backtest.direction %>
+                        <%= __(backtest.direction) %>
                       <% } else { %>
-                        <%= data[0][i] %>
+                        <%= __(data[0][i]) %>
                       <% } %>
                     </td>
                     <td class="text-right"><%= result.toFixed(2) %> <%= backtest.result %></td>

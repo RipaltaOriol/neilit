@@ -12,7 +12,7 @@
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title mx-auto orange"><%= __('New backetest row') %></h5>
+                <h5 class="modal-title mx-auto orange"><%= __('Backtest Row') %></h5>
               </div>
               <div class="modal-body d-flex flex-column align-items-start modal-fields">
                 <div class="mb-1 w-100">
@@ -27,18 +27,18 @@
                   <div class="dropdown modal-input">
                     <button id="dropdown-label" class="direction dropdown-select w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <% if ('direction' in backtest) { %>
-                        <%= backtest.direction %>
+                        <%= __(backtest.direction) %>
                       <% } else { %>
-                        <%= __('long') %>
+                        <%= __('Long') %>
                       <% } %>
                     </button>
                     <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                       <input class="dropdown-search d-none" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                       <% if ('direction' in backtest) { %>
-                        <li><%= backtest.direction %></li>
+                        <li><%= __(backtest.direction) %></li>
                       <% } else { %>
-                        <li><%= __('long') %></li>
-                        <li><%= __('short') %></li>
+                        <li><%= __('Long') %></li>
+                        <li><%= __('Short') %></li>
                       <% } %>
                     </ul>
                   </div>
@@ -140,7 +140,8 @@
                   </div>
                 <% } %>
                 <div class="align-self-end mt-3">
-                  <button id="create-row" type="button" class="btn-neilit mb-0 d-inline" onclick="createRow()" data-dismiss="modal"><%= __('Create') %></button>
+                  <button id="update-row" type="button" class="btn-neilit" onclick="updateRow()" data-dismiss="modal"><%= __('Edit') %></button>
+                  <button id="create-row" type="button" class="btn-neilit" onclick="createRow()" data-dismiss="modal"><%= __('Create') %></button>
                 </div>
               </div>
             </div>
@@ -156,8 +157,7 @@
               </label>
             </div>
             <div>
-              <button id="update-row" type="button" class="btn-neilit mb-0 d-none" onclick="updateRow()"><%= __('Edit') %></button>
-              <button type="button" class="btn-inverted mb-0" data-toggle="modal" data-target=".modal-row"><%= __('New') %></button>
+              <button type="button" class="btn-inverted mb-0" data-toggle="modal" data-target=".modal-row" onclick="cleanModal()"><%= __('New') %></button>
             </div>
           </div>
 
@@ -185,9 +185,9 @@
                     <td><%= i + 1 %></td>
                     <td>
                       <% if ('direction' in backtest) { %>
-                        <%= backtest.direction %>
+                        <%= __(backtest.direction) %>
                       <% } else { %>
-                        <%= data[0][i] %>
+                        <%= __(data[0][i]) %>
                       <% } %>
                     </td>
                     <td class="text-right"><%= result.toFixed(2) %> <%= backtest.result %></td>

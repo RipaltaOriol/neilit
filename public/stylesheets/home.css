@@ -46,6 +46,18 @@ h5 {
   color: var(--neilit-default);
 }
 
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 8vw;
+  }
+  h2 {
+    font-size: 7vw;
+  }
+  h3 {
+    font-size: 6vw;
+  }
+}
+
 a { }
   a:hover{
     text-decoration: none;
@@ -120,6 +132,16 @@ tr + tr { border-top: 1px solid var(--grey); }
 }
 
 /* || Bootstrap class */
+.vh-50 {
+  height: 50vh;
+}
+
+/* || Bootstrap class */
+.navbar-collapse {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: .25rem;
+}
+
 .nav-item { }
   li.nav-item{
     font-size: 13px;
@@ -134,8 +156,8 @@ tr + tr { border-top: 1px solid var(--grey); }
 
 /* || Bootstrap class */
 .jumbotron {
-  background-color: var(--yellow);
-  background-image: linear-gradient(to left, var(--yellow), var(--neilit-default));
+  border-radius: 0px;
+  background-color: var(--neilit-default);
 }
 
 .bg-neilit {
@@ -184,10 +206,6 @@ tr + tr { border-top: 1px solid var(--grey); }
     font-size: 58px;
   }
 
-.color-icon {
-  color: red;
-}
-
 .story-img {
   width: 100%;
   max-width: 800px;
@@ -220,11 +238,30 @@ tr + tr { border-top: 1px solid var(--grey); }
   }
 
 /* || Bootstrap class */
+.navbar-toggler { }
+  .navbar-toggler:focus {
+    outline: none;
+  }
+
+.navbar-toggler-icon {
+  width: 2em;
+}
+
+.icon-navbar {
+  width: 100%;
+}
+
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: darkblue; /* Whatever Colour you want */
+}
+
+/* || Bootstrap class */
 .badge {
   font-size: 15px;
   color: white;
-  background-color: red;
-  transform: translateY(-20px);
+  background-color: var(--red);
+  transform: translate(-8px, -20px);
 }
 
 /* || Utility */
@@ -311,8 +348,8 @@ tr + tr { border-top: 1px solid var(--grey); }
 .btn-inverted {
   font-size: 17px;
   color: var(--neilit-default);
-  background: white;
-  border: 2px solid white;
+  background: none;
+  border: 2px solid var(--neilit-default);
   border-radius: 7px;
   padding: 5px 10px;
   transition-duration: .5s;
@@ -373,9 +410,21 @@ tr + tr { border-top: 1px solid var(--grey); }
     }
   }
 
+.bg-sm-nav {
+  height: 250px;
+  background-color: white;
+  background-image: url("/imgs/features-bg.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.bg-spacing {
+  height: 250px;
+}
+
 .btn-nav {
   font-size: 16px;
-  color: black;
+  color: white;
   transition-duration: .5s;
 }
   .btn-nav:hover {
@@ -413,14 +462,12 @@ tr + tr { border-top: 1px solid var(--grey); }
 
 /* || Plan box */
 .plan {
+  width: 500px;
   border-radius: 5pt;
   -webkit-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   -moz-box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
   box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.2);
 }
-  .plan ul {
-    list-style-type: none;
-  }
 
 .pricing {
   font-size: 32px;
@@ -558,37 +605,55 @@ tr + tr { border-top: 1px solid var(--grey); }
   color: white;
 }
 
-.progressbar li.active + li:after{
+.progressbar li.active + li:after {
   background-color: var(--neilit-default);
 }
 
-#neilit{
+.mobile { }
+  .mobile h1 {
+    font-size: 5rem;
+  }
+  .mobile hr {
+    border-color: white;
+  }
+
+#neilit {
   font-size: 150px;
   font-weight: bold;
   color: var(--neilit-default);
   margin-top: 20vh;
 }
 
-#sticky-nav {
-  background-color: rgba(0, 0, 0, 0);
-  padding: 15px 30px;
+@media screen and (max-width: 600px) {
+  #neilit {
+    font-size: 25vw;
+  }
+  #slogan {
+    font-size: 6.5vw;
+  }
 }
-  @media (min-width: 768px) {
+
+#sticky-nav {
+  position: absolute;
+  background: none;
+  padding: 10px 20px;
+}
+
+  @media screen and (min-width: 992px) {
     #sticky-nav {
+      position: sticky;
       background: white;
-      padding: 15px 60px;
+      padding: 15px 100px;
       box-shadow: 0px -4px 23px 21px rgba(0,0,0,0.08)
     }
-  }
-  @media (min-width: 992px) {
-    #sticky-nav {
-      padding: 15px 100px;
-    }
+      #sticky-nav .btn-nav {
+        color: black;
+      }
   }
 
 #home {
   height: 85vh;
-  min-height: 450px;
+  min-height: 500px;
   background-color: white;
   background-image: url("/imgs/home-bg.jpg");
   background-position: center;
@@ -623,6 +688,6 @@ tr + tr { border-top: 1px solid var(--grey); }
 #beta {
   color: white;
   background-color: var(--red);
-  padding: 5px 0px;
+  padding: 2px 0px;
   text-align: center;
 }

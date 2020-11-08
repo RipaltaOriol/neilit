@@ -21,6 +21,51 @@ var serverRPlan       = document.getElementById("server-rplan");
 
 var connectFocus;
 
+// html to load more data using infinite scroll
+var planIndex1 = '<div class="d-flex justify-content-between plan-box mx-3 mb-3"><div class="d-flex align-items-center"><h3 class="m-1">'
+var planIndex2 = '</h3><span class="mx-2">-</span><span>'
+var planIndex3 = '</span></div><div class="d-flex align-items-center"><a href="'
+var planIndex4 = '" class="btn-neilit d-inline mr-2 px-2"><img src="/imgs/icons/visibility-white.svg" alt="show"></a><form action="'
+var planIndex5 = '?_method=DELETE" method="POST"><button type="submit" class="btn-neilit d-inline mr-2 px-2"><img src="/imgs/icons/delete-white.svg" alt="delete"></button></form></div></div>'
+
+// manages the spinner on loading processes
+function loadingState(bool) {
+  if (bool) {
+    $('#spinner').removeClass('d-none')
+  } else {
+    $('#spinner').addClass('d-none')
+  }
+}
+
+// Infinite scroll
+let loadedCount = 25;
+$('.plan-scroll').scroll(() => {
+  var $el = $('.plan-scroll');
+  var $eh = $('.plan-scroll')[0];
+  if ($el.innerHeight() + $el.scrollTop() >= $eh.scrollHeight - 5 && loadedCount) {
+    loadingState(true);
+    $.post('plan/load-index', {offset: loadedCount})
+      .done((data) => {
+        loadedCount+= 25;
+        loadingState(false);
+        // add new plans to the index list
+        data.plans.id.forEach((id, i) => {
+          var newPlan = planIndex1 + data.plans.title[i] + planIndex2 + data.plans.date[i]
+            + planIndex3 + '/' + username + '/plan/' + id + planIndex4 + '/' + username
+            + '/plan/' + id + planIndex5;
+          $('.plan-scroll')[0].innerHTML += newPlan
+        });
+
+        if (data.plans.id.length < 25) {
+          loadedCount = 0;
+        }
+    })
+      .fail(() => {
+
+    })
+  }
+})
+
 // behavior for components on positioning
 checkTitle.click(() => {
   if (checkTitle.prop('checked')) {
@@ -181,9 +226,9 @@ if (window.localStorage.getItem('components') != null) {
   // general information section
   if ($.inArray('block',
     [preferences.broker, preferences.charts, preferences.capital, preferences.routine]) >= 0) {
-    document.getElementById('broker').style.display = preferences.broker;
-    document.getElementById('charts').style.display = preferences.charts;
-    document.getElementById('capital').style.display = preferences.capital;
+    if (preferences.broker == 'block') { $('#broker').addClass('d-flex') } else { $('#broker').addClass('d-none') }
+    if (preferences.charts == 'block') { $('#charts').addClass('d-flex') } else { $('#charts').addClass('d-none') }
+    if (preferences.capital == 'block') { $('#capital').addClass('d-flex') } else { $('#capital').addClass('d-none') }
     document.getElementById('routine').style.display = preferences.routine;
   } else {
     $('#general').hide()
@@ -222,7 +267,7 @@ if (window.localStorage.getItem('components') != null) {
     $('#strategy').hide()
   }
   // psychology section
-  document.getElementById('tips').value = preferences.tips;
+  $('#tips').value = preferences.tips;
   if (preferences.psychologyNotes == 'block') {
     document.getElementById('psychology-notes').style.display = preferences.psychologyNotes;
   } else {

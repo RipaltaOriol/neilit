@@ -29,15 +29,8 @@ span .checkbox-orange {
 }
 
 .journal-box { }
-  .journal-box .btn-neilit {
-    color: white;
-  }
-  .journal-box .btn-inverted {
-    color: var(--neilit-white);
-  }
-    .journal-box .btn-neilit:hover {
-      text-decoration: none;
-    }
+
+
 
 .table { }
   .table td {
@@ -122,12 +115,22 @@ span .checkbox-orange {
     }
 
 /* || JQuery UI class */
+.datepicker { }
+  input.datepicker:focus {
+    border-color: var(--neilit-permanent);
+    box-shadow: none;
+  }
+
 .ui-datepicker {
   width: 200px;
   background: var(--background-strong);
   border-radius: .25rem;
   box-shadow: 0 3px 6px var(--box-shadow);
   padding: 5px;
+}
+
+.ui-datepicker-header {
+  margin-top: 10px;
 }
 
 .ui-datepicker-title {
@@ -221,6 +224,9 @@ span .checkbox-orange {
   border: none;
   padding: 0;
 }
+  .table-action:focus {
+    outline: none;
+  }
   .dark-mode .table-action img {
     filter: invert();
   }
@@ -422,6 +428,9 @@ span .checkbox-orange {
 }
 
 #dropdown-label { }
+  .ta-pair#dropdown-label {
+    color: var(--neilit-permanent);
+  }
   .entry-input #dropdown-label {
     color: var(--neilit-permanent);
   }

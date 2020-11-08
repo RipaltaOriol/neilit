@@ -1,271 +1,240 @@
 <%- include("../partials/header-user") %>
 
   <!-- CONTENT -->
-  <div class="pt-4 mx-4">
+  <div class="mx-2 mx-lg-4">
     <section>
       <div class="container">
         <!-- notifications dashboard -->
         <% if (notification) { %>
-          <div class="widget-one notification mb-4">
-            <div class=" d-flex flex-row justify-content-between mt-2 pt-1">
-              <div class="d-flex flex-row align-items-center">
-                <h5 class="mb-0 py-1 ml-3 mt-2"><%= __("What's new?") %></h5>
-              </div>
-              <a onclick="removeNotification()" href="#!" class="mr-2">
+          <div class="row notification mx-2 mb-4">
+            <div class="d-flex justify-content-between align-items-start pt-2 px-3 w-100">
+              <h5 class="mt-2"><%= __("What's new?") %></h5>
+              <a href="#!" class="mr-2" onclick="removeNotification()">
                 <img src="/imgs/icons/close-white.svg" class="py-1 image-widget" alt="Close">
               </a>
             </div>
             <!-- include up to 3 new features -->
-            <div class="mb-2">
-              <p class="mx-3 mt-1 mb-0">
-                <%= __('Here you will find all the new stuff that we are introducing to Neilit. If you want to know everything that we\'ve introduced over time, click on "Everything that\'s new" button.') %>
-              </p>
-            </div>
+            <p class="mx-3">
+              <%= __('Here you will find all the new stuff that we are introducing to Neilit. If you want to know everything that we\'ve introduced over time, click on "Everything that\'s new" button.') %>
+            </p>
             <div class="d-flex flex-row justify-content-center align-items-center pb-3">
-              <a href="/resources" class="news mx-3 px-3">
+              <a href="/resources" class="link mx-3 px-3">
                 <%= __('Everything that\'s new') %>
               </a>
-              <a id="send-suggestion" href="#!" class="suggest mx-3 px-3">
+              <a id="send-suggestion" href="#!" class="link mx-3 px-3">
                 <%= __('Suggest features') %>
               </a>
             </div>
           </div>
         <% } %>
+        <!-- modal -->
+        <div class="modal fade" id="custom" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content widget-neilit">
+              <div class="modal-header">
+                <h5 class="modal-title"><%= __('Custom') %></h5>
+              </div>
+              <div class="modal-body">
+                <p class="mb-0"><%= __('From') %>:</p>
+                <input type="text" class="datepicker form-control p-1 px-2 mb-2" data-target="custom-from">
+                <input type="text" id="custom-from" class="d-none">
+                <p class="mb-0"><%= __('To') %>:</p>
+                <input type="text" class="datepicker form-control p-1 px-2" data-target="custom-to">
+                <input type="text" id="custom-to" class="d-none">
+              </div>
+              <div class="modal-footer">
+                <button type="button" onclick="getCustom()" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- 1st row: three square widgets -->
-        <div class="d-flex justify-content-between mb-4">
+        <div class="row mx-2">
           <!-- balance widget -->
-          <div class="neilit-widget widget-three mr-2">
-            <div class="d-flex align-items-center mt-3 mx-2">
-              <img src="/imgs/icons/balance.svg" class="mx-2 image-widget" alt="balance">
-              <h5 class="m-0"><%= __('Current Balance') %></h5>
-            </div>
-            <!-- note: uses pb-1 to compensate for the extra height given by the dropdown -->
-            <div class="mt-4 mb-3 pb-1 d-flex flex-column align-items-center">
-              <h1 class="data-widget"><%= dashboardData.currentAmount%> <%=dashboardData.base%></h1>
-              <% if (Number.isNaN(dashboardData.currentPercent)) { %>
-                <div>
-                  <p class="pill pill-yellow font-16">N/A%</p>
-                </div>
-              <% } else { %>
-                <div>
-                  <% if (dashboardData.currentPercent >= 0) { %>
-                    <p class="pill pill-green font-16"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">
-                  <% } else { %>
-                    <p class="pill pill-red font-16"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2">
-                  <% } %>
-                    <%= Math.round(dashboardData.currentPercent * 100) / 100 %>%</p>
-                </div>
-              <% } %>
-            </div>
-            <hr class="mb-0">
-            <div class="px-3 py-1">
-              <a href="#!">
-                <div class="text-right">
-                  <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Current account balance. Neilit calculates this data based on the registered trades.') %>">
-                </div>
-              </a>
+          <div class="col-12 col-lg-4 px-0 mb-4">
+            <div class="widget-neilit mr-1">
+              <div class="d-flex align-items-start pt-3 mx-2">
+                <img src="/imgs/icons/balance.svg" class="mx-2 image-widget" alt="balance">
+                <h5 class="m-0"><%= __('Current Balance') %></h5>
+              </div>
+              <!-- note: uses pb-1 to compensate for the extra height given by the dropdown -->
+              <div class="my-4 d-flex flex-column align-items-center">
+                <h1 class="widget-data"><%= (dashboardData.currentAmount).toFixed(2) %> <%=dashboardData.base%></h1>
+                <% if (Number.isNaN(dashboardData.currentPercent)) { %>
+                  <div>
+                    <p class="pill pill-yellow font-16">N/A%</p>
+                  </div>
+                <% } else { %>
+                  <div>
+                    <% if (dashboardData.currentPercent >= 0) { %>
+                      <p class="pill pill-green font-16"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">
+                    <% } else { %>
+                      <p class="pill pill-red font-16"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2">
+                    <% } %>
+                      <%= dashboardData.currentPercent.toFixed(2) %>%</p>
+                  </div>
+                <% } %>
+              </div>
+              <hr class="mb-0">
+              <div class="px-3 py-1">
+                <a href="#!">
+                  <div class="text-right">
+                    <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Current account balance. Neilit calculates this data based on the registered trades.') %>">
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
           <!-- best trade widget -->
-          <div class="neilit-widget widget-three mx-2">
-            <div class="d-flex justify-content-between align-items-start mt-3 mx-2">
-              <span class="d-flex">
-                <img src="/imgs/icons/star.svg" class="mx-2 image-widget" alt="best trade">
-                <h5 class="m-0 no-wrap"><%= __('Biggest Trade') %></h5>
-              </span>
-              <!-- dropdown -->
-              <div class="dropdown">
-                <button id="dd" class="dropdown-select text-right font-16 mb-0 mx-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <%= __('All') %>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dd">
-                  <li onclick="getBiggest('today')"><%= __('Today') %></li>
-                  <li onclick="getBiggest('cweek')"><%= __('Current week') %></li>
-                  <li onclick="getBiggest('lweek')"><%= __('Last week') %></li>
-                  <li onclick="getBiggest('cmonth')"><%= __('Current month') %></li>
-                  <li onclick="getBiggest('lmonth')"><%= __('Last month') %></li>
-                  <li onclick="getBiggest('cquarter')"><%= __('Current quarter') %></li>
-                  <li onclick="getBiggest('lquarter')"><%= __('Last quarter') %></li>
-                  <li onclick="getBiggest('all')"><%= __('All') %></li>
-                  <li>
-                    <button type="button" class="text-left" data-toggle="modal" data-target="#customBiggest"><%= __('Custom period') %></button>
-                  </li>
-                </ul>
+          <div class="col-12 col-lg-4 px-0 mb-4">
+            <div class="widget-neilit mx-1">
+              <div class="d-flex justify-content-between align-items-start flex-wrap pt-3 mx-2">
+                <span class="d-flex align-items-start">
+                  <img src="/imgs/icons/star.svg" class="mx-2 image-widget" alt="best trade">
+                  <h5 class="m-0 no-wrap"><%= __('Biggest Trade') %></h5>
+                </span>
+                <!-- dropdown -->
+                <div class="dropdown ml-auto">
+                  <button id="dd" class="dropdown-select text-right font-16 mb-0 mx-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <%= __('All') %>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dd">
+                    <li onclick="getData('biggest', 'today')"><%= __('Today') %></li>
+                    <li onclick="getData('biggest', 'cweek')"><%= __('Current week') %></li>
+                    <li onclick="getData('biggest', 'lweek')"><%= __('Last week') %></li>
+                    <li onclick="getData('biggest', 'cmonth')"><%= __('Current month') %></li>
+                    <li onclick="getData('biggest', 'lmonth')"><%= __('Last month') %></li>
+                    <li onclick="getData('biggest', 'cquarter')"><%= __('Current quarter') %></li>
+                    <li onclick="getData('biggest', 'lquarter')"><%= __('Last quarter') %></li>
+                    <li onclick="getData('biggest', 'all')"><%= __('All') %></li>
+                    <li>
+                      <button type="button" class="text-left" onclick="setCustom('biggest')" data-toggle="modal" data-target="#custom"><%= __('Custom') %></button>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <!-- modal -->
-              <div class="modal fade" id="customBiggest" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                  <div class="modal-content neilit-widget">
-                    <div class="modal-header">
-                      <h5 class="modal-title"><%= __('Custom period') %></h5>
-                    </div>
-                    <div class="modal-body">
-                      <p class="mb-0"><%= __('From') %>:</p>
-                      <input id="from-biggest" type="date" class="bg-hover form-control mb-2 px-2">
-                      <p class="mb-0"><%= __('To') %>:</p>
-                      <input id="to-biggest" type="date" class="bg-hover form-control px-2">
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" onclick="getCustomBiggest(document.getElementById('from-biggest'), document.getElementById('to-biggest'))" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
-                    </div>
+              <div class="my-4 d-flex flex-column align-items-center">
+                <h1 id="biggest-pair" class="widget-data"><%= dashboardData.biggestPair %></h1>
+                <div>
+                  <p id="biggest-percent" class="pill pill-yellow font-16">
+                    <%= dashboardData.biggestPercent.toFixed(2) %>%
+                  </p>
+                </div>
+              </div>
+              <hr class="mb-0">
+              <div class="px-3 py-1">
+                <a href="#!">
+                  <div class="text-right">
+                    <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Biggest trade made on the selected period of time. Neilit calculates this data based on the recorded operations.') %>">
                   </div>
-                </div>
+                </a>
               </div>
-            </div>
-            <div class="mt-4 mb-3 d-flex flex-column align-items-center">
-              <h1 id="biggest-pair" class="data-widget"><%= dashboardData.biggestPair %></h1>
-              <div>
-                <p id="biggest-percent" class="pill pill-yellow font-16">
-                  <%= dashboardData.biggestPercent.toFixed(2) %>%
-                </p>
-              </div>
-            </div>
-            <hr class="mb-0">
-            <div class="px-3 py-1">
-              <a href="#!">
-                <div class="text-right">
-                  <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Biggest trade made on the selected period of time. Neilit calculates this data based on the recorded operations.') %>">
-                </div>
-              </a>
             </div>
           </div>
           <!-- total entries widget -->
-          <div class="neilit-widget widget-three ml-2">
-            <div class="d-flex justify-content-between align-items-start mt-3 mx-2">
-              <span class="d-flex">
-                <img src="/imgs/icons/folder.svg" class="mx-2 image-widget" alt="total entries">
-                <h5 class="mb-0 no-wrap"><%= __('Total Entries') %></h5>
-              </span>
-              <!-- dropdown -->
-              <div class="dropdown">
-                <button id="dd" class="dropdown-select text-right font-16 mb-0 mx-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <%= __('All') %>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dd">
-                  <li onclick="getTotal('today')"><%= __('Today') %></li>
-                  <li onclick="getTotal('cweek')"><%= __('Current week') %></li>
-                  <li onclick="getTotal('lweek')"><%= __('Last week') %></li>
-                  <li onclick="getTotal('cmonth')"><%= __('Current month') %></li>
-                  <li onclick="getTotal('lmonth')"><%= __('Last month') %></li>
-                  <li onclick="getTotal('cquarter')"><%= __('Current quarter') %></li>
-                  <li onclick="getTotal('lquarter')"><%= __('Last quarter') %></li>
-                  <li onclick="getTotal('all')"><%= __('All') %></li>
-                  <li>
-                    <button type="button" class="text-left" data-toggle="modal" data-target="#customTotal"><%= __('Custom period') %></button>
-                  </li>
-                </ul>
+          <div class="col-12 col-lg-4 px-0 mb-4">
+            <div class="widget-neilit ml-1">
+              <div class="d-flex justify-content-between align-items-start flex-wrap pt-3 mx-2">
+                <span class="d-flex align-items-start">
+                  <img src="/imgs/icons/folder.svg" class="mx-2 image-widget" alt="total entries">
+                  <h5 class="mb-0 no-wrap"><%= __('Total Entries') %></h5>
+                </span>
+                <!-- dropdown -->
+                <div class="dropdown ml-auto">
+                  <button id="dd" class="dropdown-select text-right font-16 mb-0 mx-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <%= __('All') %>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dd">
+                    <li onclick="getData('total', 'today')"><%= __('Today') %></li>
+                    <li onclick="getData('total', 'cweek')"><%= __('Current week') %></li>
+                    <li onclick="getData('total', 'lweek')"><%= __('Last week') %></li>
+                    <li onclick="getData('total', 'cmonth')"><%= __('Current month') %></li>
+                    <li onclick="getData('total', 'lmonth')"><%= __('Last month') %></li>
+                    <li onclick="getData('total', 'cquarter')"><%= __('Current quarter') %></li>
+                    <li onclick="getData('total', 'lquarter')"><%= __('Last quarter') %></li>
+                    <li onclick="getData('total', 'all')"><%= __('All') %></li>
+                    <li>
+                      <button type="button" class="text-left" onclick="setCustom('total')" data-toggle="modal" data-target="#custom"><%= __('Custom') %></button>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <!-- modal -->
-              <div class="modal fade" id="customTotal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                  <div class="modal-content neilit-widget">
-                    <div class="modal-header">
-                      <h5 class="modal-title"><%= __('Custom period') %></h5>
-                    </div>
-                    <div class="modal-body">
-                      <p class="mb-0"><%= __('From') %>:</p>
-                      <input id="from-total" type="date" class="bg-hover form-control mb-2 px-2">
-                      <p class="mb-0"><%= __('To') %>:</p>
-                      <input id="to-total" type="date" class="bg-hover form-control px-2">
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" onclick="getCustomTotal(document.getElementById('from-total'), document.getElementById('to-total'))" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
-                    </div>
+              <div class="my-4 d-flex flex-column align-items-center">
+                <h1 id="total-entries" class="widget-data"><%= dashboardData.total %></h1>
+                <div>
+                <% if (isNaN(parseFloat(dashboardData.rate))) { %>
+                  <p id="win-rate" class="pill pill-yellow font-16">N/A% <%= __('wins') %></p>
+                <% } else { %>
+                  <p id="win-rate" class="pill pill-yellow font-16"><%= dashboardData.rate.toFixed(1) %>% <%= __('wins') %></p>
+                <% } %>
+                </div>
+              </div>
+              <hr class="mb-0">
+              <div class="px-3 py-1">
+                <a href="#!">
+                  <div class="text-right">
+                    <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Total entries and its win rate in the selected period of time. Neilit calculates this data based on the recorded operations.') %>">
                   </div>
-                </div>
+                </a>
               </div>
-            </div>
-            <div class="mt-4 mb-3 d-flex flex-column align-items-center">
-              <h1 id="total-entries" class="data-widget"><%= dashboardData.total %></h1>
-              <div>
-              <% if (isNaN(parseFloat(dashboardData.rate))) { %>
-                <p id="win-rate" class="pill pill-yellow font-16">N/A% <%= __('wins') %></p>
-              <% } else { %>
-                <p id="win-rate" class="pill pill-yellow font-16"><%= dashboardData.rate %>% <%= __('wins') %></p>
-              <% } %>
-              </div>
-            </div>
-            <hr class="mb-0">
-            <div class="px-3 py-1">
-              <a href="#!">
-                <div class="text-right">
-                  <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Total entries and its win rate in the selected period of time. Neilit calculates this data based on the recorded operations.') %>">
-                </div>
-              </a>
             </div>
           </div>
         </div>
         <!-- outcome x month graph -->
-        <div class="neilit-widget widget-one mb-4">
-          <div class="d-flex justify-content-between align-items-center pt-3 mx-2">
-            <span class="d-flex">
-              <img src="/imgs/icons/wallet.svg" class="mx-2 image-widget" alt="Outcome">
-              <h5 class="mb-0"><%= __('Outcome') %></h5>
-            </span>
-            <!-- dropdown -->
-            <div class="dropdown">
-              <button id="dd" class="dropdown-select font-16 mb-0 mx-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= __('All') %>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dd">
-                <li onclick="getOutcome('today')"><%= __('Today') %></li>
-                <li onclick="getOutcome('cweek')"><%= __('Current week') %></li>
-                <li onclick="getOutcome('lweek')"><%= __('Last week') %></li>
-                <li onclick="getOutcome('cmonth')"><%= __('Current month') %></li>
-                <li onclick="getOutcome('lmonth')"><%= __('Last month') %></li>
-                <li onclick="getOutcome('cquarter')"><%= __('Current quarter') %></li>
-                <li onclick="getOutcome('lquarter')"><%= __('Last quarter') %></li>
-                <li onclick="getOutcome('all')"><%= __('All') %></li>
-                <li>
-                  <button type="button" class="text-left" data-toggle="modal" data-target="#customOutcome"><%= __('Custom period') %></button>
-                </li>
-              </ul>
+        <div class="widget-neilit row mx-2 mb-4">
+          <div class="d-flex flex-column w-100">
+            <div class="d-flex justify-content-between align-items-center pt-3 mx-2">
+              <span class="d-flex align-items-start">
+                <img src="/imgs/icons/wallet.svg" class="mx-2 image-widget" alt="Outcome">
+                <h5 class="mb-0"><%= __('Outcome') %></h5>
+              </span>
+              <!-- dropdown -->
+              <div class="dropdown">
+                <button id="dd" class="dropdown-select font-16 mb-0 mx-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= __('All') %>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dd">
+                  <li onclick="getData('outcome', 'today')"><%= __('Today') %></li>
+                  <li onclick="getData('outcome', 'cweek')"><%= __('Current week') %></li>
+                  <li onclick="getData('outcome', 'lweek')"><%= __('Last week') %></li>
+                  <li onclick="getData('outcome', 'cmonth')"><%= __('Current month') %></li>
+                  <li onclick="getData('outcome', 'lmonth')"><%= __('Last month') %></li>
+                  <li onclick="getData('outcome', 'cquarter')"><%= __('Current quarter') %></li>
+                  <li onclick="getData('outcome', 'lquarter')"><%= __('Last quarter') %></li>
+                  <li onclick="getData('outcome', 'all')"><%= __('All') %></li>
+                  <li>
+                    <button type="button" class="text-left" onclick="setCustom('outcome')" data-toggle="modal" data-target="#custom"><%= __('Custom') %></button>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <!-- modal -->
-            <div class="modal fade" id="customOutcome" tabindex="-1" role="dialog">
-              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                <div class="modal-content neilit-widget">
-                  <div class="modal-header">
-                    <h5 class="modal-title"><%= __('Custom period') %></h5>
-                  </div>
-                  <div class="modal-body">
-                    <p class="mb-0"><%= __('From') %>:</p>
-                    <input id="from-outcome" type="date" class="bg-hover form-control mb-2 px-2">
-                    <p class="mb-0"><%= __('To') %>:</p>
-                    <input id="to-outcome" type="date" class="bg-hover form-control px-2">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" onclick="getCustomOutcome(document.getElementById('from-outcome'), document.getElementById('to-outcome'))" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
-                  </div>
+            <div class="px-3 mt-2">
+              <canvas id="resultsChart" height="300"></canvas>
+            </div>
+            <hr class="w-100 mb-0">
+            <div class="px-3 py-1">
+              <a href="#!">
+                <div class="text-right">
+                  <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Operation outcomes distributed through a monthly grid.') %>">
                 </div>
-              </div>
+              </a>
             </div>
-          </div>
-          <div class="px-3 mt-2">
-            <canvas id="resultsChart" height="300"></canvas>
-          </div>
-          <hr class="mb-0">
-          <div class="px-3 py-1">
-            <a href="#!">
-              <div class="text-right">
-                <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Operation outcomes distributed through a monthly grid.') %>">
-              </div>
-            </a>
           </div>
         </div>
+
         <!-- open trades widget -->
-        <div class="neilit-widget widget-one mb-4">
-          <div class="d-flex align-items-center pt-3 mx-2">
+        <div class="widget-neilit row mx-2 mb-4">
+          <div class="d-flex align-items-start pt-3 mx-2">
             <img src="/imgs/icons/open-ops.svg" class="mx-2 image-widget" alt="Open trades">
             <h5 class="mb-0"><%= __('Open positions') %></h5>
           </div>
-          <div class="my-2">
-            <table class="table table-hover table-borderless font-16 text-center">
+          <div class="mt-2 w-100">
+            <table id="open-positions" class="table table-hover table-borderless font-16 text-center mb-0">
               <thead>
                 <tr>
-                  <th><%= __('Asset') %></th>
-                  <th><%= __('Lots') %></th>
-                  <th><%= __('Direction') %></th>
+                  <th onclick="sortBy('assets')"><%= __('Asset') %></th>
+                  <th onclick="sortBy('lots')"><%= __('Lots') %></th>
+                  <th onclick="sortBy('direction')"><%= __('Direction') %></th>
                   <th><%= __('Entry date') %></th>
                   <th><%= __('Entry price') %></th>
                   <th class="d-flex justify-content-center"><%= __('Current price') %>
@@ -273,26 +242,26 @@
                       <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="top" title="<%= __('The current API we use to retrieve the prices updates once a day, so for more accuracy we recommend you check your broker. Moreover, open P/L are calculates with this price.') %>">
                     </div>
                   </th>
-                  <th><%= __('Open result') %></th>
+                  <th onclick="sortBy('pnl')"><%= __('Open result') %></th>
                 </tr>
               </thead>
               <tbody>
-                <% for (const ops in dashboardOps) { %>
-                  <tr onclick="document.location = '/<%= currentUser.username %>/journal/entry/<%= dashboardOps[ops].id %>/edit'">
+                <% for (const ops in dashboardOpen) { %>
+                  <tr onclick="document.location = '/<%= currentUser.username %>/journal/entry/<%= dashboardOpen[ops].id %>/edit'">
                     <!-- Pair -->
-                    <th class="orange"><%= dashboardOps[ops].pair %></th>
+                    <td class="orange"><%= dashboardOpen[ops].pair %></td>
                     <!-- Lot -->
-                    <td><%= dashboardOps[ops].lot %></td>
+                    <td><%= dashboardOpen[ops].size %></td>
                     <!-- Direction -->
                     <td>
                       <div class="d-flex justify-content-center">
-                        <% if (dashboardOps[ops].direction == 'long') { %>
-                          <span class="pill pill-green">
+                        <% if (dashboardOpen[ops].direction == 'long') { %>
+                          <span class="pill pill-green text-nowrap">
                             <img src="/imgs/icons/trending-up-green.svg" class="py-1 img-direction" alt="direction">
                             <%= __('Long') %>
                           </span>
                         <% } else { %>
-                          <span class="pill pill-red">
+                          <span class="pill pill-red text-nowrap">
                             <img src="/imgs/icons/trending-down-red.svg" class="py-1 img-direction" alt="direction">
                             <%= __('Short') %>
                           </span>
@@ -300,9 +269,9 @@
                       </div>
                     </td>
                     <!-- Entry date -->
-                    <td><%= dashboardOps[ops].date %></td>
+                    <td><%= dashboardOpen[ops].entry_dt.toLocaleDateString(currentUser.language, options); %></td>
                     <!-- Entry price -->
-                    <td><%= dashboardOps[ops].entry %></td>
+                    <td><%= dashboardOpen[ops].entry_price %></td>
                     <!-- Current price -->
                     <!-- the current-rate class is used to load the actual exchange rate -->
                     <td class="current-rate"></td>
@@ -316,8 +285,8 @@
               </tbody>
             </table>
           </div>
-          <hr class="mb-0">
-          <div class="px-3 py-1">
+          <hr class="w-100 mb-0">
+          <div class="w-100 px-3 py-1">
             <a href="#!">
               <div class="text-right">
                 <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Displays the current open operations. This trades need closure to be taken in account in the statistics.') %>">
@@ -325,134 +294,88 @@
             </a>
           </div>
         </div>
+
         <!-- objectives widget -->
-        <div class="neilit-widget widget-one mb-4">
-          <div class="d-flex justify-content-between align-items-center pt-3 mx-2">
-            <span class="d-flex">
-              <img src="/imgs/icons/flag.svg" class="mx-2 image-widget" alt="Objectives">
-              <h5 class="mb-0"><%= __('Goals') %></h5>
-            </span>
-            <!-- dropdown -->
-            <div class="dropdown">
-              <button id="dd" class="dropdown-select font-16 mb-0 mx-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= __('Options') %>
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <button type="button" data-toggle="modal" data-target="#accountBalance" onclick="return false;"><%= __('Account to') %></button>
-                </li>
-                <li>
-                  <button type="button" data-toggle="modal" data-target="#monthlyNumber" onclick="return false;"><%= __('Monthly trades') %></button>
-                </li>
-                <li>
-                  <button type="button" data-toggle="modal" data-target="#weeklyPer" onclick="return false;"><%= __('Weekly') %> %</button>
-                </li>
-                <li>
-                  <button type="button" data-toggle="modal" data-target="#monthlyPer" onclick="return false;"><%= __('Monthly') %> %</button>
-                </li>
-              </ul>
-            </div>
-            <!-- modal -->
-            <div class="modal fade" id="accountBalance" tabindex="-1" role="dialog">
-              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                <div class="modal-content neilit-widget">
-                  <div class="modal-header">
-                    <h5 class="modal-title"><%= __('Select an amount to set as balance target') %></h5>
-                  </div>
-                  <div class="modal-body d-flex">
-                    <input id="vBalance" type="number" min="0" step="1">
-                    <span class="ml-2 mt-auto"><%= dashboardData.base %></span>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" onclick="getBalanceProgress(document.getElementById('vBalance'))" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
+        <div class="widget-neilit row mx-2 mb-4">
+          <div class="d-flex flex-column w-100">
+            <div class="d-flex justify-content-between align-items-center pt-3 mx-2">
+              <span class="d-flex align-items-start">
+                <img src="/imgs/icons/flag.svg" class="mx-2 image-widget" alt="Objectives">
+                <h5 class="mb-0"><%= __('Goals') %></h5>
+              </span>
+              <!-- dropdown -->
+              <div class="dropdown">
+                <button id="dd" class="dropdown-select font-16 mb-0 mx-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= __('Options') %>
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <button type="button" onclick="setProgressType('balance')" data-toggle="modal" data-target="#progress"><%= __('Account to') %></button>
+                  </li>
+                  <li>
+                    <button type="button" onclick="setProgressType('count')" data-toggle="modal" data-target="#progress"><%= __('Monthly trades') %></button>
+                  </li>
+                  <li>
+                    <button type="button" onclick="setProgressType('week')" data-toggle="modal" data-target="#progress"><%= __('Weekly') %> %</button>
+                  </li>
+                  <li>
+                    <button type="button" onclick="setProgressType('month')" data-toggle="modal" data-target="#progress"><%= __('Monthly') %> %</button>
+                  </li>
+                </ul>
+              </div>
+              <!-- modal -->
+              <div class="modal fade" id="progress" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                  <div class="modal-content widget-neilit">
+                    <div class="modal-header">
+                      <h5 class="modal-title"><%= __('Select a target for your progress') %></h5>
+                    </div>
+                    <div class="modal-body d-flex">
+                      <input id="progress-target" type="number" min="0" step="1" class="px-2" placeholder="<%= __('What\'s your goal?') %>">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" onclick="updateProgress()" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- modal -->
-            <div class="modal fade" id="monthlyNumber" tabindex="-1" role="dialog">
-              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                <div class="modal-content neilit-widget">
-                  <div class="modal-header">
-                    <h5 class="modal-title"><%= __('Select an amount of trades as monthly target') %></h5>
-                  </div>
-                  <div class="modal-body">
-                    <input id="vMonthCount" type="number" min="0" step="1">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" onclick="getMonthCountProgress(document.getElementById('vMonthCount'))" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
-                  </div>
+            <div class="p-3">
+              <!-- objective -->
+              <div class="d-flex mb-3">
+                <div class="no-wrap mr-2">
+                  <%= __('Account to') %> <span id="d-balance">50000</span> <%= dashboardData.base %>
+                </div>
+                <div class="progress w-100">
+                  <div id="balance" class="progress-bar progress-bar-orange" role="progressbar"></div>
                 </div>
               </div>
-            </div>
-            <!-- modal -->
-            <div class="modal fade" id="weeklyPer" tabindex="-1" role="dialog">
-              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                <div class="modal-content neilit-widget">
-                  <div class="modal-header">
-                    <h5 class="modal-title"><%= __('Select a % return as weekly target') %></h5>
-                  </div>
-                  <div class="modal-body">
-                    <input id="vWeekPer" type="number" min="0" step="0.01">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" onclick="getWeekPerProgress(document.getElementById('vWeekPer'))" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
-                  </div>
+              <!-- objective -->
+              <div class="d-flex mb-3">
+                <div class="no-wrap mr-2">
+                  <span id="d-count">50</span> <%= __('monthly trades') %>
+                </div>
+                <div class="progress w-100">
+                  <div id="monthCount" class="progress-bar progress-bar-orange" role="progressbar"></div>
                 </div>
               </div>
-            </div>
-            <!-- modal -->
-            <div class="modal fade" id="monthlyPer" tabindex="-1" role="dialog">
-              <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                <div class="modal-content neilit-widget">
-                  <div class="modal-header">
-                    <h5 class="modal-title"><%= __('Select a % return as monthly target') %></h5>
-                  </div>
-                  <div class="modal-body">
-                    <input id="vMonthPer" type="number" min="0" step="0.01">
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" onclick="getMonthPerProgress(document.getElementById('vMonthPer'))" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
-                  </div>
+              <!-- objective -->
+              <div class="d-flex mb-3">
+                <div class="no-wrap mr-2">
+                  <span id="d-week">5</span><%= __('% weekly') %>
+                </div>
+                <div class="progress w-100">
+                  <div id="weekPer" class="progress-bar progress-bar-orange" role="progressbar"></div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="p-3">
-            <!-- objective -->
-            <div class="d-flex mb-3">
-              <div class="no-wrap mr-2">
-                <%= __('Account to') %> <span id="d-balance">50000</span> <%= dashboardData.base %>
-              </div>
-              <div class="progress w-100">
-                <div id="balance" class="progress-bar progress-bar-orange" role="progressbar"></div>
-              </div>
-            </div>
-            <!-- objective -->
-            <div class="d-flex mb-3">
-              <div class="no-wrap mr-2">
-                <span id="d-month-count">50</span> <%= __('monthly trades') %>
-              </div>
-              <div class="progress w-100">
-                <div id="monthCount" class="progress-bar progress-bar-orange" role="progressbar"></div>
-              </div>
-            </div>
-            <!-- objective -->
-            <div class="d-flex mb-3">
-              <div class="no-wrap mr-2">
-                <span id="d-week-per">5</span><%= __('% weekly') %>
-              </div>
-              <div class="progress w-100">
-                <div id="weekPer" class="progress-bar progress-bar-orange" role="progressbar"></div>
-              </div>
-            </div>
-            <!-- objective -->
-            <div class="d-flex mb-3">
-              <div class="no-wrap mr-2">
-                <span id="d-month-per">20</span><%= __('% monthly') %>
-              </div>
-              <div class="progress w-100">
-                <div id="monthPer" class="progress-bar progress-bar-orange" role="progressbar"></div>
+              <!-- objective -->
+              <div class="d-flex mb-3">
+                <div class="no-wrap mr-2">
+                  <span id="d-month">20</span><%= __('% monthly') %>
+                </div>
+                <div class="progress w-100">
+                  <div id="monthPer" class="progress-bar progress-bar-orange" role="progressbar"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -462,11 +385,13 @@
   </div>
 
 <script type="text/javascript">
-  var currentUser = <%- JSON.stringify(currentUser); %>
+  var username = <%- JSON.stringify(currentUser.username); %>
+  var language = <%- JSON.stringify(currentUser.language); %>
+  var isDarkMode = <%- JSON.stringify(currentUser.darkMode); %>
   var outcomeMonthAmount = <%- JSON.stringify(outcomeMonthAmount); %>
   var outcomeMonthTotal = <%- JSON.stringify(outcomeMonthTotal); %>
   var balance = <%- JSON.stringify(dashboardData.currentAmount); %>
-  var openOps = <%- JSON.stringify(dashboardOps); %>
+  var openOps = <%- JSON.stringify(dashboardOpen); %>
   var monthCount = <%- JSON.stringify(monthCount); %>
   var weekPer = <%- JSON.stringify(weekPer); %>
   var monthPer = <%- JSON.stringify(monthPer); %>

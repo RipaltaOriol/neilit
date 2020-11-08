@@ -9,7 +9,7 @@ let db = require('../models/dbConfig');
 
 // INDEX ENTRIES ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  var getEntries = 'SELECT * FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25;'
+  var getEntries = 'SELECT * FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25;';
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   var dataList = []
   db.query(getEntries, req.user.id, (err, results) => {

@@ -26,6 +26,57 @@ router.get("/components", middleware.isLoggedIn, (req, res) => {
   );
 });
 
+// INDEX TRADING PLAN ROUTE
+router.get("/", middleware.isLoggedIn, (req, res) => {
+  // COMBAK: ensure that order is descending in terms of created_at
+  var selectPlans = 'SELECT id, title, created_at FROM plans WHERE user_id = ? ORDER BY created_at DESC LIMIT 25;';
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  db.query(selectPlans, req.user.id, (err, getPlans) => {
+    if (err) {
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again.'))
+      return res.redirect('/' + req.user.username);
+    }
+    // Object to store the Plans
+    var plans = {
+      id: [],
+      title: [],
+      date: []
+    }
+    getPlans.forEach((result) => {
+      plans.id.push(result.id);
+      plans.title.push(result.title);
+      plans.date.push(result.created_at.toLocaleDateString(req.user.language, options));
+    });
+    res.render("user/plan", {plans: plans});
+  })
+})
+
+// INDEX TRADING PLAN INFINITE SCROLL LOGIC
+router.post("/load-index", middleware.isLoggedIn, (req, res) => {
+  var selectPlans = 'SELECT id, title, created_at FROM plans WHERE user_id = ? ORDER BY created_at DESC LIMIT 25 OFFSET ?;'
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  db.query(selectPlans, [req.user.id, Number(req.body.offset)], (err, results) => {
+    if (err) {
+      // COMBAK: log error
+    }
+    // Object to store the Plans
+    var plans = {
+      id: [],
+      title: [],
+      date: []
+    }
+    results.forEach((result) => {
+      plans.id.push(result.id);
+      plans.title.push(result.title);
+      plans.date.push(result.created_at.toLocaleDateString(req.user.language, options));
+    });
+    return res.json({
+      plans: plans
+    });
+  })
+})
+
 // NEW PLAN ROUTE
 router.get("/new", middleware.isLoggedIn, (req, res) => {
   var selectBacktests = 'SELECT id, DATE_FORMAT(created_at, \'%d ' + res.__('of') + ' %M %Y\') AS date, result FROM backtest WHERE user_id = ?;'

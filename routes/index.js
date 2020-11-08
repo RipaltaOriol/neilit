@@ -44,6 +44,15 @@ router.get("/", (req, res) => {
   res.render("home");
 });
 
+// MOBILE OPTIMIZATION NOTIFICATION ROUTE
+router.get("/mobile", (req, res) => {
+  res.render("mobile");
+})
+
+router.get("/test", (req, res) => {
+  res.render("test");
+})
+
 // LOGIN ROUTE
 router.get("/login", (req, res) => {
   // checks whether user data exists for direct login

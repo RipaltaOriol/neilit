@@ -42,7 +42,7 @@ router.get("/biggest/:period", middleware.isLoggedIn, (req, res) => {
           break;
       }
       getEntries.forEach((entry) => {
-        var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+        var entryPercent = ((entry.profits - entry.fees) / req.user.balance) * 100;
         if (entryPercent > percent) {
           percent = entryPercent;
           pair = pairs[entry.pair_id - 1];
@@ -69,7 +69,7 @@ router.get("/biggest/custom/:from/:to", middleware.isLoggedIn, (req, res) => {
     try {
       var getEntries = await query('SELECT pair_id, profits, fees FROM entries WHERE status = 1 AND user_id = ? AND entry_dt > ? AND entry_dt < ?;', [req.user.id, req.params.from, req.params.to]);
       getEntries.forEach((entry) => {
-        var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+        var entryPercent = ((entry.profits - entry.fees) / req.user.balance) * 100;
         if (entryPercent >= biggestPercent) {
           biggestPercent = entryPercent;
           biggestPair = pairs[entry.pair_id - 1];
@@ -81,8 +81,8 @@ router.get("/biggest/custom/:from/:to", middleware.isLoggedIn, (req, res) => {
       return res.redirect('/' + req.user.username);
     } finally {
       res.json({
-        biggestPercent: biggestPercent,
-        biggestPair: biggestPair
+        percent: biggestPercent,
+        pair: biggestPair
       })
     }
   })()

@@ -8,6 +8,7 @@
 :root {
   --invert-white:       #ffffff;
   --invert-black:       #000000;
+  --white-black:        #ffffff;
   --white-none:         rgba(255,255,255,1);
   --neilit-permanent:   #ff8818;
   --neilit-default:     #ff8818;
@@ -21,6 +22,7 @@
   --background-medium:  #ffffff;
   --background-soft:    #ffffff;
   --background-neilit:  #ff8818;
+  --background-transparent: transparent;
   --text-contrast:      #212529;
   --text-grey:          #7b7b7b;
   --background-hover:   #f7f7f7;
@@ -36,6 +38,7 @@
 :root.dark-mode {
   --invert-white:       #121212;
   --invert-black:       #ffffff;
+  --white-black:        #000000;
   --white-none:         rgba(0,0,0,0);
   --neilit-default:     #272727;
   --neilit-white:       #ffffff;
@@ -46,6 +49,7 @@
   --background-medium:  #272727;
   --background-soft:    #474747;
   --background-neilit:  #474747;
+  --background-transparent: #272727;
   --background-hover:   #424242;
   --text-grey:          #a9a9a9;
   --box-background:     #272727;
@@ -204,8 +208,8 @@ input[type=search] {
 /* || Utility */
 .btn-neilit {
   font-size: 16px;
-  color: white;
-  border: 0.5px solid var(--neilit-white);
+  color: var(--white-neilit);
+  border: 0.5px solid var(--neilit-permanent);
   border-radius: .25rem;
   background: var(--neilit-default);
   transition-duration: .25s;
@@ -223,16 +227,19 @@ input[type=search] {
   color: var(--neilit-white);
   border: 1px solid var(--neilit-white);
   border-radius: .25rem;
-  background-color: var(--background-medium);
+  background-color: var(--background-transparent);
   transition-duration: .25s;
   padding: 0.25rem 0.5rem;
 
 }
   .btn-inverted:hover {
-    color: var(--white-neilit)!important;
+    color: var(--white-black);
     background-color: var(--neilit-white);
     text-decoration: none;
     transition-duration: .25s;
+  }
+  .btn-inverted:focus {
+    outline: none;
   }
 
 /* Boton Upgrade SideBar */
@@ -253,32 +260,13 @@ input[type=search] {
     box-shadow: 0px 1px 4px 0.5px rgba(0,0,0,0.3);
   }
 
-/* || DOM selector */
-.element-menu {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
- }
-  .element-menu img {
-    width: 26px;
-  }
-
-  .element-menu:hover {
-    background: rgba(255,255,255,.15);
-   }
-
-.btn-top {
-  position: fixed;
-  top: 25px;
-  right: 25px;
+.icon-settings {
+  width: 1.75rem;
+  height: 1.75rem;
 }
-  .btn-top img {
-    width: 1.75rem;
-    height: 1.75rem;
+  .dark-mode .icon-settings {
+    filter: invert();
   }
-    .dark-mode .btn-top img {
-      filter: invert();
-    }
 
 /* || Utility */
 .info {
@@ -291,45 +279,56 @@ input[type=search] {
     transition-duration: 0.15s;
   }
 
-#neilit-menu {
-  height: 100%;
-  width: 250px;
+#menu-neilit {
   position: fixed;
-  z-index: 1;
   top: 0;
-  left: 0;
+  left: 0px;
+  width: 250px;
+  height: 100%;
   background: var(--neilit-default);
+  padding-top: 20px;
+  z-index: 1;
   opacity: 1;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 20px;
 }
-  #neilit-menu a {
-    color: white;
-  }
 
-#header-menu {
+#menu-header {
   height: 50px
 }
-  #header-menu img {
+  #menu-header img {
     width: 40px;
   }
 
-#content-menu {
-  height: calc(100% - 100px);
-}
-
-#content-menu a:hover{
-  text-decoration: none;
-}
+#menu-links { }
+  #menu-links a {
+    color: white;
+    transition: 0.3s;
+  }
+  #menu-links a:hover {
+    background: rgba(255,255,255,.15);
+   }
+    #menu-links a img {
+      width: 25px;
+      height: 25px;
+      min-width: 25px;
+      min-height: 25px;
+    }
 
 #content {
+  width: auto;
+  margin-top: 80px;
   margin-left: 250px;
   transition: margin-left 0.5s;
 }
 
-#header-top {
-  width: 100% - 250px;
+@media screen and (max-width: 992px) {
+  #menu-neilit {
+    width: 200px;
+  }
+  #content {
+    margin-left: 200px;
+  }
 }
 
 #search{ }
@@ -346,22 +345,30 @@ input[type=search] {
 	    cursor: auto;
     }
 
-#toggle-c-menu { }
-  #toggle-c-menu img {
+#close-menu { }
+  #close-menu img {
     filter: none;
   }
 
 /* || DOM selector */
-#toggle-o-menu {
-  position: fixed;
-  top: 25px;
-  left: 25px;
-}
-  #toggle-o-menu img {
-    width: 34px;
-  }
-  .dark-mode #toggle-o-menu img {
+#open-menu { }
+  #open-menu img {
     width: 2.25rem;
     height: 2.25rem;
+  }
+  .dark-mode #open-menu img {
     filter: invert();
+  }
+
+  /*--------*/
+  #top-bar {
+    height: 80px;
+    background-color: none;
+    z-index: 1;
+  }
+  #blur-bar {
+    height: 80px;
+    background-color: var(--background-strong);
+    opacity: 0.9;
+    z-index: 0;
   }

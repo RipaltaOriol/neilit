@@ -17,19 +17,37 @@ $(document).ready(function() {
 
 var storeTa = document.getElementById("submit-ta");
 
-// Gets the pair information from the JOURNAL route
-if (window.localStorage.getItem('ta-pair') != null) {
-  // prevents the pair from chading on the edit route
-  if (!($('.edit').length > 0)) {
-    document.getElementById('ta-pair').value = window.localStorage.getItem('ta-pair');
-    taCategory();
+// dropdown to select a time period for statistics
+$('.dropdown-menu li').on('click', function() {
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  if ($('.dropdown-server')[current]) {
+    $('.dropdown-server')[current].value = this.className;
+    //category.value = categories[document.getElementById('ta-pair').value]
+    $('#ta-category').val(categories[this.className - 1])
   }
-}
+  if ($('.dropdown-select')[current]) {
+    $('.dropdown-select')[current].innerHTML = getValue;
+  }
+});
 
-// Sets the category that corresponds to the selected pair
-function taCategory() {
-  var category = document.getElementById('ta-category')
-  category.value = categories[document.getElementById('ta-pair').value]
+// search bar for the dropdown
+function searchDropdown(id) {
+  var input, search, dropdownItems, val;
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index(id.parentElement)
+  input = document.getElementsByClassName('dropdown-search')[current];
+  search = input.value.toUpperCase();
+  dropdownItems = document.getElementsByClassName('dropdown-menu')[current].getElementsByTagName('li');
+  for (var i = 0; i < dropdownItems.length; i++) {
+    val = dropdownItems[i].textContent || dropdownItems[i].innerText;
+    if (val.toUpperCase().indexOf(search) > -1) {
+      dropdownItems[i].style.display = "";
+    } else {
+      dropdownItems[i].style.display = "none";
+    }
+  }
 }
 
 // Elements available in TA
@@ -47,6 +65,16 @@ taTitle.addEventListener('click', () => {
 // -> Text
 taText.addEventListener('click', () => {
   $('#ta-content').append(elements.text);
+  // Sets placeholder for text input
+  jQuery(function($){
+    $(".editcontent").focusout(function(){
+      console.log('detect');
+      var element = $(this);
+      if (!element.text().replace(" ", "").length) {
+        element.empty();
+      }
+    });
+  });
 });
 // -> Image
 taImage.addEventListener('click', () => {

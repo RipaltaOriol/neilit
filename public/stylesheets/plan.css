@@ -69,6 +69,11 @@ img { }
   width: 350px;
 }
 
+.plan-scroll {
+  max-height: 75vh;
+  overflow-y: scroll;
+}
+
 /* || Neilit color bullets */
 .neilit-bullets {
   list-style: none;
@@ -111,11 +116,8 @@ img { }
     margin-top: 0;
     border-color: var(--grey-medium);
   }
-  .journal-box a {
-    color: white;
-  }
+  .journal-box a { }
     .journal-box a:hover {
-      color: white;
       cursor: pointer;
       text-decoration: none;
     }
@@ -333,6 +335,10 @@ img { }
       border-radius: 0.25rem;
       background-color: var(--neilit-permanent);
     }
+
+#spinner {
+  color: var(--neilit-permanent);
+}
 
 #title {
   font-size: 1.4rem;

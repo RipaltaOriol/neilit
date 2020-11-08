@@ -156,12 +156,43 @@ if (storeBacktest != null) {
 
 // sets the fields of the modal to 0 or origin
 function cleanModal() {
-  // COMBAK: complete function
+  if (backtest.hasOwnProperty('direction')) {
+    $('.direction').text(backtest.direction.charAt(0).toUpperCase() + backtest.direction.slice(1))
+  } else {
+    $('.direction').text('Long')
+  }
+  if (backtest.hasOwnProperty('pair')) {
+    $('.pair').text(currencies[backtest.pair - 1])
+  } else {
+    $('.pair').text(currencies[0])
+  }
+  $('#row-result').val('')
+  if (backtest.hasOwnProperty('strategy')) {
+    $('.strategy').text(backtest.strategy)
+  } else {
+    $('.strategy').text(strategies[0])
+  }
+  if (backtest.hasOwnProperty('timeframe')) {
+    $('.timeframe').text(timeframes[backtest.timeframe - 1])
+  } else {
+    $('.timeframe').text(timeframes[0])
+  }
+  var addons = $('.addon')
+  for (var i = 0; i < addons.length; i++) {
+    if (backtest.addonsType[i]) {
+      addons[i].value = '';
+    } else {
+      addons[i].innerHTML = backtest.addonsOptions[i][0];
+    }
+  }
+  $('#update-row').hide();
+  $('#create-row').show();
 }
 
 // selects the given row to be modified
 function editRow(id) {
-  newRow(0);
+  $('#create-row').hide();
+  $('#update-row').show();
   var rowDirection = $('.direction')[0];
   var rowPair = $('.pair');
   var rowResult = document.getElementById('row-result');
@@ -174,7 +205,7 @@ function editRow(id) {
   var editDirection = row.getElementsByTagName('td')[1].innerText;
   rowDirection.innerHTML = editDirection;
   var editResult = row.getElementsByTagName('td')[2];
-  rowResult.value = editResult.innerHTML;
+  rowResult.value = editResult.innerHTML.split(' ', 1);
   rowPair.innerHTML = row.getElementsByTagName('td')[3].innerText;
   rowStrategy.innerHTML = row.getElementsByTagName('td')[4].innerText;
   rowTimeframe.innerHTML = row.getElementsByTagName('td')[5].innerText;
@@ -220,12 +251,10 @@ function updateRow() {
       row[6 + i].innerHTML = backtest.addonsOptions[i].indexOf(addonValue) + 1;
     }
   }
-  newRow(1);
 }
 
 // create a new row with the give value
 function createRow() {
-  cleanModal();
   var table = document.getElementById("backtest-table").getElementsByTagName('tbody')[0];
   var currentRow = document.getElementsByTagName('tr').length - 1;
   var currentDirection = $('.direction')[0].textContent || $('.direction')[0].innerText;
@@ -287,7 +316,6 @@ function createRow() {
   buttonsCell.appendChild(deleteBtn)
   buttonsCell.appendChild(editBtn)
   buttonsCell.className = 'text-center';
-  newRow(1);
 }
 
 // deletes the row in the given index

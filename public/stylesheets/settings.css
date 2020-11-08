@@ -79,7 +79,6 @@ input {
   }
 
 hr.profile {
-  background: red;
   border: 1px solid var(--grey-medium);
   width: 100%;
   margin: 0;

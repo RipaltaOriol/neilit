@@ -355,11 +355,11 @@
                     <% } else { %>
                       <% if (assetStats.percent[assetStats.showcase[i][1]]/assetStats.showcase[i][0] >= 0) { %>
                         <p class="mb-0 pill pill-verde">
-                          <%= assetStats.percent[assetStats.showcase[i][1]]/assetStats.showcase[i][0] %>%
+                          <%= (assetStats.percent[assetStats.showcase[i][1]]/assetStats.showcase[i][0]).toFixed(2) %>%
                         </p>
                       <% } else { %>
                         <p class="mb-0 pill pill-roja">
-                          <%= assetStats.percent[assetStats.showcase[i][1]]/assetStats.showcase[i][0] %>%
+                          <%= (assetStats.percent[assetStats.showcase[i][1]]/assetStats.showcase[i][0]).toFixed(2) %>%
                         </p>
                       <% } %>
                     <% } %>

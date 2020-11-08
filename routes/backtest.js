@@ -402,14 +402,14 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
     if ('direction' in parseData.backtest) {
       editBacktest[i].push(null)
     } else {
-      if (parseData.data[0][i] == 'short' || parseData.data[0][i] == 'venta') {
+      if (parseData.data[0][i] == 'Short' || parseData.data[0][i] == 'Venta') {
         editBacktest[i].push('short')
       } else {
         editBacktest[i].push('long')
       }
     }
     // result parameter
-    editBacktest[i].push(parseData.data[1][i])
+    editBacktest[i].push(parseData.data[1][i].split(' ', 1))
     // pair parameter
     if ('pair' in parseData.backtest) {
       editBacktest[i].push(null)

@@ -6,20 +6,31 @@
       <form action="/<%= currentUser.username %>/journal/ta" method="POST">
         <h3 class="mx-3"><%= __('Create Technical Analysis') %></h3>
         <hr>
-        <div class="mb-2 mx-3">
-          <select id="ta-pair" name="pair" class="custom-select p-1" onchange="taCategory();">
-            <% for (var i = 0; i < currencies.length; i++) { %>
-              <option value="<%= i %>"><%= currencies[i] %></option>
-            <% } %>
-          </select>
-          <div class="d-flex flex-column mt-2">
+        <div class="form-fields mb-2 mx-3">
+          <span class="d-block">
+              <label><%= __('Pair') %>:</label>
+              <input id="ta-pair" type="text" name="pair" value="1" class="dropdown-server d-none">
+              <!-- dropdown -->
+              <div class="dropdown d-inline">
+                <button id="dropdown-label" class="ta-pair dropdown-select px-2" type="button" data-toggle="dropdown">
+                  <%= currencies[0] %>
+                </button>
+                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                  <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                  <% for (var i = 0; i < currencies.length; i++) { %>
+                    <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                  <% } %>
+                </ul>
+              </div>
+            </span>
+          <div class="d-flex flex-column">
             <span>
               <label><%= ('Category') %>:</label>
-              <input id="ta-category" type="text" class="bg-hover orange px-2" name="category" readonly>
+              <input id="ta-category" type="text" class="form-input orange px-2" name="category" value="Forex" readonly>
             </span>
             <span>
               <label><%= ('Date') %>:</label>
-              <input type="date" class="datepicker bg-hover orange px-2" data-target="date">
+              <input type="date" class="datepicker form-input orange px-2" data-target="date">
               <input type="date" id="date" class="d-none" name="date">
             </span>
           </div>

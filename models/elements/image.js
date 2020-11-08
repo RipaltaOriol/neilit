@@ -4,7 +4,7 @@
 var imageHtml = `
   <span class="d-flex mb-2 image ta-element">
     <input type="text" name="type" value="image" class="d-none">
-    <div class="px-2">
+    <div class="p-2">
       <span class="client-image">
         <label class="mb-0">Subir una image</label>
         <input type="file" class="file" accept="image/*">
@@ -15,7 +15,7 @@ var imageHtml = `
       </span>
       <img class="image-src my-2">
     </div>
-    <span class="d-flex ml-auto">
+    <span class="d-flex ml-2">
       <img src="/imgs/icons/move.svg" alt="move" class="move">
       <img src="/imgs/icons/delete.svg" alt="delete" class="drop" onclick="whatIndex(this)">
     </span>

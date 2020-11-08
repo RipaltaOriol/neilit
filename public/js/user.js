@@ -1,20 +1,34 @@
 // sets colours on graph axes
 var axesColor = 'rgba(0,0,0,0.1)'
-if (currentUser.darkMode) {
+if (isDarkMode) {
   axesColor = 'rgb(255,255,255,0.1)'
 }
 
 $(document).ready(function() {
-    // generates the datepicker
-    $("input[type=date]").datepicker({
-      dateFormat: 'yy/mm/dd'
+  // redirects to notification page
+  if (screen.width < 768) {
+    window.location.replace("/mobile")
+  }
+  // sets datepicker
+  $(function() {
+    $.datepicker.setDefaults(
+      $.extend(
+        $.datepicker.regional[language]
+      )
+    )
+    $('.datepicker').each(function(){
+      $(this).datepicker({
+        altField: "#" + $(this).data('target'),
+        altFormat: "yy-mm-dd" // format for database processing
+      });
     });
-    // prevents the classic datepicker from loading
-    $("input[type=date]").on('click', function() {
-      return false;
-    });
-    // loads the currency data for open operations
-    loadExchangeRates();
+  });
+  // prevents the classic datepicker from loading
+  $("input[type=date]").on('click', function() {
+    return false;
+  });
+  // loads the currency data for open operations
+  loadExchangeRates();
 });
 
 // checks if the given dates are valid
@@ -22,45 +36,55 @@ function isValidDate(d) {
   return d instanceof Date && !isNaN(d);
 }
 
-// sets default progress bar values
-var vBalance = 50000;
-var vMonthCount = 50;
-var vWeekPer = 5;
-var vMonthPer = 20;
-
-// calculates the progress bar for balance
-function progressBalance() {
-  var toCount = parseInt(balance.replace(/,/g, '')) / vBalance * 100;
-  if (toCount > 100) { toCount = 100 }
-  $('#balance').html(Math.round(toCount * 100) / 100 + '%')
-  $('#balance').css('width', toCount + '%')
-}
-
-// calculates the progress bar for monthly count
-function progressMonthCount() {
-  var toCount = monthCount / vMonthCount * 100;
-  if (toCount > 100) { toCount = 100 }
-  else if (toCount < 0) { toCount = 0; }
-  $('#monthCount').html(Math.round(toCount * 100) / 100 + '%')
-  $('#monthCount').css('width', toCount + '%')
-}
-
-// calculates the progress bar for weekly percentage
-function progressWeekPer() {
-  var toCount = weekPer / vWeekPer * 100;
-  if (toCount > 100) { toCount = 100 }
-  else if (toCount < 0) { toCount = 0; }
-  $('#weekPer').html(Math.round(toCount * 100) / 100 + '%')
-  $('#weekPer').css('width', toCount + '%')
-}
-
-// calculates the progress bar for monthly percentage
-function progressMonthPer() {
-  var toCount = monthPer / vMonthPer * 100;
-  if (toCount > 100) { toCount = 100 }
-  else if (toCount < 0) { toCount = 0; }
-  $('#monthPer').html(Math.round(toCount * 100) / 100 + '%')
-  $('#monthPer').css('width', toCount + '%')
+// sorts the table of open positions by asset
+function sortBy(column) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("open-positions");
+  switching = true;
+  // make a loop that will continue until no switching has been done:
+  while (switching) {
+    // start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    // loop through all table rows (except the first, which contains table headers):
+    for (i = 1; i < (rows.length - 1); i++) {
+      // start by saying there should be no switching:
+      shouldSwitch = false;
+      // get the two elements you want to compare, one from current row and one from the next:
+      switch (column) {
+        case 'assets':
+          x = rows[i].getElementsByTagName("TD")[0].innerHTML;
+          y = rows[i + 1].getElementsByTagName("TD")[0].innerHTML;
+          break;
+        case 'lots':
+          x = rows[i].getElementsByTagName("TD")[1].innerHTML;
+          y = rows[i + 1].getElementsByTagName("TD")[1].innerHTML;
+          break;
+        case 'direction':
+          x = rows[i].getElementsByTagName("TD")[2].children[0].children[0].innerText;
+          y = rows[i + 1].getElementsByTagName("TD")[2].children[0].children[0].innerText;
+          break;
+        case 'pnl':
+          x = rows[i].getElementsByTagName('TD')[6].children[0].children[0].innerText.slice(0,-3);
+          y = rows[i + 1].getElementsByTagName('TD')[6].children[0].children[0].innerText.slice(0,-3);
+          break;
+        default:
+          x = rows[i].getElementsByTagName("TD")[0];
+          y = rows[i + 1].getElementsByTagName("TD")[0];
+      }
+      // check if the two rows should switch place:
+      if (x.toLowerCase() > y.toLowerCase()) {
+        // If so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      // if a switch has been marked, make the switch and mark that a switch has been done:
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
 }
 
 // dropdown to select a time period for statistics
@@ -74,148 +98,148 @@ $('.dropdown-menu li').on('click', function() {
   }
 });
 
-// retrieves the biggest trade from the selected time period
-function getBiggest(period) {
-  var biggestPair = document.getElementById('biggest-pair');
-  var biggestPercent = document.getElementById('biggest-percent')
+// defines and sets the statistic of the custom period
+let custom;
+function setCustom(stats) {
+  custom = stats;
+}
+
+// retrieves the statistics from the selected time period
+function getData(stats, period) {
   // makes an AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/dashboard/biggest/' + period)
+  $.get('/' + username + '/dashboard/' + stats + '/' + period)
     .done((data) => {
-      biggestPair.innerHTML = data.pair;
-      biggestPercent.innerHTML = data.percent.toFixed(2) + '%';
+      switch (stats) {
+        case 'biggest':
+          setBiggest(data);
+          break;
+        case 'total':
+          setTotal(data)
+          break;
+        case 'outcome':
+          setOutcome(data)
+          break;
+      }
   })
     .fail(() => {
       //error
   })
 }
 
-// retrieves biggest trade from a custom time period
-function getCustomBiggest(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/dashboard/biggest/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        $('#biggest-pair').text(data.biggestPair);
-        var biggestPercent = data.biggestPercent.toFixed(2);
-        $('#biggest-percent').text(biggestPercent + '%');
-    })
-      .fail(() => {
-        // error
-    })
-  }
-}
-
-// retrieves the total entries from the selected time period
-function getTotal(period) {
-  var totalEntries = document.getElementById('total-entries');
-  var winRate = document.getElementById('win-rate');
-  // makes an AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/dashboard/total/' + period)
+// retrieves the statistics from a custom time period
+function getCustom() {
+  var customFrom = $('#custom-from').val()
+  var customTo = $('#custom-to').val()
+  // makes an AJAX call with the custom data period
+  $.get('/' + username + '/dashboard/' + custom + '/custom/' + customFrom + '/' + customTo)
     .done((data) => {
-      totalEntries.innerHTML = data.total;
-      winRate.innerHTML = data.rate.toFixed(2) + '% wins';
+      switch (custom) {
+        case 'biggest':
+          setBiggest(data);
+          break;
+        case 'total':
+          setTotal(data)
+          break;
+        case 'outcome':
+          setOutcome(data)
+          break;
+      }
   })
     .fail(() => {
       // error
   })
 }
 
-// retrieves total entries from a custom time period
-function getCustomTotal(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/dashboard/total/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        $('#total-entries').text(data.total);
-        if (isNaN(parseFloat(data.rate))) {
-          $('#win-rate').text('N/A% wins');
-        } else {
-          $('#win-rate').text(data.rate + '% wins');
-        }
-    })
-      .fail(() => {
-        // error
-    })
+// sets biggest pair
+function setBiggest(data) {
+  $('#biggest-pair').html(data.pair);
+  $('#biggest-percent').html(data.percent.toFixed(2) + '%');
+}
+
+// sets total entries and win rate
+function setTotal(data) {
+  $('#total-entries').html(data.total);
+  $('#win-rate').html(data.rate.toFixed(2) + '% wins');
+}
+
+function setOutcome(data) {
+  resultsChart.data.datasets[0].data = data.outcomeMonthAmount;
+  resultsChart.data.datasets[1].data = data.outcomeMonthTotal;
+  resultsChart.update();
+}
+
+// sets default progress bar values
+var currentBar;
+
+// calculates the progress bar for balance
+function progressBalance(input) {
+  var toCount = balance / input * 100;
+  if (toCount > 100) { toCount = 100 }
+  $('#balance').html(Math.round(toCount * 100) / 100 + '%')
+  $('#balance').css('width', toCount + '%')
+}
+
+// calculates the progress bar for monthly count
+function progressMonthCount(input) {
+  var toCount = monthCount / input * 100;
+  if (toCount > 100) { toCount = 100 }
+  else if (toCount < 0) { toCount = 0; }
+  $('#monthCount').html(Math.round(toCount * 100) / 100 + '%')
+  $('#monthCount').css('width', toCount + '%')
+}
+
+// calculates the progress bar for weekly percentage
+function progressWeekPer(input) {
+  var toCount = weekPer / input * 100;
+  if (toCount > 100) { toCount = 100 }
+  else if (toCount < 0) { toCount = 0; }
+  $('#weekPer').html(Math.round(toCount * 100) / 100 + '%')
+  $('#weekPer').css('width', toCount + '%')
+}
+
+// calculates the progress bar for monthly percentage
+function progressMonthPer(input) {
+  var toCount = monthPer / input * 100;
+  if (toCount > 100) { toCount = 100 }
+  else if (toCount < 0) { toCount = 0; }
+  $('#monthPer').html(Math.round(toCount * 100) / 100 + '%')
+  $('#monthPer').css('width', toCount + '%')
+}
+
+// sets the progress bar that is being modified
+function setProgressType(type) {
+  currentBar = type;
+  console.log('Passed');
+}
+
+// modifies the accont a progress bar
+function updateProgress() {
+  var input = $('#progress-target').val();
+  if (!isNaN(input)) {
+    switch (currentBar) {
+      case 'balance':
+        progressBalance(input);
+        break;
+      case 'count':
+        progressMonthCount(input);
+        break;
+      case 'week':
+        progressWeekPer(input);
+        break;
+      case 'month':
+        progressMonthPer(input);
+        break;
+    }
+    $('#d-' + currentBar).text(input);
+    $('#progress-target').val('');
   }
 }
 
-// retrieves the outcome x month from the selected time period
-function getOutcome(period) {
-  // makes an AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/dashboard/outcome/' + period)
-    .done((data) => {
-      resultsChart.data.datasets[0].data = data.outcomeMonthAmount;
-      resultsChart.data.datasets[1].data = data.outcomeMonthTotal;
-      resultsChart.update();
-  })
-    .fail(() => {
-      // error
-  })
-}
-
-// retrieves outcome x month from a custom time period
-function getCustomOutcome(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/dashboard/outcome/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        resultsChart.data.datasets[0].data = data.outcomeMonthAmount;
-        resultsChart.data.datasets[1].data = data.outcomeMonthTotal;
-        resultsChart.update();
-    })
-      .fail(() => {
-        // error
-    })
-  }
-}
-
-// modifies the accont balance progress bar
-function getBalanceProgress(newValue) {
-  if (!isNaN(newValue.value)) {
-    vBalance = newValue.value;
-    $('#d-balance').text(vBalance);
-    progressBalance();
-  }
-}
-
-// modifies the monthly count progress bar
-function getMonthCountProgress(newValue) {
-  if (!isNaN(newValue.value)) {
-    vMonthCount = newValue.value;
-    $('#d-month-count').text(vMonthCount);
-    progressMonthCount();
-  }
-}
-
-// modifies the weekly percent progress bar
-function getWeekPerProgress(newValue) {
-  if (!isNaN(newValue.value)) {
-    vWeekPer = newValue.value;
-    $('#d-week-per').text(vWeekPer);
-    progressWeekPer();
-  }
-}
-
-// modifies the monthly percent progress bar
-function getMonthPerProgress(newValue) {
-  if (!isNaN(newValue.value)) {
-    vMonthPer = newValue.value;
-    $('#d-month-per').text(vMonthPer);
-    progressMonthPer();
-  }
-}
+// loads progress bars with default values
+progressBalance(50000);
+progressMonthCount(50);
+progressWeekPer(5);
+progressMonthPer(20);
 
 // makes API call to get exchange rate
 function getExchangeRate(base, target) {
@@ -237,12 +261,12 @@ function loadExchangeRates() {
     rates.push(getExchangeRate(base, target))
   }
   Promise.all(rates).then((allRatesData) => {
-    renderRatesData(allRatesData);
+    renderRatesData(allRatesData, target);
   })
 }
 
 // renders the exchange rates and open P/L to the user
-function renderRatesData(rates) {
+function renderRatesData(rates, ticker) {
   var holdersList = $('.current-rate')
   var holdersProfitList = $('.current-profit')
   for (var i = 0; i < holdersList.length; i++) {
@@ -255,9 +279,9 @@ function renderRatesData(rates) {
     }
     openProfit = Math.round(openProfit * 100) / 100
     if (openProfit < 0) {
-      holdersProfitList[i].innerHTML = '<span class="pill pill-red">' + openProfit + '</span>'
+      holdersProfitList[i].innerHTML = '<span class="pill pill-red">' + openProfit + ' ' + ticker + '</span>'
     } else {
-      holdersProfitList[i].innerHTML = '<span class="pill pill-green">' + openProfit + '</span>'
+      holdersProfitList[i].innerHTML = '<span class="pill pill-green">' + openProfit + ' ' + ticker + '</span>'
     }
   }
 }
@@ -335,16 +359,11 @@ var resultsChart = new Chart(ctx, {
   }
 });
 
-// loads progress bars with default values
-progressBalance();
-progressMonthCount();
-progressWeekPer();
-progressMonthPer();
 
 // removes notification
 function removeNotification() {
   $('.notification').hide();
-  $.get('/' + currentUser.username + '/dashboard/remove-notification', (result) => {
+  $.get('/' + username + '/dashboard/remove-notification', (result) => {
   })
 }
 

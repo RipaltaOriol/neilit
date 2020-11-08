@@ -1,22 +1,24 @@
-var menu = document.getElementById("neilit-menu");
-var content = document.getElementById("content");
-var toggleClose = document.getElementById("toggle-c-menu");
-var toggleOpen = document.getElementById("toggle-o-menu");
-
-// Toggle Close Menu
-toggleClose.addEventListener("click", () => {
-  menu.style.width = "0px";
-  content.style.marginLeft = "0px";
-  toggleOpen.classList.remove("d-none");
-}, false);
-
-// Toggle Open Menu
-toggleOpen.addEventListener("click", () => {
-  menu.style.width = "250px";
-  content.style.marginLeft = "250px";
-  toggleOpen.classList.add("d-none");
-}, false);
-
+// tooltips code
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
+})
+
+// close menu
+$('#close-menu').click(() => {
+  if (screen.width <= 992) {
+    $('#menu-neilit').css('left', '-200px');
+  } else {
+    $('#menu-neilit').css('left', '-250px');
+  }
+  $('#content').css('margin-left', '0px');
+})
+
+// open menu
+$('#open-menu').click(() => {
+  $('#menu-neilit').css('left', '0');
+  if (screen.width <= 992) {
+    $('#content').css('margin-left', '200px');
+  } else {
+    $('#content').css('margin-left', '250px');
+  }
 })

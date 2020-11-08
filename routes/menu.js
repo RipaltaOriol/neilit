@@ -66,9 +66,9 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
   let months = [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')]
   var selectUserBase  = 'SELECT currency FROM currencies WHERE id = ?;'
   var selectEntries   = 'SELECT pair_id, profits, fees, result, MONTHNAME(exit_dt) AS month FROM entries WHERE status = 1 AND user_id = ?;'
-  var selectOpenOps   = 'SELECT id, pair_id, size, direction, DATE_FORMAT(entry_dt, \'%d/%m/%y\') AS date, entry_price FROM entries WHERE status = 0 AND user_id = ?;'
-  var selectMonth     = 'SELECT profits, fees FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;'
-  var selectWeek      = 'SELECT profits, fees FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;'
+  var selectOpen      = 'SELECT entries.id, pair, size, direction, entry_dt, entry_price FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE status = 0 AND user_id = ?;'
+  var selectMonth     = 'SELECT SUM((profits - fees) / (SELECT balance FROM users WHERE id = ?) * 100) AS month, COUNT(*) as count FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;'
+  var selectWeek      = 'SELECT SUM((profits - fees) / (SELECT balance FROM users WHERE id = ?) * 100) AS week FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;'
   db.query(selectUserBase, req.user.currency_id, (err, getBase) => {
     if (err) {
       // COMBAK: log error
@@ -113,7 +113,7 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
         // counts the entry if result is WIN
         if (entry.result == 'win') { dashboardData.rate += 1 }
         // adds the entry ouctcome as amount and percent
-        var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
+        var entryPercent = ((entry.profits - entry.fees) / req.user.balance) * 100
         dashboardData.currentAmount += (entry.profits - entry.fees);
         // compares the entry percents to get the biggest trade
         if (entryPercent >= dashboardData.biggestPercent) {
@@ -122,9 +122,8 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
         }
         outcomeMonth[entry.month].outcome += (entry.profits - entry.fees);
       });
-      dashboardData.currentPercent = (dashboardData.currentAmount / req.user.balance - 1) * 100
-      dashboardData.currentAmount = dashboardData.currentAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-      dashboardData.rate = (dashboardData.rate/dashboardData.total * 100).toFixed(2);
+      dashboardData.currentPercent = (dashboardData.currentAmount / req.user.balance - 1) * 100;
+      dashboardData.rate = dashboardData.rate / dashboardData.total * 100;
       // divides the data in 'outcomeMonth' in two separate arrays
       var outcomeMonthAmount = [];
       var outcomeMonthTotal = [];
@@ -132,59 +131,37 @@ router.get("", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
         outcomeMonthAmount.push(outcomeMonth[month].outcome)
         outcomeMonthTotal.push(outcomeMonth[month].total)
       }
-      db.query(selectOpenOps, req.user.id, (err, getOps) => {
+      db.query(selectOpen, req.user.id, (err, getOpen) => {
         if (err) {
           console.log(err);
           // COMBAK: log error
           req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/login');
         }
-        // creates an object for open operations
-        var dashboardOps = { }
-        getOps.forEach((operation, i) => {
-          dashboardOps[i] = { }
-          dashboardOps[i].id = operation.id;
-          dashboardOps[i].pair = pairs[operation.pair_id - 1];
-          dashboardOps[i].lot = operation.size;
-          dashboardOps[i].direction = operation.direction;
-          dashboardOps[i].date = operation.date;
-          dashboardOps[i].entry = operation.entry_price;
-        });
-        db.query(selectMonth, req.user.id, (err, getMonth) => {
+        db.query(selectMonth, [req.user.id, req.user.id], (err, getMonth) => {
           if (err) {
             // COMBAK: log error
             req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/login');
           }
-          var monthPer = 0;
-          var monthCount = 0;
-          getMonth.forEach((entry) => {
-            var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
-            monthPer += entryPercent;
-            monthCount++;
-          });
-          db.query(selectWeek, req.user.id, (err, getWeek) => {
+          db.query(selectWeek, [req.user.id, req.user.id], (err, getWeek) => {
             if (err) {
               // COMBAK: log error
               req.flash('error', res.__('Something went wrong, please try again.'))
               return res.redirect('/login');
             }
-            var weekPer = 0;
-            getWeek.forEach((entry) => {
-              var entryPercent = Math.round((((entry.profits - entry.fees) / req.user.balance) * 100 + Number.EPSILON) * 100) / 100;
-              weekPer += entryPercent
-            });
             res.render("user/user",
               {
                 notification: notification,
                 dashboardData: dashboardData,
                 outcomeMonthAmount: outcomeMonthAmount,
                 outcomeMonthTotal: outcomeMonthTotal,
-                dashboardOps: dashboardOps,
-                monthCount: monthCount,
-                monthPer: monthPer,
-                weekPer: weekPer,
-                months: months
+                dashboardOpen: getOpen,
+                monthCount: getMonth[0].count,
+                monthPer: getMonth[0].month,
+                weekPer: getWeek[0].week,
+                months: months,
+                options: { year: 'numeric', month: 'long', day: 'numeric' }
               }
             );
           })
@@ -357,32 +334,6 @@ router.get("/statistics", middleware.isLoggedIn, dbLocale.reset, (req, res) => {
     })
   })
 });
-
-// TRADING PLAN ROUTE
-router.get("/plan", middleware.isLoggedIn, (req, res) => {
-  // COMBAK: ensure that order is descending in terms of created_at
-  var selectPlans = 'SELECT id, title, created_at FROM plans WHERE user_id = ?';
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  db.query(selectPlans, req.user.id, (err, getPlans) => {
-    if (err) {
-      // COMBAK: log error
-      req.flash('error', res.__('Something went wrong, please try again.'))
-      return res.redirect('/' + req.user.username);
-    }
-    // Object to store the Plans
-    var plans = {
-      id: [],
-      title: [],
-      date: []
-    }
-    getPlans.forEach((result) => {
-      plans.id.push(result.id);
-      plans.title.push(result.title);
-      plans.date.push(result.created_at.toLocaleDateString(req.user.language, options));
-    });
-    res.render("user/plan", {plans:plans});
-  })
-})
 
 // RISK CALCULATOR ROUTE
 router.get("/calculator", middleware.isLoggedIn, (req, res) => {
