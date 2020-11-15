@@ -470,5 +470,19 @@
 	"Default": "Default",
 	"Elements on TA": "Elements on TA",
 	"Backtesting addons": "Backtesting addons",
-	"Select": "Select"
+	"Select": "Select",
+	"Select a date": "Select a date",
+	"Strategies need a type.": "Strategies need a type.",
+	"Image URL cannot be left blank.": "Image URL cannot be left blank.",
+	"Filter": "Filter",
+	"Apply Filtering to TA": "Apply Filtering to TA",
+	"Creation Date": "Creation Date",
+	"Edited Date": "Edited Date",
+	"Advanced Filtering": "Advanced Filtering",
+	"Creation": "Creation",
+	"Last Updated": "Last Updated",
+	"Ascending": "Ascending",
+	"Descending": "Descending",
+	"Order by": "Order by",
+	"Sort by": "Sort by"
 }

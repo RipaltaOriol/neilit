@@ -604,5 +604,19 @@
 	"short": "Venta",
 	"Name of your broker": "Name of your broker",
 	"What charts do you use?": "What charts do you use?",
-	"Trading capital available (in account base currency)": "Trading capital available (in account base currency)"
+	"Trading capital available (in account base currency)": "Trading capital available (in account base currency)",
+	"Select a date": "Selecciona una fecha",
+	"Strategies need a type.": "Las estrategias necesitan un tipo.",
+	"Image URL cannot be left blank.": "El enlace de la imagen no se puede dejar en blanco.",
+	"Filter": "Filtrar",
+	"Apply Filtering to TA": "Aplicar Filtrado a TA",
+	"Creation Date": "Fecha de Creación",
+	"Edited Date": "Fecha de Edición",
+	"Advanced Filtering": "Filtrado Avanzado",
+	"Creation": "Creación",
+	"Last Updated": "Última Actualización",
+	"Ascending": "Ascendente",
+	"Descending": "Descendiendo",
+	"Order by": "Ordenar por",
+	"Sort by": "Clasificar por"
 }

@@ -1,40 +1,217 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="pt-4 mx-4">
+  <div class="mx-2 mx-lg-4">
     <section>
       <div class="container">
+        <!-- technical analysis -->
         <h2 class="mx-auto"><%= __('Technical Analysis') %></h2>
         <div class="journal-box px-0 py-3">
-          <% if (dataList.length > 0) { %>
-            <% dataList.forEach((result) => { %>
-              <div class="bg-grey mx-3 p-3 mb-3 rounded">
-                <div class="d-flex justify-content-between mb-2">
-                  <span class="orange"><strong><%= result.pair %></strong></span>
-                  <span><%= result.date %></span>
+          <div class="journal-scroll">
+            <% if (dataList.length > 0) { %>
+              <% dataList.forEach((result) => { %>
+                <div class="bg-grey mx-3 p-3 mb-3 rounded">
+                  <div class="d-flex justify-content-between mb-2">
+                    <span class="orange"><strong><%= result.pair %></strong></span>
+                    <span><%= result.date %></span>
+                  </div>
+                  <p class="mb-0">Last updated: <%= result.update %></p>
+                  <div class="text-right">
+                    <a href="/<%= currentUser.username %>/journal/ta/<%= result.id %>" class="btn-inverted"><%= __('Go to TA') %></a>
+                  </div>
                 </div>
-                <div class="text-right">
-                  <a href="/<%= currentUser.username %>/journal/ta/<%= result.id %>" class="btn-inverted"><%= __('Go to TA') %></a>
-                </div>
+              <% }); %>
+            <% } else { %>
+              <p class="text-center placeholder-journal"><%= __('No entries created yet') %></p>
+              <br>
+            <% } %>
+            <div class="text-center my-2">
+              <div id="spinner" class="spinner-border d-none" role="status">
+                <span class="sr-only">Loading...</span>
               </div>
-            <% }); %>
-          <% } else { %>
-            <p class="text-center placeholder-journal"><%= __('No entries created yet') %></p>
-            <br>
-          <% } %>
+            </div>
+          </div>
           <hr>
           <div class="d-flex justify-content-end mx-3">
+            <button type="button" id="open-filter" class="btn-inverted mr-2" data-toggle="modal" data-target="#filter-modal"><%= __('Filter') %></button>
             <a href="/<%= currentUser.username %>/journal/ta/new" class="btn-neilit"><%= __('New') %></a>
+          </div>
+        </div>
+        <!-- filter modal -->
+        <div id="filter-modal" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title"><%= __('Apply Filtering to TA') %></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body form-fields">
+                <span class="mb-2 d-block">
+                  <label><%= __('Pair') %>:</label>
+                  <!-- dropdown -->
+                  <div class="dropdown d-inline">
+                    <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                      <%= currencies[0] %>
+                    </button>
+                    <ul id="dropdown-items" class="dropdown-menu filter" aria-labelledby="dropdown-label">
+                      <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                      <li class="0">
+                        <label class="checkbox-orange d-inline">
+                          <%= ('All') %>
+                          <input type="checkbox">
+                          <span class="checkmark"></span>
+                        </label>
+                      </li>
+                      <% for (var i = 0; i < currencies.length; i++) { %>
+                        <li class="<%= i + 1 %>">
+                          <label class="checkbox-orange d-inline">
+                            <%= currencies[i] %>
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                          </label>
+                        </li>
+                      <% } %>
+                    </ul>
+                  </div>
+                </span>
+                <span class="mb-2 d-block">
+                  <label><%= __('Category') %>:</label>
+                  <!-- dropdown -->
+                  <div class="dropdown d-inline">
+                    <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                      <%= categories[0] %>
+                    </button>
+                    <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                      <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                      <li class="0">
+                        <label class="checkbox-orange d-inline">
+                          <%= ('All') %>
+                          <input type="checkbox">
+                          <span class="checkmark"></span>
+                        </label>
+                      </li>
+                      <% for (var i = 0; i < categories.length; i++) { %>
+                        <li class="<%= i + 1 %>">
+                          <label class="checkbox-orange d-inline">
+                            <%= categories[i] %>
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                          </label>
+                        </li>
+                      <% } %>
+                    </ul>
+                  </div>
+                </span>
+                <span class="mb-2 d-block">
+                  <label><%= __('Creation Date') %>:</label>
+                  <label class="checkbox-orange d-inline ml-2">
+                    <input type="checkbox" id="display-create">
+                    <span class="checkmark"></span>
+                  </label>
+                  <div id="filter-create" class="d-none">
+                    <div class="mb-2">
+                      <label><%= __('From') %>:</label>
+                      <input type="text" class="datepicker form-input p-1 px-2" data-target="">
+                      <input type="text" id="" class="d-none">
+                    </div>
+                    <div class="mb-2">
+                      <label><%= __('To') %>:</label>
+                      <input type="text" class="datepicker form-input p-1 px-2" data-target="">
+                      <input type="text" id="" class="d-none">
+                    </div>
+                  </div>
+                </span>
+                <span class="mb-2 d-block">
+                  <label><%= __('Edited Date') %>:</label>
+                  <label class="checkbox-orange d-inline ml-2">
+                    <input type="checkbox" id="display-edit">
+                    <span class="checkmark"></span>
+                  </label>
+                  <div id="filter-edit" class="d-none">
+                    <div class="mb-2">
+                      <label><%= __('From') %>:</label>
+                      <input type="text" class="datepicker form-input p-1 px-2" data-target="">
+                      <input type="text" id="" class="d-none">
+                    </div>
+                    <div class="mb-2">
+                      <label><%= __('To') %>:</label>
+                      <input type="text" class="datepicker form-input p-1 px-2" data-target="">
+                      <input type="text" id="" class="d-none">
+                    </div>
+                  </div>
+                </span>
+                <span class="mb-2 d-block">
+                  <label><%= __('Advanced Filtering') %>:</label>
+                  <label class="checkbox-orange d-inline ml-2">
+                    <input type="checkbox" id="display-advance">
+                    <span class="checkmark"></span>
+                  </label>
+                </span>
+                <div id="filter-advance" class="d-none">
+                  <span class="mb-2 d-block">
+                    <label><%= __('Sort by') %>:</label>
+                    <label class="checkbox-orange d-inline ml-1">
+                      <%= __('Pair') %>
+                      <input type="radio" name="sort">
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-orange d-inline ml-2">
+                      <%= __('Category') %>
+                      <input type="radio" name="sort">
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-orange d-inline ml-2">
+                      <%= __('Creation') %>
+                      <input type="radio" name="sort" checked>
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-orange d-inline ml-2">
+                      <%= __('Last Updated') %>
+                      <input type="radio" name="sort">
+                      <span class="checkmark"></span>
+                    </label>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Order by') %>:</label>
+                    <label class="checkbox-orange d-inline ml-1">
+                      <%= __('Descending') %>
+                      <input type="radio" name="order" checked>
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-orange d-inline ml-2">
+                      <%= __('Ascending') %>
+                      <input type="radio" name="order">
+                      <span class="checkmark"></span>
+                    </label>
+                  </span>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   </div>
 
+<script type="text/javascript">
+  var username = <%- JSON.stringify(currentUser.username) %>;
+  var language = <%- JSON.stringify(currentUser.language) %>;
+</script>
+
 <!-- <section> is inside partials -->
 </section>
 <!-- JQUERY -->
 <script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/datepicker-es.js"></script>
+<script type="text/javascript" src="/utilities/jquery/datepicker-en.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
 <!-- LOCAL SCRIPTS -->
 <script type="text/javascript" src="/js/ta.js"></script>
 

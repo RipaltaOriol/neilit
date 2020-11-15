@@ -1,12 +1,28 @@
+// html to load more data using infinite scroll
+var taIndex1 = '<div class="bg-grey mx-3 p-3 mb-3 rounded"><div class="d-flex justify-content-between mb-2"><span class="orange"><strong>'
+var taIndex2 = '</strong></span><span>'
+var taIndex3 = '</span></div><p class="mb-0">Last updated: '
+var taIndex4 = '<div class="text-right"><a href="'
+var taIndex5 = '" class="btn-inverted">'
+var taIndex6 = '</a></div></div>'
+
 $(document).ready(function() {
+  // redirects to notification page
+  if (screen.width < 768) {
+    window.location.replace("/mobile")
+  }
   // sets datepicker
   $(function() {
+    $.datepicker.setDefaults(
+      $.extend(
+        $.datepicker.regional[language]
+      )
+    )
     $('.datepicker').each(function(){
       $(this).datepicker({
         altField: "#" + $(this).data('target'),
         altFormat: "yy-mm-dd" // format for database processing
       });
-      $(this).datepicker($.datepicker.regional[language]);
     });
   });
   // prevents the classic datepicker from loading
@@ -17,6 +33,44 @@ $(document).ready(function() {
 
 var storeTa = document.getElementById("submit-ta");
 
+// manages the spinner on loading processes
+function loadingState(bool) {
+  if (bool) {
+    $('#spinner').removeClass('d-none')
+  } else {
+    $('#spinner').addClass('d-none')
+  }
+}
+
+// Infinite scroll
+let loadedCount = 25;
+$('.journal-scroll').scroll(() => {
+  var $el = $('.journal-scroll');
+  var $eh = $('.journal-scroll')[0];
+  if ($el.innerHeight() + $el.scrollTop() >= $eh.scrollHeight - 5 && loadedCount) {
+    loadingState(true);
+    $.post('ta/load-index', {offset: loadedCount})
+      .done((data) => {
+        loadedCount+= 25;
+        // add new technical analysis to the index list
+        data.dataList.forEach((analysis) => {
+          var newTA = taIndex1 + analysis.pair + taIndex2 + analysis.date
+            + taIndex3 + analysis.update + taIndex4 + '/' + username + '/journal/ta/'
+            + analysis.id + taIndex5 + data.buttonText + taIndex6;
+          $('.journal-scroll')[0].innerHTML += newTA
+        });
+        loadingState(false);
+
+        if (data.dataList.length < 25) {
+          loadedCount = 0;
+        }
+    })
+      .fail(() => {
+
+    })
+  }
+})
+
 // dropdown to select a time period for statistics
 $('.dropdown-menu li').on('click', function() {
   var allDD = $('.dropdown-menu');
@@ -24,13 +78,16 @@ $('.dropdown-menu li').on('click', function() {
   var getValue = $(this).text();
   if ($('.dropdown-server')[current]) {
     $('.dropdown-server')[current].value = this.className;
-    //category.value = categories[document.getElementById('ta-pair').value]
     $('#ta-category').val(categories[this.className - 1])
   }
   if ($('.dropdown-select')[current]) {
     $('.dropdown-select')[current].innerHTML = getValue;
   }
 });
+
+$('.dropdown-menu.filter li').click((e) => {
+  e.stopPropagation();
+})
 
 // search bar for the dropdown
 function searchDropdown(id) {
@@ -50,6 +107,29 @@ function searchDropdown(id) {
   }
 }
 
+// manages filter functions
+$('#display-create').click(() => {
+  $('#filter-create').toggleClass('d-none')
+})
+
+$('#display-edit').click(() => {
+  $('#filter-edit').toggleClass('d-none')
+})
+
+$('#display-advance').click(() => {
+  $('#filter-advance').toggleClass('d-none')
+})
+
+// activates the upload file input
+function uploadFile(id) {
+  var uploadList = $('.upload');
+  var current = uploadList.index(id);
+  $('.file')[current].click();
+  $('.file').change(() => {
+    $('.load').click();
+  });
+}
+
 // Elements available in TA
 var taTitle = document.getElementById("title");
 var taText = document.getElementById("text");
@@ -59,31 +139,52 @@ var taStrategy = document.getElementById("strategy");
 // Adds the corresponding elments to the TA
 var taContent = document.getElementById("ta-content")
 // -> Title
-taTitle.addEventListener('click', () => {
-  $('#ta-content').append(elements.title);
-});
+if (taTitle) {
+  taTitle.addEventListener('click', () => {
+    $('#ta-content').append(elements.title);
+  });
+}
 // -> Text
-taText.addEventListener('click', () => {
-  $('#ta-content').append(elements.text);
-  // Sets placeholder for text input
-  jQuery(function($){
-    $(".editcontent").focusout(function(){
-      console.log('detect');
-      var element = $(this);
-      if (!element.text().replace(" ", "").length) {
-        element.empty();
-      }
+if (taText) {
+  taText.addEventListener('click', () => {
+    $('#ta-content').append(elements.text);
+    // Sets placeholder for text input
+    jQuery(function($){
+      $(".editcontent").focusout(function(){
+        var element = $(this);
+        if (!element.text().replace(" ", "").length) {
+          element.empty();
+        }
+      });
     });
   });
-});
+}
 // -> Image
-taImage.addEventListener('click', () => {
-  $('#ta-content').append(elements.image);
-});
+if (taImage) {
+  taImage.addEventListener('click', () => {
+    $('#ta-content').append(elements.image);
+  });
+}
 // -> Strategy
-taStrategy.addEventListener('click', () => {
-  $('#ta-content').append(elements.strategy);
-})
+if (taStrategy) {
+  taStrategy.addEventListener('click', () => {
+    $('#ta-content').append(elements.strategy);
+    // dropdown to select a time period for statistics
+    $('.dropdown-menu li').on('click', function() {
+      var allDD = $('.dropdown-menu');
+      var current = allDD.index($(this).parent())
+      var getValue = $(this).text();
+      if ($('.dropdown-server')[current]) {
+        console.log(this);
+        $('.dropdown-server')[current].value = this.className;
+      }
+      if ($('.dropdown-select')[current]) {
+        $('.dropdown-select')[current].innerHTML = getValue;
+      }
+    });
+
+  })
+}
 
 // Loads the TA image into a widget
 function loadImage(id) {
@@ -152,7 +253,7 @@ function whatIndex(id) {
 function storeTexts() {
   allTexts = $('.client-comment');
   for (var i = 0; i < allTexts.length; i++) {
-    $('.server-comment')[i].value = allTexts[i].textContent || allTexts[i].innerText;
+    $('.server-comment')[i].value = allTexts[i].innerText.replace(/\n/g, "<br/>");
   }
 }
 
@@ -173,20 +274,17 @@ function isImportance(id, importance) {
   var all = $('.widget-' + importance + '');
   // adds visibility to display after selecting the element
   all[current].classList.remove('d-none');
-  var selectStrategies = document.getElementsByName('strategy');
-  var selectTimeframes = document.getElementsByName('timeframe');
   var holderStrategies = $('.strategy-' + importance)
   var holderTimeframes = $('.timeframe-' + importance)
   // gets the corresponding select html element
-  var currentStrategy = selectStrategies[current];
-  var currentTimeframe = selectTimeframes[current];
+  var currentStrategy = document.getElementsByClassName('strategy-select')[current].textContent.trim();
+  var currentTimeframe = document.getElementsByClassName('timeframe-select')[current].textContent.trim();
   // adds the text inside the select html elment to the widget for the user
-  holderStrategies[current].innerHTML = currentStrategy.options[currentStrategy.selectedIndex].text;
-  holderTimeframes[current].innerHTML = currentTimeframe.options[currentTimeframe.selectedIndex].text;
+  holderStrategies[current].innerHTML = currentStrategy;
+  holderTimeframes[current].innerHTML = currentTimeframe;
   // adds display none to strategy options
   $('.strategy-option')[current].classList.add('d-none')
   $('.strategy-option')[current].classList.remove('d-flex')
-  $('.strategy-option')[current].classList.remove('flex-column')
   // sends the importance type to the input
   var importanceList = document.getElementsByName('importance');
   importanceList[current].value = importance;
@@ -195,8 +293,6 @@ function isImportance(id, importance) {
 // Runs before making the POST request
 if (storeTa != null) {
   storeTa.addEventListener('click', () => {
-    // deletes localStorage on submit
-    window.localStorage.removeItem('ta-pair');
     // sends the text to the server
     storeTexts();
   })

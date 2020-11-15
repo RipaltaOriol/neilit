@@ -30,7 +30,10 @@ span .checkbox-orange {
 
 .journal-box { }
 
-
+.journal-scroll {
+  max-height: 75vh;
+  overflow-y: scroll;
+}
 
 .table { }
   .table td {
@@ -72,6 +75,18 @@ span .checkbox-orange {
   border-radius: .25rem;
 }
 
+@media (min-width: 576px) {
+  .modal-lg {
+    max-width: 700px;
+  }
+  .form-fields .form-input {
+    width: 400px;
+  }
+  #dropdown-label {
+    width: 400px;
+  }
+}
+
 .mandatory {
   font-weight: 500;
 }
@@ -104,6 +119,14 @@ span .checkbox-orange {
   }
 
 /* || Bootstrap class */
+.modal { }
+  .modal .checkmark {
+    background-color: var(--background-soft);
+  }
+  .modal .dropdown .checkmark {
+    background-color: var(--background-medium);
+  }
+
 .modal-content {
   background-color: var(--background-soft);
 }
@@ -114,8 +137,14 @@ span .checkbox-orange {
       color: var(--neilit-permanent)
     }
 
+.dark-mode .close {
+  filter: invert();
+}
+
 /* || JQuery UI class */
-.datepicker { }
+.datepicker {
+  cursor: pointer;
+}
   input.datepicker:focus {
     border-color: var(--neilit-permanent);
     box-shadow: none;
@@ -275,13 +304,13 @@ span .checkbox-orange {
   }
 
 #add-e {
-  color: #ff8818;
+  color: var(--neilit-permanent);
   font-weight: 500;
   font-size: 16px;
   border-radius: .25rem;
 }
   #add-e:hover {
-    background-color: #f7f7f7;
+    background-color: var(--background-hover);
   }
   #add-e:focus {
     box-shadow: none;
@@ -371,6 +400,9 @@ span .checkbox-orange {
     #ta-content .title:hover {
       background-color: var(--background-hover);
     }
+    ::-webkit-input-placeholder {
+    text-decoration: none;
+}
   #ta-content .text {
     width: 100%;
     border-radius: .25rem;
@@ -381,14 +413,16 @@ span .checkbox-orange {
     }
     #ta-content .image div {
       border-radius: .25rem;
+      line-height: 40px;
     }
       #ta-content .image div:hover {
         background-color: var(--background-hover);
       }
     #ta-content .image input {
       max-width: 300px;
-      border: 2px solid #ff8818;
+      border: 1px solid #ff8818;
       border-radius: .25rem;
+      max-height: 45px;
     }
   #ta-content .image-src {
     max-width: 100%;
@@ -400,13 +434,22 @@ span .checkbox-orange {
     #ta-content .strategy div:hover {
       background-color: var(--background-hover);
     }
+  #ta-content #dropdown-label {
+    background-color: var(--neilit-background);
+  }
   #ta-content .move{
     display: inline;
     cursor: pointer;
   }
+    .dark-mode #ta-content .move {
+      filter: invert();
+    }
   #ta-content .drop {
     display: inline;
     cursor: pointer;
+  }
+  .dark-mode #ta-content .drop {
+    filter: invert();
   }
 
 #addon {
@@ -439,3 +482,8 @@ span .checkbox-orange {
     background: var(--grey-strong);
     cursor: no-drop;
   }
+
+/* strange div bottom page */
+#ui-datepicker-div {
+  display: none;
+}

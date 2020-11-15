@@ -243,7 +243,9 @@ a { }
 }
 
 /* || JQuery UI class */
-.datepicker { }
+.datepicker {
+  cursor: pointer;
+}
   input.datepicker:focus {
     border-color: var(--neilit-permanent);
     box-shadow: none;

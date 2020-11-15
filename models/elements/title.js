@@ -2,9 +2,9 @@
 // Technical Analysis Element: TITLE
 // -- CREATE
 var titleHtml = `
-  <span class="d-flex mb-2 ta-element">
+  <span class="ta-element d-flex mb-2 py-1">
     <input type="text" name="type" value="title" class="d-none">
-    <input type="text" name="title" class="title px-2 mr-2" placeholder="Título">
+    <input type="text" name="title" class="title px-2 mr-2" placeholder="Title">
     <span class="d-flex ml-auto">
       <img src="/imgs/icons/move.svg" alt="move" class="move">
       <img src="/imgs/icons/delete.svg" alt="delete" class="drop" onclick="whatIndex(this)">
@@ -14,17 +14,17 @@ var titleHtml = `
 // -- DISPLAY
 function generateTitle(input) {
   return `
-    <span class="d-flex mb-2 ta-element">
-      <input type="text" class="title px-2 mr-2" placeholder="Título" value="` + input + `" readonly>
-    </span>
+    <div class="ta-element d-flex mb-2 py-1">
+      <input type="text" class="title px-2 mr-2" placeholder="Undefined" value="` + input + `" readonly>
+    </div>
     `;
 }
 // -- EDIT
 function editTitle(input) {
   return `
-    <span class="d-flex mb-2 ta-element">
+    <span class="ta-element d-flex mb-2 py-1">
       <input type="text" name="type" value="title" class="d-none">
-      <input type="text" name="title" class="title px-2 mr-2" placeholder="Título" value="` + input + `">
+      <input type="text" name="title" class="title px-2 mr-2" placeholder="Title" value="` + input + `">
       <span class="d-flex ml-auto">
         <img src="/imgs/icons/move.svg" alt="move" class="move">
         <img src="/imgs/icons/delete.svg" alt="delete" class="drop" onclick="whatIndex(this)">

@@ -1,37 +1,37 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mt-3 mb-5 mx-auto ta">
+  <div class="container mx-auto mb-5 ta">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/ta" method="POST">
         <h3 class="mx-3"><%= __('Create Technical Analysis') %></h3>
         <hr>
         <div class="form-fields mb-2 mx-3">
-          <span class="d-block">
-              <label><%= __('Pair') %>:</label>
-              <input id="ta-pair" type="text" name="pair" value="1" class="dropdown-server d-none">
-              <!-- dropdown -->
-              <div class="dropdown d-inline">
-                <button id="dropdown-label" class="ta-pair dropdown-select px-2" type="button" data-toggle="dropdown">
-                  <%= currencies[0] %>
-                </button>
-                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                  <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                  <% for (var i = 0; i < currencies.length; i++) { %>
-                    <li class="<%= i + 1 %>"><%= currencies[i] %></li>
-                  <% } %>
-                </ul>
-              </div>
-            </span>
+          <span class="d-block mb-2">
+            <label class="mb-0"><%= __('Pair') %>:</label>
+            <input id="ta-pair" type="text" name="pair" value="1" class="dropdown-server d-none">
+            <!-- dropdown -->
+            <div class="dropdown d-inline">
+              <button id="dropdown-label" class="ta-pair dropdown-select px-2" type="button" data-toggle="dropdown">
+                <%= currencies[0] %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                <% for (var i = 0; i < currencies.length; i++) { %>
+                  <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                <% } %>
+              </ul>
+            </div>
+          </span>
           <div class="d-flex flex-column">
-            <span>
-              <label><%= ('Category') %>:</label>
+            <span class="mb-2">
+              <label class="mb-0"><%= __('Category') %>:</label>
               <input id="ta-category" type="text" class="form-input orange px-2" name="category" value="Forex" readonly>
             </span>
-            <span>
-              <label><%= ('Date') %>:</label>
-              <input type="date" class="datepicker form-input orange px-2" data-target="date">
-              <input type="date" id="date" class="d-none" name="date">
+            <span class="mb-2">
+              <label class="mb-0"><%= __('Date') %>:</label>
+              <input type="text" class="datepicker form-input orange px-2" data-target="date" placeholder="<%= __('Select a date') %>">
+              <input type="text" id="date" class="d-none" name="date">
             </span>
           </div>
         </div>
@@ -48,10 +48,10 @@
             <%= __('Add element') %>
           </button>
           <div class="dropdown-menu py-0">
-            <a id="title" class="dropdown-item"><%= __('Title') %></a>
-            <a id="image" class="dropdown-item"><%= __('Image') %></a>
-            <a id="text" class="dropdown-item"><%= __('Text') %></a>
-            <a id="strategy" class="dropdown-item"><%= __('Strategy') %></a>
+            <li id="title" class="dropdown-item"><%= __('Title') %></li>
+            <li id="image" class="dropdown-item"><%= __('Image') %></li>
+            <li id="text" class="dropdown-item"><%= __('Text') %></li>
+            <li id="strategy" class="dropdown-item"><%= __('Strategy') %></li>
           </div>
         </div>
         <div class="d-flex justify-content-end mx-3">

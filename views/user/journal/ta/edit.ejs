@@ -1,30 +1,37 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mt-3 mx-auto">
+  <div class="container mx-auto mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/ta/<%= ta.id %>?_method=PUT" method="POST">
-        <h3 class="mx-3"><%= __('Edit View') %>: <%= ta.title %></h3>
+        <h3 class="mx-3"><%= ta.title %></h3>
         <hr>
-        <div class="mb-2 mx-3">
-          <select id="ta-pair" name="pair" class="edit custom-select p-1" onchange="taCategory();">
-            <% for (var i = 0; i < currencies.length; i++) { %>
-              <% if (i === ta.pair) { %>
-                <option value="<%= i %>" selected><%= currencies[i] %></option>
-              <% } else { %>
-                <option value="<%= i %>"><%= currencies[i] %></option>
-              <% } %>
-            <% } %>
-          </select>
-          <div class="d-flex flex-column mt-2">
-            <span>
-              <label><%= __('Category') %></label>
-              <input id="ta-category" type="text" class="bg-hover orange px-2" name="category" value="<%= ta.category %>" readonly>
+        <div class="form-fields mb-2 mx-3">
+          <span class="d-block mb-2">
+            <label class="mb-0"><%= __('Pair') %>:</label>
+            <input id="ta-pair" type="text" name="pair" value="<%= ta.pair %>" class="dropdown-server d-none">
+            <!-- dropdown -->
+            <div class="dropdown d-inline">
+              <button id="dropdown-label" class="ta-pair dropdown-select px-2" type="button" data-toggle="dropdown">
+                <%= currencies[ta.pair - 1] %>
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                <% for (var i = 0; i < currencies.length; i++) { %>
+                  <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                <% } %>
+              </ul>
+            </div>
+          </span>
+          <div class="d-flex flex-column">
+            <span class="mb-2">
+              <label class="mb-0"><%= __('Category') %>:</label>
+              <input id="ta-category" type="text" class="form-input orange px-2" name="category" value="<%= ta.category %>" readonly>
             </span>
-            <span>
-              <label><%= __('Date') %></label>
-              <input type="date" class="datepicker bg-hover orange px-2" data-target="date" value="<%= ta.date %>">
-              <input type="date" id="date" class="d-none" name="date" value="<%= ta.altDate %>">
+            <span class="mb-2">
+              <label class="mb-0"><%= __('Date') %>:</label>
+              <input type="text" class="datepicker form-input orange px-2" data-target="date" value="<%= ta.date %>">
+              <input type="text" id="date" class="d-none" name="date" value="<%= ta.altDate %>">
             </span>
           </div>
         </div>
@@ -41,15 +48,15 @@
             <%= __('Add element') %>
           </button>
           <div class="dropdown-menu py-0">
-            <a id="title" class="dropdown-item"><%= ('Title') %></a>
-            <a id="image" class="dropdown-item"><%= ('Image') %></a>
-            <a id="text" class="dropdown-item"><%= ('Text') %></a>
+            <a id="title" class="dropdown-item"><%= __('Title') %></a>
+            <a id="image" class="dropdown-item"><%= __('Image') %></a>
+            <a id="text" class="dropdown-item"><%= __('Text') %></a>
             <a id="strategy" class="dropdown-item"><%= ('Strategy') %></a>
           </div>
         </div>
         <div class="d-flex justify-content-end mx-3">
-          <a href="javascript:history.back()" class="btn-inverted ml-2"><%= ('Cancel') %></a>
-          <button type="submit" id="update-backtest" class="btn-neilit ml-2"><%= ('Save') %></button>
+          <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Cancel') %></a>
+          <button type="submit" id="submit-ta" class="btn-neilit ml-2"><%= __('Save') %></button>
         </div>
       </form>
     </div>
