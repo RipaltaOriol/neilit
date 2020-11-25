@@ -5,6 +5,7 @@ var taIndex3 = '</span></div><p class="mb-0">Last updated: '
 var taIndex4 = '<div class="text-right"><a href="'
 var taIndex5 = '" class="btn-inverted">'
 var taIndex6 = '</a></div></div>'
+var filterQuery;
 
 $(document).ready(function() {
   // redirects to notification page
@@ -48,8 +49,12 @@ $('.journal-scroll').scroll(() => {
   var $el = $('.journal-scroll');
   var $eh = $('.journal-scroll')[0];
   if ($el.innerHeight() + $el.scrollTop() >= $eh.scrollHeight - 5 && loadedCount) {
+    var data = {
+      offset: loadedCount
+    }
+    if (filterQuery) { data.query = filterQuery }
     loadingState(true);
-    $.post('ta/load-index', {offset: loadedCount})
+    $.post('ta/load-index', data)
       .done((data) => {
         loadedCount+= 25;
         // add new technical analysis to the index list
@@ -71,6 +76,55 @@ $('.journal-scroll').scroll(() => {
   }
 })
 
+// Filter results
+$('#apply-filter').click(() => {
+  $("#modal-loading").modal();
+  var filterPairs = $('input[name=pair]:checked').map(function(){
+    return 'pair LIKE "' + this.value + '"';
+  }).get().join(' || ');
+  var filterCategories = $('input[name=category]:checked').map(function(){
+    return 'tanalysis.category LIKE "' + this.value + '"';
+  }).get().join(' || ');
+  var filterCreate, filterEdit, filterSort, filterOrder;
+  if ($('#display-create').is(":checked")) {
+    filterCreate = $('input[name=create]').map(function(){
+      return '"' + this.value + '"';
+    }).get().join(' && ');
+  }
+  if ($('#display-edit').is(":checked")) {
+    filterEdit = $('input[name=edit]').map(function(){
+      return '"' + this.value + '"';
+    }).get().join(' && ');
+  }
+  filterSort = $('input[name=sort]:checked').val()
+  filterOrder = $('input[name=order]:checked').val()
+  var data = {
+    pairs: filterPairs,
+    categories: filterCategories,
+    create: filterCreate,
+    edit: filterEdit,
+    sort: filterSort,
+    order: filterOrder
+  }
+  $.post('ta/filter', data)
+    .done((data) => {
+      $('.journal-scroll')[0].innerHTML = ''
+      // add new technical analysis to the index list
+      data.dataList.forEach((analysis, i) => {
+        var newTA = taIndex1 + analysis.pair + taIndex2 + analysis.date
+          + taIndex3 + analysis.update + taIndex4 + '/' + username + '/journal/ta/'
+          + analysis.id + taIndex5 + data.buttonText + taIndex6;
+        $('.journal-scroll')[0].innerHTML += newTA
+      });
+      filterQuery = data.query;
+      loadedCount = 25;
+      $("#modal-loading").modal('hide');
+  })
+    .fail(() => {
+
+  })
+})
+
 // dropdown to select a time period for statistics
 $('.dropdown-menu li').on('click', function() {
   var allDD = $('.dropdown-menu');
@@ -85,8 +139,26 @@ $('.dropdown-menu li').on('click', function() {
   }
 });
 
-$('.dropdown-menu.filter li').click((e) => {
+$('.dropdown-menu.filter ol').on('click', function(e) {
   e.stopPropagation();
+  if (e.target.tagName.toUpperCase() === "LABEL"
+    || e.target.tagName.toUpperCase() === "SPAN"
+    || e.target.tagName.toUpperCase() === "OL") {
+    return;
+  }
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  var dropdownLabel = $('.dropdown-select')[current]
+  if ($(this).children().children().is(':checked')) {
+    dropdownLabel.innerHTML += getValue;
+  } else {
+    dropdownLabel.innerHTML = dropdownLabel.innerHTML.replace(getValue.trim(), '');
+    if (dropdownLabel.innerHTML.trim() == '') {
+      dropdownLabel.innerHTML += getValue;
+      $(this).children().children().prop('checked', true)
+    }
+  }
 })
 
 // search bar for the dropdown
@@ -96,7 +168,7 @@ function searchDropdown(id) {
   var current = allDD.index(id.parentElement)
   input = document.getElementsByClassName('dropdown-search')[current];
   search = input.value.toUpperCase();
-  dropdownItems = document.getElementsByClassName('dropdown-menu')[current].getElementsByTagName('li');
+  dropdownItems = document.getElementsByClassName('dropdown-menu')[current].querySelectorAll('li, ol');
   for (var i = 0; i < dropdownItems.length; i++) {
     val = dropdownItems[i].textContent || dropdownItems[i].innerText;
     if (val.toUpperCase().indexOf(search) > -1) {

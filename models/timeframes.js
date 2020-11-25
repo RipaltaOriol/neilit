@@ -1,15 +1,8 @@
 // This file contians/calls global variables.
 // Calls: all TIMEFRAMES available
 
-// I18N library to translate the timeframes
-const path = require('path')
+// i18n library
 const i18n = require('i18n')
-// I18N config
-i18n.configure({
-  locales: ['en', 'de'],
-  directory: path.join('./middleware/locales')
-})
-
 // Connect to DB
 let db = require('./dbConfig')
 

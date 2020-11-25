@@ -340,6 +340,9 @@
 	"Win": "Win",
 	"Loss": "Loss",
 	"Break Even": "Break Even",
+	"win": "Win",
+	"loss": "Loss",
+	"be": "Break Even",
 	"Create": "Create",
 	"General Information": "General Information",
 	"Entry time": "Entry time",
@@ -386,6 +389,8 @@
 	"No plans created yet": "No plans created yet",
 	"New backtest row": "New backtest row",
 	"Something went wrong, please try again later.": "Something went wrong, please try again later.",
+	"Strategy names cannot have duplicate names.": "Strategy names cannot have duplicate names.",
+	"The 'None' strategy cannot be deleted.": "The 'None' strategy cannot be deleted.",
 	"USD": "$",
 	"EUR": "€",
 	"CAD": "$",
@@ -474,7 +479,6 @@
 	"Select a date": "Select a date",
 	"Strategies need a type.": "Strategies need a type.",
 	"Image URL cannot be left blank.": "Image URL cannot be left blank.",
-	"Filter": "Filter",
 	"Apply Filtering to TA": "Apply Filtering to TA",
 	"Creation Date": "Creation Date",
 	"Edited Date": "Edited Date",
@@ -484,5 +488,9 @@
 	"Ascending": "Ascending",
 	"Descending": "Descending",
 	"Order by": "Order by",
-	"Sort by": "Sort by"
+	"Sort by": "Sort by",
+	"None": "None",
+	"Closure": "Closure",
+	"Open": "Open",
+	"Something went wrong. Please, try again later.": "Something went wrong. Please, try again later."
 }

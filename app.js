@@ -3,11 +3,12 @@ let express         = require('express'),
     app             = express(),
     methodOverride  = require('method-override'),
     bodyParser      = require('body-parser'),
+    cookieParser    = require('cookie-parser'),
     flash           = require('connect-flash'),
     passport        = require('passport'),
     passportConfig  = require('./models/passportConfig'),
     db              = require('./models/dbConfig'),
-    expressSession  = require('express-session');
+    session         = require('express-session');
 
 
 // Routes Dependencies
@@ -30,43 +31,41 @@ app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.static(__dirname + "/public"))
 app.use(express.json({ limit: '50mb' }));
+app.use(cookieParser());
 app.use(flash());
-app.use(i18n);
-// Configuration for AUTHENTICATION
-app.use(expressSession({
+// Configuration for Sessions (AUTHENTICATION)
+const sessionConfig = {
   secret: 'neilit is the key to trading success',
   resave: false,
   saveUninitialized: false,
   rolling: true,
   cookie: {
      secure: false,
+     httpOnly: true,
      maxAge: 12 * 30 * 24 * 60 * 60 * 1000
- }
-}))
+  }
+}
+app.use(session(sessionConfig))
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
+app.use(i18n);
 
-// Global Program Variable
-// FIXME: set the rest of the varibles. Some are defined after LOGIN as assynchronously
 // FIXME: can modules be grouped?
 // FIXME: categories should be maped to pairs, but it cannot be pased to front-end JS
 let pairs = require("./models/pairs");
 let categories = require("./models/categoriesPairs");
 let strategies = require("./models/strategies");
 
-// Store user strategies
-// FIXME: merge these two lists into an object
-global.userStrategies = [];
-global.userIdStrategies = [];
-global.notification = true;
-global.language = 'en';
-// #### MIDDLEWARES ####
 // MIDDLEWARE to have USER INFORMATION on all routes
 app.use((req, res, next) => {
-  res.locals.currentUser = req.user;
-  res.locals.error = req.flash("error")
-  res.locals.success = req.flash("success")
+  res.locals.currentUser  = req.user;
+  res.locals.timeframes   = req.session.timeframes
+  res.locals.notification = req.session.notification;
+  res.locals.strategies   = req.session.strategyNames;
+  res.locals.strategiesID = req.session.strategyIds;
+  res.locals.error        = req.flash("error")
+  res.locals.success      = req.flash("success")
   next();
 })
 
@@ -138,7 +137,11 @@ app.use("/:profile/journal/ta", taRoutes);
 app.use("/:profile/journal/backtest", backtestRoutes);
 app.use("/:profile/statistics", statisticsRoutes);
 app.use("/:profile/plan", planRoutes);
-// app.use("/:profile/details-entries", statisticsRoutes)
+
+// page not found || 404
+app.all('*', (req, res, next) => {
+  res.status(404).send('what???')
+})
 
 // PORT LISTENING
 var port = process.env.PORT || 100;

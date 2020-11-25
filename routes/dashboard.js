@@ -253,7 +253,7 @@ router.get("/outcome/custom/:from/:to", middleware.isLoggedIn, (req, res) => {
 })
 
 router.get('/remove-notification', (req, res) => {
-  notification = false;
+  req.session.notification = false;
   res.send({})
 })
 

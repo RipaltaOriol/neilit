@@ -6,7 +6,7 @@
     </div>
   </div>
   <!-- CONTENT -->
-  <div class="container mx-auto pt-5 mb-5">
+  <div class="container mx-auto mb-5">
     <div class="journal-box px-0 entry-input">
       <form action="/<%= currentUser.username %>/journal/entry" method="POST" onsubmit="event.preventDefault(); return checkTime(this);">
         <h3 class="mx-3"><%= __('Create Entry') %></h3>
@@ -90,8 +90,8 @@
             <h5><%= __('Logistics') %></h5>
             <span class="input-group mb-2">
               <label class="my-auto mandatory"><%= __('Date of Entry') %>:</label>
-              <input type="date" class="datepicker form-control form-input p-1 px-2" data-target="entry-date">
-              <input type="date" id="entry-date" class="d-none" name="entryDate">
+              <input type="text" class="datepicker form-control form-input p-1 px-2" data-target="entry-date">
+              <input type="text" id="entry-date" class="d-none" name="entryDate">
             </span>
             <span class="input-group mb-3">
               <label class="my-auto"><%= __('Time of Entry') %>:</label>
@@ -186,8 +186,8 @@
         <div id="entry-closure" class="flex-column d-none mx-3 mt-2 form-fields">
           <span class="input-group mb-2">
             <label class="my-auto"><%= __('Exit Date') %>:</label>
-            <input type="date" class="datepicker form-control form-input p-1 px-2" data-target="exit-date">
-            <input type="date" id="exit-date" class="d-none" name="exitDate">
+            <input type="text" class="datepicker form-control form-input p-1 px-2" data-target="exit-date">
+            <input type="text" id="exit-date" class="d-none" name="exitDate">
           </span>
           <span class="input-group mb-2">
             <label class="my-auto mandatory"><%= __('Exit Price') %>:

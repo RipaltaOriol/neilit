@@ -3,14 +3,18 @@ let fetch = require('node-fetch');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
 let currencies = require('../models/currencies');
-let categories = require('../models/categoriesPairs');
+let categories = require('../models/categories')
 let middleware = require('../middleware')
 let db = require('../models/dbConfig');
 
 // INDEX ENTRIES ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
   var getEntries = 'SELECT * FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25;';
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  var getEntries = `SELECT e.id, pair, e.entry_dt, result, status, strategy, timeframe FROM entries e
+    JOIN strategies s on e.strategy_id = s.id
+    JOIN pairs p on e.pair_id = p.id
+    JOIN timeframes t on e.timeframe_id = t.id
+    WHERE e.user_id = ? ORDER BY entry_dt DESC LIMIT 25;`
   var dataList = []
   db.query(getEntries, req.user.id, (err, results) => {
     if (err) {
@@ -18,26 +22,23 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
-    results.forEach((result) => {
-      dataList.push({
-        id: result.id,
-        pair: pairs[Number(result.pair_id) - 1],
-        date: result.entry_dt.toLocaleDateString(req.user.language, options),
-        result: result.result,
-        status: result.status,
-        strategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
-        timeframe: timeframes[Number(result.timeframe_id) - 1]
-      })
-    })
-    res.render("user/journal/entry/index", {dataList: dataList});
+    res.render("user/journal/entry/index",
+      {
+        dataList: results,
+        options: { year: 'numeric', month: 'long', day: 'numeric' },
+        currencies: pairs,
+        categories: categories,
+      }
+    );
   })
 })
 
 // INDEX ENTRIES INFINITE SCROLL LOGIC
 router.post("/load-index", middleware.isLoggedIn, (req, res) => {
   var getEntries = 'SELECT * FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25 OFFSET ?;'
-  var dataList = []
+  if (req.body.query) { getEntries = req.body.query + ' OFFSET ?;'}
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  var dataList = []
   db.query(getEntries, [req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
       // COMBAK: log error
@@ -55,6 +56,43 @@ router.post("/load-index", middleware.isLoggedIn, (req, res) => {
     })
     return res.json({
       dataList: dataList
+    });
+  })
+})
+
+// FILTER LOGIC
+router.post("/filter", middleware.isLoggedIn, (req, res) => {
+  var createFilter = ''
+  var exitFilter = ''
+  if (req.body.create) { createFilter = '&& entry_dt >= ' + req.body.create + ' >= entry_dt' }
+  if (req.body.exit) { exitFilter = '&& exit_dt >= ' + req.body.exit + '>= exit_dt' }
+  var getEntries = `SELECT * FROM entries JOIN pairs ON entries.pair_id = pairs.id
+    WHERE user_id = ? && (${req.body.pairs}) && (${req.body.categories})
+    && (${req.body.strategy}) && (${req.body.timeframe}) && (${req.body.result}) ${createFilter} ${exitFilter}
+    ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  var dataList = []
+  db.query(getEntries, req.user.id, (err, results) => {
+    if (err) {
+      console.log(err);
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again.'))
+      return res.redirect('/' + req.user.username);
+    }
+    results.forEach((result) => {
+      dataList.push({
+        id: result.id,
+        pair: pairs[Number(result.pair_id) - 1],
+        date: result.entry_dt.toLocaleDateString(req.user.language, options),
+        result: result.result,
+        status: result.status,
+        strategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
+        timeframe: timeframes[Number(result.timeframe_id) - 1]
+      })
+    })
+    return res.json({
+      dataList: dataList,
+      query: getEntries
     });
   })
 })
@@ -88,6 +126,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
       res.render("user/journal/entry/new",
         {
           currency: result[0].currency,
+          // missing categories
           currencies: pairs,
           strategies: userStrategies,
           timeframes: timeframes,
@@ -283,7 +322,7 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
         {
           currency: result[0].currency,
           currencies: pairs,
-          categories: categories,
+          categories: categories, // old categories
           strategies: userStrategies,
           timeframes: timeframes,
           entry: entryInfo
@@ -382,6 +421,7 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
           {
             currency: result[0].currency,
             currencies: pairs,
+            // old categories
             categories: categories,
             strategies: userStrategies,
             timeframes: timeframes,

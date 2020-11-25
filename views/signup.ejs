@@ -40,7 +40,7 @@
     <div class="col-10 col-md-8 col-lg-5 mt-5 text-center">
       <h2 class="orange"><%= __('Join Neilit') %></h2>
       <p class="border-bottom pb-2 mb-3"><%= __('Create a new account') %></p>
-      <form method="POST" action="/signup">
+      <form id="signup" method="POST" action="/signup">
         <!-- first name -->
         <input class="mb-3 pl-2" type="text" required="required" name="name" value="" placeholder="<%= __('First Name') %>">
         <!-- last name -->
@@ -71,7 +71,12 @@
         <a href="/login" class="font-14 link-gris d-block mb-2"><%= __('Already a member?') %> <%= __('Log in') %></a>
         <!-- Boton -->
         <div class="mt-4">
-          <button class="btn-neilit" type="submit"><%= __('Continue') %></button>
+          <button id="signup-btn" class="btn-neilit" type="submit">
+            <span id="signup-text"><%= __('Continue') %></span>
+            <div id="signup-spinner" class="d-none spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </button>
         </div>
         <div class="mt-3 font-13 color-gris">
           <%= __("By clicking “Next step” above, you acknowledge that you have read and understood, and agree to Neilit's") %>

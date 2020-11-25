@@ -11,20 +11,12 @@ let bcrypt        = require('bcrypt');
 // Hashing Salt
 const saltRounds  = 10;
 
-// I18N library to translate the files inside the modules directory
-const i18n = require('i18n');
-// I18N config
-i18n.configure({
-  locales: ['en', 'de'],
-  directory: path.join('./middleware/locales')
-})
-
 // Global Program Variables
-let plans           = require('../models/plans');
-let timeframesFunc  = require("../models/timeframes");
-let strategies      = require('../models/strategies');
-let middleware      = require('../middleware/home');
-let db              = require('../models/dbConfig');
+let plans             = require('../models/plans');
+let localeTimeframes  = require("../models/timeframes");
+let strategies        = require('../models/strategies');
+let middleware        = require('../middleware/home');
+let db                = require('../models/dbConfig');
 let selectPlan;
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -35,7 +27,7 @@ const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVc
 
 // I18N (MULTI-LANGUAGE) LOGIC
 router.post('/language/:lang', (req, res) => {
-  language = req.params.lang;
+  res.cookie('lang', req.params.lang)
   res.redirect('/')
 })
 
@@ -47,10 +39,6 @@ router.get("/", (req, res) => {
 // MOBILE OPTIMIZATION NOTIFICATION ROUTE
 router.get("/mobile", (req, res) => {
   res.render("mobile");
-})
-
-router.get("/test", (req, res) => {
-  res.render("test");
 })
 
 // LOGIN ROUTE
@@ -68,11 +56,17 @@ router.get("/login", (req, res) => {
 // LOGIN LOGIC
 router.post("/login", passport.authenticate('local-login', {
   failureRedirect: '/login'
-}), (req, res) => {
-  strategies(req.user.id);
-  language = req.user.language;
-  i18n.setLocale(language)
-  timeframes = timeframesFunc();
+}), async (req, res) => {
+  let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
+  req.session.strategyNames = []
+  req.session.strategyIds = []
+  for (var i = 0; i < getUserStrategies.length; i++) {
+    req.session.strategyNames.push(getUserStrategies[i].strategy);
+    req.session.strategyIds.push(getUserStrategies[i].id);
+  }
+  req.session.timeframes = await localeTimeframes();
+  req.session.notification = true;
+  res.cookie('lang', req.user.language)
   res.redirect("/" + req.user.username)
 })
 
@@ -96,6 +90,16 @@ router.post("/signup", passport.authenticate('local-signup', {
   //   req.flash('error', res.__('There was an issue with the registration process. Please, try again later.'))
   //   res.redirect('/signup');
   // }
+  let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
+  req.session.strategyNames = []
+  req.session.strategyIds = []
+  for (var i = 0; i < getUserStrategies.length; i++) {
+    req.session.strategyNames.push(getUserStrategies[i].strategy);
+    req.session.strategyIds.push(getUserStrategies[i].id);
+  }
+  req.session.timeframes = await localeTimeframes();
+  req.session.notification = true;
+  res.cookie('lang', 'en')
   res.redirect("/" + req.user.username)
 })
 
@@ -211,6 +215,9 @@ router.post('/create-subscription', middleware.isLoggedIn, async (req, res) => {
 // LOGOUT ROUTE
 router.get("/logout", (req, res) => {
   req.logout();
+  req.session.notification = null;
+  req.session.strategyNames = null;
+  req.session.strategyIds = null;
   req.flash("success", res.__("Successfully logged out!"))
   res.redirect("/")
 })

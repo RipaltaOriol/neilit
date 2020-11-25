@@ -3,17 +3,36 @@
   <div class="bg-orange py-2">
     <div class="w-100 row mx-auto d-flex align-items-center">
       <div class="col-6">
-        <a href="/<%= currentUser.username %>" class="text-light">
+        <a href="#!" class="text-light" id="back">
           <p class="m-0 p-0 mr-2"><%= __('Go to dashboard') %></p>
         </a>
       </div>
     </div>
   </div>
-
+  <!-- error -->
+  <div id="error-alert" class="container d-none">
+    <div id="error-text" class="alert alert-danger mt-2" role="alert">
+      <span></span>
+    </div>
+  </div>
+  <!-- loading spinner -->
+  <div class="modal" id="loading-modal" tabindex="-1" role="dialog" aria-labelledby="loadingModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="w-100 d-flex justify-content-center my-3">
     <ul class="nav containerMenuSettings d-flex flex-row justify-content-center">
       <li class="nav-item p-0">
-        <a class="nav-link active" role="tab" href="#profile" data-toggle="tab">
+        <a class="nav-link" role="tab" href="#profile" data-toggle="tab">
           <%= __('Profile') %>
         </a>
       </li>
@@ -44,7 +63,7 @@
     <!-- tabs content -->
     <div class="tab-content">
       <!-- profile -->
-      <div role="tabpanel" class="tab-box tab-pane active" id="profile">
+      <div role="tabpanel" class="tab-box tab-pane" id="profile">
         <div class="d-flex flex-column">
           <div class="d-flex justify-content-between">
 
@@ -250,6 +269,7 @@
             <input type="text" id="addStrategy" placeholder="<%= __('New Strategy') %>" class="w-100 font-16">
             <!-- all strategies -->
             <a href="#!" id="">
+
               <ul id="listStrategy" class="pl-0 list">
                 <% strategies.forEach((strategy) => { %>
                   <li class="mt-2 py-0 strategy-li">
@@ -317,7 +337,7 @@
   </div>
 
 <script type="text/javascript">
-  var currentUser = <%- JSON.stringify(currentUser) %>
+  var username = <%- JSON.stringify(currentUser.username) %>
   var strategies = <%- JSON.stringify(strategies) %>;
 </script>
 

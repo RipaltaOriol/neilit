@@ -20,7 +20,7 @@ module.exports = function(passport) {
 
   // Deserialize the user for the session
   passport.deserializeUser(function(id, done) {
-    db.query('SELECT * FROM users WHERE id = ?', id, (err, rows) => {
+    db.query('SELECT * FROM users_deserialize WHERE id = ?', id, (err, rows) => {
       if (err) throw err;
       done(err, rows[0]);
     });
@@ -74,6 +74,13 @@ module.exports = function(passport) {
             if (err) throw err;
             newUserMysql.id = rows.insertId;
             newUserMysql.password = null;
+            let noneStrategy = {
+              strategy: 'None',
+              user_id: rows.insertId
+            }
+            db.query("INSERT INTO strategies SET ?", noneStrategy, (err, result) => {
+              if (err) throw err;
+            })
             return done(null, newUserMysql)
           });
         }).catch(function(data) {

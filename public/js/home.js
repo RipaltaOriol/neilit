@@ -87,3 +87,17 @@ $('.dropdown-menu li').on('click', function() {
   var currency = $(this).text();
   $('#dd').val(currency);
 });
+
+// loading log in
+$('#login').submit(function() {
+  $('#login-spinner').removeClass('d-none')
+  $('#login-text').hide();
+  $('#login-btn').prop('disabled', true)
+});
+
+// loading log in
+$('#signup').submit(function() {
+  $('#signup-spinner').removeClass('d-none')
+  $('#signup-text').hide();
+  $('#signup-btn').prop('disabled', true)
+});

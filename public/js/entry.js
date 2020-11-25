@@ -1,12 +1,22 @@
+var filterQuery;
+
 $(document).ready(function() {
+  // redirects to notification page
+  if (screen.width < 768) {
+    window.location.replace("/mobile")
+  }
   // sets datepicker
   $(function() {
+    $.datepicker.setDefaults(
+      $.extend(
+        $.datepicker.regional[language]
+      )
+    )
     $('.datepicker').each(function(){
       $(this).datepicker({
         altField: "#" + $(this).data('target'),
         altFormat: "yy-mm-dd" // format for database processing
       });
-      $(this).datepicker($.datepicker.regional[language]);
     });
   });
   // prevents the classic datepicker from loading
@@ -42,6 +52,31 @@ $('.dropdown-menu li').on('click', function() {
   }
 });
 
+$('.dropdown-menu.filter ol').on('click', function(e) {
+  e.stopPropagation();
+  if (e.target.tagName.toUpperCase() === "LABEL"
+    || e.target.tagName.toUpperCase() === "SPAN"
+    || e.target.tagName.toUpperCase() === "OL") {
+    return;
+  }
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  var dropdownLabel = $('.dropdown-select')[current]
+  if ($(this).children().children().is(':checked')) {
+    dropdownLabel.innerHTML += getValue;
+  } else {
+    console.log(dropdownLabel.innerHTML);
+    console.log(getValue);
+    console.log(getValue.trim());
+    dropdownLabel.innerHTML = dropdownLabel.textContent.replace(getValue.trim(), '');
+    if (dropdownLabel.innerHTML.trim() == '') {
+      dropdownLabel.innerHTML += getValue;
+      $(this).children().children().prop('checked', true)
+    }
+  }
+})
+
 // search bar for the dropdown
 function searchDropdown(id) {
   var input, search, dropdownItems, val;
@@ -49,7 +84,9 @@ function searchDropdown(id) {
   var current = allDD.index(id.parentElement)
   input = document.getElementsByClassName('dropdown-search')[current];
   search = input.value.toUpperCase();
-  dropdownItems = document.getElementsByClassName('dropdown-menu')[current].getElementsByTagName('li');
+  dropdownItems = document.getElementsByClassName('dropdown-menu')[current].querySelectorAll('li, ol');
+  console.log(dropdownItems);
+  console.log(search);
   for (var i = 0; i < dropdownItems.length; i++) {
     val = dropdownItems[i].textContent || dropdownItems[i].innerText;
     if (val.toUpperCase().indexOf(search) > -1) {
@@ -59,6 +96,19 @@ function searchDropdown(id) {
     }
   }
 }
+
+// manages filter functions
+$('#display-create').click(() => {
+  $('#filter-create').toggleClass('d-none')
+})
+
+$('#display-exit').click(() => {
+  $('#filter-exit').toggleClass('d-none')
+})
+
+$('#display-advance').click(() => {
+  $('#filter-advance').toggleClass('d-none')
+})
 
 // manages the spinner on loading processes
 function loadingState(bool) {
@@ -75,8 +125,12 @@ $('.table-scroll').scroll(() => {
   var $el = $('.table-scroll');
   var $eh = $('.table-scroll')[0];
   if ($el.innerHeight() + $el.scrollTop() >= $eh.scrollHeight - 5 && loadedCount) {
+    var data = {
+      offset: loadedCount
+    }
+    if (filterQuery) { data.query = filterQuery }
     loadingState(true);
-    $.post('entry/load-index', {offset: loadedCount})
+    $.post('entry/load-index', data)
       .done((data) => {
         loadedCount+= 25;
         loadingState(false);
@@ -95,11 +149,11 @@ $('.table-scroll').scroll(() => {
           pair.innerHTML = entry.pair;
           pair.className = 'orange';
           date.innerHTML = entry.date;
-          date.className = 'orange';
+          date.className = 'orange text-center';
           if (entry.status) {
-            if (entry.result = 'win') {
+            if (entry.result === 'win') {
               status.innerHTML = '<span class="pill pill-green d-block">' + entry.result.toUpperCase() + '</span>'
-            } else if (entry.result = 'loss') {
+            } else if (entry.result === 'loss') {
               status.innerHTML = '<span class="pill pill-red d-block">' + entry.result.toUpperCase() + '</span>'
             } else {
               status.innerHTML = '<span class="pill pill-yellow d-block">' + entry.result.toUpperCase() + '</span>'
@@ -110,6 +164,7 @@ $('.table-scroll').scroll(() => {
             icon.classList = 'simple-img'
             status.appendChild(icon);
           }
+          status.className = 'text-center';
           strategy.innerHTML = entry.strategy;
           timeframe.innerHTML = entry.timeframe;
         });
@@ -122,6 +177,93 @@ $('.table-scroll').scroll(() => {
 
     })
   }
+})
+
+// Filter results
+$('#apply-filter').click(() => {
+  $("#modal-loading").modal();
+  var filterPairs = $('input[name=pair]:checked').map(function(){
+    return 'pair LIKE "' + this.value + '"';
+  }).get().join(' || ');
+  var filterCategories = $('input[name=category]:checked').map(function(){
+    return 'entries.category LIKE "' + this.value + '"';
+  }).get().join(' || ');
+  var filterCreate, filterExit, filterSort, filterOrder;
+  if ($('#display-create').is(":checked")) {
+    filterCreate = $('input[name=create]').map(function(){
+      return '"' + this.value + '"';
+    }).get().join(' && ');
+  }
+  if ($('#display-exit').is(":checked")) {
+    filterExit = $('input[name=exit]').map(function(){
+      return '"' + this.value + '"';
+    }).get().join(' && ');
+  }
+  var filterStrategies = $('input[name=strategy]:checked').map(function(){
+    return 'strategy_id LIKE "' + this.value + '"';
+  }).get().join(' || ');
+  var filterTimeframes = $('input[name=timeframe]:checked').map(function(){
+    return 'timeframe_id LIKE "' + this.value + '"';
+  }).get().join(' || ');
+  var filterResults = $('input[name=result]:checked').map(function(){
+    return 'IFNULL(result, "open") LIKE "' + this.value + '"';
+  }).get().join(' || ');
+  filterSort = $('input[name=sort]:checked').val()
+  filterOrder = $('input[name=order]:checked').val()
+  var data = {
+    pairs: filterPairs,
+    categories: filterCategories,
+    create: filterCreate,
+    exit: filterExit,
+    strategy: filterStrategies,
+    timeframe: filterTimeframes,
+    result: filterResults,
+    sort: filterSort,
+    order: filterOrder
+  }
+  $.post('entry/filter', data)
+    .done((data) => {
+      $('#index-table tbody').html('')
+      // add new entries to the index list
+      data.dataList.forEach((entry, i) => {
+        var newRow = $('tbody')[0].insertRow();
+        var createHandler = function() { return function() { window.location.href = 'entry/' + entry.id; } }
+        var pair      = newRow.insertCell(0);
+        var date      = newRow.insertCell(1);
+        var status    = newRow.insertCell(2);
+        var strategy  = newRow.insertCell(3);
+        var timeframe = newRow.insertCell(4);
+        newRow.onclick = createHandler();
+        // adds acutal data
+        pair.innerHTML = entry.pair;
+        pair.className = 'orange';
+        date.innerHTML = entry.date;
+        date.className = 'orange text-center';
+        if (entry.status) {
+          if (entry.result === 'win') {
+            status.innerHTML = '<span class="pill pill-green d-block">' + entry.result.toUpperCase() + '</span>'
+          } else if (entry.result === 'loss') {
+            status.innerHTML = '<span class="pill pill-red d-block">' + entry.result.toUpperCase() + '</span>'
+          } else {
+            status.innerHTML = '<span class="pill pill-yellow d-block">' + entry.result.toUpperCase() + '</span>'
+          }
+        } else {
+          var icon = document.createElement('img');
+          icon.src = '/imgs/icons/open-ops.svg';
+          icon.classList = 'simple-img'
+          status.appendChild(icon);
+        }
+        status.className = 'text-center';
+        strategy.innerHTML = entry.strategy;
+        timeframe.innerHTML = entry.timeframe;
+      });
+      filterQuery = data.query;
+      loadedCount = 25;
+      $("#modal-loading").modal('hide');
+  })
+    .fail(() => {
+
+  })
 })
 
 // Dispaly fields for entry close
@@ -179,6 +321,6 @@ function checkTime(form) {
 if (storeEntry != null) {
   storeEntry.addEventListener('click', () => {
     // sends the comment to the server
-    serverComment.value = clientComment.textContent || clientComment.innerText;
+    serverComment.value = clientComment.innerText.replace(/\n/g, "<br>");
   })
 }

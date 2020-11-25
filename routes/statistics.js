@@ -1,4 +1,4 @@
-var express = require('express');
+let express = require('express');
 const util = require('util');
 var router = express.Router({mergeParams: true});
 let pairs = require("../models/pairs");

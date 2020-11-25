@@ -4,10 +4,12 @@ const util  = require('util');
 let router = express.Router({mergeParams: true});
 let pairs = require('../models/pairs');
 let currencies = require('../models/currencies');
-let timeframesFunc = require('../models/timeframes');
+let localeTimeframes = require('../models/timeframes');
 let categories = require('../models/categoriesPairs');
 let middleware = require('../middleware');
 let db = require('../models/dbConfig');
+// node native promisify
+const query = util.promisify(db.query).bind(db);
 
 // I18N library to translate the files inside the modules directory
 const i18n = require('i18n');
@@ -19,8 +21,6 @@ i18n.configure({
 
 // Global Program Variables
 let strategies = require('../models/strategies');
-// node native promisify
-const query = util.promisify(db.query).bind(db);
 // COMBAK: Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
 const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVcs6jWWvowXuRqXQKvFCK6pYG7Q8NRSy9NQ8uCjHADKAHd36Mfosx006ajk0pov');
@@ -36,26 +36,75 @@ router.post("/newStrategy", middleware.isLoggedIn, (req, res) => {
   // saves the strategy to the DB
   db.query('INSERT INTO strategies SET ?', newStrategy, (err, done) => {
     if (err) {
-      // COMBAK: log error
-      req.flash('error', res.__('Something went wrong. Please, try again later.'))
-      return res.redirect('/' + req.user.username);
+      if (err.code === 'ER_DUP_ENTRY') {
+        // COMBAK: log error
+        return res.json(
+          {
+            response: 'error',
+            message: res.__('Strategy names cannot have duplicate names.')
+          }
+        )
+      } else {
+        // COMBAK: log error
+        return res.json(
+          {
+            response: 'error',
+            message: res.__('Something went wrong, please try again.')
+          }
+        )
+      }
     }
-    res.end();
+    req.session.strategyNames.push(req.body.strategy);
+    req.session.strategyIds.push(done.insertId)
+    return res.json({response: 'success'})
   })
 })
 
 // DELETE STRATEGY ROUTE
 router.post("/deleteStrategy", middleware.isLoggedIn, (req, res) => {
-  var deleteStrategy = 'DELETE FROM strategies WHERE strategy = ?'
-  // deletes the strategy from the DB
-  db.query(deleteStrategy, req.body.strategy, (err) => {
-    if (err) {
-      // COMBAK: log error
-      req.flash('error', res.__('Something went wrong. Please, try again later.'))
-      return res.redirect('/' + req.user.username);
-    }
-    res.end();
-  })
+  var deleteStrategy = 'DELETE FROM strategies WHERE strategy = ? && user_id = ?'
+  if (req.body.strategy == 'None') {
+    return res.json(
+      {
+        response: 'error',
+        message: res.__('The \'None\' strategy cannot be deleted.')
+      }
+    )
+  }
+  (async () => {
+    var replace = req.session.strategyIds[0]
+    var oldIndex = req.session.strategyNames.findIndex(strategy => strategy == req.body.strategy)
+    var old = req.session.strategyIds[oldIndex]
+    var data = [replace, old, req.user.id]
+    // update entries
+    var deleteEntries = await query('UPDATE entries SET strategy_id = ? WHERE strategy_id = ? && user_id = ?', data);
+    // update technical analysis
+    var deleteTAs = await query('UPDATE tanalysis r JOIN telementanalysis t ON (r.id = t.ta_id) SET t.strategy_id = ? WHERE t.strategy_id = ? && r.user_id = ?', data);
+    // update backtest single strategy
+    var deleteBTsingle = await query('UPDATE backtest SET strategy_id = ? WHERE strategy_id = ? && user_id = ?', data);
+    // update backtest multiple strategies
+    var deleteBTmultiple = await query('UPDATE backtest b JOIN backtest_data d ON (b.id = d.backtest_id) SET d.strategy_id = ? WHERE d.strategy_id = ? && b.user_id = ?', data);
+    // update plan positions
+    var deletePlanPositions = await query('UPDATE plans p JOIN pln_positions o ON p.id = o.plan_id SET o.strategy_id = ? WHERE o.strategy_id = ? && p.user_id = ?', data);
+    // update plan strategies
+    var deletePlanStrategies = await query('UPDATE plans p JOIN pln_strategies s ON p.id = s.plan_id SET s.strategy_id = ? WHERE s.strategy_id = ? && p.user_id = ?', data);
+    // deletes the strategy from the DB
+    await db.query(deleteStrategy, [req.body.strategy, req.user.id], (err, done) => {
+      if (err) {
+        console.log(err);
+        // COMBAK: log error
+        return res.json(
+          {
+            response: 'error',
+            message: res.__('Something went wrong, please try again.')
+          }
+        )
+      }
+      req.session.strategyNames.splice(oldIndex, 1);
+      req.session.strategyIds.splice(oldIndex, 1);
+      return res.json({response: 'success'})
+    })
+  })()
 })
 
 // NEW GOAL ROUTE
@@ -143,9 +192,8 @@ router.post("/changeLanguage", middleware.isLoggedIn, (req, res) => {
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
-    language = req.body.lang;
-    i18n.setLocale(language)
-    timeframes = timeframesFunc();
+    res.cookie('lang', req.body.lang)
+    timeframes = localeTimeframes();
     res.end();
   })
 })

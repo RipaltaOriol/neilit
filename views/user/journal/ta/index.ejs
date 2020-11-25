@@ -37,161 +37,175 @@
             <a href="/<%= currentUser.username %>/journal/ta/new" class="btn-neilit"><%= __('New') %></a>
           </div>
         </div>
+        <!-- loading modal -->
+        <div id="modal-loading" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content p-5">
+              <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- filter modal -->
         <div id="filter-modal" class="modal fade" tabindex="-1" role="dialog">
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title"><%= __('Apply Filtering to TA') %></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body form-fields">
-                <span class="mb-2 d-block">
-                  <label><%= __('Pair') %>:</label>
-                  <!-- dropdown -->
-                  <div class="dropdown d-inline">
-                    <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
-                      <%= currencies[0] %>
-                    </button>
-                    <ul id="dropdown-items" class="dropdown-menu filter" aria-labelledby="dropdown-label">
-                      <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                      <li class="0">
-                        <label class="checkbox-orange d-inline">
-                          <%= ('All') %>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <% for (var i = 0; i < currencies.length; i++) { %>
-                        <li class="<%= i + 1 %>">
-                          <label class="checkbox-orange d-inline">
-                            <%= currencies[i] %>
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                          </label>
-                        </li>
-                      <% } %>
-                    </ul>
-                  </div>
-                </span>
-                <span class="mb-2 d-block">
-                  <label><%= __('Category') %>:</label>
-                  <!-- dropdown -->
-                  <div class="dropdown d-inline">
-                    <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
-                      <%= categories[0] %>
-                    </button>
-                    <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                      <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                      <li class="0">
-                        <label class="checkbox-orange d-inline">
-                          <%= ('All') %>
-                          <input type="checkbox">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <% for (var i = 0; i < categories.length; i++) { %>
-                        <li class="<%= i + 1 %>">
-                          <label class="checkbox-orange d-inline">
-                            <%= categories[i] %>
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                          </label>
-                        </li>
-                      <% } %>
-                    </ul>
-                  </div>
-                </span>
-                <span class="mb-2 d-block">
-                  <label><%= __('Creation Date') %>:</label>
-                  <label class="checkbox-orange d-inline ml-2">
-                    <input type="checkbox" id="display-create">
-                    <span class="checkmark"></span>
-                  </label>
-                  <div id="filter-create" class="d-none">
-                    <div class="mb-2">
-                      <label><%= __('From') %>:</label>
-                      <input type="text" class="datepicker form-input p-1 px-2" data-target="">
-                      <input type="text" id="" class="d-none">
-                    </div>
-                    <div class="mb-2">
-                      <label><%= __('To') %>:</label>
-                      <input type="text" class="datepicker form-input p-1 px-2" data-target="">
-                      <input type="text" id="" class="d-none">
-                    </div>
-                  </div>
-                </span>
-                <span class="mb-2 d-block">
-                  <label><%= __('Edited Date') %>:</label>
-                  <label class="checkbox-orange d-inline ml-2">
-                    <input type="checkbox" id="display-edit">
-                    <span class="checkmark"></span>
-                  </label>
-                  <div id="filter-edit" class="d-none">
-                    <div class="mb-2">
-                      <label><%= __('From') %>:</label>
-                      <input type="text" class="datepicker form-input p-1 px-2" data-target="">
-                      <input type="text" id="" class="d-none">
-                    </div>
-                    <div class="mb-2">
-                      <label><%= __('To') %>:</label>
-                      <input type="text" class="datepicker form-input p-1 px-2" data-target="">
-                      <input type="text" id="" class="d-none">
-                    </div>
-                  </div>
-                </span>
-                <span class="mb-2 d-block">
-                  <label><%= __('Advanced Filtering') %>:</label>
-                  <label class="checkbox-orange d-inline ml-2">
-                    <input type="checkbox" id="display-advance">
-                    <span class="checkmark"></span>
-                  </label>
-                </span>
-                <div id="filter-advance" class="d-none">
+            <form id="form-filter">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"><%= __('Apply Filtering to TA') %></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body form-fields">
                   <span class="mb-2 d-block">
-                    <label><%= __('Sort by') %>:</label>
-                    <label class="checkbox-orange d-inline ml-1">
-                      <%= __('Pair') %>
-                      <input type="radio" name="sort">
+                    <label><%= __('Pair') %>:</label>
+                    <!-- dropdown -->
+                    <div class="dropdown d-inline">
+                      <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                        <%= __('All') %>
+                      </button>
+                      <ul id="dropdown-items" class="dropdown-menu filter" aria-labelledby="dropdown-label">
+                        <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                        <ol class="0">
+                          <label class="checkbox-orange d-inline">
+                            <%= __('All') %>
+                            <input type="checkbox" name="pair" value="%" checked>
+                            <span class="checkmark"></span>
+                          </label>
+                        </ol>
+                        <% for (var i = 0; i < currencies.length; i++) { %>
+                          <ol class="<%= i + 1 %>">
+                            <label class="checkbox-orange d-inline">
+                              <%= currencies[i] %>
+                              <input type="checkbox" name="pair" value="<%= currencies[i] %>">
+                              <span class="checkmark"></span>
+                            </label>
+                          </ol>
+                        <% } %>
+                      </ul>
+                    </div>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Category') %>:</label>
+                    <!-- dropdown -->
+                    <div class="dropdown d-inline">
+                      <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                        <%= __('All') %>
+                      </button>
+                      <ul id="dropdown-items" class="dropdown-menu filter" aria-labelledby="dropdown-label">
+                        <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                        <ol class="0">
+                          <label class="checkbox-orange d-inline">
+                            <%= __('All') %>
+                            <input type="checkbox" name="category" value="%" checked>
+                            <span class="checkmark"></span>
+                          </label>
+                        </ol>
+                        <% for (var i = 0; i < categories.length; i++) { %>
+                          <ol class="<%= i + 1 %>">
+                            <label class="checkbox-orange d-inline">
+                              <%= categories[i] %>
+                              <input type="checkbox" name="category" value="<%= categories[i] %>">
+                              <span class="checkmark"></span>
+                            </label>
+                          </ol>
+                        <% } %>
+                      </ul>
+                    </div>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Creation Date') %>:</label>
+                    <label class="checkbox-orange d-inline ml-2">
+                      <input type="checkbox" id="display-create">
                       <span class="checkmark"></span>
                     </label>
+                    <div id="filter-create" class="d-none">
+                      <div class="mb-2">
+                        <label><%= __('From') %>:</label>
+                        <input type="text" class="datepicker form-input p-1 px-2" data-target="create-from">
+                        <input type="text" id="create-from" name="create" class="d-none">
+                      </div>
+                      <div class="mb-2">
+                        <label><%= __('To') %>:</label>
+                        <input type="text" class="datepicker form-input p-1 px-2" data-target="create-to">
+                        <input type="text" id="create-to" name="create" class="d-none">
+                      </div>
+                    </div>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Edited Date') %>:</label>
                     <label class="checkbox-orange d-inline ml-2">
-                      <%= __('Category') %>
-                      <input type="radio" name="sort">
+                      <input type="checkbox" id="display-edit">
                       <span class="checkmark"></span>
                     </label>
+                    <div id="filter-edit" class="d-none">
+                      <div class="mb-2">
+                        <label><%= __('From') %>:</label>
+                        <input type="text" class="datepicker form-input p-1 px-2" data-target="edit-from">
+                        <input type="text" id="edit-from" name="edit" class="d-none">
+                      </div>
+                      <div class="mb-2">
+                        <label><%= __('To') %>:</label>
+                        <input type="text" class="datepicker form-input p-1 px-2" data-target="edit-to">
+                        <input type="text" id="edit-to" name="edit" class="d-none">
+                      </div>
+                    </div>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Advanced Filtering') %>:</label>
                     <label class="checkbox-orange d-inline ml-2">
-                      <%= __('Creation') %>
-                      <input type="radio" name="sort" checked>
-                      <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-orange d-inline ml-2">
-                      <%= __('Last Updated') %>
-                      <input type="radio" name="sort">
+                      <input type="checkbox" id="display-advance">
                       <span class="checkmark"></span>
                     </label>
                   </span>
-                  <span class="mb-2 d-block">
-                    <label><%= __('Order by') %>:</label>
-                    <label class="checkbox-orange d-inline ml-1">
-                      <%= __('Descending') %>
-                      <input type="radio" name="order" checked>
-                      <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-orange d-inline ml-2">
-                      <%= __('Ascending') %>
-                      <input type="radio" name="order">
-                      <span class="checkmark"></span>
-                    </label>
-                  </span>
+                  <div id="filter-advance" class="d-none">
+                    <span class="mb-2 d-block">
+                      <label><%= __('Sort by') %>:</label>
+                      <label class="checkbox-orange d-inline ml-1">
+                        <%= __('Pair') %>
+                        <input type="radio" name="sort" value="pair_id">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Category') %>
+                        <input type="radio" name="sort" value="tanalysis.category">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Creation') %>
+                        <input type="radio" name="sort" value="created_at" checked>
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Last Updated') %>
+                        <input type="radio" name="sort" value="last_update">
+                        <span class="checkmark"></span>
+                      </label>
+                    </span>
+                    <span class="mb-2 d-block">
+                      <label><%= __('Order by') %>:</label>
+                      <label class="checkbox-orange d-inline ml-1">
+                        <%= __('Descending') %>
+                        <input type="radio" name="order" value="DESC" checked>
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Ascending') %>
+                        <input type="radio" name="order" value="ASC">
+                        <span class="checkmark"></span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button id="apply-filter" type="button" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>

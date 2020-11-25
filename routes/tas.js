@@ -17,7 +17,7 @@ var strategyTA = require('../models/elements/strategy');
 
 // INDEX TECHNICAL ANALYSIS ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
-  getTAs = 'SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at DESC LIMIT 25;';
+  var getTAs = 'SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at DESC LIMIT 25;';
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   var dataList = []
   db.query(getTAs, req.user.id, (err, results) => {
@@ -46,7 +46,8 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 
 // INDEX TECHNICAL ANALYSIS INFINITE SCROLL LOGIC
 router.post("/load-index", middleware.isLoggedIn, (req, res) => {
-  getTAs = 'SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at DESC LIMIT 25 OFFSET ?;';
+  var getTAs = 'SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at DESC LIMIT 25 OFFSET ?;';
+  if (req.body.query) { getTAs = req.body.query + ' OFFSET ?;'}
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   var dataList = []
   db.query(getTAs, [req.user.id, Number(req.body.offset)], (err, results) => {
@@ -66,6 +67,39 @@ router.post("/load-index", middleware.isLoggedIn, (req, res) => {
     return res.json({
       dataList: dataList,
       buttonText: res.__('Go to TA')
+    });
+  })
+})
+
+// FILTER LOGIC
+router.post("/filter", middleware.isLoggedIn, (req, res) => {
+  var createFilter = ''
+  var editFilter = ''
+  if (req.body.create) { createFilter = '&& created_at >= ' + req.body.create + ' >= created_at' }
+  if (req.body.edit) { editFilter = '&& last_update >= ' + req.body.edit + ' >= last_update' }
+  var getTAs = `SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id
+    WHERE user_id = ? && (${req.body.pairs}) && (${req.body.categories}) ${editFilter} ${createFilter} ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  var dataList = []
+  db.query(getTAs, req.user.id, (err, results) => {
+    if (err) {
+      console.log(err);
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again.'))
+      return res.redirect('/' + req.user.username + '/journal/ta');
+    }
+    results.forEach((result) => {
+      dataList.push({
+        id: result.id,
+        date: result.created_at.toLocaleDateString(req.user.language, options),
+        update: result.last_update.toLocaleDateString(req.user.language, options),
+        pair: result.pair
+      })
+    });
+    return res.json({
+      dataList: dataList,
+      buttonText: res.__('Go to TA'),
+      query: getTAs
     });
   })
 })

@@ -4,12 +4,12 @@
 let db = require('./dbConfig');
 
 // Create the variable that will be returned
-var pairsList = [];
+var pairsList = new Map();
 // Query to the DB
-db.query("SELECT pair FROM pairs", (err, results) => {
+db.query("SELECT pair, category FROM pairs", (err, results) => {
   if (err) throw err;
   results.forEach((result) => {
-    pairsList.push(result.pair);
+    pairsList.set(result.pair, result.category);
   });
 })
 

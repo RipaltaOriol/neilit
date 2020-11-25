@@ -121,8 +121,8 @@ hr.profile {
 }
 
 .tab-box {
-  width: 850px;
-  min-width: 850px;
+  width: 768px;
+  min-width: 768px;
   border-radius: 7px;
   -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
@@ -154,6 +154,15 @@ hr.profile {
     height: 40px;
     width: auto;
   }
+
+/* || Bootstrap class */
+.modal-content {
+  background-color: var(--background-soft);
+}
+
+.spinner-border {
+  color: var(--neilit-permanent);
+}
 
 /* || Profile picture */
 .profile-picture { }
@@ -316,6 +325,9 @@ hr.profile {
     background: none;
     border: none;
   }
+    .list button:focus {
+      outline: none;
+    }
   .list input {
     color: var(--text-grey);
     background: none;
@@ -323,6 +335,7 @@ hr.profile {
     .list input:focus {
       color: var(--invert-black);
     }
+
 
 /*Custom dropdown*/
 #dd {
