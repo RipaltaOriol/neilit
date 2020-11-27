@@ -9,6 +9,10 @@
   --green-border:  #c3e6cb;
 }
 
+:root.dark-mode {
+  --red-strong: #721c24;
+}
+
 /* || General styles */
 a { }
   a:hover {

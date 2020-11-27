@@ -8,6 +8,9 @@ var taIndex6 = '</a></div></div>'
 var filterQuery;
 
 $(document).ready(function() {
+  if (typeof currencies !== 'undefined') {
+    currencies = Object.fromEntries(currencies);
+  }
   // redirects to notification page
   if (screen.width < 768) {
     window.location.replace("/mobile")
@@ -59,8 +62,10 @@ $('.journal-scroll').scroll(() => {
         loadedCount+= 25;
         // add new technical analysis to the index list
         data.dataList.forEach((analysis) => {
-          var newTA = taIndex1 + analysis.pair + taIndex2 + analysis.date
-            + taIndex3 + analysis.update + taIndex4 + '/' + username + '/journal/ta/'
+          var newTA = taIndex1 + analysis.pair + taIndex2
+            + new Date(analysis.created_at).toLocaleDateString(language, data.options)
+            + taIndex3 + new Date(analysis.last_update).toLocaleDateString(language, data.options)
+            + taIndex4 + '/' + username + '/journal/ta/'
             + analysis.id + taIndex5 + data.buttonText + taIndex6;
           $('.journal-scroll')[0].innerHTML += newTA
         });
@@ -111,8 +116,10 @@ $('#apply-filter').click(() => {
       $('.journal-scroll')[0].innerHTML = ''
       // add new technical analysis to the index list
       data.dataList.forEach((analysis, i) => {
-        var newTA = taIndex1 + analysis.pair + taIndex2 + analysis.date
-          + taIndex3 + analysis.update + taIndex4 + '/' + username + '/journal/ta/'
+        var newTA = taIndex1 + analysis.pair + taIndex2
+          + new Date(analysis.created_at).toLocaleDateString(language, data.options)
+          + taIndex3 + new Date(analysis.last_update).toLocaleDateString(language, data.options)
+          + taIndex4 + '/' + username + '/journal/ta/'
           + analysis.id + taIndex5 + data.buttonText + taIndex6;
         $('.journal-scroll')[0].innerHTML += newTA
       });
@@ -132,7 +139,7 @@ $('.dropdown-menu li').on('click', function() {
   var getValue = $(this).text();
   if ($('.dropdown-server')[current]) {
     $('.dropdown-server')[current].value = this.className;
-    $('#ta-category').val(categories[this.className - 1])
+    $('#ta-category').val(currencies[($(this).text())].category)
   }
   if ($('.dropdown-select')[current]) {
     $('.dropdown-select')[current].innerHTML = getValue;
@@ -247,7 +254,6 @@ if (taStrategy) {
       var current = allDD.index($(this).parent())
       var getValue = $(this).text();
       if ($('.dropdown-server')[current]) {
-        console.log(this);
         $('.dropdown-server')[current].value = this.className;
       }
       if ($('.dropdown-select')[current]) {

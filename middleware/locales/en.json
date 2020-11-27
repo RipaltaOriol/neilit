@@ -484,6 +484,7 @@
 	"Edited Date": "Edited Date",
 	"Advanced Filtering": "Advanced Filtering",
 	"Creation": "Creation",
+	"Updated": "Updated",
 	"Last Updated": "Last Updated",
 	"Ascending": "Ascending",
 	"Descending": "Descending",
@@ -492,5 +493,7 @@
 	"None": "None",
 	"Closure": "Closure",
 	"Open": "Open",
-	"Something went wrong. Please, try again later.": "Something went wrong. Please, try again later."
+	"Something went wrong. Please, try again later.": "Something went wrong. Please, try again later.",
+	"Altering existing fields might alter your current statistics": "Altering existing fields might alter your current statistics",
+	"Accept": "Accept"
 }

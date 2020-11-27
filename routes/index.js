@@ -7,6 +7,7 @@ let async         = require('async');
 let nodemailer    = require('nodemailer');
 let crypto        = require('crypto');
 let bcrypt        = require('bcrypt');
+let index         = require('../controller/index')
 
 // Hashing Salt
 const saltRounds  = 10;

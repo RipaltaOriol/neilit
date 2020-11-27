@@ -4,11 +4,14 @@ let express         = require('express'),
     methodOverride  = require('method-override'),
     bodyParser      = require('body-parser'),
     cookieParser    = require('cookie-parser'),
+    redis           = require('redis'),
     flash           = require('connect-flash'),
     passport        = require('passport'),
     passportConfig  = require('./models/passportConfig'),
     db              = require('./models/dbConfig'),
-    session         = require('express-session');
+    session         = require('express-session'),
+    RedisStore      = require('connect-redis')(session),
+    redisClient     = redis.createClient();
 
 
 // Routes Dependencies
@@ -35,6 +38,7 @@ app.use(cookieParser());
 app.use(flash());
 // Configuration for Sessions (AUTHENTICATION)
 const sessionConfig = {
+  store: new RedisStore({ host: 'localhost', port: 6379, client: redisClient, ttl: 86400 }),
   secret: 'neilit is the key to trading success',
   resave: false,
   saveUninitialized: false,
@@ -140,7 +144,7 @@ app.use("/:profile/plan", planRoutes);
 
 // page not found || 404
 app.all('*', (req, res, next) => {
-  res.status(404).send('what???')
+  res.status(404).render('404')
 })
 
 // PORT LISTENING

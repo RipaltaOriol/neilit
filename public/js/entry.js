@@ -52,6 +52,7 @@ $('.dropdown-menu li').on('click', function() {
   }
 });
 
+// dropdown for filter feature
 $('.dropdown-menu.filter ol').on('click', function(e) {
   e.stopPropagation();
   if (e.target.tagName.toUpperCase() === "LABEL"
@@ -148,7 +149,7 @@ $('.table-scroll').scroll(() => {
           // adds acutal data
           pair.innerHTML = entry.pair;
           pair.className = 'orange';
-          date.innerHTML = entry.date;
+          date.innerHTML = new Date(entry.entry_dt).toLocaleDateString(language, data.options);
           date.className = 'orange text-center';
           if (entry.status) {
             if (entry.result === 'win') {
@@ -174,7 +175,7 @@ $('.table-scroll').scroll(() => {
         }
     })
       .fail(() => {
-
+        // error
     })
   }
 })
@@ -237,7 +238,7 @@ $('#apply-filter').click(() => {
         // adds acutal data
         pair.innerHTML = entry.pair;
         pair.className = 'orange';
-        date.innerHTML = entry.date;
+        date.innerHTML = new Date(entry.entry_dt).toLocaleDateString(language, data.options);
         date.className = 'orange text-center';
         if (entry.status) {
           if (entry.result === 'win') {

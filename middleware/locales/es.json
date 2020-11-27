@@ -618,6 +618,7 @@
 	"Edited Date": "Fecha de Edición",
 	"Advanced Filtering": "Filtrado Avanzado",
 	"Creation": "Creación",
+	"Updated": "Actualizado",
 	"Last Updated": "Última Actualización",
 	"Ascending": "Ascendente",
 	"Descending": "Descendiendo",
@@ -625,5 +626,6 @@
 	"Sort by": "Clasificar por",
 	"None": "Ninguno",
 	"Closure": "Cierre",
-	"Open": "Abierta"
+	"Open": "Abierta",
+	"Altering existing fields might alter your current statistics": "La modificación de los campos existentes podría alterar sus estadísticas actuales"
 }

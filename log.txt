@@ -1,4 +1,4 @@
-Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`neilit_db`.`telementanalysis`, CONSTRAINT `telementanalysis_ibfk_4` FOREIGN KEY (`timeframe_id`) REFERENCES `timeframes` (`id`))
+Error: ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1
     at Query.Sequence._packetToError (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/protocol/sequences/Sequence.js:47:14)
     at Query.ErrorPacket (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/protocol/sequences/Query.js:79:18)
     at Protocol._parsePacket (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/protocol/Protocol.js:291:23)
@@ -12,7 +12,7 @@ Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key c
     --------------------
     at Protocol._enqueue (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/protocol/Protocol.js:144:48)
     at Connection.query (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/Connection.js:198:25)
-    at Query.<anonymous> (/Users/uri/Desktop/Projects/Neilit/routes/tas.js:247:10)
+    at Query.<anonymous> (/Users/uri/Desktop/Projects/Neilit/routes/tas.js:261:10)
     at Query.<anonymous> (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/Connection.js:526:10)
     at Query._callback (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/Connection.js:488:16)
     at Query.Sequence.end (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/protocol/sequences/Sequence.js:83:24)
@@ -20,10 +20,10 @@ Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key c
     at Query.OkPacket (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/protocol/sequences/Query.js:74:10)
     at Protocol._parsePacket (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/protocol/Protocol.js:291:23)
     at Parser._parsePacket (/Users/uri/Desktop/Projects/Neilit/node_modules/mysql/lib/protocol/Parser.js:433:10) {
-  code: 'ER_NO_REFERENCED_ROW_2',
-  errno: 1452,
-  sqlMessage: 'Cannot add or update a child row: a foreign key constraint fails (`neilit_db`.`telementanalysis`, CONSTRAINT `telementanalysis_ibfk_4` FOREIGN KEY (`timeframe_id`) REFERENCES `timeframes` (`id`))',
-  sqlState: '23000',
+  code: 'ER_WRONG_VALUE_COUNT_ON_ROW',
+  errno: 1136,
+  sqlMessage: "Column count doesn't match value count at row 1",
+  sqlState: '21S01',
   index: 0,
-  sql: "INSERT INTO telementanalysis (ta_id, order_at, element_id, content, file, strategy_id, timeframe_id) VALUES (65, 1, 2, NULL, 'https://images.unsplash.com/photo-1453284441168-8780c9f52097?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80', NULL, NULL), (65, 2, 1, 'Complex TA', NULL, NULL, NULL), (65, 3, 4, 'trigger', NULL, 1, 0), (65, 4, 3, 'Beautiful picture and strategy.', NULL, NULL, NULL)"
+  sql: 'INSERT INTO telementanalysis (ta_id, order_at, element_id, content, file, strategy_id, timeframe_id) VALUES (80, 1, NULL)'
 }

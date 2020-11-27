@@ -12,7 +12,7 @@
             <h5><%= __('General Information') %></h5>
             <div>
               <label><%= __('Asset') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= currencies[entry.pair] %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entry.pair %>" readonly>
             </div>
             <span>
               <label><%= __('Category') %>:</label>
@@ -46,11 +46,11 @@
             </div>
             <div>
               <label><%= __('Strategy') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= strategies[entry.strategy] %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entry.strategy %>" readonly>
             </div>
             <div>
               <label><%= __('Timeframe') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= timeframes[entry.timeframe] %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entry.timeframe %>" readonly>
             </div>
             <div>
               <label><%= __('Entry price') %>:</label>

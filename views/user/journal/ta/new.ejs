@@ -13,12 +13,12 @@
             <!-- dropdown -->
             <div class="dropdown d-inline">
               <button id="dropdown-label" class="ta-pair dropdown-select px-2" type="button" data-toggle="dropdown">
-                <%= currencies[0] %>
+                <%= currencies.keys().next().value %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                 <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                <% for (var i = 0; i < currencies.length; i++) { %>
-                  <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                <% for (let [key, value] of currencies) { %>
+                  <li class="<%= value.id %>"><%= key %></li>
                 <% } %>
               </ul>
             </div>
@@ -63,8 +63,7 @@
 
 <script type="text/javascript">
   var language = <%- JSON.stringify(currentUser.language) %>;
-  var currencies = <%- JSON.stringify(currencies) %>;
-  var categories = <%- JSON.stringify(categories) %>;
+  var currencies = <%- JSON.stringify(Array.from(currencies.entries())) %>;
   var strategies = <%- JSON.stringify(strategies) %>;
   var timeframes = <%- JSON.stringify(timeframes) %>;
   var elements   = <%- JSON.stringify(elements) %>;

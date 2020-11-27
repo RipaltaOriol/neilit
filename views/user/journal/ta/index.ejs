@@ -13,9 +13,9 @@
                 <div class="bg-grey mx-3 p-3 mb-3 rounded">
                   <div class="d-flex justify-content-between mb-2">
                     <span class="orange"><strong><%= result.pair %></strong></span>
-                    <span><%= result.date %></span>
+                    <span><%= new Date(result.created_at).toLocaleDateString(currentUser.language, options) %></span>
                   </div>
-                  <p class="mb-0">Last updated: <%= result.update %></p>
+                  <p class="mb-0">Last updated: <%= new Date(result.last_update).toLocaleDateString(currentUser.language, options) %></p>
                   <div class="text-right">
                     <a href="/<%= currentUser.username %>/journal/ta/<%= result.id %>" class="btn-inverted"><%= __('Go to TA') %></a>
                   </div>
@@ -77,11 +77,11 @@
                             <span class="checkmark"></span>
                           </label>
                         </ol>
-                        <% for (var i = 0; i < currencies.length; i++) { %>
-                          <ol class="<%= i + 1 %>">
+                        <% for (let [key, value] of currencies) { %>
+                          <ol class="<%= value.id %>">
                             <label class="checkbox-orange d-inline">
-                              <%= currencies[i] %>
-                              <input type="checkbox" name="pair" value="<%= currencies[i] %>">
+                              <%= key %>
+                              <input type="checkbox" name="pair" value="<%= key %>">
                               <span class="checkmark"></span>
                             </label>
                           </ol>

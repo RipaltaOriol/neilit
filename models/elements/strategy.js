@@ -1,11 +1,11 @@
 // Technical Analysis Element: STRATEGY
 
 // -- CREATE
-function strategyHtml(strategies){
+function strategyHtml(strategies, strategiesID, timeframes){
   // loads all strategies
   var strategiesSelect = ``;
   strategies.forEach((strategy, i) => {
-    strategiesSelect += `<li class="` + i + `">` + strategy + `</li>`
+    strategiesSelect += `<li class="` + strategiesID[i] + `">` + strategy + `</li>`
   });
   // loads all timeframes
   var timeframesSelect = ``;
@@ -25,7 +25,7 @@ function strategyHtml(strategies){
             + strategies[0] +
             `
           </button>
-          <input type="text" name="strategy" class="dropdown-server d-none" value="0">
+          <input type="text" name="strategy" class="dropdown-server d-none" value="` + strategiesID[0] + `">
           <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
             <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
               `
@@ -78,7 +78,7 @@ function strategyHtml(strategies){
     `;
 };
 // -- DISPLAY
-function generateStrategy(strategies, st, imp, tf) {
+function generateStrategy(imp, strategy, timeframe) {
   // loads the user view that corresponds to the straegy importance
   if (imp === 'general') {
     return `
@@ -86,9 +86,9 @@ function generateStrategy(strategies, st, imp, tf) {
         <div class="widget-general px-2 w-100">
           <p class="mb-0">
             Strategy - General: a
-            <span class="strategy-general px-1">` + strategies[st] + `</span>
+            <span class="strategy-general px-1">` + strategy + `</span>
             on the
-            <span class="timeframe-general px-1">` + timeframes[tf - 1] + `</span>
+            <span class="timeframe-general px-1">` + timeframe + `</span>
           </p>
         </div>
       </div>
@@ -100,9 +100,9 @@ function generateStrategy(strategies, st, imp, tf) {
         <div class="widget-trigger px-2 w-100">
           <p class="mb-0">
             <label class="font-weight-bold mb-0">Strategy - Triggering</label>: a
-            <span class="strategy-trigger px-1">` + strategies[st] + `</span>
+            <span class="strategy-trigger px-1">` + strategy + `</span>
             on the
-            <span class="timeframe-trigger px-1">` + timeframes[tf - 1] + `</span>
+            <span class="timeframe-trigger px-1">` + timeframe + `</span>
           </p>
         </div>
       </div>
@@ -110,11 +110,11 @@ function generateStrategy(strategies, st, imp, tf) {
   }
 };
 // -- EDIT
-function editStrategy(strategies, st, imp, tf) {
+function editStrategy(strategies, strategiesID, timeframes, imp, strategy, timeframe, strategyID, timeframeID) {
   // loads all strategies
   var strategiesSelect = ``;
   strategies.forEach((strategy, i) => {
-    strategiesSelect += `<li class="` + i + `">` + strategy + `</li>`
+    strategiesSelect += `<li class="` + strategiesID[i] + `">` + strategy + `</li>`
   });
   // loads all timeframes
   var timeframesSelect = ``;
@@ -127,11 +127,9 @@ function editStrategy(strategies, st, imp, tf) {
   var importance;
   if (imp === 'general') {
     general = '';
-    importance = 'general';
   }
   if (imp === 'trigger') {
     trigger = '';
-    importance = 'trigger';
   }
   // returns the html put together
   return `
@@ -143,10 +141,10 @@ function editStrategy(strategies, st, imp, tf) {
         <div class="dropdown d-inline mb-2">
           <button id="dropdown-label" class="strategy-select dropdown-select w-100 px-2" type="button" data-toggle="dropdown">
             `
-            + strategies[0] +
+            + strategy +
             `
           </button>
-          <input type="text" name="strategy" class="dropdown-server d-none" value=" ` + st + ` ">
+          <input type="text" name="strategy" class="dropdown-server d-none" value=" ` + strategyID + ` ">
           <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
             <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
               `
@@ -158,10 +156,10 @@ function editStrategy(strategies, st, imp, tf) {
         <div class="dropdown d-inline mb-2">
           <button id="dropdown-label" class="timeframe-select dropdown-select w-100 px-2" type="button" data-toggle="dropdown">
             `
-            + timeframes[0] +
+            + timeframe +
             `
           </button>
-          <input type="text" name="timeframe" class="dropdown-server d-none" value="` + tf + `">
+          <input type="text" name="timeframe" class="dropdown-server d-none" value="` + timeframeID + `">
           <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
             <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
               `
@@ -177,20 +175,20 @@ function editStrategy(strategies, st, imp, tf) {
       <div class="widget-trigger ` + trigger + ` px-2 w-100">
         <p class="mb-0">
           <label class="font-weight-bold mb-0">Strategy - Triggering</label>: a
-          <span class="strategy-trigger px-1"> ` + strategies[st] + ` </span>
+          <span class="strategy-trigger px-1"> ` + strategy + ` </span>
           on the
-          <span class="timeframe-trigger px-1"> ` + timeframes[tf - 1] + ` </span>
+          <span class="timeframe-trigger px-1"> ` + timeframe + ` </span>
         </p>
       </div>
       <div class="widget-general ` + general + ` px-2 w-100">
         <p class="mb-0">
           Strategy - General: a
-          <span class="strategy-general px-1"> ` + strategies[st] + ` </span>
+          <span class="strategy-general px-1"> ` + strategy + ` </span>
           on the
-          <span class="timeframe-general px-1"> ` + timeframes[tf - 1] + ` </span>
+          <span class="timeframe-general px-1"> ` + timeframe + ` </span>
         </p>
       </div>
-      <input type="text" name="importance" class="d-none" value="` + importance + `">
+      <input type="text" name="importance" class="d-none" value="` + imp + `">
       <span class="d-flex ml-2">
         <img src="/imgs/icons/move.svg" alt="move" class="move">
         <img src="/imgs/icons/delete.svg" alt="delete" class="drop" onclick="whatIndex(this)">

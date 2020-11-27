@@ -20,12 +20,12 @@
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
-                  <%= currencies[0] %>
+                  <%= currencies.keys().next().value %>
                 </button>
                 <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                  <% for (var i = 0; i < currencies.length; i++) { %>
-                    <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                  <% for (let [key, value] of currencies) { %>
+                    <li class="<%= value.id %>"><%= key %></li>
                   <% } %>
                 </ul>
               </div>
@@ -36,7 +36,7 @@
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Strategy') %>:</label>
-              <input type="text" name="strategy" value="0" class="dropdown-server d-none">
+              <input type="text" name="strategy" value="<%= strategiesID[0] %>" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
@@ -45,7 +45,7 @@
                 <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                   <% for (var i = 0; i < strategies.length; i++) { %>
-                    <li class="<%= i %>"><%= strategies[i] %></li>
+                    <li class="<%= strategiesID[i] %>"><%= strategies[i] %></li>
                   <% } %>
                 </ul>
               </div>

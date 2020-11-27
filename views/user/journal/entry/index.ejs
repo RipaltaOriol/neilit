@@ -90,13 +90,11 @@
                           <span class="checkmark"></span>
                         </label>
                       </ol>
-                      <% var index = 0 %>
-                      <% for (let value of currencies.keys()) { %>
-                        <% index++ %>
-                        <ol class="<%= index %>">
+                      <% for (let [key, value] of currencies) { %>
+                        <ol class="<%= value.id %>">
                           <label class="checkbox-orange d-inline">
-                            <%= value %>
-                            <input type="checkbox" name="pair" value="<%= value %>">
+                            <%= key %>
+                            <input type="checkbox" name="pair" value="<%= key %>">
                             <span class="checkmark"></span>
                           </label>
                         </ol>

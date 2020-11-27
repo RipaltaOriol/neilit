@@ -1,6 +1,5 @@
 let pairs         = require('../models/pairs');
 let currencies    = require('../models/currencies');
-//let timeframes  = require('../models/timeframes');
 let categories    = require('../models/categoriesPairs');
 let db            = require('../models/dbConfig');
 

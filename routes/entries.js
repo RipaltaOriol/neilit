@@ -15,7 +15,6 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
     JOIN pairs p on e.pair_id = p.id
     JOIN timeframes t on e.timeframe_id = t.id
     WHERE e.user_id = ? ORDER BY entry_dt DESC LIMIT 25;`
-  var dataList = []
   db.query(getEntries, req.user.id, (err, results) => {
     if (err) {
       // COMBAK: log error
@@ -35,27 +34,19 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 
 // INDEX ENTRIES INFINITE SCROLL LOGIC
 router.post("/load-index", middleware.isLoggedIn, (req, res) => {
-  var getEntries = 'SELECT * FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25 OFFSET ?;'
+  var getEntries = `SELECT e.id, pair, e.entry_dt, result, status, strategy, timeframe FROM entries e
+    JOIN strategies s on e.strategy_id = s.id
+    JOIN pairs p on e.pair_id = p.id
+    JOIN timeframes t on e.timeframe_id = t.id
+    WHERE e.user_id = ? ORDER BY entry_dt DESC LIMIT 25 OFFSET ?;`;
   if (req.body.query) { getEntries = req.body.query + ' OFFSET ?;'}
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var dataList = []
   db.query(getEntries, [req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
       // COMBAK: log error
     }
-    results.forEach((result) => {
-      dataList.push({
-        id: result.id,
-        pair: pairs[Number(result.pair_id) - 1],
-        date: result.entry_dt.toLocaleDateString(req.user.language, options),
-        result: result.result,
-        status: result.status,
-        strategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
-        timeframe: timeframes[Number(result.timeframe_id) - 1]
-      })
-    })
     return res.json({
-      dataList: dataList
+      dataList: results,
+      options: { year: 'numeric', month: 'long', day: 'numeric' }
     });
   })
 })
@@ -66,12 +57,14 @@ router.post("/filter", middleware.isLoggedIn, (req, res) => {
   var exitFilter = ''
   if (req.body.create) { createFilter = '&& entry_dt >= ' + req.body.create + ' >= entry_dt' }
   if (req.body.exit) { exitFilter = '&& exit_dt >= ' + req.body.exit + '>= exit_dt' }
-  var getEntries = `SELECT * FROM entries JOIN pairs ON entries.pair_id = pairs.id
-    WHERE user_id = ? && (${req.body.pairs}) && (${req.body.categories})
-    && (${req.body.strategy}) && (${req.body.timeframe}) && (${req.body.result}) ${createFilter} ${exitFilter}
+  var getEntries = `SELECT *, entries.id AS id FROM entries
+    JOIN pairs ON entries.pair_id = pairs.id
+    JOIN strategies ON entries.strategy_id = strategies.id
+    JOIN timeframes ON entries.timeframe_id = timeframes.id
+    WHERE entries.user_id = ? && (${req.body.pairs}) && (${req.body.categories})
+      && (${req.body.strategy}) && (${req.body.timeframe})
+      && (${req.body.result}) ${createFilter} ${exitFilter}
     ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var dataList = []
   db.query(getEntries, req.user.id, (err, results) => {
     if (err) {
       console.log(err);
@@ -79,19 +72,9 @@ router.post("/filter", middleware.isLoggedIn, (req, res) => {
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
-    results.forEach((result) => {
-      dataList.push({
-        id: result.id,
-        pair: pairs[Number(result.pair_id) - 1],
-        date: result.entry_dt.toLocaleDateString(req.user.language, options),
-        result: result.result,
-        status: result.status,
-        strategy: userStrategies[userIdStrategies.findIndex(strategy => strategy == result.strategy_id)],
-        timeframe: timeframes[Number(result.timeframe_id) - 1]
-      })
-    })
     return res.json({
-      dataList: dataList,
+      dataList: results,
+      options: { year: 'numeric', month: 'long', day: 'numeric' },
       query: getEntries
     });
   })
@@ -128,8 +111,6 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
           currency: result[0].currency,
           // missing categories
           currencies: pairs,
-          strategies: userStrategies,
-          timeframes: timeframes,
           tas: allTas
         }
       );
@@ -157,10 +138,11 @@ router.post("/", middleware.isLoggedIn, async (req, res) => {
       pair_id: req.body.pair,
       category: req.body.category,
       size: Number(req.body.size),
-      strategy_id: userIdStrategies[req.body.strategy],
+      strategy_id: req.body.strategy,
       timeframe_id: req.body.timeframe,
       entry_price: req.body.entryPrice
     }
+    console.log(newEntry);
     // sets the entry date and time of the entry
     if (req.body.entryTime == '') {
       newEntry.entry_dt = req.body.entryDate + ' 00:00:00'
@@ -248,6 +230,7 @@ router.post("/", middleware.isLoggedIn, async (req, res) => {
     // saves the entry to the DB
     db.query('INSERT INTO entries SET ?', newEntry, (err, response) => {
       if (err) {
+        console.log(err);
         // COMBAK: log error
         req.flash('error', res.__('Something went wrong, please try again later.'))
         return res.redirect('/' + req.user.username + "/journal/entry");
@@ -261,7 +244,11 @@ router.post("/", middleware.isLoggedIn, async (req, res) => {
 // SHOW ENTRY ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time FROM entries WHERE id = ?;'
+  var getEntry = `SELECT *, e.id AS id, e.category AS category, DATE_FORMAT(entry_dt, '%H:%i') AS created_time FROM entries e
+    JOIN strategies s ON e.strategy_id = s.id
+    JOIN pairs p ON e.pair_id = p.id
+    JOIN timeframes t on e.timeframe_id = t.id
+    WHERE e.id = ?;`
   var getCurrency = 'SELECT currency FROM currencies WHERE id = ?;';
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   // object where the entry information will be stored
@@ -272,14 +259,17 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
       req.flash('error', res.__('Something went wrong, please try again later.'))
       return res.redirect('/' + req.user.username + "/journal/entry");
     }
+    if (!results.length) {
+      return res.redirect('/' + req.user.username + "/journal/entry");
+    }
     // mandatory entry fields
     entryInfo.id = results[0].id;
-    entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ' - ' + results[0].entry_dt.toLocaleDateString(req.user.language, options);
-    entryInfo.pair = Number(results[0].pair_id) - 1;
+    entryInfo.title = results[0].pair + ' - ' + results[0].entry_dt.toLocaleDateString(req.user.language, options);
+    entryInfo.pair =results[0].pair;
     entryInfo.category = results[0].category;
     entryInfo.size = results[0].size;
-    entryInfo.strategy = userIdStrategies.findIndex(strategy => strategy == results[0].strategy_id);
-    entryInfo.timeframe = Number(results[0].timeframe_id) - 1;
+    entryInfo.strategy = results[0].strategy
+    entryInfo.timeframe = res.__(results[0].timeframe);
     entryInfo.entryDate = results[0].entry_dt.toLocaleDateString(req.user.language, options);
     entryInfo.entryTime = results[0].created_time;
     entryInfo.direction = results[0].direction;
@@ -322,9 +312,6 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
         {
           currency: result[0].currency,
           currencies: pairs,
-          categories: categories, // old categories
-          strategies: userStrategies,
-          timeframes: timeframes,
           entry: entryInfo
         }
       );
@@ -335,7 +322,11 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
 // UPDATE ENTRY ROUTE
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
   // inserts DB queries to a variable
-  var getEntry = 'SELECT *, DATE_FORMAT(entry_dt, \'%H:%i\') AS created_time FROM entries WHERE id = ?;'
+  var getEntry = `SELECT *, e.id AS id, e.category AS category, DATE_FORMAT(entry_dt, '%H:%i') AS created_time FROM entries e
+    JOIN strategies s ON e.strategy_id = s.id
+    JOIN pairs p ON e.pair_id = p.id
+    JOIN timeframes t on e.timeframe_id = t.id
+    WHERE e.id = ?;`
   var selectTas = 'SELECT id, pair_id, created_at FROM tanalysis WHERE user_id = ?;'
   var selectCurrency = 'SELECT currency FROM currencies WHERE id = ?;'
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -354,12 +345,14 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
     }
     // mandatory entry fields
     entryInfo.id = results[0].id;
-    entryInfo.title = pairs[Number(results[0].pair_id) - 1] + ' - ' + results[0].entry_dt.toLocaleDateString(req.user.language, options);
-    entryInfo.pair = Number(results[0].pair_id) - 1;
+    entryInfo.title = results[0].pair + ' - ' + results[0].entry_dt.toLocaleDateString(req.user.language, options);
+    entryInfo.pair = results[0].pair;
     entryInfo.category = results[0].category;
     entryInfo.size = results[0].size;
-    entryInfo.strategy = userIdStrategies.findIndex(strategy => strategy == results[0].strategy_id);
-    entryInfo.timeframe = Number(results[0].timeframe_id) - 1;
+    entryInfo.strategy = results[0].strategy;
+    entryInfo.strategy_id = results[0].strategy_id;
+    entryInfo.timeframe = results[0].timeframe;
+    entryInfo.timeframe_id = results[0].timeframe_id;
     entryInfo.entryDate = results[0].entry_dt.toLocaleDateString(req.user.language, options);
     var entryD = new Date(results[0].entry_dt);
     var offset = entryD.getTimezoneOffset()
@@ -421,10 +414,6 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
           {
             currency: result[0].currency,
             currencies: pairs,
-            // old categories
-            categories: categories,
-            strategies: userStrategies,
-            timeframes: timeframes,
             entry: entryInfo,
             tas: allTas
           }
@@ -454,7 +443,7 @@ router.put("/:id", middleware.isLoggedIn, async (req, res) => {
       pair_id: req.body.pair,
       category: req.body.category,
       size: Number(req.body.size),
-      strategy_id: userIdStrategies[req.body.strategy],
+      strategy_id: req.body.strategy,
       timeframe_id: req.body.timeframe,
       entry_price: req.body.entryPrice,
     }

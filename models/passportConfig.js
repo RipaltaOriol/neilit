@@ -71,7 +71,7 @@ module.exports = function(passport) {
         hashingPassword.then(function(hash) {
           newUserMysql.password = hash;
           db.query("INSERT INTO users SET ?", newUserMysql, (err, rows) => {
-            if (err) throw err;
+            if (err) return done(null, false, req.flash("error", "Something went wrong, please try again."));
             newUserMysql.id = rows.insertId;
             newUserMysql.password = null;
             let noneStrategy = {
@@ -79,7 +79,7 @@ module.exports = function(passport) {
               user_id: rows.insertId
             }
             db.query("INSERT INTO strategies SET ?", noneStrategy, (err, result) => {
-              if (err) throw err;
+              if (err) return done(null, false, req.flash("error", "Something went wrong, please try again."));
             })
             return done(null, newUserMysql)
           });

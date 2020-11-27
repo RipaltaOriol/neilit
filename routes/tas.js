@@ -18,25 +18,16 @@ var strategyTA = require('../models/elements/strategy');
 // INDEX TECHNICAL ANALYSIS ROUTE
 router.get("/", middleware.isLoggedIn, (req, res) => {
   var getTAs = 'SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at DESC LIMIT 25;';
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var dataList = []
   db.query(getTAs, req.user.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
-    results.forEach((result) => {
-      dataList.push({
-        id: result.id,
-        date: result.created_at.toLocaleDateString(req.user.language, options),
-        update: result.last_update.toLocaleDateString(req.user.language, options),
-        pair: result.pair
-      })
-    });
     res.render("user/journal/ta/index",
       {
-        dataList: dataList,
+        dataList: results,
+        options: { year: 'numeric', month: 'long', day: 'numeric' },
         currencies: pairs,
         categories: categoriesDistinct
       }
@@ -48,24 +39,15 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 router.post("/load-index", middleware.isLoggedIn, (req, res) => {
   var getTAs = 'SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at DESC LIMIT 25 OFFSET ?;';
   if (req.body.query) { getTAs = req.body.query + ' OFFSET ?;'}
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var dataList = []
   db.query(getTAs, [req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
-    results.forEach((result) => {
-      dataList.push({
-        id: result.id,
-        date: result.created_at.toLocaleDateString(req.user.language, options),
-        update: result.last_update.toLocaleDateString(req.user.language, options),
-        pair: result.pair
-      })
-    });
     return res.json({
-      dataList: dataList,
+      dataList: results,
+      options: { year: 'numeric', month: 'long', day: 'numeric' },
       buttonText: res.__('Go to TA')
     });
   })
@@ -79,8 +61,6 @@ router.post("/filter", middleware.isLoggedIn, (req, res) => {
   if (req.body.edit) { editFilter = '&& last_update >= ' + req.body.edit + ' >= last_update' }
   var getTAs = `SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id
     WHERE user_id = ? && (${req.body.pairs}) && (${req.body.categories}) ${editFilter} ${createFilter} ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var dataList = []
   db.query(getTAs, req.user.id, (err, results) => {
     if (err) {
       console.log(err);
@@ -88,16 +68,9 @@ router.post("/filter", middleware.isLoggedIn, (req, res) => {
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/ta');
     }
-    results.forEach((result) => {
-      dataList.push({
-        id: result.id,
-        date: result.created_at.toLocaleDateString(req.user.language, options),
-        update: result.last_update.toLocaleDateString(req.user.language, options),
-        pair: result.pair
-      })
-    });
     return res.json({
-      dataList: dataList,
+      dataList: results,
+      options: { year: 'numeric', month: 'long', day: 'numeric' },
       buttonText: res.__('Go to TA'),
       query: getTAs
     });
@@ -111,14 +84,12 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     title: titleTA.html,
     text: textTA.html,
     image: imageTA.html,
-    strategy: strategyTA.html(userStrategies)
+    strategy: strategyTA.html(req.session.strategyNames, req.session.strategyIds,
+      req.session.timeframes)
   }
   res.render("user/journal/ta/new",
     {
       currencies: pairs,
-      categories: categories,
-      strategies: userStrategies,
-      timeframes: timeframes,
       elements: elements
     }
   );
@@ -222,7 +193,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
                 }
                 elementInfo.push(req.body.importance[counterStrategy]);
                 elementInfo.push(null);
-                elementInfo.push(userIdStrategies[req.body.strategy[counterStrategy]]);
+                elementInfo.push(Number(req.body.strategy[counterStrategy]));
                 elementInfo.push(Number(req.body.timeframe[counterStrategy]));
                 counterStrategy += 1;
               } else {
@@ -232,7 +203,7 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
                 }
                 elementInfo.push(req.body.importance);
                 elementInfo.push(null);
-                elementInfo.push(userIdStrategies[req.body.strategy]);
+                elementInfo.push(Number(req.body.strategy));
                 elementInfo.push(Number(req.body.timeframe));
               }
               break;
@@ -279,28 +250,31 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
             }
             elementInfo.push(req.body.importance);
             elementInfo.push(null);
-            console.log(req.body);
-            elementInfo.push(userIdStrategies[Number(req.body.strategy)]);
+            elementInfo.push(Number(req.body.strategy));
             elementInfo.push(Number(req.body.timeframe));
             break;
         }
         data.push(elementInfo);
       }
-      // stores the TA elements into the DB
-      db.query(addElements, [data], (err, complete) => {
-        if (err) {
-          var logFile = fs.createWriteStream('log.txt', { flags: 'w' });
-          var logStdout = process.stdout;
-          console.log = function () {
-            logFile.write(util.format.apply(null, arguments) + '\n');
-            logStdout.write(util.format.apply(null, arguments) + '\n');
+      if (typeof req.body.type !== 'undefined') {
+        // stores the TA elements into the DB
+        db.query(addElements, [data], (err, complete) => {
+          if (err) {
+            var logFile = fs.createWriteStream('log.txt', { flags: 'w' });
+            var logStdout = process.stdout;
+            console.log = function () {
+              logFile.write(util.format.apply(null, arguments) + '\n');
+              logStdout.write(util.format.apply(null, arguments) + '\n');
+            }
+            console.error = console.log(err);
+            req.flash('error', res.__('Something went wrong, please try again.'))
+            return res.redirect('/' + req.user.username + '/journal/ta');
           }
-          console.error = console.log(err);
-          req.flash('error', res.__('Something went wrong, please try again.'))
-          return res.redirect('/' + req.user.username + '/journal/ta');
-        }
-        res.redirect("/" + req.user.username + "/journal/ta");
-      })
+          return res.redirect("/" + req.user.username + "/journal/ta");
+        })
+      } else {
+        return res.redirect("/" + req.user.username + "/journal/ta");
+      }
     })
   }
 })
@@ -308,22 +282,19 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 
 // SHOW TECHNICAL ANALYSIS ROUTE
 router.get("/:id", middleware.isLoggedIn, (req, res) => {
-  var getTa = 'SELECT * FROM tanalysis WHERE id = ?';
-  var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  // object where the technical analysis information will be stored
-  var taInfo = { }
+  var getTa = `SELECT *, ta.id AS id FROM tanalysis ta
+    JOIN pairs p on ta.pair_id = p.id WHERE ta.id = ?;`;
+  var getElementsTa = `SELECT * FROM telementanalysis ta
+    JOIN telements ON ta.element_id = telements.id
+    LEFT JOIN strategies s on ta.strategy_id = s.id
+    LEFT JOIN timeframes t on ta.timeframe_id = t.id
+    WHERE ta.ta_id = ? ORDER BY order_at`;
   db.query(getTa, req.params.id, (err, results) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/ta');
     }
-    taInfo.id       = results[0].id;
-    taInfo.title    = pairs[results[0].pair_id - 1] + ' - Updated: ' + results[0].last_update.toLocaleDateString(req.user.language, options);
-    taInfo.pair     = pairs[results[0].pair_id - 1];
-    taInfo.category = results[0].category;
-    taInfo.date     = results[0].created_at.toLocaleDateString(req.user.language, options);
     // creates variable to concatenate the HTML of the technical analysis elements
     var elementsHtml = ``;
     // loads the technical analysis elements
@@ -349,20 +320,19 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
             appendHtml = imageTA.generate(decodeBlob);
             break;
           case 'strategy':
-            var currentIndex = userIdStrategies.findIndex(strategy => strategy == element.strategy_id);
-            appendHtml = strategyTA.generate(userStrategies, currentIndex, element.content, element.timeframe_id);
+            // var currentIndex = userIdStrategies.findIndex(strategy => strategy == element.strategy_id);
+            var currentIndex = 0;
+            appendHtml = strategyTA.generate(element.content, element.strategy, element.timeframe);
             break;
         }
         elementsHtml += appendHtml;
       })
-      taInfo.content = elementsHtml;
       res.render("user/journal/ta/show",
         {
-          currencies:pairs,
-          categories:categories,
-          strategies:userStrategies,
-          timeframes:timeframes,
-          ta: taInfo
+          currencies: pairs,
+          options: { year: 'numeric', month: 'long', day: 'numeric' },
+          taInfo: results[0],
+          taContent: elementsHtml
         }
       );
     })
@@ -371,16 +341,21 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
 
 // UPDATE TECHNICAL ANALYSIS ROUTE
 router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
-  var getTa = 'SELECT id, pair_id, category, created_at, last_update FROM tanalysis WHERE id = ?';
-  // OPTIMIZE: could another type of JOIN improve the query?
-  var getElementsTa = 'SELECT * FROM telementanalysis JOIN telements ON telementanalysis.element_id = telements.id WHERE telementanalysis.ta_id = ? ORDER BY order_at';
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  var getTa = `SELECT ta.id AS id, pair_id, pair, ta.category, created_at, last_update, DATE_FORMAT(created_at, '%Y-%m-%d') AS format_date FROM tanalysis ta
+    JOIN pairs p on ta.pair_id = p.id
+    WHERE ta.id = ?;`;
+  var getElementsTa = `SELECT * FROM telementanalysis ta
+    JOIN telements ON ta.element_id = telements.id
+    LEFT JOIN strategies s on ta.strategy_id = s.id
+    LEFT JOIN timeframes t on ta.timeframe_id = t.id
+    WHERE ta.ta_id = ? ORDER BY order_at`;
   // loads the technical analysis elements to an object
   var elements = {
     title: titleTA.html,
     text: textTA.html,
     image: imageTA.html,
-    strategy: strategyTA.html(userStrategies)
+    strategy: strategyTA.html(req.session.strategyNames, req.session.strategyIds,
+      req.session.timeframes)
   }
   // object where the technical analysis information will be stored
   var taInfo = { }
@@ -390,16 +365,6 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/ta');
     }
-    taInfo.id = results[0].id;
-    taInfo.title = pairs[results[0].pair_id - 1] + ' - Updated: ' + results[0].last_update.toLocaleDateString(req.user.language, options);
-    taInfo.pair = results[0].pair_id;
-    taInfo.category = results[0].category;
-    taInfo.date = results[0].created_at.toLocaleDateString(req.user.language, options);
-    // fixes offset between timezones
-    var date = new Date(results[0].created_at);
-    var offset = date.getTimezoneOffset()
-    date = new Date(date.getTime() - (offset * 60 * 1000))
-    taInfo.altDate = date.toISOString().split('T')[0];
     // creates variable to concatenate the HTML of the technical analysis elements
     var elementsHtml = ``;
     // loads the technical analysis elements
@@ -425,21 +390,20 @@ router.get("/:id/edit", middleware.isLoggedIn, (req, res) => {
             break;
           case 'strategy':
             // gets the index of the strategy
-            var currentIndex = userIdStrategies.findIndex(strategy => strategy == element.strategy_id);
-            appendHtml = strategyTA.edit(userStrategies, currentIndex, element.content, element.timeframe_id);
+            appendHtml = strategyTA.edit(req.session.strategyNames, req.session.strategyIds,
+              req.session.timeframes, element.content, element.strategy, element.timeframe,
+              element.strategy_id, element.timeframe_id);
             break;
         }
         elementsHtml += appendHtml;
       })
-      taInfo.content = elementsHtml;
       res.render("user/journal/ta/edit",
         {
-          currencies:pairs,
-          categories:categories,
-          strategies:userStrategies,
-          timeframes:timeframes,
-          elements:elements,
-          ta: taInfo
+          currencies: pairs,
+          elements: elements,
+          taInfo: results[0],
+          taContent: elementsHtml,
+          options: { year: 'numeric', month: 'long', day: 'numeric' }
         }
       );
     })
@@ -456,12 +420,12 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
   }
   // creates an object with the updated technical analysis variables
   else {
-    var replaceChars={ "/":"-" , ",":"" };
+    var replaceChars = { "/":"-" , ",":"" };
     var editTa = {
       pair_id: Number(req.body.pair),
       category: req.body.category,
       created_at: req.body.date,
-      last_update: new Date().toISOString().slice(0, 10) + " " + new Date().toLocaleTimeString('en-GB'),
+      last_update: new Date().toISOString().slice(0, 19).replace('T', ' '),
       user_id: req.user.id
     }
     // stores the constants of the technical analysis into the DB
@@ -553,7 +517,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
                   }
                   elementInfo.push(req.body.importance[counterStrategy]);
                   elementInfo.push(null);
-                  elementInfo.push(userIdStrategies[req.body.strategy[counterStrategy]]);
+                  elementInfo.push(Number(req.body.strategy[counterStrategy]));
                   elementInfo.push(Number(req.body.timeframe[counterStrategy]));
                   counterStrategy += 1;
                 } else {
@@ -563,7 +527,7 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
                   }
                   elementInfo.push(req.body.importance);
                   elementInfo.push(null);
-                  elementInfo.push(userIdStrategies[req.body.strategy]);
+                  elementInfo.push(Number(req.body.strategy));
                   elementInfo.push(Number(req.body.timeframe));
                 }
                 break;
@@ -610,21 +574,27 @@ router.put("/:id", middleware.isLoggedIn, (req, res) => {
             }
               elementInfo.push(req.body.importance);
               elementInfo.push(null);
-              elementInfo.push(userIdStrategies[Number(req.body.strategy)]);
+              elementInfo.push(Number(req.body.strategy));
               elementInfo.push(Number(req.body.timeframe));
               break;
           }
           data.push(elementInfo);
         }
-        // stores the TA elements into the DB
-        db.query(addElements, [data], (err, complete) => {
-          if (err) {
-            // COMBAK: log error
-            req.flash('error', res.__('Something went wrong, please try again.'))
-            return res.redirect('/' + req.user.username + '/journal/ta');
-          }
-          res.redirect("/" + req.user.username + "/journal/ta");
-        })
+        if (typeof req.body.type !== 'undefined') {
+          // stores the TA elements into the DB
+          db.query(addElements, [data], (err, complete) => {
+            if (err) {
+              console.log(err);
+              // COMBAK: log error
+              req.flash('error', res.__('Something went wrong, please try again.'))
+              return res.redirect('/' + req.user.username + '/journal/ta');
+            }
+            return res.redirect("/" + req.user.username + "/journal/ta");
+          })
+        } else {
+          console.log('The TA content was empty');
+          return res.redirect("/" + req.user.username + "/journal/ta");
+        }
       })
     })
   }

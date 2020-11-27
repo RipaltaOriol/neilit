@@ -622,6 +622,29 @@ tr + tr { border-top: 1px solid var(--grey); }
   color: white;
 }
 
+/* || 404 page stles */
+.list-404 {
+  color: white;
+  padding-left: 20px;
+}
+
+.btn-404 {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--neilit-default);
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 7px;
+  padding: 5px 10px;
+  transition-duration: .5s;
+}
+  .btn-404:hover {
+    color: white;
+    background: var(--neilit-default);
+    border-color: white;
+    transition-duration: .25s;
+  }
+
 #neilit {
   font-size: 150px;
   font-weight: bold;

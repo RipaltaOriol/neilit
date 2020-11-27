@@ -11,16 +11,16 @@
             <h5><%= __('Specific') %></h5>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Pair') %>:</label>
-              <input type="text" name="pair" value="1" class="dropdown-server d-none">
+              <input type="text" name="pair" value="<%= currencies.get(entry.pair).id %>" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
-                  <%= currencies[0] %>
+                  <%= entry.pair %>
                 </button>
                 <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                  <% for (var i = 0; i < currencies.length; i++) { %>
-                    <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                  <% for (let [key, value] of currencies) { %>
+                    <li class="<%= value.id %>"><%= key %></li>
                   <% } %>
                 </ul>
               </div>
@@ -31,27 +31,27 @@
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Strategy') %>:</label>
-              <input type="text" name="strategy" value="0" class="dropdown-server d-none">
+              <input type="text" name="strategy" value="<%= entry.strategy_id %>" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
-                  <%= strategies[0] %>
+                  <%= entry.strategy %>
                 </button>
                 <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                   <% for (var i = 0; i < strategies.length; i++) { %>
-                    <li class="<%= i %>"><%= strategies[i] %></li>
+                    <li class="<%= strategiesID[i] %>"><%= strategies[i] %></li>
                   <% } %>
                 </ul>
               </div>
             </span>
             <span class="d-block">
               <label class="mandatory"><%= __('Timeframe') %>:</label>
-              <input type="text" name="timeframe" value="1" class="dropdown-server d-none">
+              <input type="text" name="timeframe" value="<%= entry.timeframe_id %>" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
-                  <%= timeframes[0] %>
+                  <%= entry.timeframe %>
                 </button>
                 <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
@@ -298,7 +298,17 @@
         <% } %>
         <div class="d-flex justify-content-end mx-3">
           <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Cancel') %></a>
-          <button id="submit-entry" type="submit" class="btn-neilit ml-2"><%= __('Save') %></button>
+          <button type="button" class="btn-neilit ml-2" data-toggle="modal" data-target=".modal-submit"><%= __('Save') %></button>
+        </div>
+        <!-- technical analysis modal -->
+        <div class="modal modal-submit fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content text-center p-4">
+              <h5 class="modal-title mx-auto"><%= __('Altering existing fields might alter your current statistics') %></h5>
+              <br>
+              <button id="submit-entry" type="submit" class="btn-neilit"><%= __('Accept') %></button>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -307,7 +317,6 @@
 <script type="text/javascript">
   var language = <%- JSON.stringify(currentUser.language) %>;
   var currencies = <%- JSON.stringify(currencies) %>;
-  var categories = <%- JSON.stringify(categories) %>;
   var strategies = <%- JSON.stringify(strategies) %>;
   var tas = <%- JSON.stringify(tas) %>;
 </script>
