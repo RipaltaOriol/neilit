@@ -3,9 +3,9 @@
 // -- CREATE
 var addonHtml = `
   <div>
-    <span class="input-group mb-2">
-      <label class="my-auto">Nombre de la variable:</label>
-      <input type="text" class="form-control backtest-input px-2" name="varName" placeholder="E.g. 'RSI on overbough or oversold?'">
+    <span class="input-group mb-2 form-fields">
+      <label class="my-auto mr-2">Addon name:</label>
+      <input type="text" class="form-control form-input mandatory px-2" name="varName" placeholder="E.g. 'RSI on overbough or oversold?'">
     </span>
     <label class="checkbox-orange my-auto">
       Permitir solo números
@@ -24,7 +24,7 @@ var addonHtml = `
       </div>
       <span class="d-flex flex-column justify-content-between ml-2">
         <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="To add more fields press enter inside the last available field. Up to a 6 at maximum.">
-        <button type="button" class="icon-btn" onclick="addOption(this)">
+        <button id="add-addon-field" type="button" class="icon-btn" onclick="addOption(this)">
           <img src="/imgs/icons/add.svg">
         </button>
       </span>

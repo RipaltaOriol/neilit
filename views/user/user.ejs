@@ -137,7 +137,7 @@
               <div class="d-flex justify-content-between align-items-start flex-wrap pt-3 mx-2">
                 <span class="d-flex align-items-start">
                   <img src="/imgs/icons/folder.svg" class="mx-2 image-widget" alt="total entries">
-                  <h5 class="mb-0 no-wrap"><%= __('Total Entries') %></h5>
+                  <h5 class="m-0 no-wrap"><%= __('Total Entries') %></h5>
                 </span>
                 <!-- dropdown -->
                 <div class="dropdown ml-auto">
@@ -223,67 +223,71 @@
         </div>
 
         <!-- open trades widget -->
-        <div class="widget-neilit overflow-auto row mx-2 mb-4">
+        <div class="widget-neilit row mx-2 mb-4">
           <div class="d-flex align-items-start pt-3 mx-2">
             <img src="/imgs/icons/open-ops.svg" class="mx-2 image-widget" alt="Open trades">
             <h5 class="mb-0"><%= __('Open positions') %></h5>
           </div>
           <div class="mt-2 w-100">
-            <table id="open-positions" class="table table-hover table-borderless font-16 text-center mb-0">
-              <thead>
-                <tr>
-                  <th onclick="sortBy('assets')"><%= __('Asset') %></th>
-                  <th onclick="sortBy('lots')"><%= __('Lots') %></th>
-                  <th onclick="sortBy('direction')"><%= __('Direction') %></th>
-                  <th><%= __('Entry date') %></th>
-                  <th><%= __('Entry price') %></th>
-                  <th class="d-flex justify-content-center"><%= __('Current price') %>
-                    <div class="ml-2 text-right">
-                      <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="top" title="<%= __('The current API we use to retrieve the prices updates once a day, so for more accuracy we recommend you check your broker. Moreover, open P/L are calculates with this price.') %>">
-                    </div>
-                  </th>
-                  <th onclick="sortBy('pnl')"><%= __('Open result') %></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% for (const ops in dashboardOpen) { %>
-                  <tr onclick="document.location = '/<%= currentUser.username %>/journal/entry/<%= dashboardOpen[ops].id %>/edit'">
-                    <!-- Pair -->
-                    <td class="orange"><%= dashboardOpen[ops].pair %></td>
-                    <!-- Lot -->
-                    <td><%= dashboardOpen[ops].size %></td>
-                    <!-- Direction -->
-                    <td>
-                      <div class="d-flex justify-content-center">
-                        <% if (dashboardOpen[ops].direction == 'long') { %>
-                          <span class="pill pill-green text-nowrap">
-                            <img src="/imgs/icons/trending-up-green.svg" class="py-1 img-direction" alt="direction">
-                            <%= __('Long') %>
-                          </span>
-                        <% } else { %>
-                          <span class="pill pill-red text-nowrap">
-                            <img src="/imgs/icons/trending-down-red.svg" class="py-1 img-direction" alt="direction">
-                            <%= __('Short') %>
-                          </span>
-                        <% } %>
-                      </div>
-                    </td>
-                    <!-- Entry date -->
-                    <td><%= dashboardOpen[ops].entry_dt.toLocaleDateString(currentUser.language, options); %></td>
-                    <!-- Entry price -->
-                    <td><%= dashboardOpen[ops].entry_price %></td>
-                    <!-- Current price -->
-                    <!-- the current-rate class is used to load the actual exchange rate -->
-                    <td class="current-rate"></td>
-                    <!-- Open result -->
-                    <td>
-                      <!-- the current-profit class is used to load the actual open P/L -->
-                      <div class="d-flex justify-content-center current-profit"></div>
-                    </td>
-                  </tr>
-                <% } %>
-              </tbody>
-            </table>
+            <div class="position-relative">
+              <div class="overflow-auto">
+                <table id="open-positions" class="table table-hover table-borderless font-16 text-center mb-0">
+                  <thead>
+                    <tr>
+                      <th onclick="sortBy('assets')"><%= __('Asset') %></th>
+                      <th onclick="sortBy('lots')"><%= __('Lots') %></th>
+                      <th onclick="sortBy('direction')"><%= __('Direction') %></th>
+                      <th><%= __('Entry date') %></th>
+                      <th><%= __('Entry price') %></th>
+                      <th class="d-flex justify-content-center"><%= __('Current price') %>
+                        <div class="ml-2 text-right">
+                          <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="top" title="<%= __('The current API we use to retrieve the prices updates once a day, so for more accuracy we recommend you check your broker. Moreover, open P/L are calculates with this price.') %>">
+                        </div>
+                      </th>
+                      <th onclick="sortBy('pnl')"><%= __('Open result') %></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for (const ops in dashboardOpen) { %>
+                      <tr onclick="document.location = '/<%= currentUser.username %>/journal/entry/<%= dashboardOpen[ops].id %>/edit'">
+                        <!-- Pair -->
+                        <td class="orange"><%= dashboardOpen[ops].pair %></td>
+                        <!-- Lot -->
+                        <td><%= dashboardOpen[ops].size %></td>
+                        <!-- Direction -->
+                        <td>
+                          <div class="d-flex justify-content-center">
+                            <% if (dashboardOpen[ops].direction == 'long') { %>
+                              <span class="pill pill-green text-nowrap">
+                                <img src="/imgs/icons/trending-up-green.svg" class="py-1 img-direction" alt="direction">
+                                <%= __('Long') %>
+                              </span>
+                            <% } else { %>
+                              <span class="pill pill-red text-nowrap">
+                                <img src="/imgs/icons/trending-down-red.svg" class="py-1 img-direction" alt="direction">
+                                <%= __('Short') %>
+                              </span>
+                            <% } %>
+                          </div>
+                        </td>
+                        <!-- Entry date -->
+                        <td><%= dashboardOpen[ops].entry_dt.toLocaleDateString(currentUser.language, options); %></td>
+                        <!-- Entry price -->
+                        <td><%= dashboardOpen[ops].entry_price %></td>
+                        <!-- Current price -->
+                        <!-- the current-rate class is used to load the actual exchange rate -->
+                        <td class="current-rate"></td>
+                        <!-- Open result -->
+                        <td>
+                          <!-- the current-profit class is used to load the actual open P/L -->
+                          <div class="d-flex justify-content-center current-profit"></div>
+                        </td>
+                      </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
           <hr class="w-100 mb-0">
           <div class="w-100 px-3 py-1">

@@ -84,26 +84,26 @@ button:disabled {
     background-color: var(--neilit-disable);
   }
 
-form { }
-  form input {
+form.access { }
+  form.access input {
     height: 35px;
     border: 1px solid var(--grey);
     border-radius: 7px;
     width: 300px;
   }
-    form input:focus {
+    form.access input:focus {
       color: black;
       border: 1px solid var(--neilit-default);
       outline: none;
     }
-  form .payment-element {
+  form.access .payment-element {
     height: 35px;
     border: 1px solid var(--grey);
     border-radius: 7px;
     width: 300px;
     margin: 0 auto;
   }
-  form .payment-element:hover {
+  form.access .payment-element:hover {
     color: black;
     border: 1px solid var(--neilit-default);
     outline: none;
@@ -124,6 +124,44 @@ th {
 td + td,
 th + th { border-left: 1px solid var(--grey); }
 tr + tr { border-top: 1px solid var(--grey); }
+
+
+footer {
+  background-color: #f4ede4;
+}
+  footer li {
+    list-style-type: none;
+    margin-bottom: 5px;
+  }
+    footer li a {
+      color: #212529;
+    }
+    footer li a:hover {
+      color: #ff8818;
+    }
+  footer .logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: #ff8818;
+    margin: 0;
+  }
+  footer .footer-header {
+    font-size: 20px;
+  }
+  footer .newsletter {
+    border: 1px solid #c7c7c7;
+    border-radius: 1pt;
+  }
+    footer .newsletter:focus {
+      outline: none;
+    }
+  footer .footer-bottom {
+    margin-top: 20px;
+  }
+
+.card-body {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
 
 .card-error {
   width: 300px;
@@ -620,6 +658,10 @@ tr + tr { border-top: 1px solid var(--grey); }
 /* || Bootstrap class */
 .spinner-border {
   color: white;
+}
+
+.resources-content {
+  color: var(--grey-text);
 }
 
 /* || 404 page stles */

@@ -1,36 +1,36 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mx-auto pt-5 mb-5">
+  <div class="container mx-auto mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/backtest" method="POST">
         <h3 class="mx-3"><%= __('Create Backtesting') %></h3>
         <hr>
-        <div class="mx-3 mb-3">
+        <div class="mx-3 mb-3 form-fields backtest-fields">
           <h5><%= __('Pairs') %></h5>
           <span>
             <label class="checkbox-orange my-auto">
               <%= __('Multiple pairs') %>
-              <input type="radio" name="pairs" value="0" onclick="letPair(false);" checked>
+              <input type="radio" name="pairs" value="0" onclick="letPair(false)" checked>
               <span class="checkmark"></span>
             </label>
           </span>
-          <span class="backtest-fields d-flex">
-            <label class="checkbox-orange my-auto mr-2">
+          <span class="d-block">
+            <label class="d-inline-block checkbox-orange mb-1">
               <%= __('Single pair') %>:
-              <input type="radio" name="pairs" value="1" onclick="letPair(true);">
+              <input type="radio" name="pairs" value="1" onclick="letPair(true)">
               <span class="checkmark"></span>
             </label>
             <input type="text" name="selectPair" value="1" class="dropdown-server d-none">
             <!-- dropdown -->
-            <div class="dropdown backtest-input">
-              <button id="dropdown-label" class="pairs dropdown-select p-1 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= currencies[0] %>
+            <div id="dropdown-pairs" class="dropdown d-none">
+              <button id="dropdown-label" class="pairs dropdown-select p-1 px-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= currencies.keys().next().value %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                 <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                <% for (var i = 0; i < currencies.length; i++) { %>
-                  <li class="<%= i + 1 %>"><%= currencies[i] %></li>
+                <% for (let [key, value] of currencies) { %>
+                  <li class="<%= value.id %>"><%= key %></li>
                 <% } %>
               </ul>
             </div>
@@ -80,25 +80,25 @@
         <br>
         <h3 class="mx-3"><%= __('Specifics') %></h3>
         <hr>
-        <div class="mx-3 mb-3">
+        <div class="mx-3 mb-3 form-fields backtest-fields">
           <h5><%= __('Timeframes') %></h5>
           <span>
             <label class="checkbox-orange my-auto">
               <%= __('Multiple timeframes') %>
-              <input type="radio" name="timeframe" value="0" onclick="letTimeframe(false);" checked>
+              <input type="radio" name="timeframe" value="0" onclick="letTimeframe(false)" checked>
               <span class="checkmark"></span>
             </label>
           </span>
-          <span class="backtest-fields d-flex">
-            <label class="checkbox-orange my-auto mr-2">
+          <span class="d-block">
+            <label class="d-inline-block checkbox-orange mb-1">
               <%= __('Single timeframe') %>:
-              <input type="radio" name="timeframe" value="1" onclick="letTimeframe(true);">
+              <input type="radio" name="timeframe" value="1" onclick="letTimeframe(true)">
               <span class="checkmark"></span>
             </label>
             <input type="text" name="selectTimeframe" value="1" class="dropdown-server d-none">
             <!-- dropdown -->
-            <div class="dropdown backtest-input">
-              <button id="dropdown-label" class="timeframes dropdown-select p-1 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div id="dropdown-timeframes" class="dropdown d-none">
+              <button id="dropdown-label" class="timeframes dropdown-select p-1 px-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= timeframes[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
@@ -110,31 +110,31 @@
             </div>
           </span>
         </div>
-        <div class="mx-3 mb-3">
+        <div class="mx-3 mb-3 form-fields backtest-fields">
           <h5><%= __('Strategies') %></h5>
           <span>
             <label class="checkbox-orange my-auto">
               <%= __('Multiple strategies') %>
-              <input type="radio" name="strategy" value="0" onclick="letStrategy(false);" checked>
+              <input type="radio" name="strategy" value="0" onclick="letStrategy(false)" checked>
               <span class="checkmark"></span>
             </label>
           </span>
-          <span class="backtest-fields d-flex">
-            <label class="checkbox-orange my-auto mr-2">
+          <span class="d-block">
+            <label class="d-inline-block checkbox-orange mb-1">
               <%= __('Single strategy') %>:
-              <input type="radio" name="strategy" value="1" onclick="letStrategy(true);">
+              <input type="radio" name="strategy" value="1" onclick="letStrategy(true)">
               <span class="checkmark"></span>
             </label>
-            <input type="text" name="selectStrategy" value="1" class="dropdown-server d-none">
+            <input type="text" name="selectStrategy" value="<%= strategiesID[0] %>" class="dropdown-server d-none">
             <!-- dropdown -->
-            <div class="dropdown backtest-input">
-              <button id="dropdown-label" class="strategies dropdown-select p-1 disabled" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div id="dropdown-strategies" class="dropdown d-none">
+              <button id="dropdown-label" class="strategies dropdown-select p-1 px-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <%= strategies[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                 <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
                 <% for (var i = 0; i < strategies.length; i++) { %>
-                  <li class="<%= i + 1 %>"><%= strategies[i] %></li>
+                  <li class="<%= strategiesID[i] %>"><%= strategies[i] %></li>
                 <% } %>
               </ul>
             </div>
@@ -169,8 +169,8 @@
 
 <!-- JQUERY -->
 <script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
 <script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
 <script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
 <!-- LOCAL SCRIPTS -->
 <script type="text/javascript" src="/js/backtest.js"></script>

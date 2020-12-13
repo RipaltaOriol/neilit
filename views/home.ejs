@@ -247,12 +247,13 @@
     <div class="row d-flex flex-column text-center">
       <h2 class="text-body">
         Demo
-        <span class="badge">Beta</span>
+        <span class="badge">Alpha</span>
       </h2>
       <p class="m-2 px-3">
-        <%= __("Create a simple personalised statistics with sample data and discover the Neilit's true potential.")%>
+        <%= __("This tool is still under development, but we are working as hard as possible to deliver this feature as soon as possible. Create custom statistics with your personalised parameters.")%>
         <br>
-        <%= __("Follow the steps and explore what you're able to do.")%>
+        <br>
+        <%= __("Follow the steps and discover Neilit’s true potential.")%>
       </p>
     </div>
 
@@ -391,6 +392,51 @@
   </div>
 </div>
 
-<div class="mb-5"></div>
+<footer class="mt-5 py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="logo">N</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-9 col-lg-5">
+        <span>
+          <%= __('value statement') %>
+        </span>
+        <div class="my-3">
+          <div class="footer-header"><%= __('Contact us') %>:</div>
+
+          <div>
+            <img class="mr-2" src="/imgs/icons/email-black.svg" alt="email">info@neilit.com
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-3 col-lg-3">
+        <ul class="pl-0">
+          <li><a href="/"><%= __('Home') %></a></li>
+          <li><a href="/features"><%= __('Features') %></a></li>
+          <li><a href="/pricing"><%= __('Pricing') %></a></li>
+          <li><a href="/resources"><%= __('Resources') %></a></li>
+        </ul>
+      </div>
+      <div class="col-12 col-sm-12 col-lg-4">
+        <span><%= ('Stay up to date on the latest from Neilit') %></span>
+        <!-- Begin Mailchimp Signup Form -->
+          <form action="https://neilit.us7.list-manage.com/subscribe/post?u=c948a8be82c0ef2a67a286794&amp;id=6b33ce7392" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+
+        	     <input type="email" value="" name="EMAIL" class="my-2 newsletter px-2" id="mce-EMAIL" placeholder="<%= ('Email address') %>" required>
+               <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+               <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_c948a8be82c0ef2a67a286794_6b33ce7392" tabindex="-1" value=""></div>
+               <div class="clear"><input type="submit" value="<%= __('Subscribe') %>" name="subscribe" id="mc-embedded-subscribe" class="btn-neilit py-1"></div>
+          </form>
+          <!--End mc_embed_signup-->
+      </div>
+    </div>
+    <div class="footer-bottom">
+      @2020 Neilit. All Rights Reseverd.
+    </div>
+  </div>
+</footer>
 
 <%- include("./partials/footer-home") %>

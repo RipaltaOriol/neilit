@@ -129,10 +129,10 @@
           <span class="d-block">
             <label class="checkbox-orange mb-0">
               <%= __('Entry without a Technical Analysis') %>
-              <% if ('taId' in entry) { %>
+              <% if (entry.ta_id) { %>
                 <input id="noneTa" type="radio" name="selectTa" value="none">
               <% } else { %>
-                <input id="noneTa" type="radio" name="selectTa" value="none" select>
+                <input id="noneTa" type="radio" name="selectTa" value="none" checked>
               <% } %>
               <span class="checkmark"></span>
             </label>
@@ -140,7 +140,7 @@
           <span class="d-block">
             <label class="checkbox-orange mb-0">
               <%= __('Connect a Technical Analysis') %>
-              <% if ('taId' in entry) { %>
+              <% if (entry.ta_id) { %>
                 <input id="selectTa" type="radio" name="selectTa" value="select" data-toggle="modal" data-target=".modal-ta" checked>
               <% } else { %>
                 <input id="selectTa" type="radio" name="selectTa" value="select" data-toggle="modal" data-target=".modal-ta">
@@ -148,7 +148,7 @@
               <span class="checkmark"></span>
             </label>
           </span>
-          <% if ('taId' in entry) { %>
+          <% if (entry.ta_id) { %>
             <span id="entry-ta">
               <label class="mt-2 mb-0"><strong><%= __('Entry connected to') %>:</strong></label>
               <% for (var i = 0; i < tas.id.length; i++) { %>
@@ -316,8 +316,6 @@
 
 <script type="text/javascript">
   var language = <%- JSON.stringify(currentUser.language) %>;
-  var currencies = <%- JSON.stringify(currencies) %>;
-  var strategies = <%- JSON.stringify(strategies) %>;
   var tas = <%- JSON.stringify(tas) %>;
 </script>
 

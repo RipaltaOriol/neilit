@@ -1,13 +1,19 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="backtest mx-auto pt-5 mb-5">
+  <div class="backtest mx-auto">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=DELETE" method="POST">
-        <h3 class="mx-3"><%= backtest.date %><span class="backtest-result"><%= backtest.result %></span></h3>
+        <h3 class="mx-3">
+          <%= backtest.created_at.toLocaleDateString(currentUser.language, options) %>
+          <span class="backtest-result"><%= backtest.result %></span>
+          <span class="float-right">
+            <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="bottom" title="<%= __('To see the title of the addons hover on the component.') %>">
+          </span>
+        </h3>
         <hr>
-        <div class="mx-3">
-          <div class="table-responsive-md">
+        <div class="mx-3 table-wrapper">
+          <div class="backtest-scroll">
             <table id="backtest-table" class="table table-sm mx-auto">
               <thead>
                 <tr class="table-header">
@@ -17,50 +23,54 @@
                   <th scope="col"><%= __('Pair') %></th>
                   <th scope="col"><%= __('Strategy') %></th>
                   <th scope="col"><%= __('Timeframe') %></th>
-                  <% if ('addons' in backtest) { %>
-                    <% backtest.addons.forEach((addon, i) => { %>
-                      <th scope="col" class="non-wrap" data-toggle="tooltip" data-placement="top" title="<%= addon %>"><%= __('Addon') %> <%= i + 1 %></th>
+                  <% if (addons.length > 0) { %>
+                    <% addons.forEach((addon, i) => { %>
+                      <th scope="col" class="non-wrap" data-toggle="tooltip" data-placement="top" title="<%= addon.description %>"><%= __('Addon') %> <%= i + 1 %></th>
                     <% }) %>
                   <% } %>
                 </tr>
               </thead>
               <tbody>
-                <% data[1].forEach((result, i) => { %>
+                <% data.forEach((row, i) => { %>
                   <tr>
                     <td class="table-index"><%= i + 1 %></td>
                     <td>
-                      <% if ('direction' in backtest) { %>
+                      <% if (backtest.direction != null) { %>
                         <%= __(backtest.direction) %>
                       <% } else { %>
-                        <%= __(data[0][i]) %>
+                        <%= __(row.direction) %>
                       <% } %>
                     </td>
-                    <td class="text-right"><%= result.toFixed(2) %> <%= backtest.result %></td>
+                    <td class="text-right"><%= row.result.toFixed(2) %> <%= backtest.result %></td>
                     <td>
-                      <% if ('pair' in backtest) { %>
+                      <% if (backtest.pair != null) { %>
                         <%= backtest.pair %>
                       <% } else { %>
-                        <%= data[2][i] %>
+                        <%= row.strategy %>
                       <% } %>
                     </td>
                     <td class="non-wrap">
-                      <% if ('strategy' in backtest) { %>
+                      <% if (backtest.strategy != null) { %>
                         <%= backtest.strategy %>
                       <% } else { %>
-                        <%= data[3][i] %>
+                        <%= row.pair %>
                       <% } %>
                     </td>
                     <td>
-                      <% if ('timeframe' in backtest) { %>
+                      <% if (backtest.timeframe != null) { %>
                         <%= backtest.timeframe %>
                       <% } else { %>
-                        <%= data[4][i] %>
+                        <%= row.timeframe %>
                       <% } %>
                     </td>
-                    <% if ('addons' in backtest) { %>
-                      <% backtest.addons.forEach((col, n) => { %>
+                    <% if (addons.length > 0) { %>
+                      <% addons.forEach((addon, v = 1) => { %>
                         <td>
-                          <%= data[n + 5][i] %>
+                        <% if (addon.is_integers) { %>
+                          <%= row['addon' + (v + 1).toString()] %>
+                        <% } else { %>
+                          <%= addon['option' + row['addon' + (v + 1).toString()]] %>
+                        <% } %>
                         </td>
                       <% }) %>
                     <% } %>

@@ -1,6 +1,6 @@
 // sets colours on graph axes
 var axesColor = 'rgba(0,0,0,0.1)'
-if (currentUser.darkMode) {
+if (darkMode) {
   axesColor = 'rgba(255,255,255,0.1)'
 }
 
@@ -408,21 +408,22 @@ if (assetWorseResults != null) {
 
 $(document).ready(() => {
   // injects strategies monthly outcome to graph
-  if (typeof strategyStats !== 'undefined') {
+  if (typeof strategyGraph !== 'undefined'
+      && typeof strategyRadar !== 'undefined') {
     var labels = []
     var outcomeData = []
-    for (const strategy in strategyStats) {
+    for (const strategy in strategyGraph) {
       var color = randomColors[getRandomInt(randomColors.length)]
       resultsStrategiesMonth.data.datasets.push({
         backgroundColor: color,
         borderColor: color,
         pointBackgroundColor: color,
         fill: false,
-        label: strategyStats[strategy].name,
-        data: strategyStats[strategy].month,
+        label: strategy,
+        data: strategyGraph[strategy],
       });
-      labels.push(strategyStats[strategy].name)
-      outcomeData.push(strategyStats[strategy].outcome)
+      labels.push(strategy)
+      outcomeData.push(strategyRadar[strategy])
     }
     resultsStrategiesMonth.update();
     resultsStrategiesRadar.data.labels = labels;

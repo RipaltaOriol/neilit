@@ -1,12 +1,30 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="backtest mx-auto pt-5 mb-5">
+  <div class="backtest mx-auto mb-4">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=PUT" method="POST">
         <input type="hidden" id="obj" name="serverData">
-        <h3 class="mx-3"><%= backtest.date %><span class="backtest-result"><%= backtest.result %></span></h3>
+        <h3 class="mx-3">
+          <%= backtest.created_at.toLocaleDateString(currentUser.language, options) %>
+          <span class="backtest-result"><%= backtest.result %></span>
+          <span class="float-right">
+            <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="bottom" title="<%= __('To see the title of the addons hover on the component.') %>">
+          </span>
+        </h3>
         <hr>
+        <!-- loading modal -->
+        <div id="modal-loading" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content p-5">
+              <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- backtest edit modal -->
         <div class="modal modal-row fade" tabindex="-1" role="dialog">
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -17,9 +35,7 @@
               <div class="modal-body d-flex flex-column align-items-start modal-fields">
                 <div class="mb-1 w-100">
                   <label class="mb-0"><%= __('Trade number') %>:</label>
-                  <span id="row-index">
-                    <strong><%= data[0].length + 1 %></strong>
-                  </span>
+                  <span id="row-index" class="mandatory">0</span>
                 </div>
                 <div class="d-flex w-100 mb-1">
                   <label class="mb-0"><%= __('Direction') %>:</label>
@@ -29,16 +45,16 @@
                       <% if ('direction' in backtest) { %>
                         <%= __(backtest.direction) %>
                       <% } else { %>
-                        <%= __('Long') %>
+                        <%= __('long') %>
                       <% } %>
                     </button>
                     <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                       <input class="dropdown-search d-none" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                      <% if ('direction' in backtest) { %>
+                      <% if (backtest.direction != null) { %>
                         <li><%= __(backtest.direction) %></li>
                       <% } else { %>
-                        <li><%= __('Long') %></li>
-                        <li><%= __('Short') %></li>
+                        <li><%= __('long') %></li>
+                        <li><%= __('short') %></li>
                       <% } %>
                     </ul>
                   </div>
@@ -46,21 +62,21 @@
                 <div class="d-flex w-100 mb-1">
                   <label class="mb-0"><%= __('Pair') %>:</label>
                   <!-- dropdown -->
-                  <div class="dropdown modal-input ">
+                  <div class="dropdown modal-input">
                     <button id="dropdown-label" class="pair dropdown-select w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <% if ('pair' in backtest) { %>
-                        <%= currencies[Number(backtest.pair) - 1] %>
+                      <% if (backtest.pair != null) { %>
+                        <%= backtest.pair %>
                       <% } else { %>
-                        <%= currencies[0] %>
+                        <%= currencies.keys().next().value %>
                       <% } %>
                     </button>
                     <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                       <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                      <% if ('pair' in backtest) { %>
-                        <li><%= currencies[Number(backtest.pair) - 1] %></li>
+                      <% if (backtest.pair != null) { %>
+                        <li><%= backtest.pair %></li>
                       <% } else { %>
-                        <% for (var i = 0; i < currencies.length; i++) { %>
-                          <li><%= currencies[i] %></li>
+                        <% for (let [key, value] of currencies) { %>
+                          <li class="<%= value.id %>"><%= key %></li>
                         <% } %>
                       <% } %>
                     </ul>
@@ -75,7 +91,7 @@
                   <!-- dropdown -->
                   <div class="dropdown modal-input">
                     <button id="dropdown-label" class="strategy dropdown-select w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <% if ('strategy' in backtest) { %>
+                      <% if (backtest.strategy != null) { %>
                         <%= backtest.strategy %>
                       <% } else { %>
                         <%= strategies[0] %>
@@ -83,11 +99,11 @@
                     </button>
                     <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                       <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                      <% if ('strategy' in backtest) { %>
+                      <% if (backtest.strategy != null) { %>
                         <li><%= backtest.strategy %></li>
                       <% } else { %>
                         <% for (var i = 0; i < strategies.length; i++) { %>
-                          <li><%= strategies[i] %></li>
+                          <li class="<%= strategiesID[i] %>"><%= strategies[i] %></li>
                         <% } %>
                       <% } %>
                     </ul>
@@ -98,47 +114,47 @@
                   <!-- dropdown -->
                   <div class="dropdown modal-input">
                     <button id="dropdown-label" class="timeframe dropdown-select w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <% if ('timeframe' in backtest) { %>
-                        <%= timeframes[Number(backtest.timeframe) - 1] %>
+                      <% if (backtest.timeframe != null) { %>
+                        <%= backtest.timeframe %>
                       <% } else { %>
                         <%= timeframes[0] %>
                       <% } %>
                     </button>
                     <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                       <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                      <% if ('timeframe' in backtest) { %>
+                      <% if (backtest.timeframe != null) { %>
                         <li><%= timeframes[Number(backtest.timeframe) - 1] %></li>
                       <% } else { %>
                         <% for (var i = 0; i < timeframes.length; i++) { %>
-                          <li><%= timeframes[i] %></li>
+                          <li class="<%= i + 1 %>"><%= timeframes[i] %></li>
                         <% } %>
                       <% } %>
                     </ul>
                   </div>
                 </div>
                 <p class="border-bottom my-2 w-100"><strong>Addons</strong></p>
-                <% for (var i = 0; i < backtest.addons.length; i++) { %>
+                <% addons.forEach((addon) => { %>
                   <div class="d-flex w-100 mb-1">
-                    <label class="mb-0"><%= backtest.addons[i] %>:</label>
-                    <% if (backtest.addonsType[i] == 1) { %>
+                    <label class="mb-0"><%= addon.description %>:</label>
+                    <% if (addon.is_integers == 1) { %>
                       <input type="number" class="addon modal-input py-0 px-2" step="0.01">
                     <% } else { %>
                       <!-- dropdown -->
                       <div class="dropdown modal-input">
                         <button id="dropdown-label" class="addon dropdown-select w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <%= backtest.addonsOptions[i][0] %>
+                          <%= addon.option1 %>
                         </button>
                         <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
-                          <% for (var o = 0; o < 6; o++) { %>
-                            <% if (backtest.addonsOptions[i][o] != null) { %>
-                              <li><%= backtest.addonsOptions[i][o] %></li>
+                          <% for (var i = 0; i < 6; i++) { %>
+                            <% if (addon['option' + (i + 1).toString()] != null) { %>
+                              <li><%= addon['option' + (i + 1).toString()] %></li>
                             <% } %>
                           <% } %>
                         </ul>
                       </div>
                     <% } %>
                   </div>
-                <% } %>
+                <% }) %>
                 <div class="align-self-end mt-3">
                   <button id="update-row" type="button" class="btn-neilit" onclick="updateRow()" data-dismiss="modal"><%= __('Edit') %></button>
                   <button id="create-row" type="button" class="btn-neilit" onclick="createRow()" data-dismiss="modal"><%= __('Create') %></button>
@@ -157,80 +173,93 @@
               </label>
             </div>
             <div>
-              <button type="button" class="btn-inverted mb-0" data-toggle="modal" data-target=".modal-row" onclick="cleanModal()"><%= __('New') %></button>
+              <button type="button" class="btn-inverted mb-0" data-toggle="modal" data-target=".modal-row" onclick="cleanModal()"><%= __('New Row') %></button>
             </div>
           </div>
-
-          <div class="table-responsive-md">
-            <table id="backtest-table" class="table table-sm">
-              <thead>
-                <tr class="table-header">
-                  <th scope="col">#</th>
-                  <th scope="col"><%= __('Direction') %></th>
-                  <th scope="col"><%= __('Result') %></th>
-                  <th scope="col"><%= __('Pair') %></th>
-                  <th scope="col"><%= __('Strategy') %></th>
-                  <th scope="col"><%= __('Timeframe') %></th>
-                  <% if ('addons' in backtest) { %>
-                    <% backtest.addons.forEach((addon, i) => { %>
-                      <th scope="col" class="non-wrap" data-toggle="tooltip" data-placement="top" title="<%= addon %>"><%= __('Addon') %> <%= i + 1 %></th>
-                    <% }) %>
-                  <% } %>
-                  <th scope="col"><%= __('Action') %></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% data[1].forEach((result, i) => { %>
-                  <tr>
-                    <td><%= i + 1 %></td>
-                    <td>
-                      <% if ('direction' in backtest) { %>
-                        <%= __(backtest.direction) %>
-                      <% } else { %>
-                        <%= __(data[0][i]) %>
-                      <% } %>
-                    </td>
-                    <td class="text-right"><%= result.toFixed(2) %> <%= backtest.result %></td>
-                    <td>
-                      <% if ('pair' in backtest) { %>
-                        <%= currencies[Number(backtest.pair) - 1] %>
-                      <% } else { %>
-                        <%= currencies[Number(data[2][i]) -1] %>
-                      <% } %>
-                    </td>
-                    <td class="non-wrap">
-                      <% if ('strategy' in backtest) { %>
-                        <%= backtest.strategy %>
-                      <% } else { %>
-                        <%= data[3][i] %>
-                      <% } %>
-                    </td>
-                    <td>
-                      <% if ('timeframe' in backtest) { %>
-                        <%= timeframes[Number(backtest.timeframe) - 1] %>
-                      <% } else { %>
-                        <%= timeframes[Number(data[4][i]) - 1] %>
-                      <% } %>
-                    </td>
-                    <% if ('addons' in backtest) { %>
-                      <% backtest.addons.forEach((col, n) => { %>
-                        <td>
-                          <%= data[n + 5][i] %>
-                        </td>
+          <div class="table-wrapper">
+            <div class="backtest-scroll">
+              <table id="backtest-table" class="table table-sm">
+                <thead>
+                  <tr class="table-header">
+                    <th scope="col">#</th>
+                    <th scope="col"><%= __('Direction') %></th>
+                    <th scope="col"><%= __('Result') %></th>
+                    <th scope="col"><%= __('Pair') %></th>
+                    <th scope="col"><%= __('Strategy') %></th>
+                    <th scope="col"><%= __('Timeframe') %></th>
+                    <% if (addons.length > 0) { %>
+                      <% addons.forEach((addon, i) => { %>
+                        <th scope="col" class="non-wrap" data-toggle="tooltip" data-placement="top" title="<%= addon.description %>"><%= __('Addon') %> <%= i + 1 %></th>
                       <% }) %>
                     <% } %>
-                    <td class="text-center">
-                      <button type="button" class="table-action delete-row" onclick="deleteRow(this)">
-                        <img src="/imgs/icons/delete.svg" alt="delete row">
-                      </button>
-                      <button type="button" class="table-action edit-row" data-toggle="modal" data-target=".modal-row" onclick="editRow(this);">
-                        <img src="/imgs/icons/edit.svg" alt="edit row">
-                      </button>
-                    </td>
+                    <th scope="col"><%= __('Action') %></th>
                   </tr>
-                <% }) %>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <% data.forEach((row, i) => { %>
+                    <tr class="<%= row.id %>">
+                      <td class="identifier"><%= i + 1 %></td>
+                      <td
+                        <% if (backtest.direction != null) { %>
+                          class="<%= backtest.direction %>">
+                          <%= __(backtest.direction) %>
+                        <% } else { %>
+                          class="<%= row.direction %>">
+                          <%= __(row.direction) %>
+                        <% } %>
+                      </td>
+                      <td class="text-right"><%= row.result.toFixed(2) %> <%= backtest.result %></td>
+                      <td
+                        <% if (backtest.pair != null) { %>
+                          class="<%= backtest.pair_id %>">
+                          <%= backtest.pair %>
+                        <% } else { %>
+                          class="<%= row.pair_id %>">
+                          <%= row.pair %>
+                        <% } %>
+                      </td>
+                      <td
+                        <% if (backtest.strategy != null) { %>
+                          class="<%= strategiesID[strategies.indexOf(backtest.strategy)] %>">
+                          <%= backtest.strategy %>
+                        <% } else { %>
+                          class="<%= strategiesID[strategies.indexOf(row.strategy)] %>">
+                          <%= row.strategy %>
+                        <% } %>
+                      </td>
+                      <td
+                        <% if (backtest.timeframe != null) { %>
+                          class="<%= timeframes.indexOf(backtest.timeframe) + 1 %>">
+                          <%= backtest.timeframe %>
+                        <% } else { %>
+                          class="<%= timeframes.indexOf(row.timeframe) + 1 %>">
+                          <%= row.timeframe %>
+                        <% } %>
+                      </td>
+                      <% if (addons.length > 0) { %>
+                        <% addons.forEach((addon, v = 1) => { %>
+                          <td class="<%= row['addon' + (v + 1).toString()] %>">
+                            <% if (addon.is_integers) { %>
+                              <%= row['addon' + (v + 1).toString()] %>
+                            <% } else { %>
+                              <%= addon['option' + row['addon' + (v + 1).toString()]] %>
+                            <% } %>
+                          </td>
+                        <% }) %>
+                      <% } %>
+                      <td class="text-center">
+                        <button type="button" class="table-action delete-row" onclick="deleteRow(this)">
+                          <img src="/imgs/icons/delete.svg" alt="delete row">
+                        </button>
+                        <button type="button" class="table-action edit-row" data-toggle="modal" data-target=".modal-row" onclick="editRow(this);">
+                          <img src="/imgs/icons/edit.svg" alt="edit row">
+                        </button>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <br>
@@ -243,11 +272,13 @@
   </div>
 
 <script type="text/javascript">
-  var currencies = <%- JSON.stringify(currencies) %>;
-  var timeframes = <%- JSON.stringify(timeframes) %>;
-  var strategies = <%- JSON.stringify(strategies) %>;
-  var backtest = <%- JSON.stringify(backtest) %>;
-  var data = <%- JSON.stringify(data) %>;
+  var currencies    = <%- JSON.stringify(Array.from(currencies.entries())) %>;
+  var timeframes    = <%- JSON.stringify(timeframes) %>;
+  var strategies    = <%- JSON.stringify(strategies) %>;
+  var strategiesID  = <%- JSON.stringify(strategiesID) %>;
+  var backtest      = <%- JSON.stringify(backtest) %>;
+  var addons        = <%- JSON.stringify(addons) %>;
+  var data          = <%- JSON.stringify(data) %>;
 </script>
 
 <!-- <section> is inside partials -->

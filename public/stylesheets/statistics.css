@@ -1,7 +1,16 @@
 :root {
-  --red-soft: #fddfdd;
-  --green-soft: #cbf6e5;
+  --yellow-soft:   #fff3cd;
+  --yellow-strong:   #856404;
+  --yellow-border: #ffeeba;
+  --red-soft:      #fddfdd;
+  --red-border:    #f5c6cb;
+  --green-soft:    #cbf6e5;
+  --green-strong:  #155724;
+  --green-border:  #c3e6cb;
+}
 
+:root.dark-mode {
+  --red-strong: #a10000;
 }
 
 /* || Utility */
@@ -13,24 +22,6 @@ button {
 input[type="date"]:focus {
   outline: none;
   box-shadow: none;
-}
-
-tr {
-  padding-bottom: 5px!important;
-}
-
-th {
-  color: var(--invert-black);
-  padding: 0!important;
-}
-  th:hover {
-    cursor: default;
-  }
-
-td {
-  color: var(--invert-black);
-  font-weight: 200;
-  padding: 5px!important;
 }
 
 hr {
@@ -45,6 +36,81 @@ hr {
 /* || Utility */
 a:hover {
   text-decoration: none;
+}
+
+/* || JQuery UI class */
+.datepicker {
+  cursor: pointer;
+}
+  input.datepicker:focus {
+    background: var(--background-hover);
+    border-color: var(--neilit-permanent);
+    box-shadow: none;
+  }
+
+.ui-datepicker {
+  width: 200px;
+  background: var(--background-strong);
+  border-radius: .25rem;
+  box-shadow: 0 3px 6px var(--box-shadow);
+  padding: 5px;
+}
+
+.ui-datepicker-header {
+  margin-top: 10px;
+}
+
+.ui-datepicker-title {
+  text-align: center;
+  font-weight: 500;
+}
+
+.ui-datepicker-prev { }
+.ui-datepicker-prev span {
+  padding: 0 10px;
+}
+  .ui-datepicker-prev span:hover {
+    background: var(--background-hover);
+    border-radius: .25rem;
+    cursor: pointer;
+  }
+
+.ui-datepicker-next { }
+.ui-datepicker-next span {
+  padding: 0 10px;
+  float: right;
+}
+  .ui-datepicker-next span:hover {
+    background: var(--background-hover);
+    border-radius: .25rem;
+    cursor: pointer;
+  }
+
+.ui-state-default {
+  color: var(--text-grey);
+}
+  .ui-state-default:hover {
+    color: var(--invert-black);
+  }
+
+.ui-datepicker-calendar {
+  width: 100%;
+  text-align: center;
+}
+
+.ui-state-default {
+  color: var(--text-grey);
+}
+  .ui-state-default:hover {
+    color: var(--invert-black);
+  }
+
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{
+  visibility: hidden !important;
 }
 
 /* || Utility */
@@ -75,116 +141,58 @@ a:hover {
     opacity: 1;
   }
 
-/* || JQuery UI class */
-.ui-datepicker {
-  background: var(--background-strong);
-  border-radius: .25rem;
-  box-shadow: 0 3px 6px var(--box-shadow);
-  padding: 10px 10px;
-}
-
-.ui-datepicker-title {
-  text-align: center;
-  font-weight: 500;
-}
-
-.ui-datepicker-prev {
-  display: block;
-  text-align: center;
-  border-radius: .25rem;
-}
-  .ui-datepicker-prev:hover {
-    background: var(--background-hover);
-    cursor: pointer;
-  }
-
-.ui-datepicker-next {
-  display: block;
-  text-align: center;
-  border-radius: .25rem;
-}
-  .ui-datepicker-next:hover {
-    background: var(--background-hover);
-    cursor: pointer;
-  }
-
-.ui-state-default {
-  color: var(--text-grey);
-}
-  .ui-state-default:hover {
-    color: var(--invert-black);
-  }
-
 /* || Utility */
-.font-18 {
-    font-size: 18px;
-  }
+.font-14 {
+  font-size: 14px;
+}
 
 .font-16 {
     font-size: 16px;
   }
 
-.font-14 {
-  font-size: 14px;
+.font-18 {
+    font-size: 18px;
+  }
+
+.image-widget-change {
+  width: 25px;
+  height: auto;
+  opacity: .6;
+  border-radius: 7px;
+  transition-duration: .25s;
+}
+  .image-widget-change:hover {
+    opacity: 1;
+    transition-duration: .25s;
+    cursor: pointer;
+  }
+
+.image-widget-grande {
+  width: 25px;
 }
 
 /* || Utility */
 .pill {
-  max-width: 150px;
-  border-radius: 7px;
-  padding: 1px 10px;
-  margin: 0 auto;
-}
-
-.pill-verde {
-  background: var(--green-soft);
-  color: green;
-}
-
-.pill-amarilla { }
-
-.pill-roja {
-  background: var(--red-soft);
-  color: red;
-}
-
-.pill-activo { }
-
-.container-global {
-  max-width: 1000px;
-  /* background: red; */
-}
-
-.widget-three {
-  width: 33.33%;
   border-radius: 5pt;
-  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  padding: 0 20px 0 20px;
+  border: 1px solid transparent
 }
-
-.widget-three-2 {
-  width: 66.66%;
-  border-radius: 5pt;
-  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-}
-
-.widget-one {
-  width: 100%;
-  border-radius: 5pt;
-  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
-}
-
-.superior-widget {
-  border-bottom: 1px solid var(--gret-medio);
-}
-  .superior-widget h5 {
-    font-size: 20px;
+  .pill-green {
+    color: var(--green-strong);
+    background: var(--green-soft);
+    border-color: var(--green-border);
   }
+  .pill-red {
+    color: var(--red-strong);
+    background: var(--red-soft);
+    border-color: var(--red-border);
+  }
+  .pill-yellow {
+    color: var(--yellow-strong);
+    background: var(--yellow-soft);
+    border-color: var(--yellow-border);
+  }
+
 
 .image-widget {
   width: 20px;
@@ -195,22 +203,17 @@ a:hover {
     filter: invert();
   }
 
+.image-info { }
+  .image-info:hover {
+    opacity: 1;
+  }
+
 .active-change {
   background: var(--background-hover);
 }
   .active-change img {
     opacity: 1!important;
   }
-
-.image-widget-grande {
-  width: 25px;
-}
-
-.caret {
-  float: right;
-  margin-top: 9px;
-  display: block;
-}
 
 .dropdown-menu {
   padding: 0;
@@ -256,11 +259,11 @@ a:hover {
 .modal-body { }
   .modal-body input {
     color: var(--invert-black);
-    background-color: var(--background-strong);
+    border-radius: 5pt;
+    background-color: var(--background-hover);
+    padding: 5px;
   }
     .modal-body input:focus {
-      color: var(--invert-black);
-      background-color: var(--background-strong);
       border-color: var(--invert-black);
     }
 
@@ -271,20 +274,36 @@ a:hover {
     color: black;
   }
 
-.neilit-widget {
-  background-color: var(--background-medium);
+.widget-neilit {
+  background-color: var(--box-background);
+  border-radius: 5pt;
+  -webkit-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
+  word-wrap: break-word;
 }
+  .widget-neilit th {
+    color: var(--invert-black);
+    padding: 10px 30px!important;
+    white-space: nowrap;
+  }
+    .widget-neilit th:hover {
+      cursor: default;
+    }
 
-.data-widget {
-  color: var(--invert-black);
-  font-weight: 500;
-}
-
-.coming-soon { }
-  .coming-soon p {
+  .widget-neilit td {
+    color: var(--invert-black);
     font-weight: 200;
+    text-align: center;
+    padding: 5px 30px!important;
+    white-space: nowrap;
   }
 
+.widget-data {
+  font-weight: 500;
+  color: var(--invert-black);
+  text-align: center;
+}
 
 #dd {
   border-radius: .25rem;

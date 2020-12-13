@@ -30,9 +30,14 @@ th {
   cursor: pointer;
 }
 
+tr {
+  white-space: nowrap;
+}
+
 td {
   color: var(--invert-black);
   font-weight: 200;
+  white-space: nowrap;
 }
 
 tbody {
@@ -247,6 +252,7 @@ a { }
   cursor: pointer;
 }
   input.datepicker:focus {
+    background: var(--background-hover);
     border-color: var(--neilit-permanent);
     box-shadow: none;
   }

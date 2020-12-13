@@ -1,111 +1,115 @@
 <%- include("../../partials/header-statistics") %>
   <!-- CONTENT -->
-  <div class="pt-4 mx-4 mb-5">
+  <div class="mx-2 mx-lg-4">
     <section>
       <div class="container">
         <!-- outcome based on open day of week -->
-        <div class="neilit-widget widget-one mb-4">
-          <div class="d-flex align-items-center pt-3 mx-2">
+        <div class="widget-neilit row mx-2 mb-4">
+          <div class="d-flex align-items-center pt-3 mx-2 w-100">
             <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="Monthly Strategies Outcome">
-            <h5 class="mb-0"><%= __('Trade\'s Open Date Outcome') %></h5>
+            <h5 class="m-0"><%= __('Trade\'s Open Date Outcome') %></h5>
           </div>
-          <div class="px-3 mt-2">
+          <div class="w-100 px-3 mt-2">
             <canvas id="resultsDayOpen" height="300"></canvas>
           </div>
-          <hr class="mb-0">
+          <hr class="w-100 mb-0">
           <div class="px-3 py-1">
             <a href="#!">
               <div class="text-right">
-                <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Outcome distributed based on trades\' open date.') %>">
+                <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Outcome distributed based on trades\' open date.') %>">
               </div>
             </a>
           </div>
         </div>
         <!-- outcome based on close day of week -->
-        <div class="neilit-widget widget-one mb-4">
-          <div class="d-flex align-items-center pt-3 mx-2">
+        <div class="widget-neilit row mx-2 mb-4">
+          <div class="d-flex align-items-center pt-3 mx-2 w-100">
             <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="Monthly Strategies Outcome">
-            <h5 class="mb-0"><%= __('Trade\'s Close Date Outcome') %></h5>
+            <h5 class="m-0"><%= __('Trade\'s Close Date Outcome') %></h5>
           </div>
-          <div class="px-3 mt-2">
+          <div class="w-100 px-3 mt-2">
             <canvas id="resultsDayClose" height="300"></canvas>
           </div>
-          <hr class="mb-0">
+          <hr class="w-100 mb-0">
           <div class="px-3 py-1">
             <a href="#!">
               <div class="text-right">
-                <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Outcome distributed based on trades\' close date.') %>">
+                <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Outcome distributed based on trades\' close date.') %>">
               </div>
             </a>
           </div>
         </div>
         <!-- strategies table -->
-        <div class="neilit-widget widget-one mb-4">
-          <div class="d-flex align-items-center pt-3 mx-2">
+        <div class="widget-neilit row mx-2 mb-4">
+          <div class="d-flex align-items-center pt-3 mx-2 w-100">
               <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="Strategies">
               <h5 class="mb-0 no-wrap"><%= __('Days') %></h5>
           </div>
-          <div class="px-3 mt-3">
-            <table class="table table-hover table-borderless font-16 text-center">
-              <thead>
-                <tr class="pb-4">
-                  <th scope="col"><%= __('Day of the week') %></th>
-                  <th scope="col"><%= __('Entries') %></th>
-                  <th scope="col"><%= __('Avg. return') %></th>
-                  <th scope="col"><%= __('Wins') %></th>
-                  <th scope="col"><%= __('Break evens') %></th>
-                  <th scope="col"><%= __('Losses') %></th>
-                  <th scope="col"><%= __('Win rate') %></th>
-                  <th scope="col"><%= __('Expected return') %></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% daysOpenStats.forEach((day, i) => { %>
-                  <tr>
-                    <th scope="row" class="align-middle"><a href="#!" class="grey"><%= weekDays[i] %></a></th>
-                    <td><%= day.quantity %></td>
-                    <td>
-                      <% if (day.quantity == 0) { %>
-                        0
-                      <% } else { %>
-                        <% if (day.percent / day.quantity >= 0) { %>
-                          <p class="mb-0 pill pill-verde">
-                            <%= day.percent/day.quantity %>%
-                          </p>
-                        <% } else { %>
-                          <p class="mb-0 pill pill-roja">
-                            <%= day.percent/day.quantity %>%
-                          </p>
-                        <% } %>
-                      <% } %>
-                    </td>
-                    <td><%= day.win %></td>
-                    <td><%= day.be %></td>
-                    <td><%= day.loss %></td>
-                    <td>
-                      <% if (day.quantity > 0) { %>
-                        <%= Math.round(day.win / day.quantity * 10000) / 100 %>%
-                      <% } else { %>
-                        0%
-                      <% } %>
-                    </td>
-                    <td>
-                      <% if (!isNaN(day.expected)) { %>
-                        <%= Math.round(day.expected * 100) / 100 %>%
-                      <% } else { %>
-                        N/A
-                      <% } %>
-                    </td>
-                  </tr>
-                <% }); %>
-              </tbody>
-            </table>
+          <div class="mt-2 w-100 px-3">
+            <div class="position-relative">
+              <div class="overflow-auto">
+                <table class="table table-hover table-borderless font-16 text-center">
+                  <thead>
+                    <tr class="pb-4">
+                      <th scope="col"><%= __('Day of the week') %></th>
+                      <th scope="col"><%= __('Entries') %></th>
+                      <th scope="col"><%= __('Avg. return') %></th>
+                      <th scope="col"><%= __('Wins') %></th>
+                      <th scope="col"><%= __('Break evens') %></th>
+                      <th scope="col"><%= __('Losses') %></th>
+                      <th scope="col"><%= __('Win rate') %></th>
+                      <th scope="col"><%= __('Expected return') %></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% daysOpenStats.forEach((day, i) => { %>
+                      <tr>
+                        <th scope="row" class="align-middle"><a href="#!" class="grey"><%= weekDays[i] %></a></th>
+                        <td><%= day.quantity %></td>
+                        <td>
+                          <% if (day.quantity == 0) { %>
+                            0
+                          <% } else { %>
+                            <% if (day.percent / day.quantity >= 0) { %>
+                              <p class="mb-0 pill pill-verde">
+                                <%= day.percent/day.quantity %>%
+                              </p>
+                            <% } else { %>
+                              <p class="mb-0 pill pill-roja">
+                                <%= day.percent/day.quantity %>%
+                              </p>
+                            <% } %>
+                          <% } %>
+                        </td>
+                        <td><%= day.win %></td>
+                        <td><%= day.be %></td>
+                        <td><%= day.loss %></td>
+                        <td>
+                          <% if (day.quantity > 0) { %>
+                            <%= Math.round(day.win / day.quantity * 10000) / 100 %>%
+                          <% } else { %>
+                            0%
+                          <% } %>
+                        </td>
+                        <td>
+                          <% if (!isNaN(day.expected)) { %>
+                            <%= Math.round(day.expected * 100) / 100 %>%
+                          <% } else { %>
+                            N/A
+                          <% } %>
+                        </td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-          <hr class="mb-0">
+          <hr class="w-100 mb-0">
           <div class="px-3 py-1">
             <a href="#!">
               <div class="text-right">
-                <img src="/imgs/icons/help.svg" class="image-widget info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Results breakout based on days of the week.') %>">
+                <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Results breakout based on days of the week.') %>">
               </div>
             </a>
           </div>
@@ -115,10 +119,11 @@
   </div>
 
 <script type="text/javascript">
-  var currentUser = <%- JSON.stringify(currentUser); %>
-  var daysOpenStats = <%- JSON.stringify(daysOpenStats); %>
-  var daysCloseStats = <%- JSON.stringify(daysCloseStats); %>
-  var weekDays = <%- JSON.stringify(weekDays); %>
+  var darkMode        = <%- JSON.stringify(currentUser.darkMode); %>
+  var language        = <%- JSON.stringify(currentUser.language); %>
+  var daysOpenStats   = <%- JSON.stringify(daysOpenStats); %>
+  var daysCloseStats  = <%- JSON.stringify(daysCloseStats); %>
+  var weekDays        = <%- JSON.stringify(weekDays); %>
 </script>
 
 <!-- <section> is inside partials -->

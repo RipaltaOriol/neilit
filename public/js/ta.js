@@ -15,6 +15,7 @@ $(document).ready(function() {
   if (screen.width < 768) {
     window.location.replace("/mobile")
   }
+  console.log(language);
   // sets datepicker
   $(function() {
     $.datepicker.setDefaults(
@@ -81,7 +82,7 @@ $('.journal-scroll').scroll(() => {
   }
 })
 
-// Filter results
+// filter results
 $('#apply-filter').click(() => {
   $("#modal-loading").modal();
   var filterPairs = $('input[name=pair]:checked').map(function(){

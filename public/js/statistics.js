@@ -1,46 +1,39 @@
 // sets colours on graph axes
 var axesColor = 'rgba(0,0,0,0.1)'
 var doughnutBorderColor = 'rgb(255,255,255)'
-if (currentUser.darkMode) {
+// graph canvas & containers
+var entriesGraph = document.getElementById('donutChartWidgetTradesWinBELoss');
+var directionGraph = document.getElementById('orderDirection');
+// set dark mode
+if (darkMode) {
   axesColor = 'rgba(255,255,255,0.1)'
   doughnutBorderColor = 'rgb(39,39,39,39)'
 }
 
 $(document).ready(function() {
-    // tooltips
-    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-    // generates the datepicker
-    $("input[type=date]").datepicker({
-      dateFormat: 'yy/mm/dd'
+  // redirects to notification page
+  if (screen.width < 768) {
+    window.location.replace("/mobile")
+  }
+  // sets datepicker
+  $(function() {
+    $.datepicker.setDefaults(
+      $.extend(
+        $.datepicker.regional[language]
+      )
+    )
+    $('.datepicker').each(function(){
+      $(this).datepicker({
+        altField: "#" + $(this).data('target'),
+        altFormat: "yy-mm-dd" // format for database processing
+      });
     });
-    // prevents the classic datepicker from loading
-    $("input[type=date]").on('click', function() {
-      return false;
-    });
+  });
+  // prevents the classic datepicker from loading
+  $("input[type=date]").on('click', function() {
+    return false;
+  });
 });
-
-// graph canvas & containers
-var entriesGraph = document.getElementById('donutChartWidgetTradesWinBELoss');
-var directionGraph = document.getElementById('orderDirection');
-// data display points
-var profitsPercent = document.getElementById('profits-percent');
-var profitsAmount = document.getElementById('profits-amount');
-var bestAssetPercent = document.getElementById('best-asset-percent');
-var bestAssetAmount = document.getElementById('best-asset-amount');
-var timeframesBody = document.getElementById('timeframes-body');
-var assetsBody = document.getElementById('assets-body');
-
-// keeps track of the custom data that wants to be obtained
-var selectTable = 'none';
-// updates the value of the custom table data
-function updateSelectTable(data) {
-  selectTable = data;
-}
-
-// checks if the given dates are valid
-function isValidDate(d) {
-  return d instanceof Date && !isNaN(d);
-}
 
 // dropdown to select a time period for statistics
 $('.dropdown-menu li').on('click', function() {
@@ -50,110 +43,87 @@ $('.dropdown-menu li').on('click', function() {
   $('.dropdown-select')[current].innerHTML = getValue;
 });
 
-// retrieves profits from the selected time period
-function getProfits(period) {
+// defines and sets the statistic of the custom period
+let custom;
+function setCustom(stats) {
+  custom = stats;
+}
+
+// retrieves the statistics from the selected time period
+function getData(stats, period) {
   // makes an AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/profits/' + period)
+  $.get('/' + username + '/statistics/' + stats + '/' + period)
     .done((data) => {
-      profitsPercent.innerHTML = data.percent + '%'
-      if (data.amount >= 0) {
-        profitsAmount.innerHTML = '<p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">'
-          + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
-      } else {
-        profitsAmount.innerHTML = '<p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2"'
-          + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
+      switch (stats) {
+        case 'profits':
+          setProfits(data);
+          break;
+        case 'entries':
+          setEntries(data)
+          break;
+        case 'best-asset':
+          setBestAsset(data)
+          break;
+        case 'strategies':
+          setStrategies(data.strategyStats)
+          break;
+        case 'assets':
+          setAssets(data.assetStats)
+          break;
+        case 'timeframes':
+          setTimeframes(data.timeframeStats)
+          break;
+        case 'days':
+          setDays(data.dayStats)
+          break;
+        case 'directionDist':
+          setDirectionDist(data)
+          break;
+        case 'directionGraph':
+          setDirectionGraph(data)
+          break;
       }
   })
     .fail(() => {
-      // error
-    })
-};
-
-// retrieves profits from a custom time period
-function getCustomProfits(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/statistics/profits/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        profitsPercent.innerHTML = data.percent + '%'
-        if (data.amount >= 0) {
-          profitsAmount.innerHTML = '<p class="pill pill-verde font-16"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">'
-            + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
-        } else {
-          profitsAmount.innerHTML = '<p class="pill pill-roja font-16"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2"'
-            + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
-        }
-    })
-      .fail(() => {
-        // error
-    })
-  }
-}
-
-// retrieves entry results from the selected time period
-function getEntries(period) {
-  // makes an AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/entries/' + period)
-    .done((data) => {
-      if (data.win + data.be + data.loss > 0) {
-        entriesGraph.style.display = "block";
-        popularAssetsChart.data.datasets[0].data = [data.win, data.be, data.loss];
-        popularAssetsChart.update();
-        document.getElementById('no-data-entries-graph').classList.add('d-none')
-      } else {
-        entriesGraph.style.display = "none";
-        document.getElementById('no-data-entries-graph').classList.remove('d-none');
-      }
-  })
-    .fail(() => {
-      // error
+      //error
   })
 }
 
-// retrieves entry results from a custom time period
-function getCustomEntries(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/statistics/entries/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        if (data.win + data.be + data.loss > 0) {
-          entriesGraph.style.display = "block";
-          popularAssetsChart.data.datasets[0].data = [data.win, data.be, data.loss];
-          popularAssetsChart.update();
-          document.getElementById('no-data-entries-graph').classList.add('d-none')
-        } else {
-          entriesGraph.style.display = "none";
-          document.getElementById('no-data-entries-graph').classList.remove('d-none');
-        }
-    })
-      .fail(() => {
-        // error
-    })
-  }
-}
-
-// retrieves the best asset from the selected time period
-function getBestAsset(period) {
-  // makes an AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/best-asset/' + period)
+// retrieves the statistics from a custom time period
+function getCustom() {
+  var customFrom = $('#custom-from').val()
+  var customTo = $('#custom-to').val()
+  // makes an AJAX call with the custom data period
+  $.get('/' + username + '/statistics/' + custom + '/custom/' + customFrom + '/' + customTo)
     .done((data) => {
-      bestAssetPercent.innerHTML = data.percent + '%'
-      if (data.amount >= 0) {
-        bestAssetAmount.innerHTML = '<a href="#"><p class="pill mx-1 font-16 grey">' + data.pair + '</p></a>'
-          + '<p class="pill pill-verde font-16 mx-1"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">'
-          + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
-      } else {
-        bestAssetAmount.innerHTML = '<a href="#"><p class="pill mx-1 font-16 grey">' + data.pair + '</p></a>'
-          + '<p class="pill pill-roja font-16 mx-1"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2"'
-          + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
+      switch (custom) {
+        case 'profits':
+          setProfits(data);
+          break;
+        case 'entries':
+          setEntries(data)
+          break;
+        case 'best-asset':
+          setBestAsset(data)
+          break;
+        case 'strategies':
+          setStrategies(data.customData)
+          break;
+        case 'assets':
+          setAssets(data.customData)
+          break;
+        case 'timeframes':
+          setTimeframes(data.customData)
+          break;
+        case 'days':
+          setDays(data.customData)
+          break;
+        case 'directionDist':
+          setDirectionDist(data)
+          break;
+        case 'directionGraph':
+          setDirectionGraph(data)
+          break;
       }
   })
     .fail(() => {
@@ -161,284 +131,172 @@ function getBestAsset(period) {
   })
 }
 
-// retrieves the best asset from a custom time period
-function getCustomBestAsset(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/statistics/best-asset/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        bestAssetPercent.innerHTML = data.percent + '%'
-        if (data.amount >= 0) {
-          bestAssetAmount.innerHTML = '<a href="#"><p class="pill mx-1 font-16 grey">' + data.pair + '</p></a>'
-            + '<p class="pill pill-verde font-16 mx-1"><img src="/imgs/icons/trending-up-green.svg" class="imagen-widget-grande mr-2">'
-            + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
-        } else {
-          bestAssetAmount.innerHTML = '<a href="#"><p class="pill mx-1 font-16 grey">' + data.pair + '</p></a>'
-            + '<p class="pill pill-roja font-16 mx-1"><img src="/imgs/icons/trending-down-red.svg" class="imagen-widget-grande mr-2"'
-            + data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>'
-        }
-    })
-      .fail(() => {
-        // error
-    })
+// sets profits
+function setProfits(data) {
+  $('#profits-percent').html(data.percent.toFixed(2) + '%')
+  if (data.amount >= 0) {
+    $('#profits-amount').html('<p class="d-inline pill pill-green"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">'
+      + data.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>')
+  } else {
+    $('#profits-amount').html('<p class="d-inline pill pill-green"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2"'
+      + data.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>')
   }
 }
 
-// updates the values of the strategies table
-function updateStrategiesTable(data) {
-  for (const property in data) {
-    var sData = data;
-    document.getElementById(property + '-quantity').innerHTML = sData[property].quantity;
-    if (sData[property].quantity == 0) {
-      document.getElementById(property + '-average').innerHTML = "0"
+// sets entries graph
+function setEntries(data) {
+  if (data.win + data.be + data.loss > 0) {
+    entriesGraph.style.display = "block";
+    popularAssetsChart.data.datasets[0].data = [data.win, data.be, data.loss];
+    popularAssetsChart.update();
+    document.getElementById('no-data-entries-graph').classList.add('d-none')
+  } else {
+    entriesGraph.style.display = "none";
+    document.getElementById('no-data-entries-graph').classList.remove('d-none');
+  }
+}
+
+// sets best asset
+function setBestAsset(data) {
+  $('#best-asset-percent').html(data.percent.toFixed(2) + '%')
+  if (data.amount >= 0) {
+    $('#best-asset-amount').html('<p class="pr-2">' + data.pair + '</p>'
+      + '<p class="d-inline pill pill-green font-16 mx-1"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">'
+      + data.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>')
+  } else {
+    $('#best-asset-amount').html('<p class="pr-2">' + data.pair + '</p>'
+      + '<p class="d-inline pill pill-red font-16 mx-1"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2"'
+      + data.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>')
+  }
+}
+
+// sets strategies
+function setStrategies(data) {
+  $('#table-strategies').html('')
+  var table = document.getElementById('table-strategies')
+  data.forEach((strategy) => {
+    var row = table.insertRow();
+    var name = row.insertCell();
+    name.innerHTML = '<td><a href="#!" class="grey">' + strategy.strategy + '</a></td>'
+    var entries = row.insertCell();
+    entries.innerHTML = '<td>' + strategy.entries + '</td>'
+    var avgReturn = row.insertCell();
+    if (strategy.avg_return >= 0) {
+      avgReturn.innerHTML = '<td><p class="mb-0 pill pill-green">' + strategy.avg_return.toFixed(2)
+        + '%</p></td>'
     } else {
-      if (sData[property].percent/sData[property].quantity >= 0) {
-        document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-verde">'
-          + sData[property].percent/sData[property].quantity + '%</p>'
-      } else {
-        document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-roja">'
-          + sData[property].percent/sData[property].quantity + '%</p>'
-      }
+      avgReturn.innerHTML = '<td><p class="mb-0 pill pill-red">' + strategy.avg_return.toFixed(2)
+        + '%</p></td>'
     }
-    document.getElementById(property + '-win').innerHTML = sData[property].win;
-    document.getElementById(property + '-be').innerHTML = sData[property].be;
-    document.getElementById(property + '-loss').innerHTML = sData[property].loss;
-  }
+    var win = row.insertCell();
+    win.innerHTML = '<td>' + strategy.win + '</td>'
+    var be = row.insertCell();
+    be.innerHTML = '<td>' + strategy.be + '</td>'
+    var loss = row.insertCell();
+    loss.innerHTML = '<td>' + strategy.loss + '</td>'
+  });
 }
 
-
-// retrieves data based on strategies from selected period
-function getStrategies(period) {
-  // makes AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/strategies/' + period)
-    .done((data) => {
-      updateStrategiesTable(data.strategyStats);
-  })
-    .fail(() => {
-      // error
-  })
-}
-
-// updates the values of the assets table
-function updateAssetsTable(data) {
-  assetsBody.innerHTML = '';
-  for (var i = 6; i > -1; i--) {
-    var average = ''
-    if (data.showcase[i][0] == 0) {
-      average = '0';
+// sets assets
+function setAssets(data) {
+  $('#table-assets').html('')
+  var table = document.getElementById('table-assets')
+  data.forEach((asset) => {
+    var row = table.insertRow();
+    var name = row.insertCell();
+    name.innerHTML = '<td><a href="#!" class="grey">' + asset.pair + '</a></td>'
+    var entries = row.insertCell();
+    entries.innerHTML = '<td>' + asset.entries + '</td>'
+    var avgReturn = row.insertCell();
+    if (asset.avg_return >= 0) {
+      avgReturn.innerHTML = '<td><p class="mb-0 pill pill-green">' + asset.avg_return.toFixed(2)
+        + '%</p></td>'
     } else {
-      if (data.percent[data.showcase[i][1]]/data.showcase[i][0] >= 0) {
-        average = '<p class="mb-0 pill pill-verde">' + data.percent[data.showcase[i][1]]/data.showcase[i][0]
-        + '%</p>';
-      } else {
-        average = '<p class="mb-0 pill pill-roja">' + data.percent[data.showcase[i][1]]/data.showcase[i][0]
-        + '%</p>';
-      }
+      avgReturn.innerHTML = '<td><p class="mb-0 pill pill-red">' + asset.avg_return.toFixed(2)
+        + '%</p></td>'
     }
-    assetsBody.innerHTML += '<tr><th scope="row" class="align-middle"><a href="#" class="grey">'
-      + pairs[data.showcase[i][1]] + '</a></th><td>' + data.showcase[i][0]
-      + '</td><td>' + average + '</td><td>' + data.win[data.showcase[i][1]]
-      + '</td><td>' + data.be[data.showcase[i][1]]
-      + '</td><td>' + data.loss[data.showcase[i][1]] + '</td></tr>';
-  }
+    var win = row.insertCell();
+    win.innerHTML = '<td>' + asset.win + '</td>'
+    var be = row.insertCell();
+    be.innerHTML = '<td>' + asset.be + '</td>'
+    var loss = row.insertCell();
+    loss.innerHTML = '<td>' + asset.loss + '</td>'
+  });
 }
 
-
-// retrieves data based on assets from selected period
-function getAssets(period) {
-  // makes AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/assets/' + period)
-    .done((data) => {
-      updateAssetsTable(data.assetStats);
-  })
-    .fail(() => {
-      // error
-  })
-}
-
-/// updates the values of the timeframes table
-function updateTimeframesTable(data) {
-  timeframesBody.innerHTML = '';
-  for (var i = 6; i > -1; i--) {
-    var average = ''
-    if (data.showcase[i][0] == 0) {
-      average = '0';
+// sets timeframes
+function setTimeframes(data) {
+  $('#table-timeframes').html('')
+  var table = document.getElementById('table-timeframes')
+  data.forEach((timeframe) => {
+    var row = table.insertRow();
+    var name = row.insertCell();
+    name.innerHTML = '<td><a href="#!" class="grey">' + timeframe.timeframe + '</a></td>'
+    var entries = row.insertCell();
+    entries.innerHTML = '<td>' + timeframe.entries + '</td>'
+    var avgReturn = row.insertCell();
+    if (timeframe.avg_return >= 0) {
+      avgReturn.innerHTML = '<td><p class="mb-0 pill pill-green">' + timeframe.avg_return.toFixed(2)
+        + '%</p></td>'
     } else {
-      if (data.percent[data.showcase[i][1]]/data.showcase[i][0] >= 0) {
-        average = '<p class="mb-0 pill pill-verde">' + data.percent[data.showcase[i][1]]/data.showcase[i][0]
-        + '%</p>';
-      } else {
-        average = '<p class="mb-0 pill pill-roja">' + data.percent[data.showcase[i][1]]/data.showcase[i][0]
-        + '%</p>';
-      }
+      avgReturn.innerHTML = '<td><p class="mb-0 pill pill-red">' + timeframe.avg_return.toFixed(2)
+        + '%</p></td>'
     }
-    timeframesBody.innerHTML += '<tr><th scope="row" class="align-middle"><a href="#" class="grey">'
-      + timeframes[data.showcase[i][1]] + '</a></th><td>' + data.showcase[i][0]
-      + '</td><td>' + average + '</td><td>' + data.win[data.showcase[i][1]]
-      + '</td><td>' + data.be[data.showcase[i][1]]
-      + '</td><td>' + data.loss[data.showcase[i][1]] + '</td></tr>';
-  }
+    var win = row.insertCell();
+    win.innerHTML = '<td>' + timeframe.win + '</td>'
+    var be = row.insertCell();
+    be.innerHTML = '<td>' + timeframe.be + '</td>'
+    var loss = row.insertCell();
+    loss.innerHTML = '<td>' + timeframe.loss + '</td>'
+  });
 }
 
-// retrieves data based on timeframes from selected period
-function getTimeframes(period) {
-  // makes AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/timeframes/' + period)
-    .done((data) => {
-      updateTimeframesTable(data.timeframeStats);
-  })
-    .fail(() => {
-      // error
-  })
-}
-
-// updates the values of the timeframe table
-function updateDaysTable(data) {
-  for (const property in data) {
-    document.getElementById(property + '-quantity').innerHTML = data[property].quantity;
-    if (data[property].quantity == 0) {
-      document.getElementById(property + '-average').innerHTML = "0"
+// sets days
+function setDays(data) {
+  console.log(data);
+  $('#table-days').html('')
+  var table = document.getElementById('table-days')
+  data.forEach((day) => {
+    var row = table.insertRow();
+    var name = row.insertCell();
+    name.innerHTML = '<td><a href="#!" class="grey">' + day.day + '</a></td>'
+    var entries = row.insertCell();
+    entries.innerHTML = '<td>' + day.entries + '</td>'
+    var avgReturn = row.insertCell();
+    if (day.avg_return >= 0) {
+      avgReturn.innerHTML = '<td><p class="mb-0 pill pill-green">' + day.avg_return.toFixed(2)
+        + '%</p></td>'
     } else {
-      if (data[property].percent/data[property].quantity >= 0) {
-        document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-verde">'
-          + data[property].percent/data[property].quantity + '%</p>'
-      } else {
-        document.getElementById(property + '-average').innerHTML = '<p class="mb-0 pill pill-roja">'
-          + data[property].percent/data[property].quantity + '%</p>'
-      }
+      avgReturn.innerHTML = '<td><p class="mb-0 pill pill-red">' + day.avg_return.toFixed(2)
+        + '%</p></td>'
     }
-    document.getElementById(property + '-win').innerHTML = data[property].win;
-    document.getElementById(property + '-be').innerHTML = data[property].be;
-    document.getElementById(property + '-loss').innerHTML = data[property].loss;
+    var win = row.insertCell();
+    win.innerHTML = '<td>' + day.win + '</td>'
+    var be = row.insertCell();
+    be.innerHTML = '<td>' + day.be + '</td>'
+    var loss = row.insertCell();
+    loss.innerHTML = '<td>' + day.loss + '</td>'
+  });
+}
+
+// sets direction distribution
+function setDirectionDist(data) {
+  if (data.long + data.short > 0) {
+    directionGraph.style.display = "block";
+    orderDirection.data.datasets[0].data = [data.long, data.short];
+    orderDirection.update();
+    document.getElementById('no-data-direction-graph').classList.add('d-none')
+  } else {
+    directionGraph.style.display = "none";
+    document.getElementById('no-data-direction-graph').classList.remove('d-none');
   }
 }
 
-// retrieves data based on weekdays from the selected period
-function getDays(period) {
-  // makes AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/days/' + period)
-    .done((data) => {
-      updateDaysTable(data.dayWeekStats);
-  })
-    .fail(() => {
-      // error
-  })
-}
-
-// retrieves the corresponding table data from a custom time period
-function getCustomTable(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/statistics/' + selectTable + '/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        switch (selectTable) {
-          case 'strategies':
-            updateStrategiesTable(data.data);
-            break;
-          case 'assets':
-            updateAssetsTable(data.data);
-            break;
-          case 'timeframes':
-            updateTimeframesTable(data.data);
-            break;
-          case 'days':
-            updateDaysTable(data.data);
-            break;
-        }
-    })
-      .fail(() => {
-        // error
-    })
-  }
-}
-
-// retrieves entry directions from the selected time period
-function getDirection(period) {
-  // makes an AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/direction/breakout/' + period)
-    .done((data) => {
-      if (data.long + data.short > 0) {
-        directionGraph.style.display = "block";
-        orderDirection.data.datasets[0].data = [data.long, data.short];
-        orderDirection.update();
-        document.getElementById('no-data-direction-graph').classList.add('d-none')
-      } else {
-        directionGraph.style.display = "none";
-        document.getElementById('no-data-direction-graph').classList.remove('d-none');
-      }
-  })
-    .fail(() => {
-      // error
-  })
-}
-
-// retrieves the direction brekout from a custom time period
-function getCustomDirection(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/statistics/direction/breakout/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        if (data.long + data.short > 0) {
-          directionGraph.style.display = "block";
-          orderDirection.data.datasets[0].data = [data.long, data.short];
-          orderDirection.update();
-          document.getElementById('no-data-direction-graph').classList.add('d-none')
-        } else {
-          directionGraph.style.display = "none";
-          document.getElementById('no-data-direction-graph').classList.remove('d-none');
-        }
-    })
-      .fail(() => {
-        // error
-    })
-  }
-}
-
-// retrieves entry percent based on month & direction from the selected time period
-function getDirectionPer(period) {
-  // makes an AJAX call with the corresponding data period
-  $.get('/' + currentUser.username + '/statistics/direction/percent/' + period)
-    .done((data) => {
-      orderDirectionResults.data.datasets[0].data = data.long;
-      orderDirectionResults.data.datasets[1].data = data.short;
-      orderDirectionResults.update();
-  })
-    .fail(() => {
-      // error
-  })
-}
-
-// retrieves the direction percent based on month & direction from a custom time period
-function getCustomDirectionPer(from, to) {
-  var dFrom = new Date(from.value);
-  var dTo = new Date(to.value);
-  if (isValidDate(dFrom) && isValidDate(dTo)) {
-    dFrom = from.value.replace(/\//g, '-');
-    dTo = to.value.replace(/\//g, '-');
-    // makes an AJAX call with the custom data period
-    $.get('/' + currentUser.username + '/statistics/direction/percent/custom/' + dFrom + '/' + dTo)
-      .done((data) => {
-        console.log(data);
-        orderDirectionResults.data.datasets[0].data = data.long;
-        orderDirectionResults.data.datasets[1].data = data.short;
-        orderDirectionResults.update();
-    })
-      .fail(() => {
-        // error
-    })
-  }
+// sets direction graph
+function setDirectionGraph(data) {
+  orderDirectionResults.data.datasets[0].data = data.long;
+  orderDirectionResults.data.datasets[1].data = data.short;
+  orderDirectionResults.update();
 }
 
 //GRÁFICO DE ENTRADAS
@@ -451,7 +309,7 @@ var popularAssetsChart = new Chart(donutChartWidgetTradesWinBELoss, {
     labels:['Win', 'Break Even', 'Loss'],
     datasets:[{
       label:'LABEL',
-      data:[statistics.entries.win, statistics.entries.be, statistics.entries.loss],
+      data:[basicStats.win, basicStats.be, basicStats.loss],
       //Se dibujará debajo el gráfico que tenga menor orden. Si es el más pequeño, será el del fondo.
       order:2,
       backgroundColor:[
@@ -503,7 +361,7 @@ var orderDirection = new Chart(orderDirection,{
     //Vamos a establecer los datos que se visualizarán en el gráfico.
     datasets:[{
       //Número de operaciones que se han realizado. Siguiente orden: [WIN, BE, LOSS]
-      data:[statistics.direction.long, statistics.direction.short],
+      data:[basicStats.d_long, basicStats.d_short],
       //Seleccionamos el color de cada barra en rgb.
       backgroundColor:[
         "rgba(2,62,138,1)",
@@ -546,7 +404,6 @@ var orderDirection = new Chart(orderDirection,{
 // graph for direction and results metric
 var orderDirectionResults = document.getElementById('orderDirectionResults').getContext('2d');
 var orderDirectionResults = new Chart(orderDirectionResults,{
-
   //Determinamos que tipo de gráfico va a ser. En este caso, un gráfico de barras.
   type: 'line',
   data:{
@@ -558,7 +415,7 @@ var orderDirectionResults = new Chart(orderDirectionResults,{
       pointBackgroundColor: 'rgb(2,62,138)',
       pointBorderColor: 'rgb(2,62,138)',
       label: 'Long',
-      data: statistics.directionPer.long,
+      data: dataDirectionGraph.outcomeLong,
       order: 1,
     }, {
       // dataset for short entries
@@ -567,7 +424,7 @@ var orderDirectionResults = new Chart(orderDirectionResults,{
       pointBackgroundColor: 'rgb(144,224,239)',
       pointBorderColor: 'rgb(144,224,239)',
       label: 'Short',
-      data: statistics.directionPer.short,
+      data: dataDirectionGraph.outcomeShort,
       order: 2,
     }]
   },

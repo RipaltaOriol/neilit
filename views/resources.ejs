@@ -97,11 +97,11 @@
       </div>
       <div class="row">
         <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/">
+          <a href="/resources/create-entry">
             <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
               <div>
-                <img src="/imgs/placeholder.png" class="w-100">
-                <h4 class="my-2"><%= __('How to create an entry') %>?</h4>
+                <img src="/imgs/resources-create-entry.png" class="w-100">
+                <h4 class="my-2"><%= __('How to create an entry?') %>?</h4>
                 <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
               </div>
               <span class="tag mr-2">Post</span>
@@ -109,11 +109,11 @@
           </a>
         </div>
         <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/">
+          <a href="/resources/create-backtest">
             <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
               <div>
-                <img src="/imgs/placeholder.png" class="w-100">
-                <h4 class="my-2"><%= __('How to backtest') %>?</h4>
+                <img src="/imgs/resources-create-backtest-1.png" class="w-100">
+                <h4 class="my-2"><%= __('How to backtest?') %>?</h4>
                 <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
               </div>
               <span class="tag mr-2">Post</span>
@@ -121,26 +121,38 @@
           </a>
         </div>
         <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/">
+          <a href="/resources/add-strategies">
             <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
               <div>
-                <img src="/imgs/placeholder.png" class="w-100">
-                <h4 class="my-2"><%= __('Interpret statistics') %></h4>
+                <img src="/imgs/resources-add-strategies-3.png" class="w-100">
+                <h4 class="my-2"><%= __('How to add strategies?') %></h4>
                 <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
               </div>
-              <span class="tag mr-2">Video</span>
+              <span class="tag mr-2">Post</span>
             </div>
           </a>
         </div>
         <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/">
+          <a href="/resources/link-technical-analysis-to-entry">
             <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
               <div>
-                <img src="/imgs/placeholder.png" class="w-100">
-                <h4 class="my-2"><%= __('Upgrade your plan') %></h4>
+                <img src="/imgs/resources-link-ta-entry-1.png" class="w-100">
+                <h4 class="my-2"><%= __('Link a technical analysis to an entry') %></h4>
                 <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
               </div>
-              <span class="tag mr-2">Video</span>
+              <span class="tag mr-2">Post</span>
+            </div>
+          </a>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
+          <a href="/resources/create-technical-analysis">
+            <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
+              <div>
+                <img src="/imgs/resources-create-ta-6.png" class="w-100">
+                <h4 class="my-2"><%= __('How to create a technical analysis?') %></h4>
+                <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
+              </div>
+              <span class="tag mr-2">Post</span>
             </div>
           </a>
         </div>
@@ -148,5 +160,52 @@
     </div>
   </div>
 </div>
+
+<footer class="mt-5 py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="logo">N</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-9 col-lg-5">
+        <span>
+          <%= __('value statement') %>
+        </span>
+        <div class="my-3">
+          <div class="footer-header"><%= __('Contact us') %>:</div>
+
+          <div>
+            <img class="mr-2" src="/imgs/icons/email-black.svg" alt="email">info@neilit.com
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-3 col-lg-3">
+        <ul class="pl-0">
+          <li><a href="/"><%= __('Home') %></a></li>
+          <li><a href="/features"><%= __('Features') %></a></li>
+          <li><a href="/pricing"><%= __('Pricing') %></a></li>
+          <li><a href="/resources"><%= __('Resources') %></a></li>
+        </ul>
+      </div>
+      <div class="col-12 col-sm-12 col-lg-4">
+        <span><%= ('Stay up to date on the latest from Neilit') %></span>
+        <!-- Begin Mailchimp Signup Form -->
+          <form action="https://neilit.us7.list-manage.com/subscribe/post?u=c948a8be82c0ef2a67a286794&amp;id=6b33ce7392" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+
+        	     <input type="email" value="" name="EMAIL" class="my-2 newsletter px-2" id="mce-EMAIL" placeholder="<%= ('Email address') %>" required>
+               <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+               <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_c948a8be82c0ef2a67a286794_6b33ce7392" tabindex="-1" value=""></div>
+               <div class="clear"><input type="submit" value="<%= __('Subscribe') %>" name="subscribe" id="mc-embedded-subscribe" class="btn-neilit py-1"></div>
+          </form>
+          <!--End mc_embed_signup-->
+      </div>
+    </div>
+    <div class="footer-bottom">
+      @2020 Neilit. All Rights Reseverd.
+    </div>
+  </div>
+</footer>
 
 <%- include("./partials/footer-home") %>

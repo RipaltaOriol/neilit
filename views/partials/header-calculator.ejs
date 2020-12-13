@@ -15,62 +15,56 @@
       <title>Neilit || <%= currentUser.username %></title>
     </head>
     <body>
+      <!-- TOP FIXED BAR -->
+      <div id="top-bar" class="fixed-top d-flex justify-content-between px-4">
+        <a id="open-menu" class="my-auto" href="#!">
+          <img src="/imgs/icons/menu.svg">
+        </a>
+        <a href="/<%= currentUser.username %>/settings" class="my-auto">
+          <img src="/imgs/icons/settings.svg" alt="settings" class="icon-settings">
+        </a>
+      </div>
+      <div id="blur-bar" class="fixed-top"></div>
       <!-- MENU BAR -->
-      <div id="neilit-menu">
-        <div id="header-menu" class="d-flex px-3">
+      <div id="menu-neilit">
+        <div id="menu-header" class="d-flex px-3">
             <h1>NEILIT</h1>
-            <a id="toggle-c-menu" class="ml-auto" href="#!">
+            <a id="close-menu" class="ml-auto" href="#!">
               <img src="/imgs/icons/menu-open.svg" alt="toggle menu">
             </a>
         </div>
-        <div id="content-menu" class="d-flex flex-column">
-          <a href="/<%= currentUser.username %>">
-            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/home.svg" alt="home">
-              <span class="pl-2"><%= __('Home') %></span>
-            </div>
+        <div id="menu-links" class="d-flex flex-column">
+          <a href="/<%= currentUser.username %>" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/home.svg" alt="home">
+            <span class="pl-2"><%= __('Home') %></span>
           </a>
-          <a href="/<%= currentUser.username %>/statistics">
-            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/donut.svg" alt="statistics">
-              <span class="pl-2"><%= __('Statistics') %></span>
-            </div>
+          <a href="/<%= currentUser.username %>/statistics" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/donut.svg" alt="statistics">
+            <span class="pl-2"><%= __('Statistics') %></span>
           </a>
-          <a href="/<%= currentUser.username %>/journal/entry">
-            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/entry.svg" alt="journal">
-              <span class="pl-2"><%= __('Entries') %></span>
-            </div>
+          <a href="/<%= currentUser.username %>/journal/entry" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/entry.svg" alt="entries">
+            <span class="pl-2"><%= __('Entries') %></span>
           </a>
-          <a href="/<%= currentUser.username %>/journal/ta">
-            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/ta.svg" alt="journal">
-              <span class="pl-2"><%= __('TA') %></span>
-            </div>
+          <a href="/<%= currentUser.username %>/journal/ta" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/ta.svg" alt="technical analysis">
+            <span class="pl-2"><%= __('TA') %></span>
           </a>
-          <a href="/<%= currentUser.username %>/journal/backtest">
-            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/backtest.svg" alt="journal">
-              <span class="pl-2"><%= __('Backtest') %></span>
-            </div>
+          <a href="/<%= currentUser.username %>/journal/backtest" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/backtest.svg" alt="journal">
+            <span class="pl-2"><%= __('Backtest') %></span>
           </a>
-          <a href="/<%= currentUser.username %>/journal/comment">
-            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/comment.svg" alt="journal">
-              <span class="pl-2"><%= __('Comments') %></span>
-            </div>
+          <a href="/<%= currentUser.username %>/journal/comment" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/comment.svg" alt="comments">
+            <span class="pl-2"><%= __('Comments') %></span>
           </a>
-          <a href="/<%= currentUser.username %>/plan">
-            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/plan.svg" alt="trading plan">
-              <span class="pl-2"><%= __('Trading Plan') %></span>
-            </div>
-          </a>
-          <a href="/<%= currentUser.username %>/calculator">
-            <div class="element-menu d-flex align-items-center pl-3 py-1 mt-1">
-              <img src="/imgs/icons/calculator.svg" alt="calculator">
-              <span class="pl-2"><%= __('Calculator') %></span>
-            </div>
+          <!-- <a href="/<%= currentUser.username %>/plan" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/plan.svg" alt="trading plan">
+            <span class="pl-2"><%= __('Trading Plan') %></span>
+          </a> -->
+          <a href="/<%= currentUser.username %>/calculator" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/calculator.svg" alt="calculator">
+            <span class="pl-2"><%= __('Calculator') %></span>
           </a>
         </div>
         <!-- <div class="mt-auto text-center">
@@ -80,17 +74,26 @@
         </div> -->
       </div>
 
-      <section id="content" class="mt-4">
-        <div id="header-top" class="d-flex justify-content-between mx-4 ">
-          <div>
-            <a id="toggle-o-menu" class="ml-1 mr-4 d-none" href="#!">
-              <img src="/imgs/icons/menu.svg">
-            </a>
-          </div>
-          <div class="mr-2">
-            <a href="/<%= currentUser.username %>/settings" class="btn-top">
-              <img src="/imgs/icons/settings.svg" alt="settings">
-            </a>
+      <section id="content">
+
+        <!-- AJAX flash messages -->
+        <div id="flash-alert" class="container">
+          <div id="ajax-error" class="alert alert-danger mt-2 d-none" role="alert">
           </div>
         </div>
-        <br>
+
+        <!-- flash messages -->
+        <% if (error && error.length > 0) { %>
+          <div id="flash-alert" class="container">
+            <div class="alert alert-danger mt-2" role="alert">
+              <%= error %>
+            </div>
+          </div>
+        <% } %>
+        <% if (success && success.length > 0) { %>
+          <div id="flash-alert" class="container">
+            <div class="alert alert-success mt-2" role="alert">
+              <%= success %>
+            </div>
+          </div>
+        <% } %>

@@ -67,9 +67,6 @@ $('.dropdown-menu.filter ol').on('click', function(e) {
   if ($(this).children().children().is(':checked')) {
     dropdownLabel.innerHTML += getValue;
   } else {
-    console.log(dropdownLabel.innerHTML);
-    console.log(getValue);
-    console.log(getValue.trim());
     dropdownLabel.innerHTML = dropdownLabel.textContent.replace(getValue.trim(), '');
     if (dropdownLabel.innerHTML.trim() == '') {
       dropdownLabel.innerHTML += getValue;

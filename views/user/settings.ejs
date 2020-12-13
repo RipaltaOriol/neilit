@@ -109,7 +109,7 @@
           </div>
           <hr class="profile">
           <div class="text-center mt-3 mb-3">
-            <a id="logout" href="/logout" class="p-1 font-16"><%= __('Sign off') %></a>
+            <a id="logout" href="/logout" class="p-1 px-2 font-16"><%= __('Sign off') %></a>
           </div>
         </div>
       </div>
@@ -263,7 +263,7 @@
             <div class="d-block flex-row justify-content-between">
               <h4 class="pb-1 mb-3">
                 <%= __('Strategies') %>
-                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('Create a new strategies to add to your TA') %>">
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('tooltip-delete-strategy') %>">
               </h4>
             </div>
             <input type="text" id="addStrategy" placeholder="<%= __('New Strategy') %>" class="w-100 font-16">
@@ -302,10 +302,11 @@
               <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('Frequently Asked Question(s)') %>'">
             </h4>
             <div class="d-flex flex-column">
-              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create an entry') %>?</a>
-              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to backtest') %>?</a>
-              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Interpret statistics') %></a>
-              <a href="/resources" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Upgrade your plan') %></a>
+              <a href="/resources/create-entry" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create an entry?') %></a>
+              <a href="/resources/create-backtest" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to backtest?') %></a>
+              <a href="/resources/add-strategies" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to add strategies?') %></a>
+              <a href="/resources/link-technical-analysis-to-entry" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Link a technical analysis to an entry') %></a>
+              <a href="/resources/create-technical-analysis" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create a technical analysis?') %></a>
             </div>
           </div>
 

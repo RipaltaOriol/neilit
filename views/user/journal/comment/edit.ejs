@@ -1,22 +1,26 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="container mx-auto pt-5">
-    <div class="journal-box px-0">
-      <form action="/<%= currentUser.username %>/journal/comment/<%= comment.id %>?_method=PUT" method="POST">
-        <h3 class="mx-3"><%= __('Comment created the') %> <%= comment.date %></h3>
-        <hr>
-        <div class="mb-2 mx-3">
-          <div id="client-comment" class="editcontent p-2" contenteditable="true"><%= comment.comment %></div>
+  <div class="mx-2 mx-lg-4">
+    <section>
+      <div class="container">
+        <div class="journal-box px-0">
+          <form action="/<%= currentUser.username %>/journal/comment/<%= comment.id %>?_method=PUT" method="POST">
+            <h3 class="mx-3"><%= __('Comment created the') %> <%= comment.date %></h3>
+            <hr>
+            <div class="mb-2 mx-3">
+              <div id="client-comment" class="editcontent p-2" placeholder="<%= __('Write something to note about your operations') %>" contenteditable="true"><%- comment.comment %></div>
+            </div>
+            <textarea id="server-comment" name="comment" class="d-none"></textarea>
+            <br>
+            <div class="text-right mx-3">
+              <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Cancel') %></a>
+              <button id="store-comment" type="submit" class="btn-neilit ml-2"><%= __('Save') %></button>
+            </div>
+          </form>
         </div>
-        <textarea id="server-comment" name="comment" class="d-none"></textarea>
-        <br>
-        <div class="text-right mx-3">
-          <a href="javascript:history.back()" class="btn-inverted ml-2"><%= __('Cancel') %></a>
-          <button id="store-comment" type="submit" class="btn-neilit ml-2"><%= __('Save') %></button>
-        </div>
-      </form>
-    </div>
+      </div>
+    </section>
   </div>
 
 <!-- <section> is inside partials -->

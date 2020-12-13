@@ -1,58 +1,270 @@
 <%- include("../../../partials/header-log") %>
 
   <!-- CONTENT -->
-  <div class="pt-4 mx-4">
-    <section>
+  <div class="mx-2 mx-lg-4">
+    <section class="backtest">
       <div class="container">
         <h2 class="mx-auto"><%= __('Backtest') %></h2>
         <div class="journal-box px-0 py-3">
           <% if (dataList.length > 0) { %>
-            <table id="index-table" class="table table-borderless table-hover mt-1">
-              <thead>
-                <tr class="table-header">
-                  <th scope="col"><%= __('Date') %></th>
-                  <th scope="col"><%= __('Outcome type') %></th>
-                  <th scope="col"><%= __('Pair') %></th>
-                  <th scope="col"><%= __('Strategy') %></th>
-                  <th scope="col"><%= __('Timeframe') %></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% dataList.forEach((backtest) => { %>
-                  <tr onclick="document.location = '/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>'">
-                    <td><%= backtest.date %></td>
-                    <td><%= backtest.result %></td>
-                    <% if (backtest.aPair != null) { %>
-                      <td><span class="pill pill-yellow"><%= backtest.aPair %></span></td>
-                    <% } else { %>
-                      <td><%= __('Multiple') %></td>
-                    <% } %>
-                    <% if (backtest.aStrategy != null) { %>
-                      <td><span class="pill pill-yellow"><%= backtest.aStrategy %></span></td>
-                    <% } else { %>
-                      <td><%= __('Multiple') %></td>
-                    <% } %>
-                    <% if (backtest.aTimeframe != null) { %>
-                      <td><span class="pill pill-yellow"><%= backtest.aTimeframe %></span></td>
-                    <% } else { %>
-                      <td><%= __('Multiple') %></td>
-                    <% } %>
-                  </tr>
-                <% }); %>
-              </tbody>
-            </table>
+            <div class="table-wrapper">
+              <div class="table-scroll">
+                <table id="index-table" class="table table-borderless table-hover mt-1">
+                  <thead>
+                    <tr class="table-header text-center text-nowrap">
+                      <th class="align-top" scope="col"><%= __('Date') %></th>
+                      <th class="align-top" scope="col"><%= __('Outcome type') %></th>
+                      <th class="align-top" scope="col"><%= __('Pair') %></th>
+                      <th class="align-top" scope="col"><%= __('Strategy') %></th>
+                      <th class="align-top" scope="col"><%= __('Timeframe') %></th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center">
+                    <% dataList.forEach((backtest) => { %>
+                      <tr onclick="document.location = '/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>'">
+                        <td class="text-left"><%= backtest.created_at.toLocaleDateString(currentUser.language, options) %></td>
+                        <td><%= backtest.result %></td>
+                        <% if (backtest.pair != null) { %>
+                          <td><span class="pill pill-yellow"><%= backtest.pair %></span></td>
+                        <% } else { %>
+                          <td><%= __('Multiple') %></td>
+                        <% } %>
+                        <% if (backtest.strategy != null) { %>
+                          <td><span class="pill pill-yellow"><%= backtest.strategy %></span></td>
+                        <% } else { %>
+                          <td><%= __('Multiple') %></td>
+                        <% } %>
+                        <% if (backtest.timeframe != null) { %>
+                          <td><span class="pill pill-yellow"><%= backtest.timeframe %></span></td>
+                        <% } else { %>
+                          <td><%= __('Multiple') %></td>
+                        <% } %>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+                <div class="text-center my-2">
+                  <div id="spinner" class="spinner-border d-none" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           <% } else { %>
             <p class="text-center placeholder-journal"><%= __('No entries created yet') %></p>
             <br>
           <% } %>
           <hr>
           <div class="d-flex justify-content-end mx-3">
+            <button type="button" id="open-filter" class="btn-inverted mr-2" data-toggle="modal" data-target="#filter-modal"><%= __('Filter') %></button>
             <a href="/<%= currentUser.username %>/journal/backtest/new" class="btn-neilit"><%= __('New') %></a>
+          </div>
+        </div>
+        <!-- loading modal -->
+        <div id="modal-loading" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content p-5">
+              <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- filter modal -->
+        <div id="filter-modal" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <form id="form-filter">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"><%= __('Apply Filtering to TA') %></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body form-fields">
+                  <span class="mb-2 d-block">
+                    <label><%= __('Creation Date') %>:</label>
+                    <label class="checkbox-orange d-inline ml-2">
+                      <input type="checkbox" id="display-create">
+                      <span class="checkmark"></span>
+                    </label>
+                    <div id="filter-create" class="d-none">
+                      <div class="mb-2">
+                        <label><%= __('From') %>:</label>
+                        <input type="text" class="datepicker form-input p-1 px-2" data-target="create-from">
+                        <input type="text" id="create-from" name="create" class="d-none">
+                      </div>
+                      <div class="mb-2">
+                        <label><%= __('To') %>:</label>
+                        <input type="text" class="datepicker form-input p-1 px-2" data-target="create-to">
+                        <input type="text" id="create-to" name="create" class="d-none">
+                      </div>
+                    </div>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Pair') %>:</label>
+                    <!-- dropdown -->
+                    <div class="dropdown d-inline">
+                      <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                        <%= __('All') %>
+                      </button>
+                      <ul id="dropdown-items" class="dropdown-menu filter" aria-labelledby="dropdown-label">
+                        <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                        <ol class="0">
+                          <label class="checkbox-orange d-inline">
+                            <%= __('All') %>
+                            <input type="checkbox" name="pair" value="%" checked>
+                            <span class="checkmark"></span>
+                          </label>
+                        </ol>
+                        <% for (let [key, value] of currencies) { %>
+                          <ol class="<%= value.id %>">
+                            <label class="checkbox-orange d-inline">
+                              <%= key %>
+                              <input type="checkbox" name="pair" value="<%= key %>">
+                              <span class="checkmark"></span>
+                            </label>
+                          </ol>
+                        <% } %>
+                      </ul>
+                    </div>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Strategy') %>:</label>
+                    <!-- dropdown -->
+                    <div class="dropdown d-inline">
+                      <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                        <%= __('All') %>
+                      </button>
+                      <ul id="dropdown-items" class="dropdown-menu filter" aria-labelledby="dropdown-label">
+                        <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                        <ol class="0">
+                          <label class="checkbox-orange d-inline">
+                            <%= __('All') %>
+                            <input type="checkbox" name="strategy" value="%" checked>
+                            <span class="checkmark"></span>
+                          </label>
+                        </ol>
+                        <% for (var i = 0; i < strategies.length; i++) { %>
+                          <ol class="<%= i + 1 %>">
+                            <label class="checkbox-orange d-inline">
+                              <%= strategies[i] %>
+                              <input type="checkbox" name="strategy" value="<%= strategiesID[i] %>">
+                              <span class="checkmark"></span>
+                            </label>
+                          </ol>
+                        <% } %>
+                      </ul>
+                    </div>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Timeframe') %>:</label>
+                    <!-- dropdown -->
+                    <div class="dropdown d-inline">
+                      <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                        <%= __('All') %>
+                      </button>
+                      <ul id="dropdown-items" class="dropdown-menu filter" aria-labelledby="dropdown-label">
+                        <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                        <ol class="0">
+                          <label class="checkbox-orange d-inline">
+                            <%= __('All') %>
+                            <input type="checkbox" name="timeframe" value="%" checked>
+                            <span class="checkmark"></span>
+                          </label>
+                        </ol>
+                        <% for (var i = 0; i < timeframes.length; i++) { %>
+                          <ol class="<%= i + 1 %>">
+                            <label class="checkbox-orange d-inline">
+                              <%= timeframes[i] %>
+                              <input type="checkbox" name="timeframe" value="<%= i + 1 %>">
+                              <span class="checkmark"></span>
+                            </label>
+                          </ol>
+                        <% } %>
+                      </ul>
+                    </div>
+                  </span>
+                  <span class="my-2 d-block">
+                    <label><%= __('Outcome type') %>:</label>
+                    <label class="checkbox-orange d-inline ml-1">
+                      %
+                      <input type="checkbox" name="result" value="\%" checked>
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-orange d-inline ml-2">
+                      R
+                      <input type="checkbox" name="result" value="R" checked>
+                      <span class="checkmark"></span>
+                    </label>
+                  </span>
+                  <span class="mb-2 d-block">
+                    <label><%= __('Advanced Filtering') %>:</label>
+                    <label class="checkbox-orange d-inline ml-2">
+                      <input type="checkbox" id="display-advance">
+                      <span class="checkmark"></span>
+                    </label>
+                  </span>
+                  <div id="filter-advance" class="d-none">
+                    <span class="mb-2 d-block">
+                      <label><%= __('Sort by') %>:</label>
+                      <label class="checkbox-orange d-inline ml-1">
+                        <%= __('Creation') %>
+                        <input type="radio" name="sort" value="created_at" checked>
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Result') %>
+                        <input type="radio" name="sort" value="result">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Pair') %>
+                        <input type="radio" name="sort" value="pair_id">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Strategy') %>
+                        <input type="radio" name="sort" value="strategy_id">
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Timeframe') %>
+                        <input type="radio" name="sort" value="timeframe_id">
+                        <span class="checkmark"></span>
+                      </label>
+                    </span>
+                    <span class="mb-2 d-block">
+                      <label><%= __('Order by') %>:</label>
+                      <label class="checkbox-orange d-inline ml-1">
+                        <%= __('Descending') %>
+                        <input type="radio" name="order" value="DESC" checked>
+                        <span class="checkmark"></span>
+                      </label>
+                      <label class="checkbox-orange d-inline ml-2">
+                        <%= __('Ascending') %>
+                        <input type="radio" name="order" value="ASC">
+                        <span class="checkmark"></span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button id="apply-filter" type="button" class="btn-neilit" data-dismiss="modal"><%= __('Apply') %></button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </section>
   </div>
+
+<script type="text/javascript">
+  var language = <%- JSON.stringify(currentUser.language) %>;
+</script>
 
 <!-- <section> is inside partials -->
 </section>

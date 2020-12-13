@@ -49,6 +49,10 @@ span .checkbox-orange {
   .form-fields label {
     width: 165px;
   }
+  .form-fields.backtest-fields label {
+    width: 250px;
+  }
+
   .form-fields .form-input {
     width: 500px;
     background-color: var(--background-hover);
@@ -61,18 +65,6 @@ span .checkbox-orange {
     border-radius: .25rem;
     flex: none;
   }
-
-.backtest-fields { }
-  .backtest-fields label {
-    width: 215px;
-  }
-
-.backtest-input {
-  width: 500px;
-  background-color: var(--background-hover);
-  border-radius: .25rem;
-  flex: none;
-}
 
 .modal-fields { }
   .modal-fields label {
@@ -339,6 +331,11 @@ span .checkbox-orange {
   overflow: auto;
 }
 
+.backtest-scroll {
+  max-height: 70vh;
+  overflow: auto;
+}
+
 /* || Index elements table */
 #index-table {
   overflow: auto;
@@ -475,8 +472,22 @@ span .checkbox-orange {
   background: none;
   border: none;
 }
+  #addon:active {
+    outline: none;
+  }
+  #addon:focus {
+    outline: none;
+  }
   .dark-mode #addon img {
     filter: invert();
+  }
+
+#add-addon-field { }
+  #add-addon-field:active {
+    outline: none;
+  }
+  #add-addon-field:focus {
+    outline: none;
   }
 
 #addons { }

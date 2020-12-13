@@ -13,38 +13,38 @@ var usdchf = document.getElementById("usdchf")
 
 if (winrate != null) {
   eurusd.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.80;
+    winrate.textContent = (100 * 0.80).toFixed(2)
   });
   gbpusd.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.725
+    winrate.textContent = (100 * 0.725).toFixed(2)
   });
   audjpy.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.74
+    winrate.textContent = (100 * 0.74).toFixed(2)
   });
   nzdjpy.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.747
+    winrate.textContent = (100 * 0.747).toFixed(2)
   });
   usdjpy.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.76
+    winrate.textContent = (100 * 0.76).toFixed(2)
   });
   cadjpy.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.78
+    winrate.textContent = (100 * 0.78).toFixed(2)
   });
   audusd.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.716
+    winrate.textContent = (100 * 0.716).toFixed(2)
   });
   usdchf.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.76
+    winrate.textContent = (100 * 0.76).toFixed(2)
   });
 
   // Direction:
   var buy = document.getElementById("buy")
   var short = document.getElementById("short")
   buy.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.8
+    winrate.textContent = (100 * 0.854).toFixed(2)
   });
   short.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.789
+    winrate.textContent = (100 * 0.789).toFixed(2)
   });
 
   // Strategies:
@@ -57,28 +57,28 @@ if (winrate != null) {
   var fibonacci = document.getElementById("fibonacci")
   var butterfly = document.getElementById("butterfly")
   trendline.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.75
+    winrate.textContent = (100 * 0.75).toFixed(2)
   });
   zone.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.745
+    winrate.textContent = (100 * 0.745).toFixed(2)
   });
   doubleBottom.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.71
+    winrate.textContent = (100 * 0.71).toFixed(2)
   });
   doubleTop.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.78
+    winrate.textContent = (100 * 0.78).toFixed(2)
   });
   triangle.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.733
+    winrate.textContent = (100 * 0.733).toFixed(2)
   });
   hNs.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.754
+    winrate.textContent = (100 * 0.754).toFixed(2)
   });
   fibonacci.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.77
+    winrate.textContent = (100 * 0.77).toFixed(2)
   });
   butterfly.addEventListener("click", () => {
-    winrate.textContent = 100 * 0.768
+    winrate.textContent = (100 * 0.768).toFixed(2)
   });
 }
 

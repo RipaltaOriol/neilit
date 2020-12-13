@@ -12,7 +12,7 @@
 	}
 }( function( datepicker ) {
 
-datepicker.regional[ "en-GB" ] = {
+datepicker.regional.en = {
 	closeText: "Done",
 	prevText: "Prev",
 	nextText: "Next",
@@ -25,7 +25,7 @@ datepicker.regional[ "en-GB" ] = {
 	dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
 	dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],
 	weekHeader: "Wk",
-	dateFormat: "MM d, yy",
+	dateFormat: "d 'o'f MM yy",
 	firstDay: 1,
 	isRTL: false,
 	showMonthAfterYear: false,

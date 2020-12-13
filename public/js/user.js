@@ -272,10 +272,11 @@ function renderRatesData(rates, ticker) {
   for (var i = 0; i < holdersList.length; i++) {
     holdersList[i].innerHTML = rates[i]
     var openProfit;
+    console.log(openOps[i]);
     if (openOps[i].direction == 'long') {
-      openProfit = (rates[i] - openOps[i].entry) * openOps[i].lot * 100000
+      openProfit = (rates[i] - openOps[i].entry_price) * openOps[i].size * 100000
     } else {
-      openProfit = (openOps[i].entry - rates[i]) * openOps[i].lot * 100000
+      openProfit = (openOps[i].entry_price - rates[i]) * openOps[i].size * 100000
     }
     openProfit = Math.round(openProfit * 100) / 100
     if (openProfit < 0) {

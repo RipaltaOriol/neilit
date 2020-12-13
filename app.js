@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV != "production") {
+  require('dotenv').config()
+}
+
 // Program Dependencies
 let express         = require('express'),
     app             = express(),
@@ -5,17 +9,19 @@ let express         = require('express'),
     bodyParser      = require('body-parser'),
     cookieParser    = require('cookie-parser'),
     redis           = require('redis'),
+    winston         = require('winston'),
     flash           = require('connect-flash'),
     passport        = require('passport'),
     passportConfig  = require('./models/passportConfig'),
     db              = require('./models/dbConfig'),
     session         = require('express-session'),
     RedisStore      = require('connect-redis')(session),
-    redisClient     = redis.createClient();
+    redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true});
 
 
 // Routes Dependencies
 let indexRoutes       = require('./routes/index'),
+    resourcesRoutes   = require('./routes/resources'),
     menuRoutes        = require('./routes/menu'),
     dashboardRoutes   = require('./routes/dashboard'),
     settingsRoutes    = require('./routes/settings')
@@ -25,6 +31,7 @@ let indexRoutes       = require('./routes/index'),
     backtestRoutes    = require('./routes/backtest'),
     planRoutes        = require('./routes/plan'),
     statisticsRoutes  = require('./routes/statistics'),
+    calculatorRoutes  = require('./routes/calculator'),
     i18n              = require('./middleware/i18n.js');
 
 // Configuration
@@ -38,13 +45,14 @@ app.use(cookieParser());
 app.use(flash());
 // Configuration for Sessions (AUTHENTICATION)
 const sessionConfig = {
-  store: new RedisStore({ host: 'localhost', port: 6379, client: redisClient, ttl: 86400 }),
-  secret: 'neilit is the key to trading success',
+  name: 'session',
+  store: new RedisStore({client: redisClient}),
+  secret: process.env.SESSION_PASS,
   resave: false,
   saveUninitialized: false,
   rolling: true,
   cookie: {
-     secure: false,
+     // secure: true, // production only (localhost is not https)
      httpOnly: true,
      maxAge: 12 * 30 * 24 * 60 * 60 * 1000
   }
@@ -54,12 +62,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 app.use(i18n);
-
-// FIXME: can modules be grouped?
-// FIXME: categories should be maped to pairs, but it cannot be pased to front-end JS
-let pairs = require("./models/pairs");
-let categories = require("./models/categoriesPairs");
-let strategies = require("./models/strategies");
 
 // MIDDLEWARE to have USER INFORMATION on all routes
 app.use((req, res, next) => {
@@ -73,8 +75,22 @@ app.use((req, res, next) => {
   next();
 })
 
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  defaultMeta: { service: 'user-service' },
+  transports: [
+    //
+    // - Write all logs with level `error` and below to `error.log`
+    // - Write all logs with level `info` and below to `combined.log`
+    //
+    new winston.transports.File({ filename: 'error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'combined.log' }),
+  ],
+});
+
 // COMBAK: set your secret key. Remember to switch to your live secret key in production!
-const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVcs6jWWvowXuRqXQKvFCK6pYG7Q8NRSy9NQ8uCjHADKAHd36Mfosx006ajk0pov');
+const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 // COMBAK: figure out what this part of the code does
 app.post(
@@ -132,6 +148,7 @@ app.post(
 );
 
 app.use("/", indexRoutes);
+app.use("/resources", resourcesRoutes);
 app.use("/:profile", menuRoutes);
 app.use("/:profile/dashboard", dashboardRoutes);
 app.use("/:profile/settings", settingsRoutes);
@@ -141,6 +158,7 @@ app.use("/:profile/journal/ta", taRoutes);
 app.use("/:profile/journal/backtest", backtestRoutes);
 app.use("/:profile/statistics", statisticsRoutes);
 app.use("/:profile/plan", planRoutes);
+app.use("/:profile/calculator", calculatorRoutes);
 
 // page not found || 404
 app.all('*', (req, res, next) => {

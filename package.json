@@ -16,6 +16,7 @@
     "connect-flash": "^0.1.1",
     "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
@@ -28,6 +29,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "redis": "^3.0.2",
-    "stripe": "^8.96.0"
+    "stripe": "^8.96.0",
+    "winston": "^3.3.3"
   }
 }
