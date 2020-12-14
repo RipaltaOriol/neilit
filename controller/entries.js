@@ -1,11 +1,21 @@
 // dependencies
-let fetch = require('node-fetch');
+const util  = require('util');
+let fetch   = require('node-fetch');
 
 // global variables
 let pairs       = require('../models/pairs');
 let currencies  = require('../models/currencies');
 let categories  = require('../models/categories');
 let db          = require('../models/dbConfig');
+
+// node native promisify
+const query = util.promisify(db.query).bind(db);
+
+// validates time values
+function validateHhMm(input) {
+    var isValid = /^([0-1][0-9]|2[0-3]):([0-5][0-9])$/.test(input);
+    return isValid;
+  }
 
 module.exports.index = (req, res) => {
   var getEntries = 'SELECT * FROM entries WHERE user_id = ? ORDER BY entry_dt DESC LIMIT 25;';
@@ -78,25 +88,15 @@ module.exports.filter = (req, res) => {
 }
 
 module.exports.renderNewForm = (req, res) => {
-  var selectTas = `SELECT ta.id, pair, created_at FROM tanalysis ta
+  var getTas = `SELECT ta.id, pair, created_at FROM tanalysis ta
     JOIN pairs p on ta.pair_id = p.id WHERE ta.user_id = ?;`
   var selectCurrency = 'SELECT currency FROM currencies WHERE id = ?;'
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var allTas = {
-    id: [],
-    title: []
-  }
-  db.query(selectTas, req.user.id, (err, results) => {
+  db.query(getTas, req.user.id, (err, taInfo) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/entry');
     }
-    // stores each technical analysis to an object array
-    results.forEach((ta) => {
-      allTas.id.push(ta.id);
-      allTas.title.push(ta.pair + ' - ' + ta.created_at.toLocaleDateString(req.user.language, options))
-    })
     db.query(selectCurrency, req.user.currency_id, (err, result) => {
       if (err) {
         // COMBAK: log error
@@ -106,9 +106,9 @@ module.exports.renderNewForm = (req, res) => {
       res.render("user/journal/entry/new",
         {
           currency: result[0].currency,
-          // missing categories
           currencies: pairs,
-          tas: allTas
+          technicalAnalysis: taInfo,
+          options: { year: 'numeric', month: 'long', day: 'numeric' }
         }
       );
     })
@@ -142,9 +142,12 @@ module.exports.createEntry = async (req, res) => {
     if (req.body.entryTime == '') {
       newEntry.entry_dt = req.body.entryDate + ' 00:00:00'
     } else {
-      // NOTE: the entry time probably needs some formating
-      // FIXME: create MIDDLEWARE that checks the time input
-      newEntry.entry_dt = req.body.entryDate + ' ' + req.body.entryTime
+      if (validateHhMm(req.body.entryTime)) {
+        newEntry.entry_dt = req.body.entryDate + ' ' + req.body.entryTime
+      } else {
+        req.flash("error", res.__('The entry time has to be typed in military time. For instnace, 14:45.'))
+        return res.redirect("/" + req.user.username + "/journal/entry/new")
+      }
     }
     // sets the operation direction of the entry
     if (req.body.direction == 1) {
@@ -200,9 +203,11 @@ module.exports.createEntry = async (req, res) => {
       if (req.body.profits != '') {
         newEntry.profits = req.body.profits;
       } else {
-        var base = currencies[req.user.currency_id - 1]
-        var trade = pairs[Number(req.body.pair)].substring(4,7);
-        await fetch(`https://api.exchangeratesapi.io/latest?base=${trade}`)
+        var getTradingPair = await query('SELECT pair FROM pairs WHERE id = ?', req.body.pair)
+        var getBase = await query('SELECT currency FROM currencies WHERE id = ?', req.user.currency_id)
+        var quote = getTradingPair[0].pair.split('/')[1];
+        var lotSize = (quote === 'JPY') ? 1000 : 100000;
+        await fetch(`https://api.exchangeratesapi.io/latest?base=${quote}`)
         .then(res => res.json())
         .then((data) => {
           var entryAmount;
@@ -211,7 +216,7 @@ module.exports.createEntry = async (req, res) => {
           } else {
             entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
           }
-          newEntry.profits = data["rates"][base] * entryAmount;
+          newEntry.profits = data["rates"][getBase[0].currency] * entryAmount;
         })
         .catch((err) => {
           if (err) {
@@ -237,63 +242,20 @@ module.exports.createEntry = async (req, res) => {
 }
 
 module.exports.showEntry = (req, res) => {
-  // inserts DB queries to a variable
   var getEntry = `SELECT *, e.id AS id, e.category AS category, DATE_FORMAT(entry_dt, '%H:%i') AS created_time FROM entries e
     JOIN strategies s ON e.strategy_id = s.id
     JOIN pairs p ON e.pair_id = p.id
     JOIN timeframes t on e.timeframe_id = t.id
     WHERE e.id = ?;`
   var getCurrency = 'SELECT currency FROM currencies WHERE id = ?;';
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  // object where the entry information will be stored
-  var entryInfo = { }
-  db.query(getEntry, req.params.id, (err, results) => {
+  db.query(getEntry, req.params.id, (err, entryInfo) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again later.'))
       return res.redirect('/' + req.user.username + "/journal/entry");
     }
-    if (!results.length) {
+    if (!entryInfo.length) {
       return res.redirect('/' + req.user.username + "/journal/entry");
-    }
-    // mandatory entry fields
-    entryInfo.id = results[0].id;
-    entryInfo.title = results[0].pair + ' - ' + results[0].entry_dt.toLocaleDateString(req.user.language, options);
-    entryInfo.pair =results[0].pair;
-    entryInfo.category = results[0].category;
-    entryInfo.size = results[0].size;
-    entryInfo.strategy = results[0].strategy
-    entryInfo.timeframe = res.__(results[0].timeframe);
-    entryInfo.entryDate = results[0].entry_dt.toLocaleDateString(req.user.language, options);
-    entryInfo.entryTime = results[0].created_time;
-    entryInfo.direction = results[0].direction;
-    entryInfo.entryPrice = results[0].entry_price;
-    entryInfo.fees = results[0].fees;
-    entryInfo.profits = results[0].profits;
-    // optional mandatory fields
-    // checks the entry's stop loss value
-    if (results[0].stop_loss != null) {
-      entryInfo.stopLoss = results[0].stop_loss;
-    }
-    // checks the entry's take profit value
-    if (results[0].take_profit != null) {
-      entryInfo.takeProfit = results[0].take_profit;
-    }
-    // checks the entry's commnet value
-    if (results[0].comment != null) {
-      entryInfo.comment = results[0].comment;
-    }
-    // checks the status of the entry (open or closed)
-    if (results[0].status == 1) {
-      entryInfo.exitDate = results[0].exit_dt.toLocaleDateString(req.user.language, options);
-      entryInfo.exitPrice = results[0].exit_price;
-      entryInfo.result = results[0].result;
-    } else {
-      entryInfo.status = 0;
-    }
-    // checks the entry's technical analysis value
-    if (results[0].ta_id != null) {
-      entryInfo.taId = results[0].ta_id;
     }
     db.query(getCurrency, req.user.currency_id, (err, result) => {
       if (err) {
@@ -306,7 +268,8 @@ module.exports.showEntry = (req, res) => {
         {
           currency: result[0].currency,
           currencies: pairs,
-          entry: entryInfo
+          entryInfo: entryInfo[0],
+          options: { year: 'numeric', month: 'long', day: 'numeric' }
         }
       );
     })
@@ -315,90 +278,28 @@ module.exports.showEntry = (req, res) => {
 
 module.exports.renderEditForm = (req, res) => {
   // inserts DB queries to a variable
-  var getEntry = `SELECT *, e.id AS id, e.category AS category, DATE_FORMAT(entry_dt, '%H:%i') AS created_time FROM entries e
+  var getEntry = `SELECT *, e.id AS id, e.category AS category, DATE_FORMAT(entry_dt, '%Y-%m-%d') AS open_format,
+      DATE_FORMAT(entry_dt, '%Y-%m-%d') AS close_format FROM entries e
     JOIN strategies s ON e.strategy_id = s.id
     JOIN pairs p ON e.pair_id = p.id
     JOIN timeframes t on e.timeframe_id = t.id
     WHERE e.id = ?;`
-  var selectTas = `SELECT ta.id, pair, created_at FROM tanalysis ta
+  var getTas = `SELECT ta.id, pair, created_at FROM tanalysis ta
     JOIN pairs p on ta.pair_id = p.id WHERE ta.user_id = ?;`
   var selectCurrency = 'SELECT currency FROM currencies WHERE id = ?;'
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  // object where the entry information will be stored
-  var entryInfo = { }
-  // object where the existing technical analysis will be stored
-  var allTas = {
-    id: [],
-    title: [],
-  }
-  db.query(getEntry, req.params.id, (err, results) => {
+  db.query(getEntry, req.params.id, (err, entryInfo) => {
     if (err) {
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again later.'))
       return res.redirect('/' + req.user.username + "/journal/entry");
     }
-    // mandatory entry fields
-    entryInfo.id = results[0].id;
-    entryInfo.title = results[0].pair + ' - ' + results[0].entry_dt.toLocaleDateString(req.user.language, options);
-    entryInfo.pair = results[0].pair;
-    entryInfo.category = results[0].category;
-    entryInfo.size = results[0].size;
-    entryInfo.ta_id = results[0].ta_id;
-    entryInfo.strategy = results[0].strategy;
-    entryInfo.strategy_id = results[0].strategy_id;
-    entryInfo.timeframe = results[0].timeframe;
-    entryInfo.timeframe_id = results[0].timeframe_id;
-    entryInfo.entryDate = results[0].entry_dt.toLocaleDateString(req.user.language, options);
-    var entryD = new Date(results[0].entry_dt);
-    var offset = entryD.getTimezoneOffset()
-    entryD = new Date(entryD.getTime() - (offset * 60 * 1000))
-    entryInfo.entryAltDate = entryD.toISOString().split('T')[0];
-    entryInfo.entryTime = results[0].created_time;
-    entryInfo.direction = results[0].direction;
-    entryInfo.entryPrice = results[0].entry_price;
-    entryInfo.fees = results[0].fees;
-    entryInfo.profits = results[0].profits;
-    // optional mandatory fields
-    // checks the entry's stop loss value
-    if (results[0].stop_loss != null) {
-      entryInfo.stopLoss = results[0].stop_loss;
-    }
-    // checks the entry's take profit value
-    if (results[0].take_profit != null) {
-      entryInfo.takeProfit = results[0].take_profit;
-    }
-    // checks the entry's commnet value
-    if (results[0].comment != null) {
-      entryInfo.comment = results[0].comment;
-    }
-    // checks the status of the entry (open or closed)
-    if (results[0].status == 1) {
-      entryInfo.exitDate = results[0].exit_dt.toLocaleDateString(req.user.language, options);
-      var exitD = new Date(results[0].exit_dt);
-      var offset = exitD.getTimezoneOffset()
-      exitD = new Date(exitD.getTime() - (offset * 60 * 1000))
-      entryInfo.exitAltDate = exitD.toISOString().split('T')[0];
-      entryInfo.exitPrice = results[0].exit_price;
-      entryInfo.result = results[0].result;
-    } else {
-      entryInfo.status = 0;
-    }
-    // checks the entry's technical analysis value
-    if (results[0].ta_id != null) {
-      entryInfo.taId = results[0].ta_id;
-    }
     // gets the technical analysis from the user
-    db.query(selectTas, req.user.id, (err, results) => {
+    db.query(getTas, req.user.id, (err, taInfo) => {
       if (err) {
         // COMBAK: log error
         req.flash('error', res.__('Something went wrong, please try again later.'))
         return res.redirect('/' + req.user.username + "/journal/entry");
       }
-      // stores each technical analysis to an object array
-      results.forEach((ta) => {
-        allTas.id.push(ta.id);
-        allTas.title.push(ta.pair + ' - ' + results[0].created_at.toLocaleDateString(req.user.language, options))
-      })
       db.query(selectCurrency, req.user.currency_id, (err, result) => {
         if (err) {
           // COMBAK: log error
@@ -409,8 +310,9 @@ module.exports.renderEditForm = (req, res) => {
           {
             currency: result[0].currency,
             currencies: pairs,
-            entry: entryInfo,
-            tas: allTas
+            entryInfo: entryInfo[0],
+            technicalAnalysis: taInfo,
+            options: { year: 'numeric', month: 'long', day: 'numeric' }
           }
         );
       })
@@ -445,9 +347,12 @@ module.exports.updateEntry = async (req, res) => {
     if (req.body.entryTime == '') {
       newEntry.entry_dt = req.body.entryDate + ' 00:00:00'
     } else {
-      // NOTE: the entry time probably needs some formating
-      // FIXME: create MIDDLEWARE that checks the time input
-      newEntry.entry_dt = req.body.entryDate + ' ' + req.body.entryTime
+      if (validateHhMm(req.body.entryTime)) {
+        newEntry.entry_dt = req.body.entryDate + ' ' + req.body.entryTime
+      } else {
+        req.flash("error", res.__('The entry time has to be typed in military time. For instnace, 14:45.'))
+        return res.redirect("/" + req.user.username + "/journal/entry/" + req.params.id + "/edit")
+      }
     }
     // sets the operation direction of the entry
     if (req.body.direction == 1) {
@@ -503,9 +408,11 @@ module.exports.updateEntry = async (req, res) => {
       if (req.body.profits != '') {
         newEntry.profits = req.body.profits;
       } else {
-        var base = currencies[req.user.currency_id - 1]
-        var trade = pairs[Number(req.body.pair)].substring(4,7);
-        await fetch(`https://api.exchangeratesapi.io/latest?base=${trade}`)
+        var getTradingPair = await query('SELECT pair FROM pairs WHERE id = ?', req.body.pair)
+        var getBase = await query('SELECT currency FROM currencies WHERE id = ?', req.user.currency_id)
+        var quote = getTradingPair[0].pair.split('/')[1];
+        var lotSize = (quote === 'JPY') ? 1000 : 100000;
+        await fetch(`https://api.exchangeratesapi.io/latest?base=${quote}`)
         .then(res => res.json())
         .then((data) => {
           var entryAmount;
@@ -514,7 +421,7 @@ module.exports.updateEntry = async (req, res) => {
           } else {
             entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
           }
-          newEntry.profits = data["rates"][base] * entryAmount;
+          newEntry.profits = data["rates"][getBase[0].currency] * entryAmount;
         })
         .catch((err) => {
           if (err) {

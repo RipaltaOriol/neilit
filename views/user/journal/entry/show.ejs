@@ -3,8 +3,8 @@
   <!-- CONTENT -->
   <div class="container mx-auto mb-5">
     <div class="journal-box px-0">
-      <form action="/<%= currentUser.username %>/journal/entry/<%= entry.id %>?_method=DELETE" method="POST">
-        <h3 class="mx-3"><%= entry.title %></h3>
+      <form action="/<%= currentUser.username %>/journal/entry/<%= entryInfo.id %>?_method=DELETE" method="POST">
+        <h3 class="mx-3"><%= entryInfo.pair %> - <%= entryInfo.entry_dt.toLocaleDateString(currentUser.language, options) %></h3>
         <hr>
         <div class="row mx-3 form-fields">
           <div class="col-12 col-xl-6 mb-3">
@@ -12,15 +12,15 @@
             <h5><%= __('General Information') %></h5>
             <div>
               <label><%= __('Asset') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= entry.pair %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.pair %>" readonly>
             </div>
             <span>
               <label><%= __('Category') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= entry.category %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.category %>" readonly>
             </span>
             <div>
               <label><%= __('Direction') %>:</label>
-              <% if (entry.direction == 'long') { %>
+              <% if (entryInfo.direction == 'long') { %>
                 <input type="text" class="form-show orange px-2" value="<%= __('Long') %>" readonly>
               <% } else { %>
                 <input type="text" class="form-show orange px-2" value="<%= __('Short') %>" readonly>
@@ -28,75 +28,73 @@
             </div>
             <div>
               <label><%= __('Entry date') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= entry.entryDate %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.entry_dt.toLocaleDateString(currentUser.language, options) %>" readonly>
             </div>
-            <% if ('entryTime' in entry) { %>
-              <div>
-                <label><%= __('Entry time') %>:</label>
-                <input type="text" class="form-show orange px-2" value="<%= entry.entryTime %>" readonly>
-              </div>
-            <% } %>
+            <div>
+              <label><%= __('Entry time') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.entry_dt.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }) %>" readonly>
+            </div>
           </div>
           <!-- SPECIFIC ENTRY INFORMATION -->
           <div class="col-12 col-xl-6 mb-3">
             <h5><%= __('Specific Information') %></h5>
             <div>
               <label><%= __('Size') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= entry.size %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.size %>" readonly>
             </div>
             <div>
               <label><%= __('Strategy') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= entry.strategy %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.strategy %>" readonly>
             </div>
             <div>
               <label><%= __('Timeframe') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= entry.timeframe %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.timeframe %>" readonly>
             </div>
             <div>
               <label><%= __('Entry price') %>:</label>
-              <input type="text" class="form-show orange px-2" value="<%= entry.entryPrice %>" readonly>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.entry_price %>" readonly>
             </div>
-            <% if ('stopLoss' in entry) { %>
+            <% if (entryInfo.stop_loss != null) { %>
               <div>
                 <label><%= __('Stop Loss') %></label>
-                <input type="text" class="form-show orange px-2" value="<%= entry.stopLoss %>" readonly>
+                <input type="text" class="form-show orange px-2" value="<%= entryInfo.stop_loss %>" readonly>
               </div>
             <% } %>
-            <% if ('takeProfit' in entry) { %>
+            <% if (entryInfo.take_profit != null) { %>
               <div>
                 <label><%= __('Take Profit') %></label>
-                <input type="text" class="form-show orange px-2" value="<%= entry.takeProfit %>" readonly>
+                <input type="text" class="form-show orange px-2" value="<%= entryInfo.take_profit %>" readonly>
               </div>
             <% } %>
           </div>
         </div>
-        <% if (entry.status != 0 && 'exitPrice' in entry) { %>
+        <% if (entryInfo.status != 0 && entryInfo.exit_price != null) { %>
           <div class="row mx-3 form-fields">
             <div class="col-12 col-xl-6 mb-3">
               <h5><%= __('Results') %></h5>
               <div>
                 <label><%= __('Exit price') %>:</label>
-                <input type="text" class="form-show orange px-2" value="<%= entry.exitPrice %>" readonly>
+                <input type="text" class="form-show orange px-2" value="<%= entryInfo.exit_price %>" readonly>
               </div>
-              <% if ('exitDate' in entry) { %>
+              <% if (entryInfo.exit_dt != null) { %>
                 <div>
                   <label><%= __('Exit date') %>:</label>
-                  <input type="text" class="form-show orange px-2" value="<%= entry.exitDate %>" readonly>
+                  <input type="text" class="form-show orange px-2" value="<%= entryInfo.exit_dt.toLocaleDateString(currentUser.language, options) %>" readonly>
                 </div>
               <% } %>
               <% if (currentUser.showProfits) { %>
                 <div>
                   <label><%= __('Profits') %>:</label>
-                  <input type="text" class="form-show orange px-2" value="<%= entry.profits %> <%= __(currency) %>" readonly>
+                  <input type="text" class="form-show orange px-2" value="<%= entryInfo.profits %> <%= __(currency) %>" readonly>
                 </div>
               <% } %>
               <div>
                 <label><%= __('Fees') %>:</label>
-                <input type="text" class="form-show orange px-2" value="<%= entry.fees %> <%= __(currency) %>" readonly>
+                <input type="text" class="form-show orange px-2" value="<%= entryInfo.fees %> <%= __(currency) %>" readonly>
               </div>
               <div>
                 <label><%= __('Result') %>:</label>
-                <input type="text" class="form-show orange px-2" value="<%= __(entry.result) %>" readonly>
+                <input type="text" class="form-show orange px-2" value="<%= __(entryInfo.result) %>" readonly>
               </div>
             </div>
           </div>
@@ -105,8 +103,8 @@
         <h3 class="mx-3"><%= __('Comments') %></h3>
         <hr>
         <div class="mx-3">
-          <% if ('comment' in entry) { %>
-            <div><%- entry.comment %></div>
+          <% if (entryInfo.comment) { %>
+            <div><%- entryInfo.comment %></div>
           <% } %>
         </div>
         <br>
@@ -114,8 +112,8 @@
         <hr>
         <span class="mx-3">
           <label><strong><%= __('Go to the linked technical analysis') %>:</strong></label>
-          <% if (entry.taId) { %>
-            <a href="/<%= currentUser.username %>/journal/ta/<%= entry.taId %>" class="text-decoration-none">
+          <% if (entryInfo.ta_id) { %>
+            <a href="/<%= currentUser.username %>/journal/ta/<%= entryInfo.ta_id %>" class="text-decoration-none">
               <span class="bg-hover orange px-2"><%= __('Click') %></span>
             </a>
           <% } else { %>
@@ -126,12 +124,16 @@
         <br>
         <div class="d-flex justify-content-end mx-3">
           <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Cancel') %></a>
-          <a href="/<%= currentUser.username %>/journal/entry/<%= entry.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
+          <a href="/<%= currentUser.username %>/journal/entry/<%= entryInfo.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
           <button type="submit" class="btn-neilit ml-2"><%= __('Delete') %></button>
         </div>
       </form>
     </div>
   </div>
+
+<script type="text/javascript">
+  var language = <%- JSON.stringify(currentUser.language) %>;
+</script>
 
 <!-- <section> is inside partials -->
 </section>

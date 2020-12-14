@@ -1,14 +1,9 @@
 <%- include("../../../partials/header-log") %>
 
-  <div id="local-alert" class="container d-none">
-    <div class="alert alert-danger mt-2" role="alert">
-      <%= __('The entry time is not valid. Time has to be formatted in 24-hour clock. For instance, 13:55.') %>
-    </div>
-  </div>
   <!-- CONTENT -->
   <div class="container mx-auto mb-5">
     <div class="journal-box px-0 entry-input">
-      <form action="/<%= currentUser.username %>/journal/entry" method="POST" onsubmit="event.preventDefault(); return checkTime(this);">
+      <form action="/<%= currentUser.username %>/journal/entry" method="POST" novalidate class="validate-form" id="entry-form">
         <h3 class="mx-3"><%= __('Create Entry') %></h3>
         <hr>
         <div class="mb-2 mx-3">
@@ -71,11 +66,11 @@
             <h5><%= __('Finance') %></h5>
             <span class="input-group mb-2">
               <label class="my-auto mandatory"><%= __('Size') %>:</label>
-              <input type="number" class="form-control form-input p-1 px-2" name="size" min="0" step="0.001" placeholder="<%= __('State the size of your operation in lots') %>">
+              <input type="number" class="form-control form-input p-1 px-2" name="size" min="0" step="0.001" placeholder="<%= __('State the size of your operation in lots') %>" required>
             </span>
             <span class="input-group mb-2">
               <label class="my-auto mandatory"><%= __('Entry Price') %>:</label>
-              <input type="number" class="form-control form-input p-1 px-2" name="entryPrice" min="0" step="0.00001">
+              <input type="number" class="form-control form-input p-1 px-2" name="entryPrice" min="0" step="0.00001" required>
             </span>
             <span class="input-group mb-2">
               <label class="my-auto"><%= __('Stop Loss') %>:</label>
@@ -90,7 +85,7 @@
             <h5><%= __('Logistics') %></h5>
             <span class="input-group mb-2">
               <label class="my-auto mandatory"><%= __('Date of Entry') %>:</label>
-              <input type="text" class="datepicker form-control form-input p-1 px-2" data-target="entry-date">
+              <input type="text" class="datepicker form-control form-input p-1 px-2" data-target="entry-date" required>
               <input type="text" id="entry-date" class="d-none" name="entryDate">
             </span>
             <span class="input-group mb-3">
@@ -104,14 +99,14 @@
               <div class="form-check form-check-inline">
                 <label class="checkbox-orange mb-0 mandatory">
                   <%= __('Long') %>
-                  <input type="radio" name="direction" value="1">
+                  <input type="radio" class="form-check-input" name="direction" value="1" required>
                   <span class="checkmark"></span>
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="checkbox-orange mb-0 mandatory">
                   <%= __('Short') %>
-                  <input type="radio" name="direction" value="-1">
+                  <input type="radio" class="form-check-input" name="direction" value="-1" required>
                   <span class="checkmark"></span>
                 </label>
               </div>
@@ -150,8 +145,8 @@
                 <h5 class="modal-title mx-auto"><%= __('Select a') %> <span class="orange"><%= __('Technical Analysis') %></span> <%= __('to connect to this entry') %></h5>
               </div>
               <div class="modal-body d-flex flex-column">
-                <% tas.title.forEach((ta, i) => { %>
-                  <a class="mt-2 bg-hover" data-dismiss="modal" onclick="connectTa(<%= i %>);"><%= ta %></a>
+                <% technicalAnalysis.forEach((ta, i) => { %>
+                  <a class="mt-2 bg-hover" data-dismiss="modal" onclick="connectTa(<%= i %>);"><%= ta.pair %> - <%= ta.created_at.toLocaleDateString(currentUser.language, options) %></a>
                 <% }); %>
               </div>
             </div>
@@ -226,10 +221,23 @@
       </form>
     </div>
   </div>
+  <!-- loading modal -->
+  <div id="modal-loading" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content p-5">
+        <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script type="text/javascript">
-  var language = <%- JSON.stringify(currentUser.language) %>;
-  var tas = <%- JSON.stringify(tas) %>;
+  var language          = <%- JSON.stringify(currentUser.language) %>;
+  var technicalAnalysis = <%- JSON.stringify(technicalAnalysis) %>;
+  var options           = <%- JSON.stringify(options) %>;
 </script>
 
 <!-- <section> is inside partials -->

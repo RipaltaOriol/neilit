@@ -22,7 +22,7 @@ $(document).ready(function() {
   // prevents the classic datepicker from loading
   $("input[type=date]").on('click', function() {
     return false;
-  });
+  })
 })
 
 var storeEntry = document.getElementById('submit-entry')
@@ -83,8 +83,6 @@ function searchDropdown(id) {
   input = document.getElementsByClassName('dropdown-search')[current];
   search = input.value.toUpperCase();
   dropdownItems = document.getElementsByClassName('dropdown-menu')[current].querySelectorAll('li, ol');
-  console.log(dropdownItems);
-  console.log(search);
   for (var i = 0; i < dropdownItems.length; i++) {
     val = dropdownItems[i].textContent || dropdownItems[i].innerText;
     if (val.toUpperCase().indexOf(search) > -1) {
@@ -93,6 +91,13 @@ function searchDropdown(id) {
       dropdownItems[i].style.display = "none";
     }
   }
+  // prevents form from submitting when pressing enter key
+  $(window).keydown(function(event){
+   if(event.keyCode == 13) {
+     event.preventDefault();
+     return false;
+   }
+ })
 }
 
 // manages filter functions
@@ -277,10 +282,11 @@ function displayClose(close) {
 
 // Connects a technical analysis to the entry
 function connectTa(index) {
-  var connectedId = tas.id[index]
+  var connectedId = technicalAnalysis[index].id
   document.getElementById('ta').value = connectedId;
   $('#entry-ta').removeClass('d-none')
-  var connectedTa = tas.title[index]
+  var connectedTa = technicalAnalysis[index].pair + ' - '
+    + new Date(technicalAnalysis[index].created_at).toLocaleDateString(language, options)
   $('#connect-ta').text(connectedTa);
 }
 
@@ -289,32 +295,6 @@ $('#noneTa').click(() => {
   $('#entry-ta').addClass('d-none')
 })
 
-// Checks the format of entry time before the form submisison
-function checkTime(form) {
-  var entryTime = document.getElementById('entry-time').value;
-  // blank entry time is valid
-  if (entryTime == ''){
-    form.submit();
-    return true;
-  // ensures that entry time has length five and contains only numbers
-  } else if (entryTime.length == 5) {
-    var logicOperator = true;
-    for (var i = 0; i < entryTime.length; i++) {
-      logicOperator = logicOperator && ((entryTime[i] >= '0' && entryTime[i] <= '9') || (entryTime[i] == ':'));
-    }
-    if (logicOperator) {
-      form.submit();
-      return true;
-    }
-  // otherwise the inputs gets rejected and the form submission is prevented
-  } else {
-    var localError = document.getElementById('local-alert');
-    localError.classList.remove('d-none');
-    window.scrollTo(0, 0);
-    return false;
-  }
-}
-
 // Runs before making the POST request
 if (storeEntry != null) {
   storeEntry.addEventListener('click', () => {
@@ -322,3 +302,29 @@ if (storeEntry != null) {
     serverComment.value = clientComment.innerText.replace(/\n/g, "<br>");
   })
 }
+
+
+$('#entry-form').submit(function() {
+  $('#modal-edit-alert').modal('hide')
+  $("#modal-loading").modal('show')
+});
+
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.validate-form')
+
+  // Loop over them and prevent submission
+  Array.from(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()

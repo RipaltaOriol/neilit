@@ -227,7 +227,6 @@
 	"Go to TA": "Go to TA",
 	"Go to Entry": "Go to Entry",
 	"Successfully logged out!": "Successfully logged out!",
-	"The entry time is not valid. Time has to be formatted in 24-hour clock. For instance, 13:55.": "The entry time is not valid. Time has to be formatted in 24-hour clock. For instance, 13:55.",
 	"Create Entry": "Create Entry",
 	"Specific": "Specific",
 	"Pair": "Pair",
@@ -378,5 +377,16 @@
 	"Stop-Loss distance in Pips": "Stop-Loss distance in Pips",
 	"Size of the trade in lots": "Size of the trade in lots",
 	"Size of the trade in units": "Size of the trade in units",
-	"Calculate": "Calculate"
+	"Calculate": "Calculate",
+	"Position size cannot be blank.": "Position size cannot be blank.",
+	"The entry was updated successfully.": "The entry was updated successfully.",
+	"Something went wrong, please try again later.": "Something went wrong, please try again later.",
+	"The entry was created successfully.": "The entry was created successfully.",
+	"Click": "Click",
+	"Updated": "Updated",
+	"Exit price cannot be blank for closed entries.": "Exit price cannot be blank for closed entries.",
+	"Entry date cannot be blank.": "Entry date cannot be blank.",
+	"Exit price": "Exit price",
+	"Exit date": "Exit date",
+	"win": "win"
 }
