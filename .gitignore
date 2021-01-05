@@ -1,3 +1,4 @@
 # Ignores the libraries that are downloaded locally
 node_modules
 .env
+views
