@@ -13,110 +13,62 @@ const query = util.promisify(db.query).bind(db);
 const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVcs6jWWvowXuRqXQKvFCK6pYG7Q8NRSy9NQ8uCjHADKAHd36Mfosx006ajk0pov');
 
 module.exports.renderDashboard = (req, res) => {
-  var selectUserBase  = 'SELECT currency FROM currencies WHERE id = ?;'
-  var selectEntries   = 'SELECT pair, profits, fees, result, MONTHNAME(exit_dt) AS month FROM entries e JOIN pairs p ON e.pair_id = p.id WHERE status = 1 AND user_id = ?;'
-  var selectOpen      = 'SELECT entries.id, pair, size, direction, entry_dt, entry_price FROM entries JOIN pairs ON entries.pair_id = pairs.id WHERE status = 0 AND user_id = ?;'
-  var selectMonth     = 'SELECT SUM((profits - fees) / (SELECT balance FROM users WHERE id = ?) * 100) AS month, COUNT(*) as count FROM entries WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;'
-  var selectWeek      = 'SELECT SUM((profits - fees) / (SELECT balance FROM users WHERE id = ?) * 100) AS week FROM entries WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;'
-  db.query(selectUserBase, req.user.currency_id, (err, getBase) => {
-    if (err) {
+  (async () => {
+    try {
+      var getBase  = await query('SELECT currency FROM currencies WHERE id = ?;', req.user.currency_id)
+      var getGeneralInfo = await query(`SELECT SUM(profits) - SUM(fees)
+               + (SELECT balance FROM users WHERE id = ?) AS current_balance,
+           COUNT(*) AS count,
+           SUM(IF(result = 'win', 1, 0)) / COUNT(*) * 100 AS win_rate
+        FROM entries
+        WHERE user_id = ? AND status = 1;`, [req.user.id, req.user.id])
+      var getAssetInfo = await query(`SELECT pair,
+            (profits - fees) / (SELECT balance FROM users WHERE id = ?) * 100 as percent_change
+        FROM entries e
+            INNER JOIN pairs p on e.pair_id = p.id
+        WHERE e.user_id = ? AND status = 1 ORDER BY profits DESC LIMIT 1;`, [req.user.id, req.user.id]);
+      var getMonthGraph = await query(`SELECT MONTH(exit_dt) - 1 as month, SUM(profits) - SUM(fees) AS outcome,
+            COUNT(*) as count
+        FROM entries WHERE user_id = ? AND status = 1 GROUP BY month;`, [req.user.id])
+      var getOpenTrades = await query(`SELECT entries.id, pair, size, direction, entry_dt, entry_price
+        FROM entries JOIN pairs ON entries.pair_id = pairs.id
+        WHERE status = 0 AND user_id = ?;`, [req.user.id, req.user.id])
+      var getMonth = await query(`SELECT SUM((profits - fees) / (SELECT balance
+        FROM users WHERE id = ?) * 100) AS month, COUNT(*) AS count FROM entries
+        WHERE YEAR(entry_dt) = YEAR(CURDATE()) AND MONTH(entry_dt) = MONTH(CURDATE()) AND status = 1 AND user_id = ?;`, [req.user.id, req.user.id])
+      var getWeek = await query(`SELECT SUM((profits - fees) / (SELECT balance FROM users WHERE id = ?) * 100) AS week
+        FROM entries
+        WHERE YEARWEEK(DATE(entry_dt), 1) = YEARWEEK(CURDATE(), 1) AND status = 1 AND user_id = ?;`, [req.user.id, req.user.id])
+      // COMBAK: improve this code
+      var dataMonthGraph = {
+        outcomeMonth: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        countMonth: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+      getMonthGraph.forEach((month) => {
+        dataMonthGraph.outcomeMonth[month.month] = month.outcome;
+        dataMonthGraph.countMonth[month.month] = month.count;
+      });
+    } catch (e) {
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/login');
-    }
-    // object with dashboad data CURRENT BALANCE, BIGGEST TRADE & TOTAL ENTRIES
-    var dashboardData = {
-      base: getBase[0].currency,
-      currentAmount: req.user.balance,
-      currentPercent: 0,
-      biggestPair: 'N/A',
-      biggestPercent: 0,
-      total: 0,
-      rate: 0
-    }
-    // creates an object for monthly OUTCOME data
-    var outcomeMonth = {
-      January:    { outcome: 0, total: 0 },
-      February:   { outcome: 0, total: 0 },
-      March:      { outcome: 0, total: 0 },
-      April:      { outcome: 0, total: 0 },
-      May:        { outcome: 0, total: 0 },
-      June:       { outcome: 0, total: 0 },
-      July:       { outcome: 0, total: 0 },
-      August:     { outcome: 0, total: 0 },
-      September:  { outcome: 0, total: 0 },
-      October:    { outcome: 0, total: 0 },
-      November:   { outcome: 0, total: 0 },
-      December:   { outcome: 0, total: 0 }
-    }
-    db.query(selectEntries, req.user.id, (err, getEntries) => {
-      if (err) {
-        // COMBAK: log error
-        req.flash('error', res.__('Something went wrong, please try again.'))
-        return res.redirect('/login');
-      }
-      getEntries.forEach((entry) => {
-        // counts the entry to the corresponding metric
-        dashboardData.total += 1;
-        outcomeMonth[entry.month].total += 1;
-        // counts the entry if result is WIN
-        if (entry.result == 'win') { dashboardData.rate += 1 }
-        // adds the entry ouctcome as amount and percent
-        var entryPercent = ((entry.profits - entry.fees) / req.user.balance) * 100
-        dashboardData.currentAmount += (entry.profits - entry.fees);
-        // compares the entry percents to get the biggest trade
-        if (entryPercent >= dashboardData.biggestPercent) {
-          dashboardData.biggestPercent = entryPercent;
-          dashboardData.biggestPair = entry.pair;
+    } finally {
+      res.render("user/user",
+        {
+          base: getBase[0].currency,
+          general: getGeneralInfo[0],
+          asset: getAssetInfo[0],
+          monthGraph: dataMonthGraph,
+          dashboardOpen: getOpenTrades,
+          monthCount: getMonth[0].count,
+          monthPer: getMonth[0].month,
+          weekPer: getWeek[0].week,
+          months: [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')],
+          options: { year: 'numeric', month: 'long', day: 'numeric' }
         }
-        outcomeMonth[entry.month].outcome += (entry.profits - entry.fees);
-      });
-      dashboardData.currentPercent = (dashboardData.currentAmount / req.user.balance - 1) * 100;
-      dashboardData.rate = dashboardData.rate / dashboardData.total * 100;
-      // divides the data in 'outcomeMonth' in two separate arrays
-      var outcomeMonthAmount = [];
-      var outcomeMonthTotal = [];
-      for (const month in outcomeMonth) {
-        outcomeMonthAmount.push(outcomeMonth[month].outcome)
-        outcomeMonthTotal.push(outcomeMonth[month].total)
-      }
-      db.query(selectOpen, req.user.id, (err, getOpen) => {
-        if (err) {
-          console.log(err);
-          // COMBAK: log error
-          req.flash('error', res.__('Something went wrong, please try again.'))
-          return res.redirect('/login');
-        }
-        db.query(selectMonth, [req.user.id, req.user.id], (err, getMonth) => {
-          if (err) {
-            // COMBAK: log error
-            req.flash('error', res.__('Something went wrong, please try again.'))
-            return res.redirect('/login');
-          }
-          db.query(selectWeek, [req.user.id, req.user.id], (err, getWeek) => {
-            if (err) {
-              // COMBAK: log error
-              req.flash('error', res.__('Something went wrong, please try again.'))
-              return res.redirect('/login');
-            }
-            res.render("user/user",
-              {
-                dashboardData: dashboardData,
-                outcomeMonthAmount: outcomeMonthAmount,
-                outcomeMonthTotal: outcomeMonthTotal,
-                dashboardOpen: getOpen,
-                monthCount: getMonth[0].count,
-                monthPer: getMonth[0].month,
-                weekPer: getWeek[0].week,
-                months: [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')],
-                options: { year: 'numeric', month: 'long', day: 'numeric' }
-              }
-            );
-          })
-        })
-      })
-    })
-  })
+      )
+    }
+  })()
 }
 
 module.exports.renderSettings = async (req, res) => {
@@ -243,6 +195,10 @@ module.exports.renderStatistics = (req, res) => {
       }
     );
   })()
+}
+
+module.exports.renderPsychology = (req, res) => {
+  res.render("user/psychology")
 }
 
 module.exports.renderCalculator = (req, res) => {

@@ -29,6 +29,9 @@ th {
   color: var(--invert-black);
   cursor: pointer;
 }
+  th.sorted {
+    text-decoration: underline;
+  }
 
 tr {
   white-space: nowrap;
@@ -245,6 +248,14 @@ a { }
   font-weight: 500;
   color: var(--invert-black);
   text-align: center;
+}
+
+.widget-sq-header {
+  height: 43px;
+}
+
+.widget-sq-content {
+  height: 92px;
 }
 
 /* || JQuery UI class */

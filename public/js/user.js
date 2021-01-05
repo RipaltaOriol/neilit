@@ -37,7 +37,9 @@ function isValidDate(d) {
 }
 
 // sorts the table of open positions by asset
-function sortBy(column) {
+function sortBy(column, obj) {
+  $('th').removeClass('sorted')
+  obj.className = 'sorted'
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementById("open-positions");
   switching = true;
@@ -67,6 +69,10 @@ function sortBy(column) {
         case 'pnl':
           x = rows[i].getElementsByTagName('TD')[6].children[0].children[0].innerText.slice(0,-3);
           y = rows[i + 1].getElementsByTagName('TD')[6].children[0].children[0].innerText.slice(0,-3);
+          break;
+        case 'date':
+          x = rows[i].getElementsByTagName('TD')[3].className
+          y = rows[i + 1].getElementsByTagName('TD')[3].className
           break;
         default:
           x = rows[i].getElementsByTagName("TD")[0];
@@ -209,7 +215,6 @@ function progressMonthPer(input) {
 // sets the progress bar that is being modified
 function setProgressType(type) {
   currentBar = type;
-  console.log('Passed');
 }
 
 // modifies the accont a progress bar
@@ -261,24 +266,24 @@ function loadExchangeRates() {
     rates.push(getExchangeRate(base, target))
   }
   Promise.all(rates).then((allRatesData) => {
-    renderRatesData(allRatesData, target);
+    renderRatesData(allRatesData);
   })
 }
 
 // renders the exchange rates and open P/L to the user
-function renderRatesData(rates, ticker) {
+function renderRatesData(rates) {
   var holdersList = $('.current-rate')
   var holdersProfitList = $('.current-profit')
   for (var i = 0; i < holdersList.length; i++) {
     holdersList[i].innerHTML = rates[i]
     var openProfit;
-    console.log(openOps[i]);
     if (openOps[i].direction == 'long') {
       openProfit = (rates[i] - openOps[i].entry_price) * openOps[i].size * 100000
     } else {
       openProfit = (openOps[i].entry_price - rates[i]) * openOps[i].size * 100000
     }
     openProfit = Math.round(openProfit * 100) / 100
+    var ticker = openOps[i].pair.split('/').pop()
     if (openProfit < 0) {
       holdersProfitList[i].innerHTML = '<span class="pill pill-red">' + openProfit + ' ' + ticker + '</span>'
     } else {
@@ -300,7 +305,7 @@ var resultsChart = new Chart(ctx, {
     datasets:[{
       label:'Amount',
       yAxisID: 'A',
-      data: outcomeMonthAmount,
+      data: dataMonthGraph.outcomeMonth,
       order:2,
       backgroundColor:'rgb(255,136,24)',
     }, {
@@ -308,7 +313,7 @@ var resultsChart = new Chart(ctx, {
       label:'# of entries',
       yAxisID: 'N',
       fill: false,
-      data:outcomeMonthTotal,
+      data:dataMonthGraph.countMonth,
       lineTension: "0.5",
       order: 1,
       borderColor: "rgb(247,189,30)",
@@ -341,7 +346,7 @@ var resultsChart = new Chart(ctx, {
         },
         ticks: {
           display: false,
-          max: Math.max(...outcomeMonthTotal) + 1
+          max: Math.max(...dataMonthGraph.countMonth) + 1
         }
       }],
       xAxes:[{

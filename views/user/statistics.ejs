@@ -55,7 +55,7 @@
                 </ul>
               </div>
             </div>
-            <div class="my-4 d-flex flex-column align-items-center">
+            <div class="widget-sq-content my-4 d-flex flex-column justify-content-center align-items-center">
               <% if (!(Number.isNaN(basicStats.percent))) { %>
                 <h1 id="profits-percent" class="widget-data"><%= basicStats.percent.toFixed(2) %>%</h1>
               <% } else { %>
@@ -63,9 +63,9 @@
               <% } %>
               <div id="profits-amount" class="font-16">
                 <% if (basicStats.outcome >= 0) { %>
-                  <p class="d-inline pill pill-green"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">
+                  <p class="d-inline pill pill-green font-16"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">
                 <% } else { %>
-                  <p class="d-inline pill pill-red"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2">
+                  <p class="d-inline pill pill-red font-16"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2">
                 <% } %>
                   <%= basicStats.outcome.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> <%= userBase %>
                 </p>
@@ -109,7 +109,7 @@
                 </ul>
               </div>
             </div>
-            <div class="my-2 d-flex flex-column align-items-center">
+            <div class="widget-sq-content my-4 d-flex flex-column justify-content-center align-items-center">
               <% if (basicStats.win + basicStats.loss + basicStats.be > 0) { %>
                 <canvas id="donutChartWidgetTradesWinBELoss" width="100" height="100"></canvas>
                 <p id="no-data-entries-graph" class="placeholder-stats d-none"><%= __('Not enough data') %></p>
@@ -156,14 +156,14 @@
                 </ul>
               </div>
             </div>
-            <div class="my-4 d-flex flex-column align-items-center">
+            <div class="widget-sq-content my-4 d-flex flex-column justify-content-center align-items-center">
               <h1 id="best-asset-percent" class="widget-data"><%= bestAsset.percent.toFixed(2) %>%</h1>
-              <div id="best-asset-amount" class="d-flex align-items-center font-16">
-                  <p class="pr-2"><%= bestAsset.pair %></p>
+              <div id="best-asset-amount">
+                  <p class="text-center mb-0"><%= bestAsset.pair %></p>
                 <% if (bestAsset.outcome >= 0) { %>
-                  <p class="d-inline pill pill-green mx-1"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">
+                  <p class="d-inline pill pill-green font-16 mx-1"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">
                 <% } else { %>
-                  <p class="d-inline pill pill-red mx-1"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2">
+                  <p class="d-inline pill pill-red font-16 mx-1"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2">
                 <% } %>
                   <%= bestAsset.outcome.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") %> <%= userBase %>
                 </p>
@@ -563,7 +563,7 @@
                 </ul>
               </div>
             </div>
-            <div class="my-4 d-flex flex-column align-items-center">
+            <div class="widget-rct-content my-4 d-flex flex-column align-items-center">
               <% if (basicStats.d_long + basicStats.d_short > 0) { %>
                 <canvas id="orderDirection" width="100" height="100"></canvas>
                 <p id="no-data-direction-graph" class="placeholder-stats d-none"><%= __('Not enough data') %></p>
@@ -629,7 +629,7 @@
                 </div>
               </div>
             </div>
-            <div class="my-4 d-flex flex-column align-items-center px-2">
+            <div class="widget-rct-content my-4 d-flex flex-column align-items-center px-2">
               <canvas id="orderDirectionResults" width="100" height="115"></canvas>
             </div>
             <hr class="mb-0">

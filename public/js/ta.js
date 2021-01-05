@@ -15,7 +15,6 @@ $(document).ready(function() {
   if (screen.width < 768) {
     window.location.replace("/mobile")
   }
-  console.log(language);
   // sets datepicker
   $(function() {
     $.datepicker.setDefaults(
@@ -309,7 +308,7 @@ $('#ta-content').on('mouseup', () => {
   $("#ta-content").sortable({
       axis: 'y',
       cursor: 'move',
-      containment: "#ta-content",
+      containment: ".ta-element",
       cancel: 'input, select, [contenteditable]'
   })
 })

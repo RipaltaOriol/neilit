@@ -72,7 +72,7 @@
                         <td><a href="#!" class="grey"><%= strategy.strategy %></a></td>
                         <td><%= strategy.entries %></td>
                         <td>
-                          <% if (strategy.avg_return >= 0) { %>
+                          <% if (strategy.avg_return > 0) { %>
                             <p class="mb-0 pill pill-green">
                               <%= strategy.avg_return.toFixed(2) %>%
                             </p>
@@ -94,7 +94,7 @@
               </div>
             </div>
           </div>
-          <hr class="w-100 mb-0">
+          <hr class="w-100 my-0">
           <div class="px-3 py-1">
             <a href="#!">
               <div class="text-right">

@@ -4,7 +4,7 @@
     <div class="w-100 row mx-auto d-flex align-items-center">
       <div class="col-6">
         <a href="#!" class="text-light" id="back">
-          <p class="m-0 p-0 mr-2"><%= __('Go to dashboard') %></p>
+          <p class="m-0 p-0 mr-2"><%= __('Back') %></p>
         </a>
       </div>
     </div>
@@ -338,8 +338,8 @@
   </div>
 
 <script type="text/javascript">
-  var username = <%- JSON.stringify(currentUser.username) %>
-  var strategies = <%- JSON.stringify(strategies) %>;
+  var username    = <%- JSON.stringify(currentUser.username) %>;
+  var strategies  = <%- JSON.stringify(strategies) %>;
 </script>
 
 <%- include("../partials/footer-settings") %>

@@ -429,21 +429,27 @@ module.exports.renderStrategies = (req, res) => {
         FROM entries e
             JOIN strategies s ON e.strategy_id = s.id WHERE e.user_id = ? AND status = 1
         GROUP BY strategy_id ORDER BY e.strategy_id;`, req.user.id)
-    var getStrategies = await query(`SELECT strategy, COUNT(*)               AS entries,
-          AVG(profits - fees)/(SELECT balance FROM users WHERE id = 1) * 100 AS avg_return,
-          SUM(IF(result = 'win', 1, 0))                                      AS win,
-          SUM(IF(result = 'loss', 1, 0))                                     AS loss,
-          SUM(IF(result = 'be', 1, 0))                                       AS be,
-          SUM(IF(result = 'win', 1, 0))/COUNT(*) * 100                       AS win_rate,
-          (SUM(IF(result = 'win', profits, 0))
-            / SUM(IF(result = 'win', 1, 0))) *
-            (SUM(IF(result = 'win', 1, 0))/COUNT(*))
-          + (SUM(IF(result = 'loss', profits, 0))
-            / SUM(IF(result = 'loss', 1, 0))) *
-            (SUM(IF(result = 'win', 1, 0))/COUNT(*) - 1) AS expected_result
+    var getStrategies = await query(`SELECT * FROM (
+      (SELECT strategy, COUNT(*)               AS entries,
+        AVG(profits - fees)/(SELECT balance FROM users WHERE id = 1) * 100 AS avg_return,
+        SUM(IF(result = 'win', 1, 0))                                      AS win,
+        SUM(IF(result = 'loss', 1, 0))                                     AS loss,
+        SUM(IF(result = 'be', 1, 0))                                       AS be,
+        SUM(IF(result = 'win', 1, 0))/COUNT(*) * 100                       AS win_rate,
+        IFNULL((SUM(IF(result = 'win', profits, 0))
+          / SUM(IF(result = 'win', 1, 0))), 0) *
+          (SUM(IF(result = 'win', 1, 0))/COUNT(*))
+        + IFNULL((SUM(IF(result = 'loss', profits, 0))
+          / SUM(IF(result = 'loss', 1, 0))) *
+          (SUM(IF(result = 'win', 1, 0))/COUNT(*) - 1), 0) AS expected_result
       FROM entries e
-          LEFT JOIN strategies s ON s.id = e.strategy_id
-      WHERE e.user_id = 1 AND status = 1 GROUP BY strategy_id ORDER BY entries DESC;`, req.user.id)
+        LEFT JOIN strategies s ON s.id = e.strategy_id
+      WHERE e.user_id = 1 AND status = 1 GROUP BY strategy_id ORDER BY entries DESC)
+      UNION
+      SELECT strategy, 0, 0, 0, 0, 0, 0, 0 from strategies s
+      WHERE NOT EXISTS(SELECT * FROM entries e WHERE e.strategy_id = s.id) AND s.user_id = 1)
+        AS test;`, req.user.id)
+
     // COMBAK: improve this code
     var dataStrategyGraph = { }
     var dataStrategyRadar = { }

@@ -498,12 +498,12 @@ function createRow() {
   deleteImg.setAttribute('alt', 'delete row');
   var deleteBtn = document.createElement('button');
   deleteBtn.setAttribute('type', 'button');
-  deleteBtn.className = 'table-action delete-row';
+  deleteBtn.className = 'table-action delete-row mr-1';
   deleteBtn.setAttribute('onclick', 'deleteRow(this)');
   deleteBtn.appendChild(deleteImg);
   // edit button
   var editImg = document.createElement('img');
-  editImg.setAttribute('src', '/imgs/icons/edit.svg');
+  editImg.setAttribute('src', '/imgs/icons/edit-pen.svg');
   editImg.setAttribute('alt', 'edit row');
   var editBtn = document.createElement('button');
   editBtn.setAttribute('type', 'button');

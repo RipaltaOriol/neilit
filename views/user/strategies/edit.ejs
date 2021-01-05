@@ -1,0 +1,129 @@
+<%- include("../../partials/header-strategies") %>
+
+<!-- CONTENT -->
+<div class="container mx-auto mb-5">
+  <div class="journal-box px-0">
+    <div class="d-flex mx-3">
+      <h2 class="flex-grow-1 mr-3"><%= strategy.strategy %></h2>
+      <span class="status-badge save d-flex align-items-center">
+        <%= __('Saved') %>
+        <img class="ml-1" src="/imgs/icons/check-circle.svg">
+      </span>
+    </div>
+    <br>
+    <div class="mx-3">
+      <h3><%= __('Description') %></h3>
+      <div id="description" class="editcontent p-2" placeholder="<%= __('Write a description for your strategy') %>." contenteditable="true"><% if (doc != undefined) { %>
+        <%- doc.description %>
+      <% } %></div>
+    </div>
+    <br>
+    <div class="mx-3">
+      <h3>
+        <%= __('Rules') %>
+        <img src="/imgs/icons/help.svg" class="d-inline align-top image-tooltip" data-toggle="tooltip" data-placement="right" title="You can change the order of the rules by dragging them.">
+      </h3>
+      <ol id="rules">
+        <% rules.forEach((rule) => { %>
+          <li>
+            <div class="d-flex justify-content-between">
+              <input type="text" class="d-none rule-id" value="<%= rule.id %>">
+              <span class="rule"><%= rule.rule %></span>
+              <span class="d-flex">
+                <button type="button" class="p-1 delete" onclick="deleteRule(this)"><img src="/imgs/icons/delete.svg"></button>
+              </span>
+            </div>
+          </li>
+        <% }) %>
+      </ol>
+      <div id="rule-input" class="editcontent p-1 px-2 mb-2" placeholder="<%= __('Add a new rule to your strategy') %>." contenteditable="true"></div>
+      <button type="button" class="btn-inverted" onclick="addRule()"><%= __('Add rule') %></button>
+    </div>
+    <br>
+    <div class="mx-3">
+      <h3><%= __('Exits') %></h3>
+      <div id="exits">
+        <% exits.forEach((exit) => { %>
+          <div class="strategy-exit mb-3">
+            <div class="row">
+              <div class="col-12 col-lg-6 mb-2">
+                <input type="text" class="d-none exit-id" value="<%= exit.id %>">
+                <input class="exit-name w-100" type="text" value="<%= exit.name %>" placeholder="<%= __('Exit name') %>">
+              </div>
+              <div class="col-6 col-lg-3 mb-2">
+                <!-- dropdown -->
+                <div class="dropdown">
+                  <button id="dropdown-label" class="type-select p-1 px-2 w-100" type="button" data-toggle="dropdown">
+                    <%= exit.type %>
+                  </button>
+                  <ul id="dropdown-items" class="dropdown-menu exit-type" aria-labelledby="dropdown-label">
+                    <li>Loss</li>
+                    <li>Profit</li>
+                    <li>Add</li>
+                    <li>Reduce</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-6 col-lg-3 mb-2">
+                <!-- dropdown -->
+                <div class="dropdown">
+                  <button id="dropdown-label" class="order-select p-1 px-2 w-100" type="button" data-toggle="dropdown">
+                    <%= exit.order_type %>
+                  </button>
+                  <ul id="dropdown-items" class="dropdown-menu exit-order" aria-labelledby="dropdown-label">
+                    <li>Market order</li>
+                    <li>Limit order</li>
+                    <li>Stop order</li>
+                    <li>Stop-Limit order</li>
+                    <li>Trailing order</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <div class="exit-description flex-grow-1 editcontent p-1 px-2" placeholder="<%= __('Write a description for your exit') %>." contenteditable="true"><%- exit.description %></div>
+              <span class="d-flex">
+                <button type="button" class="delete-exit ml-2" onclick="deleteExit(this)"><img src="/imgs/icons/delete.svg"></button>
+              </span>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      <button type="button" class="btn-inverted" onclick="addExit()"><%= __('Add exit') %></button>
+    </div>
+    <br>
+    <div class="mx-3">
+      <h3><%= __('Observations') %></h3>
+      <div id="observations">
+        <% observations.forEach((observation) => { %>
+          <div class="observation d-flex justify-content-between py-3 mb-3">
+            <input type="text" class="d-none observation-id" value="<%= observation.id %>">
+            <div class="observation-description flex-grow-1 editcontent p-2" placeholder="<%= __('Write any observations you have spotted') %>." contenteditable="true"><%- observation.observation %></div>
+            <span class="d-flex">
+              <button type="button" class="m-2 delete-obs" onclick="deleteObs(this)"><img src="/imgs/icons/delete.svg"></button>
+            </span>
+          </div>
+        <% }) %>
+      </div>
+
+      <button type="button" class="btn-inverted" onclick="addObservation()"><%= __('Add observation') %></button>
+    </div>
+    <br>
+    <div class="text-right mx-3">
+      <a href="/<%= currentUser.username %>/strategies/<%= strategy.id %>" class="btn-neilit"><%= __('Done') %></a>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var username    = <%- JSON.stringify(currentUser.username); %>
+  var isDarkMode  = <%- JSON.stringify(currentUser.darkMode); %>
+  var strategyID  = <%- JSON.stringify(strategy.id); %>
+  var savedTxt    = <%- JSON.stringify(saved); %>
+  var savingTxt   = <%- JSON.stringify(saving); %>
+</script>
+
+<!-- <section> is inside partials -->
+</section>
+
+<%- include("../../partials/footer-strategies") %>

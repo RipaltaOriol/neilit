@@ -325,20 +325,15 @@ module.exports.renderEditForm = (req, res) => {
 module.exports.updateBacktest = (req, res) => {
   var parseData = JSON.parse(req.body.serverData);
   (async () => {
-    if (parseData.data.length > 0) {
-      parseData.data.forEach((row) => {
-        row[4] = pairs.get(row[4]).id
-      });
-      var deleteAddonsData = await query('DELETE FROM backtest_addons_data WHERE backtest_id = ?', req.params.id);
-      var deleteData = await query('DELETE FROM backtest_data WHERE backtest_id = ?', req.params.id);
-      var addData = await query('INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id) VALUES ?', [parseData.data])
-      var getNewIDs = await query('SELECT id FROM backtest_data WHERE backtest_id = ? ORDER BY id ASC', req.params.id, (err, results) => {
-        if (err) {
-          console.log(err);
-          // COMBAK: log error
-          req.flash('error', res.__('Something went wrong, please try again.'))
-          return res.redirect('/' + req.user.username + '/journal/backtest');
-        }
+    try {
+      if (parseData.data.length > 0) {
+        parseData.data.forEach((row) => {
+          row[4] = pairs.get(row[4]).id
+        })
+        var deleteAddonsData = await query('DELETE FROM backtest_addons_data WHERE backtest_id = ?', req.params.id)
+        var deleteData = await query('DELETE FROM backtest_data WHERE backtest_id = ?', req.params.id)
+        var addData = await query('INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id) VALUES ?', [parseData.data])
+        var getNewIDs = await query('SELECT id FROM backtest_data WHERE backtest_id = ? ORDER BY id ASC', req.params.id)
         if (parseData.addons.length > 0) {
           var setAddons = parseData.addons.length / results.length
           for (var i = 0; i < parseData.addons.length; i = i + setAddons) {
@@ -347,18 +342,17 @@ module.exports.updateBacktest = (req, res) => {
               parseData.addons[y].push(results[correspondingID].id)
             }
           }
+          var addAddonsData = await query('INSERT INTO backtest_addons_data (backtest_addons_id, addon_value, backtest_id, backtest_data_id) VALUES ?', [parseData.addons])
         }
-        db.query('INSERT INTO backtest_addons_data (backtest_addons_id, addon_value, backtest_id, backtest_data_id) VALUES ?', [parseData.addons], (err, results) => {
-          if (err) {
-            console.log(err);
-            // COMBAK: log error
-            req.flash('error', res.__('Something went wrong, please try again.'))
-            return res.redirect('/' + req.user.username + '/journal/backtest');
-          }
-          req.flash('success', res.__('The backtest was saved successfully.'))
-          res.redirect("/" + req.user.username + "/journal/backtest");
-        })
-      })
+      }
+    } catch (e) {
+      console.log(e);
+      // COMBAK: log error
+      req.flash('error', res.__('Something went wrong, please try again.'))
+      return res.redirect('/' + req.user.username + '/journal/backtest');
+    } finally {
+      req.flash('success', res.__('The backtest was saved successfully.'))
+      return res.redirect("/" + req.user.username + "/journal/backtest");
     }
   })()
 }

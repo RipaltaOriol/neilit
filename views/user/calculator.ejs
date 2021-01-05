@@ -1,10 +1,10 @@
 <%- include("../partials/header-calculator") %>
 
   <!-- CONTENT -->
-  <div class="pt-4 mx-4">
+  <div class="mx-2 mx-lg-4">
     <section id="calculator">
       <div class="container">
-        <h2 class="w-75 mx-auto"><%= __('Position Size Calculator') %></h2>
+        <h2 class="mx-auto"><%= __('Position Size Calculator') %></h2>
         <% if (currentUser.currency_id == null) { %>
           <div id="local-alert">
             <div class="alert alert-danger mt-2" role="alert">
@@ -12,7 +12,7 @@
             </div>
           </div>
         <% } %>
-        <div class="journal-box px-0 w-75 mx-auto">
+        <div class="journal-box px-0 mx-auto">
           <h3 class="mx-3"><%= __('Account information') %></h3>
           <hr>
           <div class="mx-3">

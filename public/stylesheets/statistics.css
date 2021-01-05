@@ -305,6 +305,14 @@ input[type="date"]::-webkit-input-placeholder{
   text-align: center;
 }
 
+.widget-sq-content {
+  height: 92px;
+}
+
+.widget-rct-content {
+  height: 100px;
+}
+
 #dd {
   border-radius: .25rem;
   border: 0;

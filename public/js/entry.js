@@ -39,7 +39,7 @@ jQuery(function($){
   });
 });
 
-// dropdown to select a time period for statistics
+// dropdown to selection
 $('.dropdown-menu li').on('click', function() {
   var allDD = $('.dropdown-menu');
   var current = allDD.index($(this).parent())

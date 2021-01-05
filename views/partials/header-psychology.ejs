@@ -10,7 +10,7 @@
       <link rel="stylesheet" href="/utilities/bootstrap/css/bootstrap.min.css">
       <!-- CSS -->
       <link rel="stylesheet" href="/stylesheets/app.css">
-      <link rel="stylesheet" href="/stylesheets/user.css">
+      <link rel="stylesheet" href="/stylesheets/psychology.css">
 
       <title>Neilit || <%= currentUser.username %></title>
     </head>
@@ -79,6 +79,12 @@
       </div>
 
       <section id="content">
+
+        <!-- AJAX flash messages -->
+        <div id="flash-alert" class="container">
+          <div id="ajax-error" class="alert alert-danger mt-2 d-none" role="alert">
+          </div>
+        </div>
 
         <!-- flash messages -->
         <% if (error && error.length > 0) { %>

@@ -1,0 +1,99 @@
+<%- include("../../partials/header-strategies") %>
+
+<!-- CONTENT -->
+<div class="mx-2 mx-lg-4">
+  <section>
+    <!-- error -->
+    <div id="error-alert" class="container d-none">
+      <div id="error-text" class="alert alert-danger mt-2" role="alert">
+        <span></span>
+      </div>
+    </div>
+    <!-- loading spinner -->
+    <div class="modal" id="loading-modal" tabindex="-1" role="dialog" aria-labelledby="loadingModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- delete modal -->
+    <div class="modal" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="loadingModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body p-4">
+            <div class="text-center">
+              <p>Are you sure you want to delete this strategy?</p>
+              <h5 id="strategy-name" class="mb-3"></h5>
+              <div class="mt-2">
+                <button type="button" class="btn-inverted mx-1" data-dismiss="modal">No</button>
+                <button id="confirm-delete" type="button" class="btn-neilit mx-1">I'm sure</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h2><%= __('Strategies') %></h2>
+      <div class="journal-box px-0">
+        <div id="index-strategies" class="journal-scroll">
+          <% if (strategies.length > 1) { %>
+            <% strategies.forEach((strategy, i) => { %>
+              <% if (strategy != 'None') { %>
+                <div class="strategy d-flex mx-3 p-2 mb-3">
+                  <div class="d-flex align-items-center flex-grow-1">
+                    <a href="strategies/<%= strategiesID[i] %>">
+                      <h3 class="mb-0 strategy-name"><%= strategy %></h3>
+                    </a>
+                  </div>
+                  <div class="justify-self-end strategy-actions">
+                    <a href="strategies/<%= strategiesID[i] %>/edit" class="btn-neilit mr-2">
+                      <img src="/imgs/icons/edit.svg" alt="edit strategy">
+                    </a>
+                    <a href="statistics" class="btn-neilit mr-2">
+                      <img src="/imgs/icons/goto-stats.svg" alt="go to statistics">
+                    </a>
+                    <button type="submit" class="btn-neilit strategy-delete" onclick="openDeleteStrategy(this)">
+                      <img src="/imgs/icons/delete-white.svg" alt="delete">
+                    </button>
+                  </div>
+                </div>
+              <% } %>
+            <% }); %>
+          <% } else { %>
+            <p class="text-center placeholder m-2">
+              <%= __('You have no strategies yet. Create a ') %><a href="settings"><%= __('strategy') %></a><%= __(' first and then come back to this page') %>.
+            </p>
+          <% } %>
+        </div>
+        <hr>
+        <div class="text-right mx-3">
+          <input type="text" class="mr-2 px-2" placeholder="<%= __('Search') %>..." onkeyup="searchStrategies(this)">
+          <span>
+            <input id="strategy-value" type="text" class="px-2" placeholder="<%= __('Strategy name') %>">
+            <button class="btn-neilit" onclick="addStrategy(this)"><%= __('Add') %></button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="text/javascript">
+  var username      = <%- JSON.stringify(currentUser.username) %>;
+  var isDarkMode = <%- JSON.stringify(currentUser.darkMode) %>;
+  var strategies    = <%- JSON.stringify(strategies) %>;
+  var strategiesID  = <%- JSON.stringify(strategiesID) %>;
+</script>
+
+<!-- <section> is inside partials -->
+</section>
+
+<%- include("../../partials/footer-strategies") %>

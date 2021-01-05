@@ -6,22 +6,14 @@ if (darkMode) {
 
 // stores a palette of colours
 var randomColors = [
-  '#63D471',
-  '#63A46C',
-  '#69FFF1',
-  '#628395',
-  '#78586F',
-  '#D55672',
-  '#00FFC5',
-  '#ADF5FF',
-  '#0075A2',
-  '#2F4B7C',
-  '#665191',
-  '#A05191',
-  '#D45087',
-  '#F95D6A',
-  '#FF7C43',
-  '#FFA600'
+  '#F94144',
+  '#F8961E',
+  '#F9844A',
+  '#F9C747',
+  '#90BE6D',
+  '#43AA8B',
+  '#4D908E',
+  '#277DA1'
 ]
 
 // gnerates a random color between 0 and the [max - 1]

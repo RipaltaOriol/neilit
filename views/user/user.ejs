@@ -53,27 +53,13 @@
           <!-- balance widget -->
           <div class="col-12 col-lg-4 px-0 mb-4">
             <div class="widget-neilit mr-1">
-              <div class="d-flex align-items-start pt-3 mx-2">
+              <div class="widget-sq-header d-flex align-items-start pt-3 mx-2">
                 <img src="/imgs/icons/balance.svg" class="mx-2 image-widget" alt="balance">
                 <h5 class="m-0"><%= __('Current Balance') %></h5>
               </div>
               <!-- note: uses pb-1 to compensate for the extra height given by the dropdown -->
-              <div class="my-4 d-flex flex-column align-items-center">
-                <h1 class="widget-data"><%= (dashboardData.currentAmount).toFixed(2) %> <%=dashboardData.base%></h1>
-                <% if (Number.isNaN(dashboardData.currentPercent)) { %>
-                  <div>
-                    <p class="pill pill-yellow font-16">N/A%</p>
-                  </div>
-                <% } else { %>
-                  <div>
-                    <% if (dashboardData.currentPercent >= 0) { %>
-                      <p class="pill pill-green font-16"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">
-                    <% } else { %>
-                      <p class="pill pill-red font-16"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2">
-                    <% } %>
-                      <%= dashboardData.currentPercent.toFixed(2) %>%</p>
-                  </div>
-                <% } %>
+              <div class="widget-sq-content my-4 d-flex flex-column justify-content-center align-items-center">
+                <h1 class="widget-data"><%= general.current_balance.toFixed(2) %> <%= base %></h1>
               </div>
               <hr class="mb-0">
               <div class="px-3 py-1">
@@ -88,7 +74,7 @@
           <!-- best trade widget -->
           <div class="col-12 col-lg-4 px-0 mb-4">
             <div class="widget-neilit mx-1">
-              <div class="d-flex justify-content-between align-items-start flex-wrap pt-3 mx-2">
+              <div class="widget-sq-header d-flex justify-content-between align-items-start flex-wrap pt-3 mx-2">
                 <span class="d-flex align-items-start">
                   <img src="/imgs/icons/star.svg" class="mx-2 image-widget" alt="best trade">
                   <h5 class="m-0 no-wrap"><%= __('Biggest Trade') %></h5>
@@ -113,11 +99,11 @@
                   </ul>
                 </div>
               </div>
-              <div class="my-4 d-flex flex-column align-items-center">
-                <h1 id="biggest-pair" class="widget-data"><%= dashboardData.biggestPair %></h1>
+              <div class="widget-sq-content my-4 d-flex flex-column justify-content-center align-items-center">
+                <h1 id="biggest-pair" class="widget-data"><%= asset.pair %></h1>
                 <div>
-                  <p id="biggest-percent" class="pill pill-yellow font-16">
-                    <%= dashboardData.biggestPercent.toFixed(2) %>%
+                  <p id="biggest-percent" class="pill pill-yellow font-16 mb-0">
+                    <%= asset.percent_change.toFixed(2) %>%
                   </p>
                 </div>
               </div>
@@ -134,7 +120,7 @@
           <!-- total entries widget -->
           <div class="col-12 col-lg-4 px-0 mb-4">
             <div class="widget-neilit ml-1">
-              <div class="d-flex justify-content-between align-items-start flex-wrap pt-3 mx-2">
+              <div class="widget-sq-header d-flex justify-content-between align-items-start flex-wrap pt-3 mx-2">
                 <span class="d-flex align-items-start">
                   <img src="/imgs/icons/folder.svg" class="mx-2 image-widget" alt="total entries">
                   <h5 class="m-0 no-wrap"><%= __('Total Entries') %></h5>
@@ -159,14 +145,10 @@
                   </ul>
                 </div>
               </div>
-              <div class="my-4 d-flex flex-column align-items-center">
-                <h1 id="total-entries" class="widget-data"><%= dashboardData.total %></h1>
+              <div class="widget-sq-content my-4 d-flex flex-column justify-content-center align-items-center">
+                <h1 id="total-entries" class="widget-data"><%= general.count %></h1>
                 <div>
-                <% if (isNaN(parseFloat(dashboardData.rate))) { %>
-                  <p id="win-rate" class="pill pill-yellow font-16">N/A% <%= __('wins') %></p>
-                <% } else { %>
-                  <p id="win-rate" class="pill pill-yellow font-16"><%= dashboardData.rate.toFixed(1) %>% <%= __('wins') %></p>
-                <% } %>
+                  <p id="win-rate" class="pill pill-yellow font-16 mb-0"><%= general.win_rate.toFixed(2) %>% <%= __('wins') %></p>
                 </div>
               </div>
               <hr class="mb-0">
@@ -234,17 +216,17 @@
                 <table id="open-positions" class="table table-hover table-borderless font-16 text-center mb-0">
                   <thead>
                     <tr>
-                      <th onclick="sortBy('assets')"><%= __('Asset') %></th>
-                      <th onclick="sortBy('lots')"><%= __('Lots') %></th>
-                      <th onclick="sortBy('direction')"><%= __('Direction') %></th>
-                      <th><%= __('Entry date') %></th>
+                      <th onclick="sortBy('assets', this)"><%= __('Asset') %></th>
+                      <th onclick="sortBy('lots', this)"><%= __('Lots') %></th>
+                      <th onclick="sortBy('direction', this)"><%= __('Direction') %></th>
+                      <th onclick="sortBy('date', this)"><%= __('Entry date') %></th>
                       <th><%= __('Entry price') %></th>
                       <th class="d-flex justify-content-center"><%= __('Current price') %>
                         <div class="ml-2 text-right">
                           <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="top" title="<%= __('The current API we use to retrieve the prices updates once a day, so for more accuracy we recommend you check your broker. Moreover, open P/L are calculates with this price.') %>">
                         </div>
                       </th>
-                      <th onclick="sortBy('pnl')"><%= __('Open result') %></th>
+                      <th onclick="sortBy('pnl', this)"><%= __('Open result') %></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -271,7 +253,7 @@
                           </div>
                         </td>
                         <!-- Entry date -->
-                        <td><%= dashboardOpen[ops].entry_dt.toLocaleDateString(currentUser.language, options); %></td>
+                        <td class="<%= new Date(dashboardOpen[ops].entry_dt).getTime() %>"><%= dashboardOpen[ops].entry_dt.toLocaleDateString(currentUser.language, options); %></td>
                         <!-- Entry price -->
                         <td><%= dashboardOpen[ops].entry_price %></td>
                         <!-- Current price -->
@@ -348,7 +330,7 @@
               <!-- objective -->
               <div class="d-flex mb-3">
                 <div class="no-wrap mr-2">
-                  <%= __('Account to') %> <span id="d-balance">50000</span> <%= dashboardData.base %>
+                  <%= __('Account to') %> <span id="d-balance">50000</span> <%= base %>
                 </div>
                 <div class="progress w-100">
                   <div id="balance" class="progress-bar progress-bar-orange" role="progressbar"></div>
@@ -392,9 +374,8 @@
   var username = <%- JSON.stringify(currentUser.username); %>
   var language = <%- JSON.stringify(currentUser.language); %>
   var isDarkMode = <%- JSON.stringify(currentUser.darkMode); %>
-  var outcomeMonthAmount = <%- JSON.stringify(outcomeMonthAmount); %>
-  var outcomeMonthTotal = <%- JSON.stringify(outcomeMonthTotal); %>
-  var balance = <%- JSON.stringify(dashboardData.currentAmount); %>
+  var dataMonthGraph  = <%- JSON.stringify(monthGraph) %>;
+  var balance = <%- JSON.stringify(general.current_balance); %>
   var openOps = <%- JSON.stringify(dashboardOpen); %>
   var monthCount = <%- JSON.stringify(monthCount); %>
   var weekPer = <%- JSON.stringify(weekPer); %>

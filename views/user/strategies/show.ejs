@@ -1,0 +1,91 @@
+<%- include("../../partials/header-strategies") %>
+
+<!-- CONTENT -->
+<div class="container mx-auto mb-5">
+  <div class="journal-box px-0">
+    <h2 class="mx-3"><%= strategy.strategy %></h2>
+    <p class="mx-3 strategy-description">
+      <% if (doc != undefined) { %>
+        <%- doc.description %>
+      <% } %>
+    </p>
+    <br>
+    <% if (rules.length > 0) { %>
+      <div class="mx-3">
+        <h3><%= __('Rules') %></h3>
+        <ol>
+          <% rules.forEach((rule) => { %>
+            <li>
+              <p><%- rule.rule %></p>
+            </li>
+          <% }) %>
+        </ol>
+      </div>
+      <br>
+    <% } %>
+    <% if (exits.length > 0) { %>
+      <div class="mx-3">
+        <h3><%= __('Exits') %></h3>
+        <div class="table-scroll">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th><%= __('Name') %></th>
+                <th class="text-center"><%= __('Type') %></th>
+                <th class="text-center"><%= __('Order Type') %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% exits.forEach((exit) => { %>
+                <tr>
+                  <td class="title"><%= exit.name %></td>
+                  <td class="option text-center"><%= exit.type %></td>
+                  <td class="option text-center"><%= exit.order_type %></td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="p-0">
+                    <div class="px-2">
+                      <p class="my-2"><%- exit.description %></p>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br>
+    <% } %>
+    <% if (observations.length > 0) { %>
+      <div class="mx-3">
+        <h3><%= __('Observations') %></h3>
+        <% observations.forEach((observation) => { %>
+          <div class="observation p-2 px-3 mb-3">
+            <%- observation.observation %>
+          </div>
+        <% }) %>
+      </div>
+      <br>
+    <% } %>
+    <% if (observations.length == 0 && exits.length == 0 && rules.length == 0
+          && doc == undefined) { %>
+      <p class="text-center placeholder mx-2">
+        This strategy is currently empty. Go to edit its content to add your personalised content.
+      </p>
+      <br>
+    <% } %>
+    <div class="text-right mx-3">
+      <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Cancel') %></a>
+      <a href="/<%= currentUser.username %>/strategies/<%= strategy.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var isDarkMode = <%- JSON.stringify(currentUser.darkMode); %>
+</script>
+
+<!-- <section> is inside partials -->
+</section>
+
+<%- include("../../partials/footer-strategies") %>

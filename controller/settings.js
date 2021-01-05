@@ -43,7 +43,7 @@ module.exports.newStrategy = (req, res) => {
     }
     req.session.strategyNames.push(req.body.strategy);
     req.session.strategyIds.push(done.insertId)
-    return res.json({response: 'success'})
+    return res.json({response: 'success', id: done.insertId})
   })
 }
 

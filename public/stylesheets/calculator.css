@@ -1,3 +1,9 @@
+/* || Utility */
+a { }
+  a:hover {
+    text-decoration: none;
+  }
+
 /* || General styles */
 button:disabled {
   opacity: .75;

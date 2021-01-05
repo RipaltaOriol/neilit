@@ -16,7 +16,8 @@ let express         = require('express'),
     db              = require('./models/dbConfig'),
     session         = require('express-session'),
     RedisStore      = require('connect-redis')(session),
-    redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
+    redisClient     = redis.createClient();
+    // redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
 
 
 // Routes Dependencies
@@ -30,6 +31,7 @@ let indexRoutes       = require('./routes/index'),
     taRoutes          = require('./routes/tas'),
     backtestRoutes    = require('./routes/backtest'),
     planRoutes        = require('./routes/plan'),
+    strategiesRoutes  = require('./routes/strategies'),
     statisticsRoutes  = require('./routes/statistics'),
     calculatorRoutes  = require('./routes/calculator'),
     i18n              = require('./middleware/i18n.js');
@@ -52,7 +54,7 @@ const sessionConfig = {
   saveUninitialized: false,
   rolling: true,
   cookie: {
-     secure: true, // production only (localhost is not https)
+     // secure: true, // production only (localhost is not https)
      httpOnly: true,
      maxAge: 12 * 30 * 24 * 60 * 60 * 1000
   }
@@ -158,6 +160,7 @@ app.use("/:profile/journal/ta", taRoutes);
 app.use("/:profile/journal/backtest", backtestRoutes);
 app.use("/:profile/statistics", statisticsRoutes);
 app.use("/:profile/plan", planRoutes);
+app.use("/:profile/strategies", strategiesRoutes);
 app.use("/:profile/calculator", calculatorRoutes);
 
 // page not found || 404
