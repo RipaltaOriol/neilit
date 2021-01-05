@@ -56,9 +56,10 @@ const sessionConfig = {
   cookie: {
      // secure: true, // production only (localhost is not https)
      httpOnly: true,
-     maxAge: 12 * 30 * 24 * 60 * 60 * 1000
+     maxAge: 3 * 30 * 24 * 60 * 60 * 1000
   }
 }
+console.log(sessionConfig);
 app.use(session(sessionConfig))
 app.use(passport.initialize());
 app.use(passport.session());
