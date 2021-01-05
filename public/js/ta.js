@@ -304,13 +304,11 @@ function loadImage(id) {
 }
 
 // Allows for sorting and draggind elements in the TA
-$('#ta-content').on('mouseup', () => {
-  $("#ta-content").sortable({
-      axis: 'y',
-      cursor: 'move',
-      containment: ".ta-element",
-      cancel: 'input, select, [contenteditable]'
-  })
+$("#ta-content").sortable({
+    axis: 'y',
+    cursor: 'move',
+    containment: "#ta-content",
+    cancel: 'input, select, .drop, [contenteditable]'
 })
 
 // Deletes the corresponding elmenet in the TA
