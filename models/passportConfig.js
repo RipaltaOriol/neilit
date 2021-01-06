@@ -129,9 +129,9 @@ module.exports = function(passport) {
         if (!result) {
           return done(null, false, req.flash("error", "Oops! Wrong password."))
         }
-        logger.error('Successful logging')
         // Successful login
         else {
+          logger.error('Successful logging')
           rows[0].password = null;
           return done(null, rows[0]);
         }
