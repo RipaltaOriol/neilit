@@ -49,8 +49,9 @@ const sessionConfig = {
   name: 'session',
   store: new RedisStore({client: redisClient}),
   secret: process.env.SESSION_PASS,
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
+  proxy: true
   rolling: true,
   cookie: {
      secure: true, // production only (localhost is not https)

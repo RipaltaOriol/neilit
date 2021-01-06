@@ -130,7 +130,6 @@ module.exports = function(passport) {
         }
         // Successful login
         else {
-          logger.error('Successful logging')
           rows[0].password = null;
           return done(null, rows[0]);
         }
