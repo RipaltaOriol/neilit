@@ -11,6 +11,8 @@ const query = util.promisify(db.query).bind(db);
 // MIDDLEWARE METHODS
 var middlewareObj = { };
 
+let winston = require('winston')
+
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
