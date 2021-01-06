@@ -51,7 +51,7 @@ const sessionConfig = {
   secret: process.env.SESSION_PASS,
   resave: true,
   saveUninitialized: true,
-  proxy: true
+  proxy: true,
   rolling: true,
   cookie: {
      secure: true, // production only (localhost is not https)
