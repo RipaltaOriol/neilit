@@ -30,9 +30,9 @@ const logger = winston.createLogger({
 
 // AUTHENTICATION MIDDLEWARE
 middlewareObj.isLoggedIn = function (req, res, next) {
-  logger.error(req)
   logger.error('Now is in the middleware')
-  if(req.isAuthenticated()) {
+  logger.error('Equivalen to isAuthenticated() [req.session.passport.user != ] ' + req.session.passport.user)
+  if (req.isAuthenticated()) {
     logger.error('It is authenticated')
     if (req.user.username === req.params.profile) {
       logger.error('It is authenticated and profile does match username')
