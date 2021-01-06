@@ -1,1 +1,2 @@
 Something
+{"message":"Testing that logger works","level":"error","service":"user-service"}

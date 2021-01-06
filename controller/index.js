@@ -37,7 +37,6 @@ const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVc
 const query = util.promisify(db.query).bind(db);
 
 module.exports.renderHome = (req, res) => {
-  logger.error('Testing that logger works')
   res.render("home");
 }
 
@@ -70,7 +69,6 @@ module.exports.changeLanguage = (req, res) => {
 module.exports.renderLogin = (req, res) => {
   // checks whether user data exists for direct login
   if (!req.user) {
-    logger.error('Should not trigger this, but it\' line 55 of index.js (controller)')
     res.render("login");
   } else {
     if (req.isAuthenticated()) {
@@ -81,6 +79,7 @@ module.exports.renderLogin = (req, res) => {
 
 module.exports.logicLogin = async (req, res) => {
   logger.error('It passes the middleware, but it fails here')
+  logger.error(req.user.id)
   let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
   req.session.strategyNames = []
   req.session.strategyIds = []
