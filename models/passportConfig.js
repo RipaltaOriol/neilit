@@ -41,7 +41,6 @@ module.exports = function(passport) {
   passport.deserializeUser(function(id, done) {
     db.query('SELECT * FROM users_deserialize WHERE id = ?', id, (err, rows) => {
       if (err)  {
-        logger.error('Fails to deserialize')
         throw err
       }
       done(err, rows[0]);
