@@ -19,6 +19,7 @@ const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVc
 const query = util.promisify(db.query).bind(db);
 
 module.exports.renderHome = (req, res) => {
+  console.log('someone went to the home');
   res.render("home");
 }
 

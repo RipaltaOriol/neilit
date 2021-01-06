@@ -1,0 +1,62 @@
+<%- include("./partials/header-home") %>
+
+<div class="bg-orange py-1">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <h1 class="text-light text-center mb-0">NEILIT</h1>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-5 mt-5 text-center">
+      <h2 class="orange"><%= __('Select Plan') %></h2>
+      <p class="border-bottom pb-2 mb-3"><%= __('Select the plan that better suits your needs') %></p>
+    </div>
+  </div>
+  <div class="row justify-content-center free">
+    <div class="col-4 mx-3 plan p-3 text-center">
+      <h3 class="mb-0"><%= __('Free') %></h3>
+      <span class="d-block"><%= __('Give Neilit a go') %></span>
+      <span class="d-block my-2">
+        <span class="pricing">0</span>
+        <span>€ / month</span>
+      </span>
+      <ul class="text-left pl-0 mx-3 mb-4">
+        <li><%= __('Entries') %><span class="float-right">150</span></li>
+        <li><%= __('Comments') %><span class="float-right"><%= __('Unlimited') %></span></li>
+        <li><%= __('Statistics') %><span class="float-right"><%= __('Default') %></span></li>
+        <li><%= __('Technical Analysis') %><span class="float-right"><%= __('Unlimited') %></span></li>
+        <li><%= __('Elements on TA') %><span class="float-right">10</span></li>
+        <li><%= __('Backtesting addons') %><span class="float-right">1</span></li>
+      </ul>
+      <form action="/signup/select-plan" method="POST">
+        <input type="text" name="priceId" value="<%= priceList[0] %>" class="d-none">
+        <button class="btn-neilit" type="submit" name="button"><%= __('Select') %></button>
+      </form>
+    </div>
+    <div class="col-4 mx-3 plan p-3 text-center payed">
+      <h3 class="mb-0"><%= __('Legacy') %></h3>
+      <span class="d-block"><%= __('For serious traders') %></span>
+      <span class="d-block my-2">
+        <span class="pricing">4,99</span>
+        <span>€ / month</span>
+      </span>
+      <ul class="text-left pl-0 mx-3 mb-4">
+        <li><%= __('Entries') %><span class="float-right"><%= __('Unlimited') %></span></li>
+        <li><%= __('Comments') %><span class="float-right"><%= __('Unlimited') %></span></li>
+        <li><%= __('Statistics') %><span class="float-right"><%= __('Custom Periods') %></span></li>
+        <li><%= __('Technical Analysis') %><span class="float-right"><%= __('Unlimited') %></span></li>
+        <li><%= __('Elements on TA') %><span class="float-right"><%= __('Unlimited') %></span></li>
+        <li><%= __('Backtesting addons') %><span class="float-right">6</span></li>
+      </ul>
+      <form action="/signup/select-plan" method="POST">
+        <input type="text" name="priceId" value="<%= priceList[1] %>" class="d-none">
+        <button class="btn-inverted" type="submit" name="button"><%= __('Select') %></button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("./partials/footer-home") %>

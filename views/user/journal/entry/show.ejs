@@ -1,0 +1,149 @@
+<%- include("../../../partials/header-log") %>
+
+  <!-- CONTENT -->
+  <div class="container mx-auto mb-5">
+    <div class="journal-box px-0">
+      <form action="/<%= currentUser.username %>/journal/entry/<%= entryInfo.id %>?_method=DELETE" method="POST">
+        <h3 class="mx-3"><%= entryInfo.pair %> - <%= entryInfo.entry_dt.toLocaleDateString(currentUser.language, options) %></h3>
+        <hr>
+        <div class="row mx-3 form-fields">
+          <div class="col-12 col-xl-6 mb-3">
+            <!-- GENERAL ENTRY INFORMATION -->
+            <h5><%= __('General Information') %></h5>
+            <div>
+              <label><%= __('Asset') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.pair %>" readonly>
+            </div>
+            <span>
+              <label><%= __('Category') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.category %>" readonly>
+            </span>
+            <div>
+              <label><%= __('Direction') %>:</label>
+              <% if (entryInfo.direction == 'long') { %>
+                <input type="text" class="form-show orange px-2" value="<%= __('Long') %>" readonly>
+              <% } else { %>
+                <input type="text" class="form-show orange px-2" value="<%= __('Short') %>" readonly>
+              <% } %>
+            </div>
+            <div>
+              <label><%= __('Entry date') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.entry_dt.toLocaleDateString(currentUser.language, options) %>" readonly>
+            </div>
+            <div>
+              <label><%= __('Entry time') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.entry_dt.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }) %>" readonly>
+            </div>
+          </div>
+          <!-- SPECIFIC ENTRY INFORMATION -->
+          <div class="col-12 col-xl-6 mb-3">
+            <h5><%= __('Specific Information') %></h5>
+            <div>
+              <label><%= __('Size') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.size %>" readonly>
+            </div>
+            <div>
+              <label><%= __('Strategy') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.strategy %>" readonly>
+            </div>
+            <div>
+              <label><%= __('Timeframe') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.timeframe %>" readonly>
+            </div>
+            <div>
+              <label><%= __('Entry price') %>:</label>
+              <input type="text" class="form-show orange px-2" value="<%= entryInfo.entry_price %>" readonly>
+            </div>
+            <% if (entryInfo.stop_loss != null) { %>
+              <div>
+                <label><%= __('Stop Loss') %></label>
+                <input type="text" class="form-show orange px-2" value="<%= entryInfo.stop_loss %>" readonly>
+              </div>
+            <% } %>
+            <% if (entryInfo.take_profit != null) { %>
+              <div>
+                <label><%= __('Take Profit') %></label>
+                <input type="text" class="form-show orange px-2" value="<%= entryInfo.take_profit %>" readonly>
+              </div>
+            <% } %>
+          </div>
+        </div>
+        <% if (entryInfo.status != 0 && entryInfo.exit_price != null) { %>
+          <div class="row mx-3 form-fields">
+            <div class="col-12 col-xl-6 mb-3">
+              <h5><%= __('Results') %></h5>
+              <div>
+                <label><%= __('Exit price') %>:</label>
+                <input type="text" class="form-show orange px-2" value="<%= entryInfo.exit_price %>" readonly>
+              </div>
+              <% if (entryInfo.exit_dt != null) { %>
+                <div>
+                  <label><%= __('Exit date') %>:</label>
+                  <input type="text" class="form-show orange px-2" value="<%= entryInfo.exit_dt.toLocaleDateString(currentUser.language, options) %>" readonly>
+                </div>
+              <% } %>
+              <% if (currentUser.showProfits) { %>
+                <div>
+                  <label><%= __('Profits') %>:</label>
+                  <input type="text" class="form-show orange px-2" value="<%= entryInfo.profits %> <%= __(currency) %>" readonly>
+                </div>
+              <% } %>
+              <div>
+                <label><%= __('Fees') %>:</label>
+                <input type="text" class="form-show orange px-2" value="<%= entryInfo.fees %> <%= __(currency) %>" readonly>
+              </div>
+              <div>
+                <label><%= __('Result') %>:</label>
+                <input type="text" class="form-show orange px-2" value="<%= __(entryInfo.result) %>" readonly>
+              </div>
+            </div>
+          </div>
+        <% } %>
+        <br>
+        <h3 class="mx-3"><%= __('Comments') %></h3>
+        <hr>
+        <div class="mx-3">
+          <% if (entryInfo.comment) { %>
+            <div><%- entryInfo.comment %></div>
+          <% } %>
+        </div>
+        <br>
+        <h3 class="mx-3"><%= __('Technical Analysis') %></h3>
+        <hr>
+        <span class="mx-3">
+          <label><strong><%= __('Go to the linked technical analysis') %>:</strong></label>
+          <% if (entryInfo.ta_id) { %>
+            <a href="/<%= currentUser.username %>/journal/ta/<%= entryInfo.ta_id %>" class="text-decoration-none">
+              <span class="bg-hover orange px-2"><%= __('Click') %></span>
+            </a>
+          <% } else { %>
+            <span class="bg-hover orange px-2"><%= __('None') %></span>
+          <% } %>
+        </span>
+        <br>
+        <br>
+        <div class="d-flex justify-content-end mx-3">
+          <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Cancel') %></a>
+          <a href="/<%= currentUser.username %>/journal/entry/<%= entryInfo.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
+          <button type="submit" class="btn-neilit ml-2"><%= __('Delete') %></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script type="text/javascript">
+  var language = <%- JSON.stringify(currentUser.language) %>;
+</script>
+
+<!-- <section> is inside partials -->
+</section>
+
+<!-- JQUERY -->
+<script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/bootstrap.min.js"></script>
+<!-- LOCAL SCRIPTS -->
+<script type="text/javascript" src="/js/entry.js"></script>
+
+<%- include("../../../partials/footer-log") %>

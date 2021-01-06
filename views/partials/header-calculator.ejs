@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+  <html lang="en" <% if (currentUser.darkMode) { %> class="dark-mode" <% } %> >
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="icon" type="image/x-icon" href="/imgs/favicon.ico">
+
+      <!-- BOOTSTRAP -->
+      <link rel="stylesheet" href="/utilities/bootstrap/css/bootstrap.min.css">
+      <!-- CSS -->
+      <link rel="stylesheet" href="/stylesheets/app.css">
+      <link rel="stylesheet" href="/stylesheets/calculator.css">
+
+      <title>Neilit || <%= currentUser.username %></title>
+    </head>
+    <body>
+      <!-- TOP FIXED BAR -->
+      <div id="top-bar" class="fixed-top d-flex justify-content-between px-4">
+        <a id="open-menu" class="my-auto" href="#!">
+          <img src="/imgs/icons/menu.svg">
+        </a>
+        <a href="/<%= currentUser.username %>/settings" class="my-auto">
+          <img src="/imgs/icons/settings.svg" alt="settings" class="icon-settings">
+        </a>
+      </div>
+      <div id="blur-bar" class="fixed-top"></div>
+      <!-- MENU BAR -->
+      <div id="menu-neilit">
+        <div id="menu-header" class="d-flex px-3">
+            <h1>NEILIT</h1>
+            <a id="close-menu" class="ml-auto" href="#!">
+              <img src="/imgs/icons/menu-open.svg" alt="toggle menu">
+            </a>
+        </div>
+        <div id="menu-links" class="d-flex flex-column">
+          <a href="/<%= currentUser.username %>" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/home.svg" alt="home">
+            <span class="pl-2"><%= __('Home') %></span>
+          </a>
+          <a href="/<%= currentUser.username %>/statistics" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/donut.svg" alt="statistics">
+            <span class="pl-2"><%= __('Statistics') %></span>
+          </a>
+          <a href="/<%= currentUser.username %>/journal/entry" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/entry.svg" alt="entries">
+            <span class="pl-2"><%= __('Entries') %></span>
+          </a>
+          <a href="/<%= currentUser.username %>/journal/ta" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/ta.svg" alt="technical analysis">
+            <span class="pl-2"><%= __('TA') %></span>
+          </a>
+          <a href="/<%= currentUser.username %>/journal/backtest" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/backtest.svg" alt="journal">
+            <span class="pl-2"><%= __('Backtest') %></span>
+          </a>
+          <a href="/<%= currentUser.username %>/journal/comment" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/comment.svg" alt="comments">
+            <span class="pl-2"><%= __('Comments') %></span>
+          </a>
+          <a href="/<%= currentUser.username %>/strategies" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/strategies.svg" alt="strategies">
+            <span class="pl-2"><%= __('Strategies') %></span>
+          </a>
+          <a href="/<%= currentUser.username %>/psychology" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/psychology.svg" alt="psychology tips">
+            <span class="pl-2"><%= __('Psychology Tips') %></span>
+          </a>
+          <a href="/<%= currentUser.username %>/calculator" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/calculator.svg" alt="calculator">
+            <span class="pl-2"><%= __('Calculator') %></span>
+          </a>
+        </div>
+        <!-- <div class="mt-auto text-center">
+          <button class="btn-upgrade w-75">
+            <strong><%= __('Upgrade to Legacy') %>!</strong>
+          </button>
+        </div> -->
+      </div>
+
+      <section id="content">
+
+        <!-- AJAX flash messages -->
+        <div id="flash-alert" class="container">
+          <div id="ajax-error" class="alert alert-danger mt-2 d-none" role="alert">
+          </div>
+        </div>
+
+        <!-- flash messages -->
+        <% if (error && error.length > 0) { %>
+          <div id="flash-alert" class="container">
+            <div class="alert alert-danger mt-2" role="alert">
+              <%= error %>
+            </div>
+          </div>
+        <% } %>
+        <% if (success && success.length > 0) { %>
+          <div id="flash-alert" class="container">
+            <div class="alert alert-success mt-2" role="alert">
+              <%= success %>
+            </div>
+          </div>
+        <% } %>

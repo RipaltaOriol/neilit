@@ -1,0 +1,41 @@
+<%- include("./partials/header-stripe") %>
+<div class="bg-orange py-1">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <h1 class="text-light text-center mb-0">NEILIT</h1>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-5 mt-5 text-center">
+      <form id="subscription-form">
+        <h2 class="orange"><%= __('Payment Portal') %></h2>
+        <p class="border-bottom pb-2 mb-3"></p>
+        <input class="mb-3 pl-2" id="name" type="text" placeholder="<%= __('Name on card') %>">
+        <div id="card-element" class="payment-element px-2 py-2 mb-3">
+          <!-- Elements will create input elements here -->
+        </div>
+
+        <!-- We'll put the error messages in this element -->
+        <div id="card-errors" role="alert" class="card-error mb-3"></div>
+        <div class="mt-4">
+          <button id="button-pay" type="submit" class="btn-neilit">
+            <div id="loading" class="spinner-border spinner d-none" role="status">
+              <span class="sr-only"></span>
+            </div>
+            <span id="button-text" class="d-none"><%= __('Accept') %></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var customerId = <%- JSON.stringify(customerId) %>;
+  var priceId = <%- JSON.stringify(priceId) %>;
+</script>
+
+<%- include("./partials/footer-stripe") %>
