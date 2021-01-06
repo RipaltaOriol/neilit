@@ -10,7 +10,24 @@ const saltRounds  = 10;
 let plans             = require('../models/plans');
 let localeTimeframes  = require("../models/timeframes");
 let db                = require('../models/dbConfig');
-let logger            = require('../models/loggerConfig');
+// let logger            = require('../models/loggerConfig');
+
+let winston = require('winston')
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  defaultMeta: { service: 'user-service' },
+  transports: [
+    //
+    // - Write all logs with level `error` and below to `error.log`
+    // - Write all logs with level `info` and below to `combined.log`
+    //
+    new winston.transports.File({ filename: './error.log', level: 'error' }),
+    new winston.transports.File({ filename: './combined.log' }),
+    new winston.transports.Console(),
+  ],
+});
 
 // COMBAK: set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
