@@ -2,7 +2,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt        = require('bcrypt');
 const currencies    = require(__dirname + '/currencies.js')
-const logger        = require(__dirname + '/loggerConfig.js')
 
 const saltRounds     = 10;
 
