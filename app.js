@@ -9,7 +9,6 @@ let express         = require('express'),
     bodyParser      = require('body-parser'),
     cookieParser    = require('cookie-parser'),
     redis           = require('redis'),
-    winston         = require('winston'),
     flash           = require('connect-flash'),
     passport        = require('passport'),
     passportConfig  = require('./models/passportConfig'),
@@ -76,20 +75,6 @@ app.use((req, res, next) => {
   res.locals.success      = req.flash("success")
   next();
 })
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  defaultMeta: { service: 'user-service' },
-  transports: [
-    //
-    // - Write all logs with level `error` and below to `error.log`
-    // - Write all logs with level `info` and below to `combined.log`
-    //
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' }),
-  ],
-});
 
 // COMBAK: set your secret key. Remember to switch to your live secret key in production!
 const stripe = require('stripe')(process.env.STRIPE_KEY);

@@ -1,7 +1,9 @@
 // Load necessary requirements and connenctions
-const LocalStrategy  = require('passport-local').Strategy;
-const bcrypt         = require('bcrypt');
-const currencies     = require(__dirname + '/currencies.js')
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt        = require('bcrypt');
+const currencies    = require(__dirname + '/currencies.js')
+const logger        = require(__dirname + '/loggerConfig.js')
+
 const saltRounds     = 10;
 
 // Connect to DB
@@ -15,13 +17,17 @@ module.exports = function(passport) {
   // Passport Session Setup
   // Serialize the user for the session
   passport.serializeUser(function(user, done) {
+    logger.error('Fails to serialize')
     done(null, user.id);
   });
 
   // Deserialize the user for the session
   passport.deserializeUser(function(id, done) {
     db.query('SELECT * FROM users_deserialize WHERE id = ?', id, (err, rows) => {
-      if (err) throw err;
+      if (err)  {
+        logger.error('Fails to deserialize')
+        throw err
+      }
       done(err, rows[0]);
     });
   });

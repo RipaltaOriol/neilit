@@ -10,6 +10,7 @@ const saltRounds  = 10;
 let plans             = require('../models/plans');
 let localeTimeframes  = require("../models/timeframes");
 let db                = require('../models/dbConfig');
+let logger            = require('../models/loggerConfig');
 
 // COMBAK: set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -19,7 +20,6 @@ const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVc
 const query = util.promisify(db.query).bind(db);
 
 module.exports.renderHome = (req, res) => {
-  console.log('someone went to the home');
   res.render("home");
 }
 
@@ -52,6 +52,7 @@ module.exports.changeLanguage = (req, res) => {
 module.exports.renderLogin = (req, res) => {
   // checks whether user data exists for direct login
   if (!req.user) {
+    logger.error('Should not trigger this, but it\' line 55 of index.js (controller)')
     res.render("login");
   } else {
     if (req.isAuthenticated()) {
@@ -61,6 +62,7 @@ module.exports.renderLogin = (req, res) => {
 }
 
 module.exports.logicLogin = async (req, res) => {
+  logger.error('It passes the middleware, but it fails here')
   let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
   req.session.strategyNames = []
   req.session.strategyIds = []
