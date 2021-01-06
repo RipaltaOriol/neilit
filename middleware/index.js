@@ -25,7 +25,7 @@ middlewareObj.isLoggedIn = function (req, res, next) {
                 req.session.strategyIds.push(straegy.id);
               });
             })
-            setTimeout(yourFunction, 60 * 60 * 1000);
+            setTimeout(reloadStrategies, 60 * 60 * 1000);
         }
         reloadStrategies();
       return next();
