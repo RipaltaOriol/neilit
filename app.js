@@ -9,6 +9,7 @@ let express         = require('express'),
     bodyParser      = require('body-parser'),
     cookieParser    = require('cookie-parser'),
     redis           = require('redis'),
+    winston         = require('winston'),
     flash           = require('connect-flash'),
     passport        = require('passport'),
     passportConfig  = require('./models/passportConfig'),
@@ -63,6 +64,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 app.use(i18n);
+
+winston.log('info', '------Hello log file!-------', {failure: 'some-value'})
 
 // MIDDLEWARE to have USER INFORMATION on all routes
 app.use((req, res, next) => {
