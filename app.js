@@ -9,15 +9,14 @@ let express         = require('express'),
     bodyParser      = require('body-parser'),
     cookieParser    = require('cookie-parser'),
     redis           = require('redis'),
-    winston         = require('winston'),
     flash           = require('connect-flash'),
     passport        = require('passport'),
     passportConfig  = require('./models/passportConfig'),
     db              = require('./models/dbConfig'),
     session         = require('express-session'),
     RedisStore      = require('connect-redis')(session),
-    // redisClient     = redis.createClient();
-    redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
+    redisClient     = redis.createClient();
+    // redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
 
 
 // Routes Dependencies
@@ -54,7 +53,7 @@ const sessionConfig = {
   saveUninitialized: false,
   rolling: true,
   cookie: {
-     secure: true, // production only (localhost is not https)
+     // secure: true, // production only (localhost is not https)
      httpOnly: true,
      maxAge: 3 * 30 * 24 * 60 * 60 * 1000
   }
@@ -64,8 +63,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 app.use(i18n);
-
-winston.log('info', '------Hello log file!-------', {failure: 'some-value'})
 
 // MIDDLEWARE to have USER INFORMATION on all routes
 app.use((req, res, next) => {
