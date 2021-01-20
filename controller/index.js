@@ -24,8 +24,7 @@ const logger = winston.createLogger({
     // - Write all logs with level `info` and below to `combined.log`
     //
     new winston.transports.File({ filename: './error.log', level: 'error' }),
-    new winston.transports.File({ filename: './combined.log' }),
-    new winston.transports.Console(),
+    new winston.transports.File({ filename: './combined.log' })
   ],
 });
 
@@ -37,7 +36,6 @@ const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVc
 const query = util.promisify(db.query).bind(db);
 
 module.exports.renderHome = (req, res) => {
-  logger.info('checking it works')
   res.render("home");
 }
 

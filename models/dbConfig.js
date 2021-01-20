@@ -5,7 +5,7 @@ let mysql = require('mysql');
 var connection = mysql.createConnection({
   host    : 'db-production-neilit-1015-do-user-8160676-0.b.db.ondigitalocean.com',
   user    : 'doadmin',
-  password: 'nkuvuinnuvg3zvij',
+  password: process.env.DB_PASS,
   port    : 25060,
   database: 'defaultdb',
   multipleStatements: true
