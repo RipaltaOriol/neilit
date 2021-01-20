@@ -3,6 +3,8 @@ const util = require('util');
 
 // global variables
 let pairs             = require('../models/pairs');
+let forexPairs        = require('../models/generateForex');
+let cryptoPairs       = require('../models/generateCrypto');
 let currencies        = require('../models/currencies');
 let localeTimeframes  = require('../models/timeframes');
 let db                = require('../models/dbConfig');
@@ -160,6 +162,86 @@ module.exports.changeMode = (req, res) => {
       return res.redirect('/' + req.user.username);
     }
     res.end();
+  })
+}
+
+module.exports.toggleAssets = (req, res) => {
+  (async () => {
+    try {
+      switch (req.body.type) {
+        case 'Forex':
+          var toggleForex = await query(`UPDATE users SET has_forex = ? WHERE id = ?`, [req.body.mode, req.user.id])
+          if (Number(req.body.mode)) {
+            let insertForexDB = await forexPairs.getForexPairs(req.user.id)
+            var addForex = await query(`INSERT INTO pairs(pair, category, has_rate, user_id, is_custom) VALUES ?`, [insertForexDB])
+          } else {
+            var removeForex = await query(`DELETE FROM pairs WHERE is_custom = 0 AND category = 'Forex' AND user_id = ?`, req.user.id)
+          }
+          break;
+        case 'Crypto':
+          var toggleCrypto = await query(`UPDATE users SET has_crypto = ? WHERE id = ?`, [req.body.mode, req.user.id])
+          if (Number(req.body.mode)) {
+            let insertCryptoDB = await cryptoPairs.getCryptoPairs(req.user.id)
+            var addCrypto = await query(`INSERT INTO pairs(pair, category, has_rate, user_id, is_custom) VALUES ?`, [insertCryptoDB])
+          } else {
+            var removeCrypto = await query(`DELETE FROM pairs WHERE is_custom = 0 AND category = 'Crypto' AND user_id = ?`, req.user.id)
+          }
+          break;
+      }
+      let getUserAssets = await query("SELECT id, pair, category, has_rate FROM pairs WHERE user_id = ?", req.user.id)
+      req.session.assets = { }
+      getUserAssets.forEach((asset) => {
+        req.session.assets[asset.pair] = {
+          id: asset.id,
+          category: asset.category,
+          rate: asset.has_rate
+        }
+      })
+    } catch (e) {
+      console.log(e);
+    } finally {
+      res.end();
+    }
+  })()
+}
+
+module.exports.addAsset = (req, res) => {
+  var newAsset = {
+    pair: req.body.pair,
+    category: req.body.category,
+    has_rate: 0,
+    user_id: req.user.id,
+    is_custom: 1
+  }
+  db.query('INSERT INTO pairs SET ?', newAsset, (err, result) => {
+    if (err) {
+      console.log(err);
+      if (err.code === 'ER_DUP_ENTRY') {
+        // COMBAK: log error
+        return res.json(
+          {
+            response: 'error',
+            message: res.__('You cannot add an asset twice.')
+          }
+        )
+      }
+    }
+    req.session.assets[req.body.pair] = {
+      id: result.insertId,
+      category: req.body.category,
+      rate: 0
+    }
+    return res.json({ response: 'success' })
+  })
+}
+
+module.exports.deleteAsset = (req, res) => {
+  db.query('DELETE FROM pairs WHERE pair = ? AND user_id = ?', [req.body.asset, req.user.id], (err) => {
+    if (err) {
+      console.log(err);
+    }
+    delete req.session.assets[req.body.asset]
+    res.end()
   })
 }
 

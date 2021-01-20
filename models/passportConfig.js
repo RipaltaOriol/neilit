@@ -32,8 +32,8 @@ module.exports = function(passport) {
   // Passport Session Setup
   // Serialize the user for the session
   passport.serializeUser(function(user, done) {
-    logger.error('user: ' + user)
-    logger.error('Fails to serialize')
+    // logger.error('user: ' + user)
+    // logger.error('Fails to serialize')
     done(null, user.id);
   });
 

@@ -66,11 +66,7 @@
                     <% if (addons.length > 0) { %>
                       <% addons.forEach((addon, v = 1) => { %>
                         <td>
-                        <% if (addon.is_integers) { %>
-                          <%= row['addon' + (v + 1).toString()] %>
-                        <% } else { %>
-                          <%= addon['option' + row['addon' + (v + 1).toString()]] %>
-                        <% } %>
+                        <%= row['addon' + (v + 1)] %>
                         </td>
                       <% }) %>
                     <% } %>

@@ -364,6 +364,7 @@ span .checkbox-orange {
 #backtest-table {
   display: block;
   overflow-x: scroll;
+  padding-bottom: 10px;
 }
   #backtest-table thead {
     width: 100%;
@@ -392,7 +393,6 @@ span .checkbox-orange {
     color: var(--invert-black);
   }
   #backtest-table tr td {
-    cursor: pointer;
     text-align: center;
     white-space: nowrap;
     padding: 0 15px;

@@ -44,6 +44,7 @@
       <h2><%= __('Strategies') %></h2>
       <div class="journal-box px-0">
         <div id="index-strategies" class="journal-scroll">
+          <% console.log(strategies); %>
           <% if (strategies.length > 1) { %>
             <% strategies.forEach((strategy, i) => { %>
               <% if (strategy != 'None') { %>

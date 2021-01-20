@@ -17,17 +17,17 @@
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
                   <%= entryInfo.pair %>
                 </button>
-                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <ul id="dropdown-items" class="dropdown-menu dropdown-asset" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                  <% for (let [key, value] of currencies) { %>
-                    <li class="<%= value.id %>"><%= key %></li>
-                  <% } %>
+                  <% Object.keys(currencies).forEach((key) => { %>
+                    <li class="<%= currencies[key].id %>"><%= key %></li>
+                  <% }) %>
                 </ul>
               </div>
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Category') %>:</label>
-              <input type="text" class="form-input orange p-1 px-2" name="category" value="Forex" readonly>
+              <input id="category" type="text" class="form-input orange p-1 px-2" name="category" value="<%= entryInfo.category %>" readonly>
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Strategy') %>:</label>
@@ -257,8 +257,13 @@
           <div id="entry-closure" class="d-flex flex-column mx-3 form-fields">
             <span class="input-group mb-2">
               <label class="my-auto mr-1"><%= __('Exit Date') %>:</label>
-              <input type="text" class="datepicker form-control form-input p-1 px-2" data-target="exit-date" value="<%= entryInfo.exit_dt.toLocaleDateString(currentUser.language, options) %>">
-              <input type="text" id="exit-date" class="d-none" name="exitDate" value="<%= entryInfo.close_format %>">
+              <% if (entryInfo.exit_dt != null) { %>
+                <input type="text" class="datepicker form-control form-input p-1 px-2" data-target="exit-date" value="<%= entryInfo.exit_dt.toLocaleDateString(currentUser.language, options) %>">
+                <input type="text" id="exit-date" class="d-none" name="exitDate" value="<%= entryInfo.close_format %>">
+              <% } else { %>
+                <input type="text" class="datepicker form-control form-input p-1 px-2" data-target="exit-date">
+                <input type="text" id="exit-date" class="d-none" name="exitDate">
+              <% } %>
             </span>
             <span class="input-group mb-2">
               <label class="my-auto mr-1 mandatory"><%= __('Exit Price') %>:</label>
@@ -329,6 +334,7 @@
 
 <script type="text/javascript">
   var language = <%- JSON.stringify(currentUser.language) %>;
+  var currencies        = <%- JSON.stringify(currencies) %>;
   var technicalAnalysis = <%- JSON.stringify(technicalAnalysis) %>;
 </script>
 

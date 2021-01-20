@@ -50,6 +50,9 @@ $('.dropdown-menu li').on('click', function() {
   if ($('.dropdown-select')[current]) {
     $('.dropdown-select')[current].innerHTML = getValue;
   }
+  if ($('.dropdown-menu')[current].classList.contains('dropdown-asset')) {
+    $('#category').val(currencies[getValue].category)
+  }
 });
 
 // dropdown for filter feature
@@ -322,8 +325,8 @@ $('#entry-form').submit(function() {
         if (!form.checkValidity()) {
           event.preventDefault()
           event.stopPropagation()
+          $("#modal-loading").modal('hide')
         }
-
         form.classList.add('was-validated')
       }, false)
     })

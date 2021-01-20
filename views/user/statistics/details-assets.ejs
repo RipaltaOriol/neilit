@@ -31,7 +31,12 @@
                 <h5 class="mb-0"><%= __('Best Performing Assets') %></h5>
               </div>
               <div class="w-100 px-3 mt-2">
-                <canvas id="resultsPerformanceAssets" height="100"></canvas>
+                <% if (bestAssetsGraph.assets.length > 0) { %>
+                  <canvas id="resultsPerformanceAssets" height="100"></canvas>
+                <% } else { %>
+                  <p class="placeholder-stats text-center my-4"><%= __('Not enough data') %></p>
+                  <canvas id="resultsPerformanceAssets" class="d-none" height="100"></canvas>
+                <% } %>
               </div>
               <hr class="mb-0">
               <div class="px-3 py-1">
@@ -51,7 +56,12 @@
                 <h5 class="mb-0"><%= __('Worse Performing Assets') %></h5>
               </div>
               <div class="w-100 px-3 mt-2">
-                <canvas id="resultsWorseAssets" height="100"></canvas>
+                <% if (worseAssetsGraph.assets.length > 0) { %>
+                  <canvas id="resultsWorseAssets" height="100"></canvas>
+                <% } else { %>
+                  <p class="placeholder-stats text-center my-4"><%= __('Not enough data') %></p>
+                  <canvas id="resultsWorseAssets" class="d-none" height="100"></canvas>
+                <% } %>
               </div>
               <hr class="mb-0">
               <div class="px-3 py-1">
@@ -87,44 +97,28 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% assetStats.quantity.forEach((asset, i) => { %>
+                    <% assetsTable.forEach((asset) => { %>
                       <tr>
-                        <th scope="row" class="align-middle"><a href="#!" class="grey"><%= pairs[i] %></a></th>
-                        <td><%= assetStats.quantity[i] %></td>
+                        <td><a href="#!" class="grey"><%= asset.pair %></a></td>
+                        <td><%= asset.entries %></td>
                         <td>
-                          <% if (assetStats.quantity[i] == 0) { %>
-                            0
+                          <% if (asset.avg_return > 0) { %>
+                            <p class="mb-0 pill pill-green">
+                              <%= asset.avg_return.toFixed(2) %>%
+                            </p>
                           <% } else { %>
-                            <% if (assetStats.percent[i] / assetStats.quantity[i] >= 0) { %>
-                              <p class="mb-0 pill pill-verde">
-                                <%= assetStats.percent[i]/assetStats.quantity[i] %>%
-                              </p>
-                            <% } else { %>
-                              <p class="mb-0 pill pill-roja">
-                                <%= assetStats.percent[i]/assetStats.quantity[i] %>%
-                              </p>
-                            <% } %>
+                            <p class="mb-0 pill pill-red">
+                              <%= asset.avg_return.toFixed(2) %>%
+                            </p>
                           <% } %>
                         </td>
-                        <td><%= assetStats.win[i] %></td>
-                        <td><%= assetStats.be[i] %></td>
-                        <td><%= assetStats.loss[i] %></td>
-                        <td>
-                          <% if (assetStats.quantity[i] > 0) { %>
-                            <%= Math.round(assetStats.win[i] / assetStats.quantity[i] * 10000) / 100 %>%
-                          <% } else { %>
-                            0%
-                          <% } %>
-                        </td>
-                        <td>
-                          <% if (!isNaN(assetStats.expected[i])) { %>
-                            <%= Math.round(assetStats.expected[i] * 100) / 100 %>%
-                          <% } else { %>
-                            N/A
-                          <% } %>
-                        </td>
+                        <td><%= asset.win %></td>
+                        <td><%= asset.be %></td>
+                        <td><%= asset.loss %></td>
+                        <td><%= asset.win_rate.toFixed(2) %></td>
+                        <td><%= asset.expected_result.toFixed(2) %></td>
                       </tr>
-                    <% }); %>
+                    <% }) %>
                   </tbody>
                 </table>
               </div>
@@ -144,16 +138,23 @@
   </div>
 
 <script type="text/javascript">
-  var darkMode              = <%- JSON.stringify(currentUser.darkMode); %>
-  var pairs                 = <%- JSON.stringify(pairs); %>
-  var assetStats            = <%- JSON.stringify(assetStats); %>
-  var assetsByCount         = <%- JSON.stringify(assetsByCount); %>
-  var assetsByOutcomeBest   = <%- JSON.stringify(assetsByOutcomeBest); %>
-  var assetsByOutcomeWorse  = <%- JSON.stringify(assetsByOutcomeWorse); %>
-  var months                = <%- JSON.stringify(months); %>
+  var darkMode          = <%- JSON.stringify(currentUser.darkMode); %>
+  var assetsGraph       = <%- JSON.stringify(assetsGraph); %>
+  var bestAssetsGraph   = <%- JSON.stringify(bestAssetsGraph); %>
+  var worseAssetsGraph  = <%- JSON.stringify(worseAssetsGraph); %>
+  var months            = <%- JSON.stringify(months); %>
 </script>
 
 <!-- <section> is inside partials -->
 </section>
+
+<!-- JQUERY -->
+<script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/utilities/chart.js/Chart.js"></script>
+<script type="text/javascript" src="/utilities/chart.js/Chart.min.js"></script>
+<!-- LOCAL SCRIPTS -->
+<script type="text/javascript" src="/js/statistics/assets.js" charset="utf-8"></script>
 
 <%- include("../../partials/footer-statistics-details") %>

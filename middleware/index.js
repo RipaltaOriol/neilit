@@ -30,35 +30,22 @@ const logger = winston.createLogger({
 
 // AUTHENTICATION MIDDLEWARE
 middlewareObj.isLoggedIn = function (req, res, next) {
-  logger.error('Now is in the middleware')
+  // logger.error('Now is in the middleware')
   // logger.error('Equivalen to isAuthenticated() [req.session.passport.user != ] ' + req.session.passport.user)
   if (req.isAuthenticated()) {
-    logger.error('It is authenticated')
+    // logger.error('It is authenticated')
     if (req.user.username === req.params.profile) {
-      logger.error('It is authenticated and profile does match username')
-      function reloadStrategies(){
-            let getUserStrategies = query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
-            getUserStrategies.then((result) => {
-              req.session.strategyNames = []
-              req.session.strategyIds = []
-              result.forEach((straegy, i) => {
-                req.session.strategyNames.push(straegy.strategy);
-                req.session.strategyIds.push(straegy.id);
-              });
-            })
-            setTimeout(reloadStrategies, 60 * 60 * 1000);
-        }
-        reloadStrategies();
+      // logger.error('It is authenticated and profile does match username')
       return next();
     } else {
       // FIXME: so it doesn't freeze and return to previous ROUTE
-      logger.error('It is authenticated but profile does not match username')
+      // logger.error('It is authenticated but profile does not match username')
       return false;
     }
   } else {
-    logger.error('It is not authenticated')
+    // logger.error('It is not authenticated')
     req.flash("error", "Please, login first!")
-    res.redirect("/login");
+    return res.redirect("/login");
   }
 }
 

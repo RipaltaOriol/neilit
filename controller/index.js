@@ -37,11 +37,8 @@ const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVc
 const query = util.promisify(db.query).bind(db);
 
 module.exports.renderHome = (req, res) => {
+  logger.info('checking it works')
   res.render("home");
-}
-
-module.exports.renderLogo = (req, res) => {
-  res.render('sample-copy.jpg')
 }
 
 module.exports.renderFeatures = (req, res) => {
@@ -56,12 +53,19 @@ module.exports.renderResources = (req, res) => {
   res.render("resources");
 }
 
+module.exports.renderAssetsCrypto = (req, res) => {
+  res.render("assets/cryptocurrencies.ejs")
+}
+
+module.exports.renderAssetsForex = (req, res) => {
+  res.render("assets/forex.ejs")
+}
+
 module.exports.renderMobile = (req, res) => {
   res.render("mobile");
 }
 
 module.exports.changeLanguage = (req, res) => {
-  console.log(req.params.lang);
   res.cookie('lang', req.params.lang)
   res.redirect('/')
 }
@@ -77,21 +81,37 @@ module.exports.renderLogin = (req, res) => {
   }
 }
 
-module.exports.logicLogin = async (req, res) => {
-  logger.error('It passes the middleware, but it fails here')
-  let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
-  req.session.strategyNames = []
-  req.session.strategyIds = []
-  for (var i = 0; i < getUserStrategies.length; i++) {
-    req.session.strategyNames.push(getUserStrategies[i].strategy);
-    req.session.strategyIds.push(getUserStrategies[i].id);
-  }
-  req.session.timeframes = await localeTimeframes();
-  req.session.notification = true;
-  logger.error(req.user)
-  logger.error(req.session)
-  res.cookie('lang', req.user.language)
-  res.redirect("/" + req.user.username)
+module.exports.logicLogin = (req, res) => {
+  (async () => {
+    try {
+      // logger.error('It passes the middleware, but it fails here')
+      let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
+      req.session.strategyNames = []
+      req.session.strategyIds = []
+      for (var i = 0; i < getUserStrategies.length; i++) {
+        req.session.strategyNames.push(getUserStrategies[i].strategy);
+        req.session.strategyIds.push(getUserStrategies[i].id);
+      }
+      let getUserAssets = await query("SELECT id, pair, category, has_rate FROM pairs WHERE user_id = ?", req.user.id)
+      req.session.assets = { }
+      getUserAssets.forEach((asset) => {
+        req.session.assets[asset.pair] = {
+          id: asset.id,
+          category: asset.category,
+          rate: asset.has_rate
+        }
+      })
+      req.session.timeframes = await localeTimeframes();
+      req.session.notification = true;
+      // logger.error(req.user)
+      // logger.error(req.session)
+    } catch (e) {
+      console.log(e);
+    } finally {
+      res.cookie('lang', req.user.language)
+      res.redirect("/" + req.user.username)
+    }
+  })()
 }
 
 module.exports.logout = (req, res) => {

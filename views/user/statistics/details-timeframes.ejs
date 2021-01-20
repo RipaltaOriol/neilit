@@ -31,7 +31,12 @@
                 <h5 class="mb-0"><%= __('Best Performing Timeframes') %></h5>
               </div>
               <div class="w-100 mb-3 mt-2">
-                <canvas id="resultsPerformanceTimeframes" height="100"></canvas>
+                <% if (bestTimeframesGraph.timeframes.length > 0) { %>
+                  <canvas id="resultsPerformanceTimeframes" height="100"></canvas>
+                <% } else { %>
+                  <p class="placeholder-stats text-center my-4"><%= __('Not enough data') %></p>
+                  <canvas id="resultsPerformanceTimeframes" class="d-none" height="100"></canvas>
+                <% } %>
               </div>
               <hr class="mb-0">
               <div class="px-3 py-1">
@@ -67,44 +72,28 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% timeframeStats.quantity.forEach((tf, i) => { %>
+                    <% timeframesTable.forEach((timeframe) => { %>
                       <tr>
-                        <th scope="row" class="align-middle"><a href="#!" class="grey"><%= timeframes[i] %></a></th>
-                        <td><%= timeframeStats.quantity[i] %></td>
+                        <td><a href="#!" class="grey"><%= timeframe.timeframe %></a></td>
+                        <td><%= timeframe.entries %></td>
                         <td>
-                          <% if (timeframeStats.quantity[i] == 0) { %>
-                            0
+                          <% if (timeframe.avg_return > 0) { %>
+                            <p class="mb-0 pill pill-green">
+                              <%= timeframe.avg_return.toFixed(2) %>%
+                            </p>
                           <% } else { %>
-                            <% if (timeframeStats.percent[i] / timeframeStats.quantity[i] >= 0) { %>
-                              <p class="mb-0 pill pill-verde">
-                                <%= timeframeStats.percent[i]/timeframeStats.quantity[i] %>%
-                              </p>
-                            <% } else { %>
-                              <p class="mb-0 pill pill-roja">
-                                <%= timeframeStats.percent[i]/timeframeStats.quantity[i] %>%
-                              </p>
-                            <% } %>
+                            <p class="mb-0 pill pill-red">
+                              <%= timeframe.avg_return.toFixed(2) %>%
+                            </p>
                           <% } %>
                         </td>
-                        <td><%= timeframeStats.win[i] %></td>
-                        <td><%= timeframeStats.be[i] %></td>
-                        <td><%= timeframeStats.loss[i] %></td>
-                        <td>
-                          <% if (timeframeStats.quantity[i] > 0) { %>
-                            <%= Math.round(timeframeStats.win[i] / timeframeStats.quantity[i] * 10000) / 100 %>%
-                          <% } else { %>
-                            0%
-                          <% } %>
-                        </td>
-                        <td>
-                          <% if (!isNaN(timeframeStats.expected[i])) { %>
-                            <%= Math.round(timeframeStats.expected[i] * 100) / 100 %>%
-                          <% } else { %>
-                            N/A
-                          <% } %>
-                        </td>
+                        <td><%= timeframe.win %></td>
+                        <td><%= timeframe.be %></td>
+                        <td><%= timeframe.loss %></td>
+                        <td><%= timeframe.win_rate.toFixed(2) %></td>
+                        <td><%= timeframe.expected_result.toFixed(2) %></td>
                       </tr>
-                    <% }); %>
+                    <% }) %>
                   </tbody>
                 </table>
               </div>
@@ -124,14 +113,21 @@
   </div>
 
 <script type="text/javascript">
-  var darkMode        = <%- JSON.stringify(currentUser.darkMode); %>
-  var timeframes      = <%- JSON.stringify(timeframes); %>
-  var timeframeStats  = <%- JSON.stringify(timeframeStats); %>
-  var tfByCount       = <%- JSON.stringify(tfByCount); %>
-  var tfByOutcome     = <%- JSON.stringify(tfByOutcome); %>
+  var darkMode            = <%- JSON.stringify(currentUser.darkMode); %>
+  var bestTimeframesGraph = <%- JSON.stringify(bestTimeframesGraph); %>
+  var timeframesWinRate   = <%- JSON.stringify(timeframesWinRate); %>
 </script>
 
 <!-- <section> is inside partials -->
 </section>
+
+<!-- JQUERY -->
+<script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/utilities/chart.js/Chart.js"></script>
+<script type="text/javascript" src="/utilities/chart.js/Chart.min.js"></script>
+<!-- LOCAL SCRIPTS -->
+<script type="text/javascript" src="/js/statistics/timeframes.js" charset="utf-8"></script>
 
 <%- include("../../partials/footer-statistics-details") %>

@@ -67,7 +67,7 @@
                       <% if (backtest.pair != null) { %>
                         <%= backtest.pair %>
                       <% } else { %>
-                        <%= currencies.keys().next().value %>
+                        <%= Object.keys(currencies)[0] %>
                       <% } %>
                     </button>
                     <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
@@ -75,9 +75,9 @@
                       <% if (backtest.pair != null) { %>
                         <li><%= backtest.pair %></li>
                       <% } else { %>
-                        <% for (let [key, value] of currencies) { %>
-                          <li class="<%= value.id %>"><%= key %></li>
-                        <% } %>
+                        <% Object.keys(currencies).forEach((key) => { %>
+                          <li class="<%= currencies[key].id %>"><%= key %></li>
+                        <% }) %>
                       <% } %>
                     </ul>
                   </div>
@@ -239,11 +239,7 @@
                       <% if (addons.length > 0) { %>
                         <% addons.forEach((addon, v = 1) => { %>
                           <td class="<%= row['addon' + (v + 1).toString()] %>">
-                            <% if (addon.is_integers) { %>
-                              <%= row['addon' + (v + 1).toString()] %>
-                            <% } else { %>
-                              <%= addon['option' + row['addon' + (v + 1).toString()]] %>
-                            <% } %>
+                            <%= row['addon' + (v + 1)] %>
                           </td>
                         <% }) %>
                       <% } %>
@@ -272,7 +268,7 @@
   </div>
 
 <script type="text/javascript">
-  var currencies    = <%- JSON.stringify(Array.from(currencies.entries())) %>;
+  var currencies    = <%- JSON.stringify(currencies) %>;
   var timeframes    = <%- JSON.stringify(timeframes) %>;
   var strategies    = <%- JSON.stringify(strategies) %>;
   var strategiesID  = <%- JSON.stringify(strategiesID) %>;

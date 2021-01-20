@@ -9,24 +9,24 @@
         <div class="form-fields mb-2 mx-3">
           <span class="d-block mb-2">
             <label class="mb-0"><%= __('Pair') %>:</label>
-            <input id="ta-pair" type="text" name="pair" value="1" class="dropdown-server d-none">
+            <input id="ta-pair" type="text" name="pair" value="<%= currencies[Object.keys(currencies)[0]].id %>" class="dropdown-server d-none">
             <!-- dropdown -->
             <div class="dropdown d-inline">
               <button id="dropdown-label" class="ta-pair dropdown-select px-2" type="button" data-toggle="dropdown">
-                <%= currencies.keys().next().value %>
+                <%= Object.keys(currencies)[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                 <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                <% for (let [key, value] of currencies) { %>
-                  <li class="<%= value.id %>"><%= key %></li>
-                <% } %>
+                <% Object.keys(currencies).forEach((key) => { %>
+                  <li class="<%= currencies[key].id %>"><%= key %></li>
+                <% }) %>
               </ul>
             </div>
           </span>
           <div class="d-flex flex-column">
             <span class="mb-2">
               <label class="mb-0"><%= __('Category') %>:</label>
-              <input id="ta-category" type="text" class="form-input orange px-2" name="category" value="Forex" readonly>
+              <input id="ta-category" type="text" class="form-input orange px-2" name="category" value="<%= currencies[Object.keys(currencies)[0]].category %>" readonly>
             </span>
             <span class="mb-2">
               <label class="mb-0"><%= __('Date') %>:</label>
@@ -62,11 +62,11 @@
   </div>
 
 <script type="text/javascript">
-  var language = <%- JSON.stringify(currentUser.language) %>;
-  var currencies = <%- JSON.stringify(Array.from(currencies.entries())) %>;
-  var strategies = <%- JSON.stringify(strategies) %>;
-  var timeframes = <%- JSON.stringify(timeframes) %>;
-  var elements   = <%- JSON.stringify(elements) %>;
+  var language    = <%- JSON.stringify(currentUser.language) %>;
+  var currencies  = <%- JSON.stringify(currencies) %>;
+  var strategies  = <%- JSON.stringify(strategies) %>;
+  var timeframes  = <%- JSON.stringify(timeframes) %>;
+  var elements    = <%- JSON.stringify(elements) %>;
 </script>
 
 <!-- <section> is inside partials -->

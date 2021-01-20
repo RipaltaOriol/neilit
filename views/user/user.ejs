@@ -107,6 +107,11 @@
                       <%= asset.percent_change.toFixed(2) %>%
                     </p>
                   </div>
+                <% } else { %>
+                  <h1 id="biggest-pair" class="widget-data">N/A</h1>
+                  <div>
+                    <p id="biggest-percent" class="pill pill-yellow font-16 mb-0">0.00%</p>
+                  </div>
                 <% } %>
               </div>
               <hr class="mb-0">
@@ -379,16 +384,17 @@
   </div>
 
 <script type="text/javascript">
-  var username = <%- JSON.stringify(currentUser.username); %>
-  var language = <%- JSON.stringify(currentUser.language); %>
-  var isDarkMode = <%- JSON.stringify(currentUser.darkMode); %>
+  var username        = <%- JSON.stringify(currentUser.username); %>
+  var key             = <%- JSON.stringify(key); %>
+  var language        = <%- JSON.stringify(currentUser.language); %>
+  var isDarkMode      = <%- JSON.stringify(currentUser.darkMode); %>
   var dataMonthGraph  = <%- JSON.stringify(monthGraph) %>;
-  var balance = <%- JSON.stringify(general.current_balance); %>
-  var openOps = <%- JSON.stringify(dashboardOpen); %>
-  var monthCount = <%- JSON.stringify(monthCount); %>
-  var weekPer = <%- JSON.stringify(weekPer); %>
-  var monthPer = <%- JSON.stringify(monthPer); %>
-  var months = <%- JSON.stringify(months); %>
+  var balance         = <%- JSON.stringify(general.current_balance); %>
+  var openOps         = <%- JSON.stringify(dashboardOpen); %>
+  var monthCount      = <%- JSON.stringify(monthCount); %>
+  var weekPer         = <%- JSON.stringify(weekPer); %>
+  var monthPer        = <%- JSON.stringify(monthPer); %>
+  var months          = <%- JSON.stringify(months); %>
 </script>
 
 <!-- <section> is inside partials -->

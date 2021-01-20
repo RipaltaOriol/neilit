@@ -1,3 +1,11 @@
+:root {
+  --red-strong:         #a10000;
+}
+
+:root.dark-mode {
+  --red-strong:         #a10000;
+}
+
 /* || General styles */
 h2 { }
   h2.orange {
@@ -315,6 +323,7 @@ hr.profile {
   }
   .list li {
     font-size: 16px;
+    color: var(--invert-black);
     border-radius: 7px;
   }
   .list button {
@@ -332,7 +341,6 @@ hr.profile {
       color: var(--invert-black);
     }
 
-
 /*Custom dropdown*/
 #dd {
   border-radius: .25rem;
@@ -344,6 +352,11 @@ hr.profile {
   #dd:hover {
     color: var(--invert-black);
     background-color: var(--background-hover);
+  }
+  #dd.asset {
+    background: var(--background-hover);
+    padding: 5px 10px;
+    width: 74px;
   }
 
 #initial-balance{

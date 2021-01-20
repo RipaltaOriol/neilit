@@ -17,3 +17,7 @@ module.exports.linkTechnicalAnalysisToEntry = (req, res) => {
 module.exports.createTechnicalAnalysis = (req, res) => {
   res.render("resources/create-ta")
 }
+
+module.exports.manageAssets = (req, res) => {
+  res.render("resources/manage-assets")
+}

@@ -12,4 +12,6 @@ router.get("/link-technical-analysis-to-entry", resources.linkTechnicalAnalysisT
 
 router.get("/create-technical-analysis", resources.createTechnicalAnalysis)
 
+router.get("/manage-assets", resources.manageAssets)
+
 module.exports = router;

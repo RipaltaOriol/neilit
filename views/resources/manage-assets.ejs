@@ -1,0 +1,173 @@
+<%- include("../partials/header-home") %>
+
+<div>
+  <nav class="navbar d-none d-md-flex px-3">
+  <!-- email -->
+  <ul class="navbar-nav">
+    <li class="nav-item ml-2">
+      <p class="mb-0">
+        <img src="/imgs/icons/email.svg" alt="email">
+        info@neilit.com
+      </p>
+    </li>
+  </ul>
+  <!-- language -->
+   <ul class="navbar-nav">
+     <li class="nav-item">
+        <a data-toggle="modal" data-target=".modal-language-lg" class="cursor-pointer ml-4">
+          <img src="/imgs/icons/language.svg" alt="language">
+          <span><%= __('Language')%></span>
+        </a>
+        <!-- language modal -->
+        <div class="modal modal-language-lg fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content text-center">
+              <div class="modal-body py-2">
+                <form action="/language/en" method="POST">
+                  <button type="submit"><%= __('English')%></button>
+                </form>
+                <form action="/language/es" method="POST">
+                  <button type="submit"><%= __('Spanish')%></button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+   <!-- social media -->
+   <ul class="navbar-nav ml-auto">
+     <li class="nav-item social">
+       <p class="mb-0">
+         <!-- facebook -->
+         <!-- <img src="/imgs/icons/fb.svg" alt="facebook" class="ml-2"> -->
+         <!-- instagram -->
+         <!-- <img src="/imgs/icons/ig.svg" alt="instagram" class="ml-2"> -->
+         <!-- youtube -->
+         <!-- <img src="/imgs/icons/yt.svg" alt="youtube" class="ml-2"> -->
+         <!-- linkedin -->
+         <!-- <img src="/imgs/icons/linkedin.svg" alt="linkedin" class="ml-2"> -->
+         <!-- twitter -->
+         <!-- <img src="/imgs/icons/twitter.svg" alt="twitter" class="ml-2"> -->
+       </p>
+     </li>
+    </ul>
+  </nav>
+
+  <div class="sticky-top">
+    <p id="beta" class="mb-0"><strong><%= __('We are in BETA') %></strong></p>
+  </div>
+  <nav class="navbar navbar-expand-lg px-lg-4" id="sticky-nav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">
+        <img class="icon-navbar" src="/imgs/icons/menu-orange.svg" alt="navbar">
+      </span>
+    </button>
+    <div class="collapse navbar-collapse mt-2 mt-lg-0 px-3 pb-3 p-lg-0" id="navbarLinks">
+      <ul class="navbar-nav">
+        <li class="nav-item mt-2 mt-lg-0 mr-lg-4">
+          <a href="/" class="btn-nav"><%= __('Home')%></a>
+        </li>
+        <li class="nav-item mt-2 mt-lg-0 mr-lg-4">
+          <a href="/features" class="btn-nav"><%= __('Features')%></a>
+        </li>
+        <li class="nav-item mt-2 mt-lg-0 mr-lg-4">
+          <a href="/pricing" class="btn-nav"><%= __('Pricing')%></a>
+        </li>
+        <li class="nav-item mt-2 mt-lg-0 mr-lg-4">
+          <a href="/resources" class="btn-nav"><%= __('Resources')%></a>
+        </li>
+      </ul>
+      <div class="ml-auto mt-3 mt-lg-0">
+        <!-- login -->
+        <a class="btn-neilit" href="/login">Login</a>
+        <!-- signup -->
+        <a class="btn-inverted ml-3" href="/signup">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="bg-sm-nav d-lg-none"></div>
+
+  <div class="py-5">
+    <div class="container">
+      <h1>Manage your assets</h1>
+      <h4>Adding premade assets</h4>
+      <p>
+        To add the assets provided by Neilit you can just toggle the <span class="orange">include</span> switch for the pair category you wish to add to your account.
+        However, if you wish to remove the included assets you can just toggle back the <span class="orange">include</span> switch so it is back to being greyed out.
+        <br>
+        <br>
+        You can find a complete list of our premade assets following these links:
+      </p>
+      <ul class="resources-content pl-4">
+        <li><a href="/assets/crypto" class="orange font-20">Crytpo</a></li>
+        <li><a href="/assets/forex" class="orange font-20">Forex</a></li>
+      </ul>
+      <img class="w-100 mb-3" src="/imgs/resources-manage-assets-1.png" alt="manage-assets">
+      <h4>Creating custom assets</h4>
+      <p>
+        To create your own move down to the custom assets section.
+        Then, write in the input box the ticker of the asset you wish to add and specify its category.
+        Once you are done just press on the <span class="orange">create asset</span> button.
+        <br>
+        It’s important you write only the ticker and not the full name of the asset because the input field will only accept a maximum of 11 characters.
+        Of course, duplicates are not allowed for any type of asset.
+      </p>
+      <img class="w-100" src="/imgs/resources-manage-assets-2.png" alt="manage-assets">
+      <p>
+        The asset will be automatically added and you will be able to see it below the input field.
+        To delete an existing custom asset you just have to press the delete button on the right on the asset name.
+      </p>
+      <img class="w-100" src="/imgs/resources-manage-assets-3.png" alt="manage-assets">
+    </div>
+  </div>
+</div>
+
+<footer class="mt-2 py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="logo">N</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-9 col-lg-5">
+        <span>
+          <%= __('value statement') %>
+        </span>
+        <div class="my-3">
+          <div class="footer-header"><%= __('Contact us') %>:</div>
+          <div>
+            <img class="mr-2" src="/imgs/icons/email-black.svg" alt="email">info@neilit.com
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-3 col-lg-3">
+        <ul class="pl-0">
+          <li><a href="/"><%= __('Home') %></a></li>
+          <li><a href="/features"><%= __('Features') %></a></li>
+          <li><a href="/pricing"><%= __('Pricing') %></a></li>
+          <li><a href="/resources"><%= __('Resources') %></a></li>
+        </ul>
+      </div>
+      <div class="col-12 col-sm-12 col-lg-4">
+        <span><%= ('Stay up to date on the latest from Neilit') %></span>
+        <!-- Begin Mailchimp Signup Form -->
+          <form action="https://neilit.us7.list-manage.com/subscribe/post?u=c948a8be82c0ef2a67a286794&amp;id=6b33ce7392" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+
+        	     <input type="email" value="" name="EMAIL" class="my-2 newsletter px-2" id="mce-EMAIL" placeholder="<%= ('Email address') %>" required>
+               <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+               <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_c948a8be82c0ef2a67a286794_6b33ce7392" tabindex="-1" value=""></div>
+               <div class="clear"><input type="submit" value="<%= __('Subscribe') %>" name="subscribe" id="mc-embedded-subscribe" class="btn-neilit py-1"></div>
+          </form>
+          <!--End mc_embed_signup-->
+      </div>
+    </div>
+    <div class="footer-bottom">
+      @2020 Neilit. All Rights Reseverd.
+    </div>
+  </div>
+</footer>
+
+<%- include("../partials/footer-home") %>

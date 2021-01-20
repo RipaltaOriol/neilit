@@ -21,17 +21,17 @@
               <input type="radio" name="pairs" value="1" onclick="letPair(true)">
               <span class="checkmark"></span>
             </label>
-            <input type="text" name="selectPair" value="1" class="dropdown-server d-none">
+            <input type="text" name="selectPair" value="<%= currencies[Object.keys(currencies)[0]].id %>" class="dropdown-server d-none">
             <!-- dropdown -->
             <div id="dropdown-pairs" class="dropdown d-none">
               <button id="dropdown-label" class="pairs dropdown-select p-1 px-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= currencies.keys().next().value %>
+                <%= Object.keys(currencies)[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                 <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                <% for (let [key, value] of currencies) { %>
-                  <li class="<%= value.id %>"><%= key %></li>
-                <% } %>
+                <% Object.keys(currencies).forEach((key) => { %>
+                  <li class="<%= currencies[key].id %>"><%= key %></li>
+                <% }) %>
               </ul>
             </div>
           </span>

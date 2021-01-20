@@ -17,6 +17,12 @@ router.post("/changeShowProfits", middleware.isLoggedIn, settings.changeShowProf
 
 router.post("/changeMode", middleware.isLoggedIn, settings.changeMode)
 
+router.post("/toggleAssets", middleware.isLoggedIn, settings.toggleAssets)
+
+router.post("/addAsset", middleware.isLoggedIn, settings.addAsset)
+
+router.post("/deleteAsset", middleware.isLoggedIn, settings.deleteAsset)
+
 router.post("/changeLanguage", middleware.isLoggedIn, settings.changeLanguage)
 
 router.get("/change-plan", middleware.isLoggedIn, settings.renderChangePlan)

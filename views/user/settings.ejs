@@ -59,7 +59,7 @@
     </ul>
   </div>
 
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center mb-4">
     <!-- tabs content -->
     <div class="tab-content">
       <!-- profile -->
@@ -170,110 +170,173 @@
 
       <!-- settings -->
       <div role="tabpanel" class="tab-box tab-pane" id="settings">
-       <div class="d-flex justify-content-between">
-        <div class="text-left w-50 mx-5 my-4">
-          <h4 class="pb-1 mb-3"><%= __('Account Configuration') %></h4>
-          <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-            <div>
-              <h5 class="mb-0 mr-2"><%= __('Account currency') %></h5>
+        <div class="d-flex justify-content-between">
+          <div class="text-left w-50 mx-5 my-4">
+            <h4 class="pb-1 mb-3"><%= __('Account Configuration') %></h4>
+            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+              <div>
+                <h5 class="mb-0 mr-2"><%= __('Account currency') %></h5>
+              </div>
+              <!--dropdown-->
+              <div class="dropdown">
+                <button id="dd" class="currency dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= currencies[currentUser.currency_id - 1] %>
+                </button>
+                <ul id="currency" class="dropdown-menu" aria-labelledby="dd">
+                  <% currencies.forEach((currency) => { %>
+                    <li><%= currency %></li>
+                  <% }) %>
+                </ul>
+              </div>
             </div>
-            <!--dropdown-->
-            <div class="dropdown">
-              <button id="dd" class="currency dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= currencies[currentUser.currency_id - 1] %>
-              </button>
-              <ul id="currency" class="dropdown-menu" aria-labelledby="dd">
-                <% currencies.forEach((currency) => { %>
-                  <li><%= currency %></li>
-                <% }) %>
+            <div class="mb-2 d-flex flex-row justify-content-between align-items-center">
+              <h5 class="mb-0 mr-2 d-block"><%= __('Initial balance') %></h5>
+              <input type="text" id="initial-balance" class="font-16 text-right" value="<%= currentUser.balance %>" readonly>
+            </div>
+            <!-- show profits in entry -->
+            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+              <h5 class="mb-0 mr-2 w-100"><%= __('Show profits inside entries') %></h5>
+              <label class="switch mb-0">
+                <input id="show-profits" type="checkbox"
+                <% if (currentUser.showProfits) { %>
+                  checked
+                  <% } %>
+                  >
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <!-- dark mode -->
+              <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+                <h5 class="mb-0 mr-2 w-100"><%= __('Dark mode') %></h5>
+                <label class="switch mb-0">
+                <input id="dark" type="checkbox"
+                  <% if (currentUser.darkMode) { %>
+                    checked
+                  <% } %>
+                >
+                <span class="slider round"></span>
+              </label>
+            </div>
+            <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+              <div>
+                <h5 class="mb-0 mr-2"><%= __('Language') %></h5>
+              </div>
+              <!--dropdown-->
+              <div class="dropdown">
+                <button id="dd" class="language dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <% if (currentUser.language == 'en') { %>
+                    <%= __('English') %>
+                  <% } else { %>
+                    <%= __('Spanish') %>
+                  <% } %>
+                </button>
+                <ul id="language" class="dropdown-menu" aria-labelledby="dd">
+                  <li onclick="changeLanguage('es')"><%= __('Spanish') %></li>
+                  <li onclick="changeLanguage('en')"><%= __('English') %></li>
+                </ul>
+              </div>
+            </div>
+            <div class="pt-4">
+              <h4 class="pb-1 mb-2">
+                <%= __('Premade Assets') %>
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="<%= __('Add or remove our premade assets to your list. Get more info on premade assets on resources') %>">
+              </h4>
+              <!-- forex -->
+              <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+                <h5 class="mb-0 mr-2 w-100"><%= __('Include Forex assets') %></h5>
+                <label class="switch mb-0">
+                  <input id="forex" type="checkbox"
+                    <% if (currentUser.has_forex) { %>
+                      checked
+                    <% } %>
+                  >
+                  <span class="slider round"></span>
+                </label>
+
+              </div>
+              <!-- crypto -->
+              <div class="d-flex flex-row justify-content-between align-items-center mb-2">
+                <h5 class="mb-0 mr-2 w-100"><%= __('Include Crypto assets') %></h5>
+                <label class="switch mb-0">
+                  <input id="crypto" type="checkbox"
+                    <% if (currentUser.has_crypto) { %>
+                      checked
+                    <% } %>
+                  >
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+            </div>
+            <div class="pt-4">
+              <h4 class="pb-1 mb-2">
+                <%= __('Custom Assets') %>
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="top" title="<%= __('Add the assets you trade if we don\'t have them') %>">
+              </h4>
+              <!-- custom assets -->
+              <div class="d-flex align-items-center">
+                <input id="asset-name" type="text" placeholder="<%= __('New asset') %>" class="font-16 mr-2">
+                <!--dropdown-->
+                <div class="dropdown mx-auto">
+                  <button id="dd" class="asset dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Forex
+                  </button>
+                  <ul class="dropdown-menu cateogry" aria-labelledby="dd">
+                    <li>Forex</li>
+                    <li>Crypto</li>
+                    <li>Stock</li>
+                    <li>Futures</li>
+                    <li>CDF</li>
+                    <li>Index</li>
+                  </ul>
+                </div>
+              </div>
+              <button id="create-asset" type="button" class="mt-2 btn-neilit py-0"><%= __('Create asset') %></button>
+              <ul id="listAsets" class="pl-0 list">
+                <% customAssets.forEach((asset) => { %>
+                  <li class="mt-2 py-0 font-16 asset-li">
+                    <span class="asset-name"><%= asset.pair %></span>
+                    <button type="button" class="float-right asset-delete" onclick="deleteAsset(this)">
+                      <img class="icon-20" src="/imgs/icons/delete.svg">
+                    </button>
+                  </li>
+                <% }); %>
               </ul>
             </div>
           </div>
-          <div class="mb-2 d-flex flex-row justify-content-between align-items-center">
-            <h5 class="mb-0 mr-2 d-block"><%= __('Initial balance') %></h5>
-            <input type="text" id="initial-balance" class="font-16 text-right" value="<%= currentUser.balance %>" readonly>
-          </div>
-          <!-- show profits in entry -->
-          <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-            <h5 class="mb-0 mr-2 w-100"><%= __('Show profits inside entries') %></h5>
-            <label class="switch mb-0">
-              <input id="show-profits" type="checkbox"
-              <% if (currentUser.showProfits) { %>
-                checked
-              <% } %>
-              >
-              <span class="slider round"></span>
-            </label>
-          </div>
-          <!-- dark mode -->
-          <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-            <h5 class="mb-0 mr-2 w-100"><%= __('Dark mode') %></h5>
-            <label class="switch mb-0">
-              <input id="dark" type="checkbox"
-              <% if (currentUser.darkMode) { %>
-                checked
-              <% } %>
-              >
-              <span class="slider round"></span>
-            </label>
-          </div>
-          <div class="d-flex flex-row justify-content-between align-items-center mb-2">
-            <div>
-              <h5 class="mb-0 mr-2"><%= __('Language') %></h5>
-            </div>
-            <!--dropdown-->
-            <div class="dropdown">
-              <button id="dd" class="language dropdown-select font-16" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <% if (currentUser.language == 'en') { %>
-                  <%= __('English') %>
-                <% } else { %>
-                  <%= __('Spanish') %>
-                <% } %>
-              </button>
-              <ul id="language" class="dropdown-menu" aria-labelledby="dd">
-                <li onclick="changeLanguage('es')"><%= __('Spanish') %></li>
-                <li onclick="changeLanguage('en')"><%= __('English') %></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- Goals! -->
-        <div class="text-left w-50 mx-5 my-4">
-          <div class="mb-3">
-            <h4 class="pb-1 mb-2">
-              <%= __('Current Goals') %>
-              <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('Add up to 5 goals to your Neilit account') %>">
-            </h4>
-            <input type="text" id="addGoal" placeholder="<%= __('New Goal') %>" class="w-100 font-16">
-            <!-- Up to 5 goals -->
-            <a href="#!" id="">
+          <!-- Goals! -->
+          <div class="text-left w-50 mx-5 my-4">
+            <div class="mb-3">
+              <h4 class="pb-1 mb-2">
+                <%= __('Current Goals') %>
+                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('Add up to 5 goals to your Neilit account') %>">
+              </h4>
+              <input type="text" id="addGoal" placeholder="<%= __('New Goal') %>" class="w-100 font-16">
+              <!-- Up to 5 goals -->
               <ul id="listGoals" class="pl-0 list">
                 <% goals.forEach((goal) => { %>
                   <li class="mt-2 py-0 font-16 goal-li">
-                    <input type="text" value="<%= goal %>" class="goal" readonly>
+                    <span class="goal"><%= goal %></span>
                     <button type="button" class="float-right goal-delete" onclick="deleteGoal(this)">
                       <img class="icon-20" src="/imgs/icons/delete.svg">
                     </button>
                   </li>
                 <% }); %>
               </ul>
-            </a>
-          </div>
-          <div class="pt-4">
-            <div class="d-block flex-row justify-content-between">
-              <h4 class="pb-1 mb-3">
-                <%= __('Strategies') %>
-                <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('tooltip-delete-strategy') %>">
-              </h4>
             </div>
-            <input type="text" id="addStrategy" placeholder="<%= __('New Strategy') %>" class="w-100 font-16">
-            <!-- all strategies -->
-            <a href="#!" id="">
-
+            <div class="pt-4">
+              <div class="d-block flex-row justify-content-between">
+                <h4 class="pb-1 mb-3">
+                  <%= __('Strategies') %>
+                  <img class="info float-right" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('tooltip-delete-strategy') %>">
+                </h4>
+              </div>
+              <input type="text" id="addStrategy" placeholder="<%= __('New Strategy') %>" class="w-100 font-16">
+              <!-- all strategies -->
               <ul id="listStrategy" class="pl-0 list">
                 <% strategies.forEach((strategy) => { %>
                   <li class="mt-2 py-0 strategy-li">
-                    <input type="text" class="strategy" value="<%= strategy %>" readonly>
+                    <span class="strategy"><%= strategy %></span>
                     <button type="button" class="float-right strategy-delete" onclick="deleteStrategy(this)">
                       <img class="icon-20" src="/imgs/icons/delete.svg">
                     </button>
@@ -307,6 +370,7 @@
               <a href="/resources/add-strategies" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to add strategies?') %></a>
               <a href="/resources/link-technical-analysis-to-entry" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Link a technical analysis to an entry') %></a>
               <a href="/resources/create-technical-analysis" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('How to create a technical analysis?') %></a>
+              <a href="/resources/manage-assets" class="FAQ pl-1 mb-1 bg-hover font-16"><%= __('Learn how to manage your assets') %></a>
             </div>
           </div>
 

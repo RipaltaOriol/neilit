@@ -2,7 +2,7 @@
 
   <!-- CONTENT -->
   <div class="mx-2 mx-lg-4">
-    <section class="backtest">
+    <section class="backtest mx-auto">
       <div class="container">
         <h2 class="mx-auto"><%= __('Backtest') %></h2>
         <div class="journal-box px-0 py-3">
@@ -22,7 +22,7 @@
                   <tbody class="text-center">
                     <% dataList.forEach((backtest) => { %>
                       <tr onclick="document.location = '/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>'">
-                        <td class="text-left"><%= backtest.created_at.toLocaleDateString(currentUser.language, options) %></td>
+                        <td class="px-2 text-left"><%= backtest.created_at.toLocaleDateString(currentUser.language, options) %></td>
                         <td><%= backtest.result %></td>
                         <% if (backtest.pair != null) { %>
                           <td><span class="pill pill-yellow"><%= backtest.pair %></span></td>
@@ -51,7 +51,7 @@
               </div>
             </div>
           <% } else { %>
-            <p class="text-center placeholder-journal"><%= __('No entries created yet') %></p>
+            <p class="mt-3 text-center placeholder-journal"><%= __('No entries created yet') %></p>
             <br>
           <% } %>
           <hr>
@@ -119,15 +119,15 @@
                             <span class="checkmark"></span>
                           </label>
                         </ol>
-                        <% for (let [key, value] of currencies) { %>
-                          <ol class="<%= value.id %>">
+                        <% Object.keys(currencies).forEach((key) => { %>
+                          <ol class="<%= currencies[key].id %>">
                             <label class="checkbox-orange d-inline">
                               <%= key %>
                               <input type="checkbox" name="pair" value="<%= key %>">
                               <span class="checkmark"></span>
                             </label>
                           </ol>
-                        <% } %>
+                        <% }) %>
                       </ul>
                     </div>
                   </span>
