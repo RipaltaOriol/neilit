@@ -13,9 +13,10 @@ var imageTA     = require('../models/elements/image');
 var strategyTA  = require('../models/elements/strategy');
 
 module.exports.index = (req, res) => {
-  var getTAs = 'SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at DESC LIMIT 25;';
+  var getTAs = 'SELECT ta.id, created_at, pair, last_update FROM tanalysis ta JOIN pairs p ON ta.pair_id = p.id WHERE ta.user_id = ? ORDER BY created_at DESC LIMIT 25;';
   db.query(getTAs, req.user.id, (err, results) => {
     if (err) {
+      console.log(err);
       // COMBAK: log error
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
@@ -24,7 +25,7 @@ module.exports.index = (req, res) => {
       {
         dataList: results,
         options: { year: 'numeric', month: 'long', day: 'numeric' },
-        currencies: pairs,
+        currencies: req.session.assets,
         categories: categories
       }
     )
@@ -54,7 +55,7 @@ module.exports.filter = (req, res) => {
   if (req.body.create) { createFilter = '&& created_at >= ' + req.body.create + ' >= created_at' }
   if (req.body.edit) { editFilter = '&& last_update >= ' + req.body.edit + ' >= last_update' }
   var getTAs = `SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id
-    WHERE user_id = ? && (${req.body.pairs}) && (${req.body.categories}) ${editFilter} ${createFilter} ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
+    WHERE tanalysis.user_id = ? && (${req.body.pairs}) && (${req.body.categories}) ${editFilter} ${createFilter} ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
   db.query(getTAs, req.user.id, (err, results) => {
     if (err) {
       console.log(err);
@@ -82,7 +83,7 @@ module.exports.renderNewForm = (req, res) => {
   }
   res.render("user/journal/ta/new",
     {
-      currencies: pairs,
+      currencies: req.session.assets,
       elements: elements
     }
   );
@@ -388,7 +389,7 @@ module.exports.renderEditForm = (req, res) => {
       })
       res.render("user/journal/ta/edit",
         {
-          currencies: pairs,
+          currencies: req.session.assets,
           elements: elements,
           taInfo: results[0],
           taContent: elementsHtml,
@@ -580,7 +581,6 @@ module.exports.updateTechnicalAnalysis = (req, res) => {
             return res.redirect("/" + req.user.username + "/journal/ta");
           })
         } else {
-          console.log('The TA content was empty');
           return res.redirect("/" + req.user.username + "/journal/ta");
         }
       })

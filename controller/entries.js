@@ -34,7 +34,7 @@ module.exports.index = (req, res) => {
       {
         dataList: results,
         options: { year: 'numeric', month: 'long', day: 'numeric' },
-        currencies: pairs,
+        currencies: req.session.assets,
         categories: categories,
       }
     );
@@ -106,7 +106,7 @@ module.exports.renderNewForm = (req, res) => {
       res.render("user/journal/entry/new",
         {
           currency: result[0].currency,
-          currencies: pairs,
+          currencies: req.session.assets,
           technicalAnalysis: taInfo,
           options: { year: 'numeric', month: 'long', day: 'numeric' }
         }
@@ -204,27 +204,46 @@ module.exports.createEntry = async (req, res) => {
         newEntry.profits = req.body.profits;
       } else {
         var getTradingPair = await query('SELECT pair FROM pairs WHERE id = ?', req.body.pair)
-        var getBase = await query('SELECT currency FROM currencies WHERE id = ?', req.user.currency_id)
-        var quote = getTradingPair[0].pair.split('/')[1];
-        var lotSize = (quote === 'JPY') ? 1000 : 100000;
-        await fetch(`https://api.exchangeratesapi.io/latest?base=${quote}`)
-        .then(res => res.json())
-        .then((data) => {
-          var entryAmount;
-          if (req.body.direction == 1) {
-            entryAmount = Math.round(((req.body.closePrice - req.body.entryPrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
-          } else {
-            entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
-          }
-          newEntry.profits = data["rates"][getBase[0].currency] * entryAmount;
-        })
-        .catch((err) => {
-          if (err) {
-            // COMBAK: log error
-            req.flash('error', res.__('Something went wrong, please try again later.'))
-            return res.redirect('/' + req.user.username + "/journal/entry");
-          }
-        })
+        if (req.session.assets[getTradingPair[0].pair].rate) {
+          var quote = getTradingPair[0].pair.split('/')[1];
+          var getBase = await query('SELECT currency FROM currencies WHERE id = ?', req.user.currency_id)
+          await fetch(`https://api.exchangeratesapi.io/latest?base=${quote}`)
+          .then(res => res.json())
+          .then((data) => {
+            switch (req.session.assets[getTradingPair[0].pair].category) {
+              case 'Forex':
+                var lotSize = (quote === 'JPY') ? 1000 : 100000;
+                var entryAmount;
+                if (req.body.direction == 1) {
+                  entryAmount = Math.round(((req.body.closePrice - req.body.entryPrice) * Number(req.body.size) * lotSize + Number.EPSILON) * 100) / 100;
+                } else {
+                  entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) * lotSize + Number.EPSILON) * 100) / 100;
+                }
+                newEntry.profits = data["rates"][getBase[0].currency] * entryAmount;
+                break;
+              case 'Crypto':
+                var base = getTradingPair[0].pair.split('/')[1];
+                var entryAmount
+                if (req.body.direction == 1) {
+                  entryAmount = Math.round(((req.body.closePrice - req.body.entryPrice) * Number(req.body.size) + Number.EPSILON) * 100) / 100;
+                } else {
+                  entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) + Number.EPSILON) * 100) / 100;
+                }
+                newEntry.profits = data["rates"][getBase[0].currency] * entryAmount
+                break;
+            }
+          })
+          .catch((err) => {
+            if (err) {
+              // COMBAK: log error
+              req.flash('error', res.__('Something went wrong, please try again later.'))
+              return res.redirect('/' + req.user.username + "/journal/entry");
+            }
+          })
+        } else {
+          req.flash('error', res.__('We don\'t have the rate for this asset. Please, introduce your profits.'))
+          return res.redirect('/' + req.user.username + "/journal/entry/new");
+        }
       }
     }
     // saves the entry to the DB
@@ -309,7 +328,7 @@ module.exports.renderEditForm = (req, res) => {
         res.render("user/journal/entry/edit",
           {
             currency: result[0].currency,
-            currencies: pairs,
+            currencies: req.session.assets,
             entryInfo: entryInfo[0],
             technicalAnalysis: taInfo,
             options: { year: 'numeric', month: 'long', day: 'numeric' }
@@ -409,28 +428,54 @@ module.exports.updateEntry = async (req, res) => {
         newEntry.profits = req.body.profits;
       } else {
         var getTradingPair = await query('SELECT pair FROM pairs WHERE id = ?', req.body.pair)
-        var getBase = await query('SELECT currency FROM currencies WHERE id = ?', req.user.currency_id)
-        var quote = getTradingPair[0].pair.split('/')[1];
-        var lotSize = (quote === 'JPY') ? 1000 : 100000;
-        await fetch(`https://api.exchangeratesapi.io/latest?base=${quote}`)
-        .then(res => res.json())
-        .then((data) => {
-          var entryAmount;
-          if (req.body.direction == 1) {
-            entryAmount = Math.round(((req.body.closePrice - req.body.entryPrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
-          } else {
-            entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) * 100000 + Number.EPSILON) * 100) / 100;
-          }
-          newEntry.profits = data["rates"][getBase[0].currency] * entryAmount;
-        })
-        .catch((err) => {
-          if (err) {
-            // COMBAK: log error
-            req.flash('error', res.__('Something went wrong, please try again later.'))
-            return res.redirect('/' + req.user.username + "/journal/entry");
-          }
-        })
+        if (req.session.assets[getTradingPair[0].pair].rate) {
+          var quote = getTradingPair[0].pair.split('/')[1];
+          var getBase = await query('SELECT currency FROM currencies WHERE id = ?', req.user.currency_id)
+          await fetch(`https://api.exchangeratesapi.io/latest?base=${quote}`)
+          .then(res => res.json())
+          .then((data) => {
+            switch (req.session.assets[getTradingPair[0].pair].category) {
+              case 'Forex':
+                var lotSize = (quote === 'JPY') ? 1000 : 100000;
+                var entryAmount;
+                if (req.body.direction == 1) {
+                  entryAmount = Math.round(((req.body.closePrice - req.body.entryPrice) * Number(req.body.size) * lotSize + Number.EPSILON) * 100) / 100;
+                } else {
+                  entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) * lotSize + Number.EPSILON) * 100) / 100;
+                }
+                newEntry.profits = data["rates"][getBase[0].currency] * entryAmount;
+                break;
+              case 'Crypto':
+                var base = getTradingPair[0].pair.split('/')[1];
+                var entryAmount
+                if (req.body.direction == 1) {
+                  entryAmount = Math.round(((req.body.closePrice - req.body.entryPrice) * Number(req.body.size) + Number.EPSILON) * 100) / 100;
+                } else {
+                  entryAmount = Math.round(((req.body.entryPrice - req.body.closePrice) * Number(req.body.size) + Number.EPSILON) * 100) / 100;
+                }
+                newEntry.profits = data["rates"][getBase[0].currency] * entryAmount
+                break;
+            }
+          })
+          .catch((err) => {
+            if (err) {
+              // COMBAK: log error
+              req.flash('error', res.__('Something went wrong, please try again later.'))
+              return res.redirect('/' + req.user.username + "/journal/entry");
+            }
+          })
+        } else {
+          req.flash('error', res.__('We don\'t have the rate for this asset. Please, introduce your profits.'))
+          return res.redirect('/' + req.user.username + "/journal/entry/" + req.params.id + "/edit");
+        }
       }
+    } else {
+      newEntry.status = 0;
+      newEntry.exit_dt = null;
+      newEntry.exit_price = null;
+      newEntry.profits = null;
+      newEntry.fees = null;
+      newEntry.result = null;
     }
     // updated the entry on the DB
     db.query('UPDATE entries SET ? WHERE id = ?', [newEntry, req.params.id], (err, response) => {

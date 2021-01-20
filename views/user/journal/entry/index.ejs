@@ -13,7 +13,7 @@
                 <tbody>
                   <% dataList.forEach((entry) => { %>
                     <tr onclick="document.location = '/<%= currentUser.username %>/journal/entry/<%= entry.id %>'">
-                      <td class="orange"><%= entry.pair %></td>
+                      <td class="px-2 orange"><%= entry.pair %></td>
                       <td class="orange text-center"><%= entry.entry_dt.toLocaleDateString(currentUser.language, options) %></td>
                       <td class="text-center">
                         <% if (entry.status) { %>
@@ -28,8 +28,8 @@
                           <img src="/imgs/icons/open-ops.svg" class="simple-img">
                         <% } %>
                       </td>
-                      <td><%= entry.strategy %></td>
-                      <td><%= entry.timeframe %></td>
+                      <td class="px-3"><%= entry.strategy %></td>
+                      <td class="px-3"><%= entry.timeframe %></td>
                   <% }) %>
                 </tbody>
               </table>
@@ -41,7 +41,7 @@
             </div>
           </div>
         <% } else { %>
-          <p class="text-center placeholder-journal"><%= __('No entries created yet') %></p>
+          <p class="text-center placeholder-journal mt-3"><%= __('No entries created yet') %></p>
           <br>
         <% } %>
         <hr>
@@ -90,15 +90,15 @@
                           <span class="checkmark"></span>
                         </label>
                       </ol>
-                      <% for (let [key, value] of currencies) { %>
-                        <ol class="<%= value.id %>">
+                      <% Object.keys(currencies).forEach((key) => { %>
+                        <ol class="<%= currencies[key].id %>">
                           <label class="checkbox-orange d-inline">
                             <%= key %>
                             <input type="checkbox" name="pair" value="<%= key %>">
                             <span class="checkmark"></span>
                           </label>
                         </ol>
-                      <% } %>
+                      <% }) %>
                     </ul>
                   </div>
                 </span>

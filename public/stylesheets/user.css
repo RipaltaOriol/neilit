@@ -68,6 +68,12 @@ a { }
 }
 
 /* || Utility */
+.placeholder-dashboard {
+  margin: 0px auto;
+  color: var(--red-strong);
+}
+
+/* || Utility */
 .grey {
   color: var(--text-grey);
 }

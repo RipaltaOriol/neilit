@@ -344,7 +344,7 @@ function cleanModal() {
   if (backtest.pair != null) {
     $('.pair').text(backtest.pair)
   } else {
-    $('.pair').text(currencies[0][0])
+    $('.pair').text(Object.keys(currencies)[0])
   }
   $('#row-result').val('')
   if (backtest.strategy != null) {
@@ -530,7 +530,6 @@ function deleteRow(id) {
 // retrieves the data from the backtest table
 function retrieveData() {
   serverData.data = []
-  serverData.addons = []
   var rows = $('tbody tr')
   for (var i = 0; i < rows.length; i++) {
     serverData.data.push([])
@@ -542,7 +541,7 @@ function retrieveData() {
     serverData.data[i].push(parseInt(rows[i].getElementsByTagName('td')[4].classList[0]));
     serverData.data[i].push(parseInt(rows[i].getElementsByTagName('td')[5].classList[0]));
     for (var y = 0; y < addons.length; y++) {
-      serverData.addons.push([y + 1, parseInt(rows[i].getElementsByTagName('td')[6 + y].classList[0]), backtest.id])
+      serverData.data[i].push(rows[i].getElementsByTagName('td')[6 + y].innerText);
     }
   }
 }

@@ -17,9 +17,9 @@
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                 <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                <% for (let [key, value] of currencies) { %>
-                  <li class="<%= value.id %>"><%= key %></li>
-                <% } %>
+                <% Object.keys(currencies).forEach((key) => { %>
+                  <li class="<%= currencies[key].id %>"><%= key %></li>
+                <% }) %>
               </ul>
             </div>
           </span>
@@ -64,9 +64,9 @@
 
   <!-- FIX: only use what's necessary -->
   <script>
-    var language = <%- JSON.stringify(currentUser.language) %>;
-    var currencies = <%- JSON.stringify(Array.from(currencies.entries())) %>;
-    var elements   = <%- JSON.stringify(elements) %>;
+    var language    = <%- JSON.stringify(currentUser.language) %>;
+    var currencies  = <%- JSON.stringify(currencies) %>;
+    var elements    = <%- JSON.stringify(elements) %>;
   </script>
 
   <!-- JQUERY -->

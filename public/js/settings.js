@@ -17,9 +17,19 @@ function isLoading(bool) {
 
 // stores the goals's HTML to a variable
 var begGoal = `<li class="mt-2 py-0 font-16 goal-li">
-    <input type="text" value="`;
-var endGoal = `" class="goal" readonly>
+    <span class="goal">`;
+var endGoal = `</span>
     <button type="button" class="float-right goal-delete" onclick="deleteGoal(this)">
+      <img class="icon-20" src="/imgs/icons/delete.svg">
+    </button>
+  </li>
+  `;
+
+// stores the asset's HTML to a variable
+var begAsset = `<li class="mt-2 py-0 font-16 asset-li">
+    <span class="asset-name">`;
+var endAsset = `</span>
+    <button type="button" class="float-right asset-delete" onclick="deleteAsset(this)">
       <img class="icon-20" src="/imgs/icons/delete.svg">
     </button>
   </li>
@@ -37,7 +47,7 @@ function deleteGoal(id) {
   var deleteList = $('.goal-delete');
   var current = deleteList.index(id);
   var deleteGoal = $('.goal-li')[current]
-  var currentGoal = $('.goal')[current].value
+  var currentGoal = $('.goal')[current].innerText
   // deletes the goal from the server
   var data = {goal: currentGoal}
   $.post('/' + username + '/settings/deleteGoal', data)
@@ -48,7 +58,7 @@ function deleteGoal(id) {
     .fail(() => {
     // error
   })
-};
+}
 
 
 // adds a goal
@@ -75,8 +85,8 @@ $("#addGoal").keypress(function(event) {
 
 // stores the strategy's HTML to a variable
 var begStrategy = `<li class="mt-2 py-0 strategy-li">
-    <input type="text" value="`;
-var endStrategy = `" class="strategy" readonly>
+    <span class="strategy">`;
+var endStrategy = `</span>
     <button type="button" class="float-right strategy-delete" onclick="deleteStrategy(this)">
       <img class="icon-20" src="/imgs/icons/delete.svg">
     </button>
@@ -88,7 +98,7 @@ function deleteStrategy(id) {
   var deleteList = $('.strategy-delete');
   var current = deleteList.index(id);
   var deleteStrategy = $('.strategy-li')[current]
-  var currentStrategy = $('.strategy')[current].value
+  var currentStrategy = $('.strategy')[current].innerText
   // deletes the strategy from the server
   var data = {strategy: currentStrategy}
   isLoading(true);
@@ -186,6 +196,34 @@ $('#dark').change(() => {
   })
 });
 
+// changes forex assets inclusion
+$('#forex').change(() => {
+  var changeMode = $('#forex').is(':checked') ? '1' : '0'
+  // adds mode changes to the server
+  var data = {type: 'Forex', mode: changeMode}
+  $.post('/' + username + '/settings/toggleAssets', data)
+    .done((data) => {
+  })
+    .fail(() => {
+    // error
+  })
+});
+
+// changes cyrpto assets inclusion
+$('#crypto').change(() => {
+  var changeMode = $('#crypto').is(':checked') ? '1' : '0'
+  console.log(changeMode);
+  // adds mode changes to the server
+  var data = {type: 'Crypto', mode: changeMode}
+  $.post('/' + username + '/settings/toggleAssets', data)
+    .done((data) => {
+      // sucess
+  })
+    .fail(() => {
+    // error
+  })
+});
+
 // changes the account's language
 function changeLanguage(lang) {
   var data = {lang: lang}
@@ -193,6 +231,66 @@ function changeLanguage(lang) {
     .done((data) => {
       window.localStorage.setItem('mode', '1');
       location.reload();
+  })
+    .fail(() => {
+    // error
+  })
+}
+
+// changes the asset category dropdown
+$('.dropdown-menu.cateogry li').on('click', function() {
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  if ($('.dropdown-select')[current]) {
+    $('.dropdown-select')[current].innerHTML = getValue;
+  }
+});
+
+// creates a new asset
+$('#create-asset').click(() => {
+  if ($('#asset-name').val() != '') {
+    var newAsset = $('#asset-name').val();
+    var data = {
+      category: $('.asset')[0].innerText,
+      pair: $('#asset-name').val()
+    }
+    isLoading(true);
+    $('#asset-name').val('')
+    $.post('/' + username + '/settings/addAsset', data)
+      .done((data) => {
+        isLoading(false);
+        console.log(data);
+        switch (data.response) {
+          case 'success':
+            // adds the new asset to the client
+            $("#listAsets").append(begAsset + newAsset + endAsset);
+            break;
+          case 'error':
+            $('#error-alert').removeClass('d-none')
+            $('#error-text span').text(data.message)
+            window.scrollTo(0, 0);
+            break;
+        }
+    })
+      .fail(() => {
+      // error
+    })
+  }
+})
+
+// deletes an asset
+function deleteAsset(id) {
+  var deleteList = $('.asset-delete');
+  var current = deleteList.index(id);
+  var deleteAsset = $('.asset-li')[current]
+  var currentAsset = $('.asset-name')[current].innerText
+  // deletes the asset from the server
+  var data = {asset: currentAsset}
+  $.post('/' + username + '/settings/deleteAsset', data)
+    .done((data) => {
+    // deletes the asset from the client
+    deleteAsset.remove();
   })
     .fail(() => {
     // error

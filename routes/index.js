@@ -6,11 +6,13 @@ let middleware  = require('../middleware/home');
 
 router.get("/", index.renderHome);
 
-router.get("/logo", index.renderLogo);
-
 router.get("/features", index.renderFeatures)
 
 router.get("/pricing", index.renderPricing)
+
+router.get("/assets/crypto", index.renderAssetsCrypto)
+
+router.get("/assets/forex", index.renderAssetsForex)
 
 router.get("/resources", index.renderResources)
 

@@ -11,23 +11,23 @@
             <h5><%= __('Specific') %></h5>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Pair') %>:</label>
-              <input type="text" name="pair" value="1" class="dropdown-server d-none">
+              <input type="text" name="pair" value="<%= currencies[Object.keys(currencies)[0]].id %>" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
-                  <%= currencies.keys().next().value %>
+                  <%= Object.keys(currencies)[0] %>
                 </button>
-                <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+                <ul id="dropdown-items" class="dropdown-menu dropdown-asset" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                  <% for (let [key, value] of currencies) { %>
-                    <li class="<%= value.id %>"><%= key %></li>
-                  <% } %>
+                  <% Object.keys(currencies).forEach((key) => { %>
+                    <li class="<%= currencies[key].id %>"><%= key %></li>
+                  <% }) %>
                 </ul>
               </div>
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Category') %>:</label>
-              <input type="text" class="form-input orange p-1 px-2" name="category" value="Forex" readonly>
+              <input id="category" type="text" class="form-input orange p-1 px-2" name="category" value="<%= currencies[Object.keys(currencies)[0]].category %>" readonly>
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Strategy') %>:</label>
@@ -190,10 +190,10 @@
             <input type="number" class="form-control form-input p-1 px-2" name="closePrice" min="0" step="0.00001">
           </span>
           <span class="input-group mb-2">
-            <label class="my-auto"><%= __('Profits') %>:</label>
+            <label class="mandatory my-auto"><%= __('Profits') %>:</label>
             <input type="number" class="form-control form-input p-1 px-2" name="profits" placeholder="<%= __('In account\'s currency') %>: <%= __(currency) %>" step="0.0001">
             <span class="ml-2 my-auto">
-              <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('In case of leaving this field blank, Neilit will calculate the profits of the operation for you.') %>'">
+              <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="right" title="<%= __('In case of leaving this field blank and Neilit has access to its rate, we will calculate the profits of the operation for you.') %>">
             </span>
           </span>
           <span class="input-group mb-2">
@@ -201,7 +201,7 @@
             <input type="number" class="form-control form-input px-2" placeholder="<%= __('In account\'s currency') %>: <%= __(currency) %>" name="fees" step="0.01">
           </span>
           <span class="mb-2 d-block">
-            <label class="mandatory mr-1"><%= __('Results') %>:</label>
+            <label class="mandatory"><%= __('Results') %>:</label>
             <input type="text" name="result" value="win" class="dropdown-server d-none">
             <div class="dropdown d-inline">
               <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
@@ -236,6 +236,7 @@
 
 <script type="text/javascript">
   var language          = <%- JSON.stringify(currentUser.language) %>;
+  var currencies        = <%- JSON.stringify(currencies) %>;
   var technicalAnalysis = <%- JSON.stringify(technicalAnalysis) %>;
   var options           = <%- JSON.stringify(options) %>;
 </script>

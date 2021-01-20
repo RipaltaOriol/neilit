@@ -26,7 +26,7 @@ module.exports.index = (req, res) => {
       {
         dataList: results,
         options: { year: 'numeric', month: 'long', day: 'numeric' },
-        currencies: pairs
+        currencies: req.session.assets
       }
     );
   })
@@ -89,7 +89,7 @@ module.exports.renderNewForm = (req, res) => {
   }
   res.render("user/journal/backtest/new",
     {
-      currencies: pairs,
+      currencies: req.session.assets,
       addons: addons
     }
   )
@@ -122,13 +122,14 @@ module.exports.createBacktest = (req, res) => {
     // stores the principal backtest parametes into the DB
     db.query('INSERT INTO backtest SET ?', newBacktest, (err, backtestId) => {
       if (err) {
+        console.log(err);
         // COMBAK: log error
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest/new');
       }
       var backtest_id = backtestId.insertId;
       if ('varName' in req.body) {
-        var addAddons = 'INSERT INTO backtest_addons (backtest_id, description, is_integers, option1, option2, option3, option4, option5, option6) VALUES ?'
+        var addAddons = 'INSERT INTO backtest_addons (backtest_id, which_addon, description, is_integers, option1, option2, option3, option4, option5, option6) VALUES ?'
         // creates an object with the new backtest addons variables
         var newAddons = []
         var counterAddon = 0;
@@ -139,7 +140,7 @@ module.exports.createBacktest = (req, res) => {
               req.flash('error', res.__('The addons\' title cannot be blank.'))
               return res.redirect('/' + req.user.username + '/journal/backtest/new');
             }
-            var addon = [backtest_id, req.body.varName[i], req.body.intList[i]]
+            var addon = [backtest_id, i + 1, req.body.varName[i], req.body.intList[i]]
             // configures an integers value addon
             if (req.body.intList[i] == 1) {
               addon.push(null, null, null, null, null, null)
@@ -198,6 +199,7 @@ module.exports.createBacktest = (req, res) => {
         // stores the backtest addons into the DB
         db.query(addAddons, [newAddons], (err, complete) => {
           if (err) {
+            console.log(err);
             // COMBAK: log error
             req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username + '/journal/backtest');
@@ -220,19 +222,12 @@ module.exports.showBacktest = (req, res) => {
     WHERE b.id = ? AND b.user_id = ?;`;
   var getAddons = 'SELECT * FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
   var getData = `SELECT identifier, direction, result, pair, timeframe, strategy,
-       MAX(CASE WHEN backtest_addons_id = '1' THEN addon_value END) addon1,
-       MAX(CASE WHEN backtest_addons_id = '2' THEN addon_value END) addon2,
-       MAX(CASE WHEN backtest_addons_id = '3' THEN addon_value END) addon3,
-       MAX(CASE WHEN backtest_addons_id = '4' THEN addon_value END) addon4,
-       MAX(CASE WHEN backtest_addons_id = '5' THEN addon_value END) addon5,
-       MAX(CASE WHEN backtest_addons_id = '6' THEN addon_value END) addon6
-       FROM backtest_addons_data bad
-    RIGHT JOIN backtest_data bd on bad.backtest_data_id = bd.id
+        addon1, addon2, addon3, addon4, addon5, addon6
+       FROM backtest_data bd
     LEFT JOIN pairs p on bd.pair_id = p.id
     LEFT JOIN timeframes t on bd.timeframe_id = t.id
     LEFT JOIN strategies s on s.id = bd.strategy_id
-    WHERE bd.backtest_id = ?
-    GROUP BY identifier, direction, direction, result, pair, timeframe, strategy;`
+    WHERE bd.backtest_id = ?;`
   db.query(getBacktest, [req.params.id, req.user.id], (err, backtestInfo) => {
     if (err) {
       // COMBAK: log error
@@ -275,19 +270,12 @@ module.exports.renderEditForm = (req, res) => {
     WHERE b.id = ? AND b.user_id = ?;`
   var getAddons = 'SELECT * FROM backtest_addons WHERE backtest_id = ? ORDER BY id;'
   var getData = `SELECT bd.id, identifier, direction, result, pair, pair_id, timeframe, strategy,
-       MAX(CASE WHEN backtest_addons_id = '1' THEN addon_value END) addon1,
-       MAX(CASE WHEN backtest_addons_id = '2' THEN addon_value END) addon2,
-       MAX(CASE WHEN backtest_addons_id = '3' THEN addon_value END) addon3,
-       MAX(CASE WHEN backtest_addons_id = '4' THEN addon_value END) addon4,
-       MAX(CASE WHEN backtest_addons_id = '5' THEN addon_value END) addon5,
-       MAX(CASE WHEN backtest_addons_id = '6' THEN addon_value END) addon6
-       FROM backtest_addons_data bad
-    RIGHT JOIN backtest_data bd on bad.backtest_data_id = bd.id
+        addon1, addon2, addon3, addon4, addon5, addon6
+       FROM backtest_data bd
     LEFT JOIN pairs p on bd.pair_id = p.id
     LEFT JOIN timeframes t on bd.timeframe_id = t.id
     LEFT JOIN strategies s on s.id = bd.strategy_id
-    WHERE bd.backtest_id = ?
-    GROUP BY bd.id, identifier, direction, direction, result, pair, pair_id, timeframe, strategy;`
+    WHERE bd.backtest_id = ?;`
   db.query(getBacktest, [req.params.id, req.user.id], (err, backtestInfo) => {
     if (err) {
       console.log(err);
@@ -304,13 +292,14 @@ module.exports.renderEditForm = (req, res) => {
       }
       db.query(getData, backtestInfo[0].id, (err, backtestData) => {
         if (err) {
+          console.log(err);
           // COMBAK: log error
           req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username + '/journal/backtest');
         }
         res.render("user/journal/backtest/edit",
           {
-            currencies: pairs,
+            currencies: req.session.assets,
             backtest: backtestInfo[0],
             addons: backtestAddons,
             data: backtestData,
@@ -326,24 +315,17 @@ module.exports.updateBacktest = (req, res) => {
   var parseData = JSON.parse(req.body.serverData);
   (async () => {
     try {
+      var getAddonsNumber = await query(`SELECT id FROM backtest_addons WHERE backtest_id = ?`, req.params.id)
+      var dataAddons = ''
+      for (var i = 0; i < getAddonsNumber.length; i++) {
+        dataAddons += ', addon' + (1 + i)
+      }
+      var deleteData = await query('DELETE FROM backtest_data WHERE backtest_id = ?', req.params.id)
       if (parseData.data.length > 0) {
         parseData.data.forEach((row) => {
-          row[4] = pairs.get(row[4]).id
+          row[4] = req.session.assets[row[4]].id
         })
-        var deleteAddonsData = await query('DELETE FROM backtest_addons_data WHERE backtest_id = ?', req.params.id)
-        var deleteData = await query('DELETE FROM backtest_data WHERE backtest_id = ?', req.params.id)
-        var addData = await query('INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id) VALUES ?', [parseData.data])
-        var getNewIDs = await query('SELECT id FROM backtest_data WHERE backtest_id = ? ORDER BY id ASC', req.params.id)
-        if (parseData.addons.length > 0) {
-          var setAddons = parseData.addons.length / results.length
-          for (var i = 0; i < parseData.addons.length; i = i + setAddons) {
-            var correspondingID = i / 6;
-            for (var y = i; y < i + setAddons; y++) {
-              parseData.addons[y].push(results[correspondingID].id)
-            }
-          }
-          var addAddonsData = await query('INSERT INTO backtest_addons_data (backtest_addons_id, addon_value, backtest_id, backtest_data_id) VALUES ?', [parseData.addons])
-        }
+        var addData = await query(`INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id${dataAddons}) VALUES ?`, [parseData.data])
       }
     } catch (e) {
       console.log(e);
@@ -359,13 +341,15 @@ module.exports.updateBacktest = (req, res) => {
 
 module.exports.deleteBacktest = (req, res) => {
   (async () => {
-    var deleteAddonsData = await query('DELETE FROM backtest_addons_data WHERE backtest_id = ?', req.params.id)
-    var deleteBacktestData = await query('DELETE FROM backtest_data WHERE backtest_id = ?', req.params.id)
-    var deleteAddons = await query('DELETE FROM backtest_addons WHERE backtest_id = ?', req.params.id)
-    var deleteBacktest = await query('DELETE FROM backtest WHERE id = ?', req.params.id)
-    req.flash('success', res.__('Backtest was deleted successfully.'))
-    res.redirect("/" + req.user.username + "/journal/backtest");
+    try {
+      var deleteBacktestData = await query('DELETE FROM backtest_data WHERE backtest_id = ?', req.params.id)
+      var deleteAddons = await query('DELETE FROM backtest_addons WHERE backtest_id = ?', req.params.id)
+      var deleteBacktest = await query('DELETE FROM backtest WHERE id = ?', req.params.id)
+    } catch (e) {
+      console.log(e);
+    } finally {
+      req.flash('success', res.__('Backtest was deleted successfully.'))
+      return res.redirect("/" + req.user.username + "/journal/backtest");
+    }
   })()
-
-
 }

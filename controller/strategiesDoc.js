@@ -8,7 +8,7 @@ let db = require('../models/dbConfig');
 const query = util.promisify(db.query).bind(db);
 
 module.exports.index = (req, res) => {
-  res.render('user/strategies/index', )
+  res.render('user/strategies/index')
 }
 
 module.exports.showStrategy = (req, res) => {

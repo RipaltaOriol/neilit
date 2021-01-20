@@ -23,10 +23,13 @@
             <input id="trade-size" class="d-block px-2 mb-2 w-100 py-1" type="number" min="0" placeholder="<%= __('Amount at risk') %>">
           </div>
           <br>
-          <h3 class="mx-3"><%= __('Trade information') %></h3>
+          <h3 class="mx-3">
+            <%= __('Trade information') %>
+            <img src="/imgs/icons/info.svg" class="info" data-toggle="tooltip" data-placement="right" title="<%= __('Use pips for Forex pairs and percentage (%) for any other asset.') %>">
+          </h3>
           <hr>
           <div class="mx-3">
-            <input id="sl-pip" class="d-block px-2 mb-2 w-100 py-1" type="number" min="0" placeholder="<%= __('Stop-Loss distance in Pips') %>">
+            <input id="sl-pip" class="d-block px-2 mb-2 w-100 py-1" type="number" min="0" placeholder="<%= __('Stop-Loss distance') %>">
           </div>
           <br>
           <h3 class="mx-3"><%= __('Asset') %></h3>
@@ -35,21 +38,14 @@
             <!--dropdown-->
             <div class="dropdown">
               <button id="dropdown-label" class="dropdown-select w-100 text-left py-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= currencies.keys().next().value %>
+                <%= Object.keys(currencies)[0] %>
               </button>
               <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                 <input id="dropdown-search" class="p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown()">
-                <% for (let [key, value] of currencies) { %>
+                <% Object.keys(currencies).forEach((key) => { %>
                   <li><%= key %></li>
-                <% } %>
+                <% }) %>
               </ul>
-            </div>
-            <div class="mt-3">
-              <button type="button" class="btn-inverted mb-1" onclick="changePair('EUR/USD')">EUR/USD</button>
-              <button type="button" class="btn-inverted mb-1" onclick="changePair('USD/JPY')">USD/JPY</button>
-              <button type="button" class="btn-inverted mb-1" onclick="changePair('GBP/USD')">GBP/USD</button>
-              <button type="button" class="btn-inverted mb-1" onclick="changePair('USD/CAD')">USD/CAD</button>
-              <button type="button" class="btn-inverted mb-1" onclick="changePair('AUD/USD')">AUD/USD</button>
             </div>
           </div>
           <br>

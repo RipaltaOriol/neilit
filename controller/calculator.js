@@ -6,6 +6,12 @@ let pairs = require('../models/pairs');
 let db    = require('../models/dbConfig');
 
 module.exports.convert = async (req, res) => {
+  if (!req.session.assets[req.body.pair].rate) {
+    return res.json({
+      status: 'error',
+      message: res.__('calculatorNoRate')
+    })
+  }
   if ((req.body.amount == '' || req.body.risk == '') && req.body.amount_risk == '') {
     return res.json({
       status: 'error',
@@ -22,9 +28,9 @@ module.exports.convert = async (req, res) => {
     req.body.amount_risk = (req.body.risk / 100) * req.body.amount
   }
 
-  let positionSize = req.body.amount_risk / req.body.stop_loss
-  switch (pairs.get(req.body.pair).category) {
+  switch (req.session.assets[req.body.pair].category) {
     case 'Forex':
+      let positionSize = req.body.amount_risk / req.body.stop_loss
       await fetch(`https://api.exchangeratesapi.io/latest?base=${req.body.account}`)
         .then(response => response.json())
         .then((data) => {
@@ -51,7 +57,21 @@ module.exports.convert = async (req, res) => {
         })
       break;
     case 'Crypto':
-
+      Promise.all([
+        fetch(`https://api.exchangeratesapi.io/latest?base=${req.body.account}`).then(value => value.json()),
+        fetch(`http://api.coinlayer.com/api/live?access_key=${process.env.COINLAYER_KEY}`).then(value => value.json())
+      ]).then((data) => {
+        // FIXME: this code only works for current cypto (all against USD)
+        var positionSize = req.body.amount_risk * data[0].rates[req.body.quote] / (req.body.stop_loss / 100)
+        return res.json({
+          status: 'success',
+          units: (positionSize / data[1].rates[req.body.base]).toFixed(8),
+          lots: 'N/A'
+        })
+      })
+      .catch((err) => {
+        // error
+      })
       break;
   }
 }

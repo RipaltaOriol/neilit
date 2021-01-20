@@ -1,0 +1,320 @@
+<%- include("../partials/header-home") %>
+
+<div>
+  <nav class="navbar d-none d-md-flex px-3">
+  <!-- email -->
+  <ul class="navbar-nav">
+    <li class="nav-item ml-2">
+      <p class="mb-0">
+        <img src="/imgs/icons/email.svg" alt="email">
+        info@neilit.com
+      </p>
+    </li>
+  </ul>
+  <!-- language -->
+   <ul class="navbar-nav">
+     <li class="nav-item">
+        <a data-toggle="modal" data-target=".modal-language-lg" class="cursor-pointer ml-4">
+          <img src="/imgs/icons/language.svg" alt="language">
+          <span><%= __('Language')%></span>
+        </a>
+        <!-- language modal -->
+        <div class="modal modal-language-lg fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content text-center">
+              <div class="modal-body py-2">
+                <form action="/language/en" method="POST">
+                  <button type="submit"><%= __('English')%></button>
+                </form>
+                <form action="/language/es" method="POST">
+                  <button type="submit"><%= __('Spanish')%></button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+   <!-- social media -->
+   <ul class="navbar-nav ml-auto">
+     <li class="nav-item social">
+       <p class="mb-0">
+         <!-- facebook -->
+         <!-- <img src="/imgs/icons/fb.svg" alt="facebook" class="ml-2"> -->
+         <!-- instagram -->
+         <!-- <img src="/imgs/icons/ig.svg" alt="instagram" class="ml-2"> -->
+         <!-- youtube -->
+         <!-- <img src="/imgs/icons/yt.svg" alt="youtube" class="ml-2"> -->
+         <!-- linkedin -->
+         <!-- <img src="/imgs/icons/linkedin.svg" alt="linkedin" class="ml-2"> -->
+         <!-- twitter -->
+         <!-- <img src="/imgs/icons/twitter.svg" alt="twitter" class="ml-2"> -->
+       </p>
+     </li>
+    </ul>
+  </nav>
+
+  <div class="sticky-top">
+    <p id="beta" class="mb-0"><strong><%= __('We are in BETA') %></strong></p>
+  </div>
+  <nav class="navbar navbar-expand-lg px-lg-4" id="sticky-nav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon">
+        <img class="icon-navbar" src="/imgs/icons/menu-orange.svg" alt="navbar">
+      </span>
+    </button>
+    <div class="collapse navbar-collapse mt-2 mt-lg-0 px-3 pb-3 p-lg-0" id="navbarLinks">
+      <ul class="navbar-nav">
+        <li class="nav-item mt-2 mt-lg-0 mr-lg-4">
+          <a href="/" class="btn-nav"><%= __('Home')%></a>
+        </li>
+        <li class="nav-item mt-2 mt-lg-0 mr-lg-4">
+          <a href="/features" class="btn-nav"><%= __('Features')%></a>
+        </li>
+        <li class="nav-item mt-2 mt-lg-0 mr-lg-4">
+          <a href="/pricing" class="btn-nav"><%= __('Pricing')%></a>
+        </li>
+        <li class="nav-item mt-2 mt-lg-0 mr-lg-4">
+          <a href="/resources" class="btn-nav"><%= __('Resources')%></a>
+        </li>
+      </ul>
+      <div class="ml-auto mt-3 mt-lg-0">
+        <!-- login -->
+        <a class="btn-neilit" href="/login">Login</a>
+        <!-- signup -->
+        <a class="btn-inverted ml-3" href="/signup">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="bg-sm-nav d-lg-none"></div>
+
+  <div class="py-5">
+    <div class="container">
+      <h1><%= __('Forex assets') %></h1>
+      <p>
+        <%= __('Here are our forex assets.') %>
+      </p>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/CAD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/CHF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/DKK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/HKD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/HUF</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/JPY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/MXN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/NZD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/PLN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/SEK</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/USD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">AUD/ZAR</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/CHF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/DKK</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/HKD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/HUF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/JPY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/MXN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/PLN</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/SEK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CAD/ZAR</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/DKK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/HKD</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/HUF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/JPY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/MXN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/PLN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/SEK</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/TRY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">CHF/ZAR</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/HKD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/HUF</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/MXN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/PLN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/SEK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">DKK/ZAR</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/AUD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/CAD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/CHF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/DKK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/GBP</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/HKD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/HUF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/JPY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/MXN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/NZD</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/PLN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/SEK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/TRY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/USD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">EUR/ZAR</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/AUD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/CAD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/CHF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/DKK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/HKD</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/HUF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/JPY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/MXN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/NZD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/PLN</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/SEK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/USD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">GBP/ZAR</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/DKK</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/HKD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/HUF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/MXN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/PLN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/SEK</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">JPY/ZAR</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NOK/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NOK/HKD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NOK/HUF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NOK/MXN</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NOK/PLN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NOK/SEK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NOK/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NOK/ZAR</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/CAD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/CHF</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/DKK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/HKD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/HUF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/JPY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/MXN</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/PLN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/SEK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/SGD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/USD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">NZD/ZAR</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/CAD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/CHF</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/CZK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/DKK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/HKD</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/HUF</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/JPY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/MXN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/NOK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/PLN</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/SEK</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/SGD</span>
+      </div>
+      <div class="row">
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/TRY</span>
+        <span class="col-6 col-sm-4 col-lg-2 font-20 orange text-center mb-2">USD/ZAR</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="mt-2 py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="logo">N</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-9 col-lg-5">
+        <span>
+          <%= __('value statement') %>
+        </span>
+        <div class="my-3">
+          <div class="footer-header"><%= __('Contact us') %>:</div>
+          <div>
+            <img class="mr-2" src="/imgs/icons/email-black.svg" alt="email">info@neilit.com
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-3 col-lg-3">
+        <ul class="pl-0">
+          <li><a href="/"><%= __('Home') %></a></li>
+          <li><a href="/features"><%= __('Features') %></a></li>
+          <li><a href="/pricing"><%= __('Pricing') %></a></li>
+          <li><a href="/resources"><%= __('Resources') %></a></li>
+        </ul>
+      </div>
+      <div class="col-12 col-sm-12 col-lg-4">
+        <span><%= ('Stay up to date on the latest from Neilit') %></span>
+        <!-- Begin Mailchimp Signup Form -->
+          <form action="https://neilit.us7.list-manage.com/subscribe/post?u=c948a8be82c0ef2a67a286794&amp;id=6b33ce7392" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+
+        	     <input type="email" value="" name="EMAIL" class="my-2 newsletter px-2" id="mce-EMAIL" placeholder="<%= ('Email address') %>" required>
+               <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+               <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_c948a8be82c0ef2a67a286794_6b33ce7392" tabindex="-1" value=""></div>
+               <div class="clear"><input type="submit" value="<%= __('Subscribe') %>" name="subscribe" id="mc-embedded-subscribe" class="btn-neilit py-1"></div>
+          </form>
+          <!--End mc_embed_signup-->
+      </div>
+    </div>
+    <div class="footer-bottom">
+      @2020 Neilit. All Rights Reseverd.
+    </div>
+  </div>
+</footer>
+
+<%- include("../partials/footer-home") %>

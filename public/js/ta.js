@@ -8,9 +8,6 @@ var taIndex6 = '</a></div></div>'
 var filterQuery;
 
 $(document).ready(function() {
-  if (typeof currencies !== 'undefined') {
-    currencies = Object.fromEntries(currencies);
-  }
   // redirects to notification page
   if (screen.width < 768) {
     window.location.replace("/mobile")
@@ -139,7 +136,7 @@ $('.dropdown-menu li').on('click', function() {
   var getValue = $(this).text();
   if ($('.dropdown-server')[current]) {
     $('.dropdown-server')[current].value = this.className;
-    $('#ta-category').val(currencies[($(this).text())].category)
+    $('#ta-category').val(currencies[getValue].category)
   }
   if ($('.dropdown-select')[current]) {
     $('.dropdown-select')[current].innerHTML = getValue;

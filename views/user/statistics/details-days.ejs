@@ -62,42 +62,26 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% daysOpenStats.forEach((day, i) => { %>
+                    <% daysTable.forEach((day, i) => { %>
                       <tr>
-                        <th scope="row" class="align-middle"><a href="#!" class="grey"><%= weekDays[i] %></a></th>
-                        <td><%= day.quantity %></td>
+                        <td><a href="#!" class="grey"><%= weekDays[i] %></a></td>
+                        <td><%= day.day %></td>
                         <td>
-                          <% if (day.quantity == 0) { %>
-                            0
+                          <% if (day.avg_return > 0) { %>
+                            <p class="mb-0 pill pill-green">
+                              <%= day.avg_return %>%
+                            </p>
                           <% } else { %>
-                            <% if (day.percent / day.quantity >= 0) { %>
-                              <p class="mb-0 pill pill-verde">
-                                <%= day.percent/day.quantity %>%
-                              </p>
-                            <% } else { %>
-                              <p class="mb-0 pill pill-roja">
-                                <%= day.percent/day.quantity %>%
-                              </p>
-                            <% } %>
+                            <p class="mb-0 pill pill-red">
+                              <%= day.avg_return %>%
+                            </p>
                           <% } %>
                         </td>
                         <td><%= day.win %></td>
                         <td><%= day.be %></td>
                         <td><%= day.loss %></td>
-                        <td>
-                          <% if (day.quantity > 0) { %>
-                            <%= Math.round(day.win / day.quantity * 10000) / 100 %>%
-                          <% } else { %>
-                            0%
-                          <% } %>
-                        </td>
-                        <td>
-                          <% if (!isNaN(day.expected)) { %>
-                            <%= Math.round(day.expected * 100) / 100 %>%
-                          <% } else { %>
-                            N/A
-                          <% } %>
-                        </td>
+                        <td><%= day.win_rate %></td>
+                        <td><%= day.expected_result %></td>
                       </tr>
                     <% }); %>
                   </tbody>
@@ -119,14 +103,23 @@
   </div>
 
 <script type="text/javascript">
-  var darkMode        = <%- JSON.stringify(currentUser.darkMode); %>
-  var language        = <%- JSON.stringify(currentUser.language); %>
-  var daysOpenStats   = <%- JSON.stringify(daysOpenStats); %>
-  var daysCloseStats  = <%- JSON.stringify(daysCloseStats); %>
-  var weekDays        = <%- JSON.stringify(weekDays); %>
+  var darkMode          = <%- JSON.stringify(currentUser.darkMode); %>
+  var language          = <%- JSON.stringify(currentUser.language); %>
+  var daysOutcomeEntry  = <%- JSON.stringify(daysOutcomeEntry); %>
+  var daysOutcomeExit   = <%- JSON.stringify(daysOutcomeExit); %>
+  var weekDays          = <%- JSON.stringify(weekDays); %>
 </script>
 
 <!-- <section> is inside partials -->
 </section>
+
+<!-- JQUERY -->
+<script type="text/javascript" src="/utilities/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/utilities/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/utilities/bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="/utilities/chart.js/Chart.js"></script>
+<script type="text/javascript" src="/utilities/chart.js/Chart.min.js"></script>
+<!-- LOCAL SCRIPTS -->
+<script type="text/javascript" src="/js/statistics/days.js" charset="utf-8"></script>
 
 <%- include("../../partials/footer-statistics-details") %>

@@ -158,6 +158,7 @@ function getCustom() {
 
 // sets biggest pair
 function setBiggest(data) {
+  console.log(data);
   $('#biggest-pair').html(data.pair);
   $('#biggest-percent').html(data.percent.toFixed(2) + '%');
 }
@@ -247,13 +248,28 @@ progressWeekPer(5);
 progressMonthPer(20);
 
 // makes API call to get exchange rate
-function getExchangeRate(base, target) {
+function getExchangeRate(base, target, hasRate, category) {
   return new Promise((resolve, reject) => {
-    fetch(`https://api.exchangeratesapi.io/latest?base=${base}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        resolve(data.rates[target])
-      })
+    if (hasRate) {
+      switch (category) {
+        case 'Forex':
+          fetch(`https://api.exchangeratesapi.io/latest?base=${base}`)
+          .then((resp) => resp.json())
+          .then((data) => {
+            resolve(data.rates[target])
+          })
+          break;
+        case 'Crypto':
+          fetch(`http://api.coinlayer.com/api/live?access_key=${key}`)
+          .then((resp) => resp.json())
+          .then((data) => {
+            resolve(data.rates[base])
+          })
+          break;
+      }
+    } else {
+      resolve(null)
+    }
   })
 }
 
@@ -261,9 +277,11 @@ function getExchangeRate(base, target) {
 function loadExchangeRates() {
   let rates = [];
   for (const ops in openOps) {
-    var base = openOps[ops].pair.substring(0, 3)
-    var target = openOps[ops].pair.substring(4,7)
-    rates.push(getExchangeRate(base, target))
+    var base = openOps[ops].pair.split('/')[0]
+    var target = openOps[ops].pair.split('/')[1]
+    var hasRate = openOps[ops].has_rate
+    var category = openOps[ops].category
+    rates.push(getExchangeRate(base, target, hasRate, category))
   }
   Promise.all(rates).then((allRatesData) => {
     renderRatesData(allRatesData);
@@ -275,19 +293,43 @@ function renderRatesData(rates) {
   var holdersList = $('.current-rate')
   var holdersProfitList = $('.current-profit')
   for (var i = 0; i < holdersList.length; i++) {
-    holdersList[i].innerHTML = rates[i]
-    var openProfit;
-    if (openOps[i].direction == 'long') {
-      openProfit = (rates[i] - openOps[i].entry_price) * openOps[i].size * 100000
+    if (rates[i] != null) {
+      holdersList[i].innerHTML = rates[i]
+      switch (openOps[i].category) {
+        case 'Forex':
+        var openProfit;
+        if (openOps[i].direction == 'long') {
+          openProfit = (rates[i] - openOps[i].entry_price) * openOps[i].size * 100000
+        } else {
+          openProfit = (openOps[i].entry_price - rates[i]) * openOps[i].size * 100000
+        }
+        openProfit = Math.round(openProfit * 100) / 100
+        var ticker = openOps[i].pair.split('/').pop()
+        if (openProfit < 0) {
+          holdersProfitList[i].innerHTML = '<span class="pill pill-red">' + openProfit + ' ' + ticker + '</span>'
+        } else {
+          holdersProfitList[i].innerHTML = '<span class="pill pill-green">' + openProfit + ' ' + ticker + '</span>'
+        }
+          break;
+        case 'Crypto':
+        var openProfit;
+        if (openOps[i].direction == 'long') {
+          openProfit = (rates[i] - openOps[i].entry_price) * openOps[i].size
+        } else {
+          openProfit = (openOps[i].entry_price - rates[i]) * openOps[i].size
+        }
+        openProfit = Math.round(openProfit * 100) / 100
+        var ticker = openOps[i].pair.split('/').pop()
+        if (openProfit < 0) {
+          holdersProfitList[i].innerHTML = '<span class="pill pill-red">' + openProfit + ' ' + ticker + '</span>'
+        } else {
+          holdersProfitList[i].innerHTML = '<span class="pill pill-green">' + openProfit + ' ' + ticker + '</span>'
+        }
+          break;
+      }
     } else {
-      openProfit = (openOps[i].entry_price - rates[i]) * openOps[i].size * 100000
-    }
-    openProfit = Math.round(openProfit * 100) / 100
-    var ticker = openOps[i].pair.split('/').pop()
-    if (openProfit < 0) {
-      holdersProfitList[i].innerHTML = '<span class="pill pill-red">' + openProfit + ' ' + ticker + '</span>'
-    } else {
-      holdersProfitList[i].innerHTML = '<span class="pill pill-green">' + openProfit + ' ' + ticker + '</span>'
+      holdersList[i].innerHTML = 'N/A'
+      holdersProfitList[i].innerHTML = 'N/A'
     }
   }
 }
@@ -297,7 +339,6 @@ if (ctx != null) {
   ctx.getContext('2d');
 }
 
-//Creamos una nueva variable y le pasamos el canvas que hemos seleccionado antes. También le pasaremos diversas funciones.
 var resultsChart = new Chart(ctx, {
   type: 'bar',
   data: {

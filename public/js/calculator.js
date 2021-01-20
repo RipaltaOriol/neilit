@@ -25,6 +25,7 @@ async function calcRisk(base) {
       case 'error':
         $('#ajax-error').removeClass('d-none')
         $('#ajax-error').html(data.message)
+        window.scrollTo(0, 0)
         break;
     case 'success':
       $('#units-size').html(data.units)
@@ -33,6 +34,7 @@ async function calcRisk(base) {
     }
   })
   .fail(() => {
+    // fail
   })
 }
 
@@ -45,11 +47,6 @@ $('.dropdown-menu li').on('click', function() {
     $('.dropdown-select')[current].innerHTML = getValue;
   }
 });
-
-// quick access to dropdown elements
-function changePair(pair) {
-  $('.dropdown-select')[0].innerHTML = pair;
-}
 
 // search bar for the dropdown
 function searchDropdown() {

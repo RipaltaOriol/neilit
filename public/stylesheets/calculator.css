@@ -62,6 +62,19 @@ button:disabled {
       margin-left: .25em;
   }
 
+.info {
+  width: 20px;
+  opacity: 0.5;
+  transition-duration: 0.25s;
+}
+  .info:hover {
+    opacity: 1;
+    transition-duration: 0.25s;
+  }
+  .dark-mode .info {
+    filter: invert();
+  }
+
 /* || Dropdown */
 .dropdown-menu {
   padding: 0;

@@ -47,8 +47,8 @@ module.exports.filter = (req, res) => {
   var editFilter = ''
   var addEntries = ''
   var addTA = ''
-  if (req.body.entries) { addEntries = 'UNION SELECT e.id, pair, entry_dt AS created_at, 2 AS type, comment, NULL AS last_update FROM entries e JOIN pairs p ON p.id = e.pair_id WHERE user_id = ?' }
-  if (req.body.ta) { addTA = 'UNION SELECT ta.id, pair, created_at, 3 AS type, NULL AS comment, last_update FROM tanalysis ta JOIN pairs p ON ta.pair_id = p.id WHERE user_id = ?' }
+  if (req.body.entries) { addEntries = 'UNION SELECT e.id, pair, entry_dt AS created_at, 2 AS type, comment, NULL AS last_update FROM entries e JOIN pairs p ON p.id = e.pair_id WHERE e.user_id = ?' }
+  if (req.body.ta) { addTA = 'UNION SELECT ta.id, pair, created_at, 3 AS type, NULL AS comment, last_update FROM tanalysis ta JOIN pairs p ON ta.pair_id = p.id WHERE ta.user_id = ?' }
   if (req.body.create) { createFilter = '&& created_at >= ' + req.body.create + ' >= created_at' }
   if (req.body.edit) { editFilter = '&& last_update >= ' + req.body.edit + ' >= last_update' }
   var getAllContent = `SELECT id, NULL AS pair, created_at, 1 AS type, comment, last_update FROM comments

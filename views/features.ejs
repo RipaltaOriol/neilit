@@ -187,9 +187,18 @@
 
   <div class="container">
     <hr class="mb-4">
+    <div class="container mb-5">
+      <div class="text-center">
+        <h2 class="text-dark"><%= __('Assets') %></h2>
+        <p class="subtitle-sm"><%= __('Add the assets you trade to your Neilit account. We allow user to create the own assets so you can still user them even if we don\'t have them. Lean how in') %> <a href="/resources/manage-assets" class="orange"><%= __('this post') %></a>.</p>
+        <p class="subtitle-sm"><%= __('Premade assets are also available to all users. We do offer both') %> <a href="/assets/crypto" class="orange">Crypto</a> <%= __('and') %> <a href="/assets/forex" class="orange">Forex</a> <%= __('pre-created pair ready to be added to your account.') %></p>
+      </div>
+    </div>
+
+    <hr class="mb-4">
     <div class="text-center">
       <h2 class="text-dark mb-4"><%= ('Monitor every step of your trading journey') %></h2>
-      <div class="row mb-5">
+      <div class="features-card row mb-5">
         <div class="col-10 col-md-6 col-lg-4 mx-auto mx-md-0 mb-4 mb-lg-0">
           <div class="card">
             <img src="/imgs/features-ta.png" class="card-img-top">
@@ -219,6 +228,7 @@
         </div>
       </div>
     </div>
+
     <div class="text-center">
       <h2 class="text-dark"><%= __('Get started today') %></h2>
       <span class="subtitle-sm d-block mb-3"><%= __('Becoming profitable is very simple if you know how') %></span>
