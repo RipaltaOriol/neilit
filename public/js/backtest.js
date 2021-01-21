@@ -551,6 +551,8 @@ if (updateBacktest != null) {
   updateBacktest.addEventListener('click', (e) => {
     $('#modal-loading').modal('show')
     retrieveData();
+    console.log(serverData);
+    console.log(JSON.stringify(serverData));
     $('#obj').val(JSON.stringify(serverData))
   })
 }

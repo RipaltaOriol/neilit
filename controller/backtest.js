@@ -313,7 +313,6 @@ module.exports.renderEditForm = (req, res) => {
 
 module.exports.updateBacktest = (req, res) => {
   var parseData = JSON.parse(req.body.serverData);
-  console.log(parseData);
   (async () => {
     try {
       var getAddonsNumber = await query(`SELECT id FROM backtest_addons WHERE backtest_id = ?`, req.params.id)
@@ -321,13 +320,11 @@ module.exports.updateBacktest = (req, res) => {
       for (var i = 0; i < getAddonsNumber.length; i++) {
         dataAddons += ', addon' + (1 + i)
       }
-      console.log('Data addons: ' + dataAddons);
       var deleteData = await query('DELETE FROM backtest_data WHERE backtest_id = ?', req.params.id)
       if (parseData.data.length > 0) {
         parseData.data.forEach((row) => {
           row[4] = req.session.assets[row[4]].id
         })
-        console.log('Data passed to backtest_data: ' + dataAddons);
         var addData = await query(`INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id${dataAddons}) VALUES ?`, [parseData.data])
       }
     } catch (e) {
