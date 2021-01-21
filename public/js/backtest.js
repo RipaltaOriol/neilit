@@ -454,7 +454,7 @@ function createRow() {
   indexCell.className = 'identifier';
   var directionCell = row.insertCell();
   directionCell.innerHTML = currentDirection;
-  if (currentDirection == 'Long' || currentDirection == 'Compra') {
+  if (currentDirection.trim() == 'Long' || currentDirection.trim() == 'Compra') {
     directionCell.classList = 'long'
   } else {
     directionCell.classList = 'short'
