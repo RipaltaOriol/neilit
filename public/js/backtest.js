@@ -550,11 +550,8 @@ function retrieveData() {
 if (updateBacktest != null) {
   updateBacktest.addEventListener('click', (e) => {
     $('#modal-loading').modal('show')
-    console.log('Starting to retrieve data');
     retrieveData();
-    console.log('Finish to retrieve data');
     $('#obj').val(JSON.stringify(serverData))
-    console.log('Sending data to the server');
   })
 }
 

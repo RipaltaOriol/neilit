@@ -312,6 +312,7 @@ module.exports.renderEditForm = (req, res) => {
 }
 
 module.exports.updateBacktest = (req, res) => {
+  console.log('Making it inside backend');
   var parseData = JSON.parse(req.body.serverData);
   (async () => {
     try {
