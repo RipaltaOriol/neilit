@@ -365,11 +365,11 @@ function cleanModal() {
 function editRow(id) {
   $('#create-row').hide();
   $('#update-row').show();
-  var rowDirection = $('.direction')[0];
-  var rowPair = $('.pair');
+  var rowDirection = $('.direction')[0]
+  var rowPair = $('.pair')[0]
   var rowResult = document.getElementById('row-result');
-  var rowStrategy = $('.strategy');
-  var rowTimeframe = $('.timeframe');
+  var rowStrategy = $('.strategy')[0]
+  var rowTimeframe = $('.timeframe')[0]
   var editList = $('.edit-row')
   var current = editList.index(id)
   document.getElementById('row-index').innerHTML = current + 1;
@@ -550,8 +550,11 @@ function retrieveData() {
 if (updateBacktest != null) {
   updateBacktest.addEventListener('click', (e) => {
     $('#modal-loading').modal('show')
+    console.log('Starting to retrieve data');
     retrieveData();
+    console.log('Finish to retrieve data');
     $('#obj').val(JSON.stringify(serverData))
+    console.log('Sending data to the server');
   })
 }
 
