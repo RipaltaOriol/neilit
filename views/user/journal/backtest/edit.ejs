@@ -3,7 +3,7 @@
   <!-- CONTENT -->
   <div class="backtest mx-auto mb-4">
     <div class="journal-box px-0">
-      <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=PUT" method="POST">
+      <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=PUT" method="POST" novalidate>
         <input type="hidden" id="obj" name="serverData">
         <h3 class="mx-3">
           <%= backtest.created_at.toLocaleDateString(currentUser.language, options) %>

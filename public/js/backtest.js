@@ -365,11 +365,11 @@ function cleanModal() {
 function editRow(id) {
   $('#create-row').hide();
   $('#update-row').show();
-  var rowDirection = $('.direction')[0];
-  var rowPair = $('.pair');
+  var rowDirection = $('.direction')[0]
+  var rowPair = $('.pair')[0]
   var rowResult = document.getElementById('row-result');
-  var rowStrategy = $('.strategy');
-  var rowTimeframe = $('.timeframe');
+  var rowStrategy = $('.strategy')[0]
+  var rowTimeframe = $('.timeframe')[0]
   var editList = $('.edit-row')
   var current = editList.index(id)
   document.getElementById('row-index').innerHTML = current + 1;
@@ -454,7 +454,7 @@ function createRow() {
   indexCell.className = 'identifier';
   var directionCell = row.insertCell();
   directionCell.innerHTML = currentDirection;
-  if (currentDirection == 'Long' || currentDirection == 'Compra') {
+  if (currentDirection.trim() == 'Long' || currentDirection.trim() == 'Compra') {
     directionCell.classList = 'long'
   } else {
     directionCell.classList = 'short'
