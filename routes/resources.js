@@ -14,4 +14,6 @@ router.get("/create-technical-analysis", resources.createTechnicalAnalysis)
 
 router.get("/manage-assets", resources.manageAssets)
 
+router.get("/custom-statistics", resources.customStatistics)
+
 module.exports = router;

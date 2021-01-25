@@ -70,6 +70,14 @@ module.exports.updateStrategy = (req, res) => {
     var insertId = 0
     var addingType;
     try {
+      var getStrategyDoc = await query(`SELECT * FROM strategies_docs WHERE user_id = ? AND strategy_id = ?`, [req.user.id, req.params.id])
+      if (getStrategyDoc.length < 1) {
+        var strategyDoc = {
+          user_id: req.user.id,
+          strategy_id: req.params.id
+        }
+        var createStrategyDoc = await query(`INSERT INTO strategies_docs SET ?`, strategyDoc)
+      }
       switch (req.body.type) {
         case 'description':
           var saveDescription = await query(`UPDATE strategies_docs SET description = ?

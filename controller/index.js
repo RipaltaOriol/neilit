@@ -114,11 +114,10 @@ module.exports.logicLogin = (req, res) => {
 
 module.exports.logout = (req, res) => {
   req.logout();
-  req.session.notification = null;
-  req.session.strategyNames = null;
-  req.session.strategyIds = null;
   req.flash("success", res.__("Successfully logged out!"))
-  res.redirect("/")
+  req.session.destroy(function (err) {
+    return res.redirect("/")
+  });
 }
 
 module.exports.renderForgotPassword = (req, res) => {
@@ -263,28 +262,42 @@ module.exports.renderSignup = (req, res) => {
 }
 
 module.exports.logicSignup = async (req, res) => {
-  // try {
-  //   // Create a new customer object
-  //   const customer = await stripe.customers.create({
-  //     email: req.user.email,
-  //   });
-  //   var saveStripeCustomerId = await query('UPDATE users SET stripeCustomerId = ? WHERE email = ?', [customer.id, req.user.email])
-  //   res.redirect("/signup/select-plan");
-  // } catch (e) {
-  //   req.flash('error', res.__('There was an issue with the registration process. Please, try again later.'))
-  //   res.redirect('/signup');
-  // }
-  let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
-  req.session.strategyNames = []
-  req.session.strategyIds = []
-  for (var i = 0; i < getUserStrategies.length; i++) {
-    req.session.strategyNames.push(getUserStrategies[i].strategy);
-    req.session.strategyIds.push(getUserStrategies[i].id);
+  try {
+    // try {
+    //   // Create a new customer object
+    //   const customer = await stripe.customers.create({
+    //     email: req.user.email,
+    //   });
+    //   var saveStripeCustomerId = await query('UPDATE users SET stripeCustomerId = ? WHERE email = ?', [customer.id, req.user.email])
+    //   res.redirect("/signup/select-plan");
+    // } catch (e) {
+    //   req.flash('error', res.__('There was an issue with the registration process. Please, try again later.'))
+    //   res.redirect('/signup');
+    // }
+    let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
+    req.session.strategyNames = []
+    req.session.strategyIds = []
+    for (var i = 0; i < getUserStrategies.length; i++) {
+      req.session.strategyNames.push(getUserStrategies[i].strategy);
+      req.session.strategyIds.push(getUserStrategies[i].id);
+    }
+    let getUserAssets = await query("SELECT id, pair, category, has_rate FROM pairs WHERE user_id = ?", req.user.id)
+    req.session.assets = { }
+    getUserAssets.forEach((asset) => {
+      req.session.assets[asset.pair] = {
+        id: asset.id,
+        category: asset.category,
+        rate: asset.has_rate
+      }
+    })
+    req.session.timeframes = await localeTimeframes();
+    req.session.notification = true;
+  } catch (e) {
+    console.log(e);
+  } finally {
+    res.cookie('lang', 'en')
+    res.redirect("/" + req.user.username)
   }
-  req.session.timeframes = await localeTimeframes();
-  req.session.notification = true;
-  res.cookie('lang', 'en')
-  res.redirect("/" + req.user.username)
 }
 
 module.exports.renderSelectPlan = (req, res) => {

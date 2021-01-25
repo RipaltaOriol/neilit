@@ -21,3 +21,7 @@ module.exports.createTechnicalAnalysis = (req, res) => {
 module.exports.manageAssets = (req, res) => {
   res.render("resources/manage-assets")
 }
+
+module.exports.customStatistics = (req, res) => {
+  res.render("resources/custom-statistics")
+}

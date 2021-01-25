@@ -1,4 +1,4 @@
-<%- include("./partials/header-home") %>
+<%- include("../partials/header-home") %>
 
 <div>
   <nav class="navbar d-none d-md-flex px-3">
@@ -60,7 +60,7 @@
   <nav class="navbar navbar-expand-lg px-lg-4" id="sticky-nav">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon">
-        <img class="icon-navbar" src="imgs/icons/menu-orange.svg" alt="navbar">
+        <img class="icon-navbar" src="/imgs/icons/menu-orange.svg" alt="navbar">
       </span>
     </button>
     <div class="collapse navbar-collapse mt-2 mt-lg-0 px-3 pb-3 p-lg-0" id="navbarLinks">
@@ -86,106 +86,31 @@
       </div>
     </div>
   </nav>
-  <div class="bg-sm-nav d-lg-none">
 
-  </div>
+  <div class="bg-sm-nav d-lg-none"></div>
+
   <div class="py-5">
     <div class="container">
-      <div class="px-2 px-lg-0">
-        <h1><%= __('Resources & Tutorials') %></h1>
-        <p><%= __('Learn Neilit and explore how you can become profitable yourself') %>.</p>
-      </div>
-      <div class="row">
-        <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/resources/create-entry">
-            <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
-              <div>
-                <img src="/imgs/resources-create-entry.png" class="w-100">
-                <h4 class="my-2"><%= __('How to create an entry?') %>?</h4>
-                <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
-              </div>
-              <span class="tag mr-2">Post</span>
-            </div>
-          </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/resources/create-backtest">
-            <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
-              <div>
-                <img src="/imgs/resources-create-backtest-1.png" class="w-100">
-                <h4 class="my-2"><%= __('How to backtest?') %>?</h4>
-                <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
-              </div>
-              <span class="tag mr-2">Post</span>
-            </div>
-          </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/resources/add-strategies">
-            <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
-              <div>
-                <img src="/imgs/resources-add-strategies-3.png" class="w-100">
-                <h4 class="my-2"><%= __('How to add strategies?') %></h4>
-                <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
-              </div>
-              <span class="tag mr-2">Post</span>
-            </div>
-          </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/resources/link-technical-analysis-to-entry">
-            <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
-              <div>
-                <img src="/imgs/resources-link-ta-entry-1.png" class="w-100">
-                <h4 class="my-2"><%= __('Link a technical analysis to an entry') %></h4>
-                <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
-              </div>
-              <span class="tag mr-2">Post</span>
-            </div>
-          </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/resources/create-technical-analysis">
-            <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
-              <div>
-                <img src="/imgs/resources-create-ta-6.png" class="w-100">
-                <h4 class="my-2"><%= __('How to create a technical analysis?') %></h4>
-                <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
-              </div>
-              <span class="tag mr-2">Post</span>
-            </div>
-          </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/resources/manage-assets">
-            <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
-              <div>
-                <img src="/imgs/resources-manage-assets-4.png" class="w-100">
-                <h4 class="my-2"><%= __('Learn how to manage your assets') %></h4>
-                <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
-              </div>
-              <span class="tag mr-2">Post</span>
-            </div>
-          </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3 pb-3 px-4 px-lg-3 mb-3">
-          <a href="/resources/custom-statistics">
-            <div class="border-box h-100 d-flex flex-column align-items-start justify-content-between p-2">
-              <div>
-                <img src="/imgs/resources-custom-statistics.png" class="w-100">
-                <h4 class="my-2"><%= __('Custom Statistics') %></h4>
-                <p class="bio mb-2">Watch this quick video or read this quick post to learn how to do that</p>
-              </div>
-              <span class="tag mr-2">Post</span>
-            </div>
-          </a>
-        </div>
-      </div>
+      <h1>Custom Statistics</h1>
+      <p>
+        We are currently working on the custom statistics feature. Our goal is
+        to enable our users to create their own statistics with the parameters
+        they find most convenient. You can find a demo of what the custom
+        statistics are going to look like under the <a href="/#demo-statistics" class="orange">Demo</a>
+        section on our homepage.
+      </p>
+      <a href="/#demo-statistics">
+        <img class="w-100 mb-3" src="/imgs/resources-custom-statistics.png" alt="how-to-create-an-entry">
+      </a>
+      <p>
+        This is just a taste of what we would like to bring to our users.
+        And we will continue to work as hard as we can to develop more tools for our traders at Neilit.
+      </p>
     </div>
   </div>
 </div>
 
-<footer class="mt-5 py-3">
+<footer class="mt-2 py-3">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -199,7 +124,6 @@
         </span>
         <div class="my-3">
           <div class="footer-header"><%= __('Contact us') %>:</div>
-
           <div>
             <img class="mr-2" src="/imgs/icons/email-black.svg" alt="email">info@neilit.com
           </div>
@@ -232,4 +156,4 @@
   </div>
 </footer>
 
-<%- include("./partials/footer-home") %>
+<%- include("../partials/footer-home") %>

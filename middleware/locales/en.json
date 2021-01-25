@@ -531,5 +531,6 @@
 	"Outcome distributed based on trades' close date.": "Outcome distributed based on trades' close date.",
 	"Results breakout based on days of the week.": "Results breakout based on days of the week.",
 	"Win Ratio of Most Traded Timeframes": "Win Ratio of Most Traded Timeframes",
-	"Best Performing Timeframes": "Best Performing Timeframes"
+	"Best Performing Timeframes": "Best Performing Timeframes",
+	"You are not able to access here without any assets. Go to settings to add an asset.": "You are not able to access here without any assets. Go to settings to add an asset."
 }

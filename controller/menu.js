@@ -217,6 +217,10 @@ module.exports.renderPsychology = (req, res) => {
 }
 
 module.exports.renderCalculator = (req, res) => {
+  if (Object.keys(req.session.assets).length === 0) {
+    req.flash('error', res.__('You are not able to access here without any assets. Go to settings to add an asset.'))
+    return res.redirect('/' + req.user.username + '/');
+  }
   (async () => {
     try {
       var getCurrency = await query(`SELECT currency_id FROM users WHERE id = ?`, req.user.id)

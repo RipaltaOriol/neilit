@@ -204,12 +204,12 @@ function addRule() {
   saveToDB({
     type: 'rules',
     method: 'new',
-    content: $('#rule-input').text()
+    content: document.getElementById('rule-input').innerText.replace(/\n/g, '<br>')
   })
   $('#rules').append(`
     <li>
       <div class="d-flex justify-content-between">
-        <span class="rule">` + $('#rule-input').text() + `</span>
+        <span class="rule">` + document.getElementById('rule-input').innerText.replace(/\n/g, '<br>') + `</span>
         <span class="d-flex">
           <button type="button" class="p-1 delete" onclick="deleteRule(this)"><img src="/imgs/icons/delete.svg"></button>
         </span>
@@ -462,7 +462,6 @@ function addObservationFE(id) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
         // Runs 1 second (1000 ms) after the last change
-        console.log();
         saveToDB({
           type: 'observations',
           method: 'description',

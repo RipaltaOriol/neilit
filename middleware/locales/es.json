@@ -686,5 +686,6 @@
 	"Learn how to manage your assets": "Learn a administrar tus activos",
 	"We don't have the rate for this asset. Please, introduce your profits.": "No tenemos la tarifa para este activo. Por favor, introduzca sus ganancias.",
 	"In case of leaving this field blank, Neilit will calculate the profits of the operation for you.": "In case of leaving this field blank, Neilit will calculate the profits of the operation for you.",
-	"Got to Entry": "Got to Entry"
+	"Got to Entry": "Got to Entry",
+	"You are not able to access here without any assets. Go to settings to add an asset.": "No puede acceder aquí sin ningún activo. Vaya a ajustes para añadir un activo."
 }

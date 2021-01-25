@@ -94,13 +94,24 @@ module.exports = function(passport) {
           db.query("INSERT INTO users SET ?", newUserMysql, (err, rows) => {
             if (err) return done(null, false, req.flash("error", "Something went wrong, please try again."));
             newUserMysql.id = rows.insertId;
+            var userId = rows.insertId;
             newUserMysql.password = null;
             let noneStrategy = {
               strategy: 'None',
-              user_id: rows.insertId
+              user_id: userId
+            }
+            let defaultAsset = {
+              pair: 'US500',
+              category: 'Index',
+              has_rate: 0,
+              user_id: userId,
+              is_custom: 1
             }
             db.query("INSERT INTO strategies SET ?", noneStrategy, (err, result) => {
               if (err) return done(null, false, req.flash("error", "Something went wrong, please try again."));
+              db.query("INSERT INTO pairs SET ?", defaultAsset, (err, result) => {
+                if (err) return done(null, false, req.flash("error", "Something went wrong, please try again."));
+              })
             })
             return done(null, newUserMysql)
           });

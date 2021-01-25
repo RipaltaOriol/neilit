@@ -73,6 +73,10 @@ module.exports.filter = (req, res) => {
 }
 
 module.exports.renderNewForm = (req, res) => {
+  if (Object.keys(req.session.assets).length === 0) {
+    req.flash('error', res.__('You are not able to access here without any assets. Go to settings to add an asset.'))
+    return res.redirect('/' + req.user.username + '/journal/ta');
+  }
   // loads the technical analysis elements to an object
   var elements = {
     title: titleTA.html,
