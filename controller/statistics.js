@@ -8,6 +8,47 @@ let db = require('../models/dbConfig');
 // node native promisify
 const query = util.promisify(db.query).bind(db);
 
+module.exports.loadEquityChart = (req, res) => {
+  (async () => {
+    try {
+      var getEntriesLastYear = await query(`SELECT
+          profits - IFNULL(fees, 0) AS net,
+          DATE_FORMAT(exit_dt, '%X-%v') AS date
+      FROM entries WHERE status = 1 AND user_id = ? AND exit_dt > CURDATE() - INTERVAL 1 YEAR ORDER BY exit_dt;`, req.user.id)
+      var getBalance = await query(`SELECT balance, DATE_FORMAT(CURDATE() - INTERVAL 1 YEAR, '%X-%v') AS start FROM users WHERE id = ?;`, req.user.id)
+      var pointerDate = getBalance[0].start
+      var pointer = 0
+      var equityData = []
+      var lP = 0
+      for (var w = 0; w < 53; w++) {
+        equityData.push(getBalance[0].balance)
+        for (lP; lP < getEntriesLastYear.length; lP++) {
+          if (pointerDate == getEntriesLastYear[lP].date) {
+            equityData[pointer] += getEntriesLastYear[lP].net
+          } else {
+            break;
+          }
+        }
+        pointer++
+        if (parseInt(pointerDate.split('-')[1]) !== 53) {
+          var updateDatePointer = parseInt(pointerDate.split('-')[1]) + 1
+          updateDatePointer = ("0" + updateDatePointer).slice(-2)
+          pointerDate = pointerDate.split('-')[0] + '-' + updateDatePointer
+        } else {
+          var updateDatePointer = parseInt(pointerDate.split('-')[0]) + 1
+          pointerDate = updateDatePointer + '-01'
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      res.json({
+        data: equityData
+      })
+    }
+  })()
+}
+
 module.exports.profits = (req, res) => {
   (async () => {
     try {

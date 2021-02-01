@@ -112,3 +112,45 @@ var resultsDayClose = new Chart(daysCloseResults, {
     maintainAspectRatio: false
   }
 })
+
+// dropdown to select a time period for statistics
+$('.dropdown-menu li').on('click', function() {
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  $('.dropdown-select')[current].innerHTML = getValue;
+});
+
+// change the days data in statistics table
+function changeStats(dayID) {
+  $.get('/' + username + '/statistics/days/load-stats/' + dayID)
+  .done((data) => {
+    $('#revenue').text(data.strategyStats.revenue.toFixed(2))
+    $('#fees').text(data.strategyStats.fees.toFixed(2))
+    $('#profit').text(data.strategyStats.profit.toFixed(2))
+    $('#return').text(data.strategyStats.str_return.toFixed(2))
+    $('#max-win').text(data.strategyStats.max.toFixed(2))
+    $('#max-loss').text(data.strategyStats.min.toFixed(2))
+    $('#avg-win').text(data.strategyStats.avg_win.toFixed(2))
+    $('#avg-loss').text(data.strategyStats.avg_loss.toFixed(2))
+    $('#avg').text(data.strategyStats.avg.toFixed(2))
+    $('#avg-hold').text(data.strategyStats.avg_holding.toFixed(2))
+    $('#gross-loss').text(data.strategyStats.gross_loss.toFixed(2))
+    $('#profit-factor').text(data.strategyStats.profit_factor.toFixed(2))
+    $('#playoff-ratio').text(data.strategyStats.playoff.toFixed(2))
+    $('#max-drawdown').text(data.strategyDrawdown.max_drawdown.toFixed(2))
+    if (data.strategyCountWin != undefined) {
+      $('#consec-win').text(data.strategyCountWin.numcount.toFixed(2))
+    } else {
+      $('#consec-win').text('N/A')
+    }
+    if (data.strategyCountLoss != undefined) {
+      $('#consec-loss').text(data.strategyCountLoss.numcount.toFixed(2))
+    } else {
+      $('#consec-loss').text('N/A')
+    }
+  })
+  .fail(() => {
+    // fail
+  })
+}

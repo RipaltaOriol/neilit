@@ -1,39 +1,12 @@
 // sets colours on graph axes
 var axesColor = 'rgba(0,0,0,0.1)'
 var doughnutBorderColor = 'rgb(255,255,255)'
-// graph canvas & containers
-var entriesGraph = document.getElementById('donutChartWidgetTradesWinBELoss');
-var directionGraph = document.getElementById('orderDirection');
+
 // set dark mode
 if (darkMode) {
   axesColor = 'rgba(255,255,255,0.1)'
   doughnutBorderColor = 'rgb(39,39,39,39)'
 }
-
-$(document).ready(function() {
-  // redirects to notification page
-  if (screen.width < 768) {
-    window.location.replace("/mobile")
-  }
-  // sets datepicker
-  $(function() {
-    $.datepicker.setDefaults(
-      $.extend(
-        $.datepicker.regional[language]
-      )
-    )
-    $('.datepicker').each(function(){
-      $(this).datepicker({
-        altField: "#" + $(this).data('target'),
-        altFormat: "yy-mm-dd" // format for database processing
-      });
-    });
-  });
-  // prevents the classic datepicker from loading
-  $("input[type=date]").on('click', function() {
-    return false;
-  });
-});
 
 // dropdown to select a time period for statistics
 $('.dropdown-menu li').on('click', function() {
@@ -401,9 +374,9 @@ var orderDirection = new Chart(orderDirection,{
   }
 });
 
-// graph for direction and results metric
+// graph for direction and results metrics
 var orderDirectionResults = document.getElementById('orderDirectionResults').getContext('2d');
-var orderDirectionResults = new Chart(orderDirectionResults,{
+var orderDirectionResults = new Chart(orderDirectionResults, {
   //Determinamos que tipo de gráfico va a ser. En este caso, un gráfico de barras.
   type: 'line',
   data:{
@@ -454,8 +427,168 @@ var orderDirectionResults = new Chart(orderDirectionResults,{
     },
     responsive: true,
     maintainAspectRatio: false,
-    legend:{
+    legend: {
       display: false,
     }
   }
+});
+
+// graph for fees for the last 12 months
+var feesChart = document.getElementById('feesChart').getContext('2d');
+var feesChart = new Chart(feesChart, {
+  type: 'line',
+  options: {
+    scales: {
+      yAxes: [{
+        gridLines: {
+          display: true,
+          color: axesColor,
+          zeroLineColor: axesColor
+        }
+      }],
+      xAxes: [{
+        gridLines: {
+          display: true,
+          color: axesColor,
+          zeroLineColor: axesColor
+        }
+      }]
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    legend: {
+      display: false
+    }
+  }
+})
+
+// graph for entries w/ TA vs. No TA
+var chartTaVsNoTa = document.getElementById('taVsNoTa').getContext('2d');
+var taVsNoTa = new Chart(chartTaVsNoTa, {
+  type: 'bar',
+  data: {
+    labels: ['Win Rate - Technical Analysis', 'Win Rate - No Technical Analysis'],
+    datasets: [{
+        data: [taVsNoTa.ta, taVsNoTa.no_ta],
+        backgroundColor: '#FF8818',
+        barThickness: 200
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          max: 1
+        },
+        gridLines: {
+          display: true,
+          color: axesColor,
+          zeroLineColor: axesColor
+        }
+      }],
+      xAxes: [{
+        gridLines: {
+          display: true,
+          color: axesColor,
+          zeroLineColor: axesColor
+        }
+      }]
+    },
+    responsive: true,
+    legend: { display: false }
+  }
+})
+
+function generateEquityChart(data) {
+  var chartEquityCurve = document.getElementById('equityCurve').getContext('2d');
+  var equityCurve = new Chart(chartEquityCurve, {
+    type: 'line',
+    data: {
+      labels: data,
+      datasets:[{
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderColor: '#FF8818',
+        pointBackgroundColor: '#FF8818',
+        pointBorderColor: '#FF8818',
+        label: 'Equity Curve',
+        data: data
+      }]
+    },
+    options: {
+      elements: {
+        point:{
+          radius: 0
+        }
+      },
+      scales: {
+        scaleLabel: {
+          display: false
+        },
+        yAxes: [{
+          gridLines: {
+            display: true,
+            color: axesColor,
+            zeroLineColor: axesColor
+          }
+        }],
+        xAxes: [{
+          gridLines: {
+            display: false,
+            color: axesColor,
+            zeroLineColor: axesColor
+          },
+          ticks:{
+            display: false,
+          }
+        }]
+      },
+      responsive: true,
+      legend: { display: false }
+    }
+  })
+}
+
+function loadEquityChart() {
+  $.get('/' + username + '/statistics/load-equity')
+    .done((data) => {
+      generateEquityChart(data.data)
+    })
+    .fail(() => {
+      // error
+    })
+}
+
+$(document).ready(function() {
+  // redirects to notification page
+  if (screen.width < 768) {
+    window.location.replace("/mobile")
+  }
+  // sets datepicker
+  $(function() {
+    loadEquityChart();
+    $.datepicker.setDefaults(
+      $.extend(
+        $.datepicker.regional[language]
+      )
+    )
+    $('.datepicker').each(function(){
+      $(this).datepicker({
+        altField: "#" + $(this).data('target'),
+        altFormat: "yy-mm-dd" // format for database processing
+      });
+    });
+  });
+  // prevents the classic datepicker from loading
+  $("input[type=date]").on('click', function() {
+    return false;
+  });
+  feesChart.data.labels = feesByMonthLabel
+  feesChart.data.datasets.push({
+    data: feesByMonthData,
+    borderColor: '#FF8818',
+    pointBackgroundColor: '#FF8818' ,
+    fill: false
+  })
+  feesChart.update();
 });

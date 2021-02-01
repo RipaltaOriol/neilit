@@ -186,7 +186,64 @@ module.exports.renderStatistics = (req, res) => {
           SUM(CASE WHEN direction = 'short' THEN profits - fees
               ELSE 0 END) outcome_short
       FROM entries WHERE user_id = ? AND status = 1 GROUP BY month;`, [req.user.id, req.user.id, req.user.id])
-
+    var getFeesByMonth = await query(`SELECT
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 11 MONTH, '%M-%y'), fees, 0)) AS 'DATA12',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 10 MONTH, '%M-%y'), fees, 0)) AS 'DATA11',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 9 MONTH, '%M-%y'), fees, 0)) AS 'DATA10',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 8 MONTH, '%M-%y'), fees, 0)) AS 'DATA9',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 7 MONTH, '%M-%y'), fees, 0)) AS 'DATA8',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 6 MONTH, '%M-%y'), fees, 0)) AS 'DATA7',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 5 MONTH, '%M-%y'), fees, 0)) AS 'DATA6',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 4 MONTH, '%M-%y'), fees, 0)) AS 'DATA5',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 3 MONTH, '%M-%y'), fees, 0)) AS 'DATA4',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 2 MONTH, '%M-%y'), fees, 0)) AS 'DATA3',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%M-%y'), fees, 0)) AS 'DATA2',
+          SUM(IF(DATE_FORMAT(entry_dt, '%M-%y') = DATE_FORMAT(CURDATE(), '%M-%y'), fees, 0)) AS 'DATA1',
+          DATE_FORMAT(CURDATE() - INTERVAL 11 MONTH, '%M-%y') AS 'LABEL12',
+          DATE_FORMAT(CURDATE() - INTERVAL 10 MONTH, '%M-%y') AS 'LABEL11',
+          DATE_FORMAT(CURDATE() - INTERVAL 9 MONTH, '%M-%y') AS 'LABEL10',
+          DATE_FORMAT(CURDATE() - INTERVAL 8 MONTH, '%M-%y') AS 'LABEL9',
+          DATE_FORMAT(CURDATE() - INTERVAL 7 MONTH, '%M-%y') AS 'LABEL8',
+          DATE_FORMAT(CURDATE() - INTERVAL 6 MONTH, '%M-%y') AS 'LABEL7',
+          DATE_FORMAT(CURDATE() - INTERVAL 5 MONTH, '%M-%y') AS 'LABEL6',
+          DATE_FORMAT(CURDATE() - INTERVAL 4 MONTH, '%M-%y') AS 'LABEL5',
+          DATE_FORMAT(CURDATE() - INTERVAL 3 MONTH, '%M-%y') AS 'LABEL4',
+          DATE_FORMAT(CURDATE() - INTERVAL 2 MONTH, '%M-%y') AS 'LABEL3',
+          DATE_FORMAT(CURDATE() - INTERVAL 1 MONTH, '%M-%y') AS 'LABEL2',
+          DATE_FORMAT(CURDATE(), '%M-%y') AS 'LABEL1'
+      FROM entries WHERE user_id = ? AND status = 1;`, req.user.id)
+    var getTaVsNoTa = await query(`SELECT
+        SUM(if(ta_id IS NOT NULL AND result = 'win', 1, 0))/SUM(if(ta_id IS NOT NULL, 1, 0)) AS ta,
+        SUM(if(ta_id IS NULL AND result = 'win', 1, 0))/SUM(if(ta_id IS NULL, 1, 0)) AS no_ta
+    FROM entries WHERE status = 1 AND user_id = ?`, req.user.id)
+    var arrayFeesByMonthData = [
+      getFeesByMonth[0].DATA12,
+      getFeesByMonth[0].DATA11,
+      getFeesByMonth[0].DATA10,
+      getFeesByMonth[0].DATA9,
+      getFeesByMonth[0].DATA8,
+      getFeesByMonth[0].DATA7,
+      getFeesByMonth[0].DATA6,
+      getFeesByMonth[0].DATA5,
+      getFeesByMonth[0].DATA4,
+      getFeesByMonth[0].DATA3,
+      getFeesByMonth[0].DATA2,
+      getFeesByMonth[0].DATA1
+    ]
+    var arrayFeesByMonthLabel = [
+      getFeesByMonth[0].LABEL12,
+      getFeesByMonth[0].LABEL11,
+      getFeesByMonth[0].LABEL10,
+      getFeesByMonth[0].LABEL9,
+      getFeesByMonth[0].LABEL8,
+      getFeesByMonth[0].LABEL7,
+      getFeesByMonth[0].LABEL6,
+      getFeesByMonth[0].LABEL5,
+      getFeesByMonth[0].LABEL4,
+      getFeesByMonth[0].LABEL3,
+      getFeesByMonth[0].LABEL2,
+      getFeesByMonth[0].LABEL1
+    ]
     // COMBAK: improve this code
     var dataDirectionGraph = {
       outcomeLong: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -206,6 +263,9 @@ module.exports.renderStatistics = (req, res) => {
         timeframeStats: getTimeframes,
         directionGraph: dataDirectionGraph,
         dayStats: getDays,
+        feesByMonthData: arrayFeesByMonthData,
+        feesByMonthLabel: arrayFeesByMonthLabel,
+        taVsNoTa: getTaVsNoTa[0],
         months: [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')]
       }
     );

@@ -117,6 +117,7 @@
                 <canvas id="donutChartWidgetTradesWinBELoss" class="d-none"></canvas>
                 <p id="no-data-entries-graph" class="placeholder-stats"><%= __('Not enough data') %></p>
               <% } %>
+              Total: <%= basicStats.win + basicStats.loss + basicStats.be %>
             </div>
             <hr class="mb-0">
             <div class="px-3 py-1">
@@ -182,6 +183,24 @@
               </a>
             </div>
           </div>
+        </div>
+      </div>
+      <!-- equity for the past year -->
+      <div class="widget-neilit row mx-2 mb-4">
+        <div class="d-flex w-100 pt-3 mx-2">
+          <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="1 Year Equity Curve">
+          <h5 class="mb-0 no-wrap"><%= __('1 Year Equity Curve') %></h5>
+        </div>
+        <div class="mt-2 w-100">
+          <canvas id="equityCurve" height="100"></canvas>
+        </div>
+        <hr class="w-100 my-0">
+        <div class="w-100 px-3 py-1">
+          <a href="#!">
+            <div class="text-right">
+              <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Results breakout based on the account\'s strategies.') %>">
+            </div>
+          </a>
         </div>
       </div>
       <!-- strategies -->
@@ -647,6 +666,48 @@
           </div>
         </div>
       </div>
+      <!-- access to long vs. short detail -->
+      <div class="widget-neilit row mx-2 mb-4">
+        <a href="statistics/direction" class="mx-auto my-2">
+          <p class="font-16 grey mb-0"><%= __('See more details on longs and shorts') %></p>
+        </a>
+      </div>
+      <!-- fees chart -->
+      <div class="widget-neilit row mx-2 mb-4">
+        <div class="d-flex w-100 pt-3 mx-2">
+          <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="Fees by Month">
+          <h5 class="mb-0 no-wrap"><%= __('Fees by Month') %></h5>
+        </div>
+        <div class="mt-2 w-100">
+          <canvas id="feesChart" height="250"></canvas>
+        </div>
+        <hr class="w-100 my-0">
+        <div class="w-100 px-3 py-1">
+          <a href="#!">
+            <div class="text-right">
+              <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Results breakout based on the account\'s strategies.') %>">
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- entries w/ ta vs. no ta -->
+      <div class="widget-neilit row mx-2 mb-4">
+        <div class="d-flex w-100 pt-3 mx-2">
+          <img src="/imgs/icons/patterns.svg" class="mx-2 image-widget" alt="TA vs. non-TA">
+          <h5 class="mb-0 no-wrap"><%= __('Technical Analysis vs. No TA') %></h5>
+        </div>
+        <div class="mt-2 w-100">
+          <canvas id="taVsNoTa" height="100"></canvas>
+        </div>
+        <hr class="w-100 my-0">
+        <div class="w-100 px-3 py-1">
+          <a href="#!">
+            <div class="text-right">
+              <img src="/imgs/icons/help.svg" class="image-widget image-info my-auto" data-toggle="tooltip" data-placement="bottom" title="<%= __('Results breakout based on the account\'s strategies.') %>">
+            </div>
+          </a>
+        </div>
+      </div>
       <!-- personalized statistics -->
       <div class="widget-neilit row mx-2 mb-4">
         <div class="d-flex flex-column w-100">
@@ -691,12 +752,15 @@
 </div>
 
 <script type="text/javascript">
-  var username        = <%- JSON.stringify(currentUser.username) %>;
-  var language        = <%- JSON.stringify(currentUser.language) %>;
-  var darkMode        = <%- JSON.stringify(currentUser.darkMode) %>;
-  var userBase        = <%- JSON.stringify(userBase) %>;
-  var months          = <%- JSON.stringify(months) %>;
-  var basicStats      = <%- JSON.stringify(basicStats) %>;
+  var username            = <%- JSON.stringify(currentUser.username) %>;
+  var language            = <%- JSON.stringify(currentUser.language) %>;
+  var darkMode            = <%- JSON.stringify(currentUser.darkMode) %>;
+  var userBase            = <%- JSON.stringify(userBase) %>;
+  var months              = <%- JSON.stringify(months) %>;
+  var basicStats          = <%- JSON.stringify(basicStats) %>;
+  var feesByMonthData     = <%- JSON.stringify(feesByMonthData) %>;
+  var feesByMonthLabel    = <%- JSON.stringify(feesByMonthLabel) %>;
+  var taVsNoTa            = <%- JSON.stringify(taVsNoTa) %>;
   var dataDirectionGraph  = <%- JSON.stringify(directionGraph) %>;
 </script>
 

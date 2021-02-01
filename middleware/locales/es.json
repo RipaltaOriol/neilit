@@ -687,5 +687,9 @@
 	"We don't have the rate for this asset. Please, introduce your profits.": "No tenemos la tarifa para este activo. Por favor, introduzca sus ganancias.",
 	"In case of leaving this field blank, Neilit will calculate the profits of the operation for you.": "In case of leaving this field blank, Neilit will calculate the profits of the operation for you.",
 	"Got to Entry": "Got to Entry",
-	"You are not able to access here without any assets. Go to settings to add an asset.": "No puede acceder aquí sin ningún activo. Vaya a ajustes para añadir un activo."
+	"You are not able to access here without any assets. Go to settings to add an asset.": "No puede acceder aquí sin ningún activo. Vaya a ajustes para añadir un activo.",
+	"Fees by Month": "Comisión por Mes",
+	"See more details on longs and shorts": "Ver más detalles en compras y ventas",
+	"1 Year Equity Curve": "Curva de Capital a 1 Año",
+	"Technical Analysis vs. No TA": "Análisis Técnico vs. No TA"
 }

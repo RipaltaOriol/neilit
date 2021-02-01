@@ -152,7 +152,8 @@ module.exports.renderStrategies = (req, res) => {
         dataAmountOutcome.strategy.push(row.strategy)
         dataAmountOutcome.outcome.push(row.outcome)
         dataAmountOutcome.amount.push(row.amount)
-      });
+      })
+      var getUserCurrency = await query(`SELECT currency FROM currencies WHERE id = ?`, req.user.currency_id)
     } catch (e) {
       console.log(e);
     } finally {
@@ -169,6 +170,7 @@ module.exports.renderStrategies = (req, res) => {
           strategyOutcomeTime: dataOutcomeDurability,
           strategyAmountOutcome: dataAmountOutcome,
           strategyRadar: dataStrategyRadar,
+          userCurrency: getUserCurrency[0].currency,
           months: [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')]
         }
       )

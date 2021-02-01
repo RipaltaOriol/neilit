@@ -105,6 +105,8 @@ module.exports.updateStrategy = (req, res) => {
                 position: getRuleOrder[0].position + 1,
               }
               var addRule = await query(`INSERT INTO strategies_rules SET ?`, rule)
+              addingType = 'rules'
+              insertId = addRule.insertId
               break;
           }
           break;
@@ -169,6 +171,14 @@ module.exports.updateStrategy = (req, res) => {
       console.log(e);
     } finally {
       if (insertId != 0) {
+        if (addingType == 'rules') {
+          return res.send({
+            status: 'done',
+            type: 'rules',
+            id: insertId,
+            content: req.body.content
+          })
+        }
         if (addingType == 'exit') {
           return res.send({
             status: 'done',

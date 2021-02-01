@@ -28,6 +28,16 @@ hr {
   border-color: var(--grey-medium);
 }
 
+.table-scroll {
+  max-height: 500px;
+  overflow: auto;
+}
+
+/* || spinner */
+.spinner-border {
+  color: var(--neilit-permanent);
+}
+
 /* Cambia el color al hacer hover en las tablas */
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: var(--background-hover);
@@ -237,6 +247,15 @@ input[type="date"]::-webkit-input-placeholder{
   -moz-box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
   box-shadow: 0px 1px 4px 0.5px var(--box-shadow);
 }
+
+input.dropdown-search[type=text] {
+  background-color: var(--background-medium);
+  color: var(--invert-black);
+  border-bottom: 1px solid var(--invert-black);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
   .dropdown button:hover, .dropdown button:focus {
     border: none;
     outline: 0;
@@ -336,6 +355,12 @@ input[type="date"]::-webkit-input-placeholder{
     color: var(--invert-black);
     background-color: var(--background-hover)
   }
+
+#dropdown-items {
+  height: 200px;
+  width: 100%;
+  overflow-y: auto;
+}
 
 #dropdown-label {
   color: var(--invert-black);

@@ -121,6 +121,144 @@ var resultsWorseAssets = new Chart(assetWorseResults, {
   }
 })
 
+// search bar for the dropdown
+function searchDropdown(id) {
+  var input, search, dropdownItems, val;
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index(id.parentElement)
+  input = document.getElementsByClassName('dropdown-search')[current];
+  search = input.value.toUpperCase();
+  dropdownItems = document.getElementsByClassName('dropdown-menu')[current].querySelectorAll('li, ol');
+  for (var i = 0; i < dropdownItems.length; i++) {
+    val = dropdownItems[i].textContent || dropdownItems[i].innerText;
+    if (val.toUpperCase().indexOf(search) > -1) {
+      dropdownItems[i].style.display = "";
+    } else {
+      dropdownItems[i].style.display = "none";
+    }
+  }
+}
+
+// dropdown to select a time period for statistics
+$('.dropdown-menu li').on('click', function() {
+  var allDD = $('.dropdown-menu');
+  var current = allDD.index($(this).parent())
+  var getValue = $(this).text();
+  $('.dropdown-select')[current].innerHTML = getValue;
+});
+
+// change the strategy data in statistics table
+function changeStats(assetID) {
+  $.get('/' + username + '/statistics/assets/load-stats/' + assetID)
+  .done((data) => {
+    $('#revenue').text(data.strategyStats.revenue.toFixed(2))
+    $('#fees').text(data.strategyStats.fees.toFixed(2))
+    $('#profit').text(data.strategyStats.profit.toFixed(2))
+    $('#return').text(data.strategyStats.str_return.toFixed(2))
+    $('#max-win').text(data.strategyStats.max.toFixed(2))
+    $('#max-loss').text(data.strategyStats.min.toFixed(2))
+    $('#avg-win').text(data.strategyStats.avg_win.toFixed(2))
+    $('#avg-loss').text(data.strategyStats.avg_loss.toFixed(2))
+    $('#avg').text(data.strategyStats.avg.toFixed(2))
+    $('#avg-hold').text(data.strategyStats.avg_holding.toFixed(2))
+    $('#gross-loss').text(data.strategyStats.gross_loss.toFixed(2))
+    $('#profit-factor').text(data.strategyStats.profit_factor.toFixed(2))
+    $('#playoff-ratio').text(data.strategyStats.playoff.toFixed(2))
+    $('#max-drawdown').text(data.strategyDrawdown.max_drawdown.toFixed(2))
+    if (data.strategyCountWin != undefined) {
+      $('#consec-win').text(data.strategyCountWin.numcount.toFixed(2))
+    } else {
+      $('#consec-win').text('N/A')
+    }
+    if (data.strategyCountLoss != undefined) {
+      $('#consec-loss').text(data.strategyCountLoss.numcount.toFixed(2))
+    } else {
+      $('#consec-loss').text('N/A')
+    }
+  })
+  .fail(() => {
+    // fail
+  })
+}
+
+function changeAvgs(assetID) {
+  $.get('/' + username + '/statistics/assets/load-avgs/' + assetID)
+  .done((data) => {
+    $('#avg-day').text(data.strategyAvgs.avg_daily.toFixed(2))
+    $('#avg-week').text(data.strategyAvgs.avg_week.toFixed(2))
+    $('#avg-month').text(data.strategyAvgs.avg_month.toFixed(2))
+    $('#avg-win-day').text(data.strategyAvgs.avg_win_daily.toFixed(2))
+    $('#avg-win-week').text(data.strategyAvgs.avg_win_week.toFixed(2))
+    $('#avg-win-month').text(data.strategyAvgs.avg_win_month.toFixed(2))
+    $('#avg-loss-day').text(data.strategyAvgs.avg_loss_daily.toFixed(2))
+    $('#avg-loss-week').text(data.strategyAvgs.avg_win_week.toFixed(2))
+    $('#avg-loss-month').text(data.strategyAvgs.avg_win_month.toFixed(2))
+  })
+  .fail(() => {
+    // fail
+  })
+}
+
+// manages the spinner on loading processes
+function loadingState(bool) {
+  if (bool) {
+    $('#spinner').removeClass('d-none')
+  } else {
+    $('#spinner').addClass('d-none')
+  }
+}
+
+// Infinite scroll
+let loadedCount = 25;
+$('.table-scroll').scroll(() => {
+  var $el = $('.table-scroll');
+  var $eh = $('.table-scroll')[0];
+  if ($el.innerHeight() + $el.scrollTop() >= $eh.scrollHeight - 5 && loadedCount) {
+    var data = {
+      offset: loadedCount
+    }
+    loadingState(true);
+    $.post('/' + username + '/statistics/assets/load-assets/', data)
+      .done((data) => {
+        loadedCount+= 25;
+        loadingState(false);
+        // add new data to index table
+        var table = $('tbody')[0];
+        data.dataList.forEach((asset) => {
+          var newRow = table.insertRow();
+          var pair    = newRow.insertCell(0);
+          var entries = newRow.insertCell(1);
+          var avg     = newRow.insertCell(2);
+          var win     = newRow.insertCell(3);
+          var be      = newRow.insertCell(4);
+          var loss    = newRow.insertCell(5);
+          var winRate = newRow.insertCell(6);
+          var expect  = newRow.insertCell(7);
+          // adds acutal data
+          pair.innerHTML = '<a href="!#" class="grey">' + asset.pair + '</a>';
+          entries.innerHTML = asset.entries
+          if (asset.avg_return > 0) {
+            avg.innerHTML = '<span class="mb-0 pill pill-green">' + asset.avg_return.toFixed(2) + '</span>'
+          } else {
+            avg.innerHTML = '<span class="mb-0 pill pill-red">' + asset.avg_return.toFixed(2) + '</span>'
+          }
+          win.innerHTML = asset.win;
+          be.innerHTML = asset.be;
+          loss.innerHTML = asset.loss;
+          winRate.innerHTML = asset.win_rate.toFixed(2);
+          expect.innerHTML = asset.expected_result.toFixed(2);
+        });
+
+        if (data.dataList.length < 25) {
+          loadedCount = 0;
+        }
+    })
+      .fail(() => {
+        // error
+    })
+  }
+})
+
 $(document).ready(() => {
   var labels = []
   var outcomeData = []

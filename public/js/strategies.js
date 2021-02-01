@@ -206,17 +206,6 @@ function addRule() {
     method: 'new',
     content: document.getElementById('rule-input').innerText.replace(/\n/g, '<br>')
   })
-  $('#rules').append(`
-    <li>
-      <div class="d-flex justify-content-between">
-        <span class="rule">` + document.getElementById('rule-input').innerText.replace(/\n/g, '<br>') + `</span>
-        <span class="d-flex">
-          <button type="button" class="p-1 delete" onclick="deleteRule(this)"><img src="/imgs/icons/delete.svg"></button>
-        </span>
-      </div>
-    </li>
-    `)
-  $('#rule-input').html('')
 }
 
 // delete a strategy rule
@@ -256,7 +245,22 @@ function addExit() {
     type: 'exits',
     method: 'new',
   })
+}
 
+// adds the new rule to the frontend
+function addRuleFE(id, content) {
+  $('#rules').append(`
+    <li>
+      <div class="d-flex justify-content-between">
+        <input type="text" class="d-none rule-id" value="` + id + `">
+        <span class="rule">` + content + `</span>
+        <span class="d-flex">
+          <button type="button" class="p-1 delete" onclick="deleteRule(this)"><img src="/imgs/icons/delete.svg"></button>
+        </span>
+      </div>
+    </li>
+    `)
+  $('#rule-input').html('')
 }
 
 // adds the new observation to the frontend
@@ -381,6 +385,9 @@ function saveToDB(data) {
     success: function(result) {
       if (result.status == 'done') {
         isSaving(false)
+        if (result.type == 'rules') {
+          addRuleFE(result.id, result.content)
+        }
         if (result.type == 'exit') {
           addExitFE(result.id)
         }

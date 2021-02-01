@@ -66,7 +66,8 @@ app.use(i18n);
 // MIDDLEWARE to have USER INFORMATION on all routes
 app.use((req, res, next) => {
   res.locals.currentUser  = req.user;
-  res.locals.timeframes   = req.session.timeframes
+  res.locals.timeframes   = req.session.timeframes;
+  res.locals.assets       = req.session.assets;
   res.locals.notification = req.session.notification;
   res.locals.strategies   = req.session.strategyNames;
   res.locals.strategiesID = req.session.strategyIds;
