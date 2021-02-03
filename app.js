@@ -53,23 +53,11 @@ const sessionConfig = {
   saveUninitialized: true,
   proxy: true,
   cookie: {
-     // secure: true, // production only (localhost is not https)
+     secure: true, // production only (localhost is not https)
      httpOnly: true,
      maxAge: 24 * 60 * 60 * 1000
   }
 }
-
-// app.use(express.session({
-//   store: new RedisStore({
-//     port: 18333,
-//     host: "redis-18333.c8.us-east-1-4.ec2.cloud.redislabs.com",
-//     db: "redis-neilit-10091808",
-//     pass: "wFjuKuB2vdLtEw4lfakCMfI42TWiCg13",
-//   }),
-//   secret: 'sauce',
-//   proxy: true,
-//   cookie: {secure: true}
-// }))
 
 app.use(session(sessionConfig))
 app.use(passport.initialize());
