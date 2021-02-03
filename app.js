@@ -14,7 +14,7 @@ let express         = require('express'),
     passportConfig  = require('./models/passportConfig'),
     db              = require('./models/dbConfig'),
     session         = require('express-session'),
-    RedisStore      = require('connect-redis')(express),
+    RedisStore      = require('connect-redis')(express)
     // redisClient     = redis.createClient();
     // redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
 
