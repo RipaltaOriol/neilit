@@ -14,9 +14,9 @@ let express         = require('express'),
     passportConfig  = require('./models/passportConfig'),
     db              = require('./models/dbConfig'),
     session         = require('express-session'),
-    RedisStore      = require('connect-redis')(express)
+    RedisStore      = require('connect-redis')(session),
     // redisClient     = redis.createClient();
-    // redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
+    redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
 
 
 // Routes Dependencies
@@ -24,7 +24,7 @@ let indexRoutes       = require('./routes/index'),
     resourcesRoutes   = require('./routes/resources'),
     menuRoutes        = require('./routes/menu'),
     dashboardRoutes   = require('./routes/dashboard'),
-    settingsRoutes    = require('./routes/settings'),
+    settingsRoutes    = require('./routes/settings')
     commentRoutes     = require('./routes/comments'),
     entryRoutes       = require('./routes/entries'),
     taRoutes          = require('./routes/tas'),
@@ -51,6 +51,7 @@ const sessionConfig = {
   secret: process.env.SESSION_PASS,
   resave: false,
   saveUninitialized: true,
+  proxy: true,
   cookie: {
      // secure: true, // production only (localhost is not https)
      httpOnly: true,
@@ -58,19 +59,19 @@ const sessionConfig = {
   }
 }
 
-//
-app.use(express.session({
-  store: new RedisStore({
-    port: 18333,
-    host: "redis-18333.c8.us-east-1-4.ec2.cloud.redislabs.com",
-    db: "redis-neilit-10091808",
-    pass: "wFjuKuB2vdLtEw4lfakCMfI42TWiCg13",
-  }),
-  secret: 'sauce',
-  proxy: true,
-  cookie: {secure: true}
-}))
+// app.use(express.session({
+//   store: new RedisStore({
+//     port: 18333,
+//     host: "redis-18333.c8.us-east-1-4.ec2.cloud.redislabs.com",
+//     db: "redis-neilit-10091808",
+//     pass: "wFjuKuB2vdLtEw4lfakCMfI42TWiCg13",
+//   }),
+//   secret: 'sauce',
+//   proxy: true,
+//   cookie: {secure: true}
+// }))
 
+app.use(session(sessionConfig))
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
