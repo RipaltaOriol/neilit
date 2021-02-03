@@ -98,11 +98,13 @@ module.exports.updateStrategy = (req, res) => {
             case 'new':
               var getRuleOrder = await query(`SELECT position FROM strategies_rules
                 WHERE user_id = ? AND strategy_id = ? ORDER BY position DESC LIMIT 1`, [req.user.id, req.params.id])
+              var position = (typeof getRuleOrder[0] !== 'undefined') ?  getRuleOrder[0].position + 1 : 1
+              console.log(position);
               var rule = {
                 user_id: req.user.id,
                 strategy_id: Number(req.params.id),
                 rule: req.body.content,
-                position: getRuleOrder[0].position + 1,
+                position: position,
               }
               var addRule = await query(`INSERT INTO strategies_rules SET ?`, rule)
               addingType = 'rules'

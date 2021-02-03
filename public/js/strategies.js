@@ -386,6 +386,7 @@ function saveToDB(data) {
       if (result.status == 'done') {
         isSaving(false)
         if (result.type == 'rules') {
+          console.log('The rule is returned success')
           addRuleFE(result.id, result.content)
         }
         if (result.type == 'exit') {
