@@ -2,7 +2,8 @@
 const util = require('util');
 
 // global variables
-let db = require('../../models/dbConfig');
+let db      = require('../../models/dbConfig');
+let logger  = require('../../models/winstonConfig');
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -55,8 +56,12 @@ module.exports.renderDirection = (req, res) => {
                  IFNULL(SUM(IF(result = 'loss', 1, 0)) * 1.0 / COUNT(DISTINCT DATE_FORMAT(entry_dt, '%m-%Y')), 0) AS avg_loss_month
           FROM entries WHERE status = 1 AND user_id = ? AND direction = 'long';`, req.user.id)
       var getUserCurrency = await query(`SELECT currency FROM currencies WHERE id = ?`, req.user.currency_id)
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS DIRECTION (render direction) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       res.render('user/statistics/details-direction',
         {
@@ -109,8 +114,12 @@ module.exports.changeStatsTable = (req, res) => {
           GROUP BY rs, result
           ORDER BY numcount DESC
           LIMIT 1;`, [req.user.id, req.params.direction])
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS DIRECTION (change stats table) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.json({
           directionStats: getDirectionStats[0],
@@ -136,8 +145,12 @@ module.exports.changeStatsAvgs = (req, res) => {
            IFNULL(SUM(IF(result = 'win', 1, 0)) * 1.0 / COUNT(DISTINCT DATE_FORMAT(entry_dt, '%m-%Y')), 0) AS avg_win_month,
            IFNULL(SUM(IF(result = 'loss', 1, 0)) * 1.0 / COUNT(DISTINCT DATE_FORMAT(entry_dt, '%m-%Y')), 0) AS avg_loss_month
         FROM entries WHERE status = 1 AND user_id = ? AND direction = ?;`, [req.user.id, req.params.direction])
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS DIRECTION (change avgs table) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.json({
         directionAvgs: getDirectionAvg[0],

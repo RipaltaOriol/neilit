@@ -5,6 +5,7 @@ const util = require('util');
 let pairs       = require('../models/pairs');
 let currencies  = require('../models/currencies');
 let db          = require('../models/dbConfig');
+let logger      = require('../models/winstonConfig')
 
 const query = util.promisify(db.query).bind(db);
 
@@ -48,10 +49,12 @@ module.exports.renderDashboard = (req, res) => {
         dataMonthGraph.outcomeMonth[month.month] = month.outcome;
         dataMonthGraph.countMonth[month.month] = month.count;
       });
-    } catch (e) {
-      console.log(e);
-      // COMBAK: log error
-      // Do not send flash message nor redirect, get another way of doing it
+    } catch (err) {
+      logger.error({
+        message: 'MENU (dashboard) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/login');
     } finally {
@@ -63,11 +66,8 @@ module.exports.renderDashboard = (req, res) => {
           asset: getAssetInfo[0],
           monthGraph: dataMonthGraph,
           dashboardOpen: getOpenTrades,
-          // monthCount: getMonth[0].count,
-          // monthPer: getMonth[0].month,
           monthCount: 4, // placeholder data
           monthPer: 4, // placeholder data
-          // weekPer: getWeek[0].week,
           weekPer: 1, // placeholder data
           months: [res.__('January'), res.__('February'), res.__('March'), res.__('April'), res.__('May'), res.__('June'), res.__('July'), res.__('August'), res.__('September'), res.__('October'), res.__('November'), res.__('December')],
           options: { year: 'numeric', month: 'long', day: 'numeric' }
@@ -93,25 +93,44 @@ module.exports.renderSettings = async (req, res) => {
   }
   var goals = []
   db.query(selectGoals, req.user.id, (err, getGoals) => {
+    if (err) {
+      logger.error({
+        message: 'MENU (settings) could not selectGoals',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
+    }
     getGoals.forEach((result) => {
       goals.push(result.goal)
     });
     db.query(selectRole, req.user.role_id, (err, getRole) => {
       if (err) {
-        // COMBAK: log error
+        logger.error({
+          message: 'MENU (settings) could not selectRole',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username);
       };
       var role = getRole[0].role;
       db.query(selectCustomAssets, req.user.id, (err, getCustomAssets) => {
         if (err) {
-          // COMBAK: log error
+          logger.error({
+            message: 'MENU (settings) could not selectCustomAssets',
+            endpoint: req.method + ': ' + req.originalUrl,
+            programMsg: err
+          })
           req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username);
         }
         db.query(selectPaymentInfo, req.user.id, (err, getPaymentInfo) => {
           if (err) {
-            // COMBAK: log error
+            logger.error({
+              message: 'MENU (settings) could not selectPaymentInfo',
+              endpoint: req.method + ': ' + req.originalUrl,
+              programMsg: err
+            })
             req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username);
           }
@@ -284,8 +303,12 @@ module.exports.renderCalculator = (req, res) => {
   (async () => {
     try {
       var getCurrency = await query(`SELECT currency_id FROM users WHERE id = ?`, req.user.id)
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'MENU (calculator) could not getCurrency',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       res.render("user/calculator",
         {

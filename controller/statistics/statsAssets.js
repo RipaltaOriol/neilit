@@ -2,7 +2,8 @@
 const util = require('util');
 
 // global variables
-let db = require('../../models/dbConfig');
+let db      = require('../../models/dbConfig');
+let logger  = require('../../models/winstonConfig');
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -110,8 +111,12 @@ module.exports.renderAsset = (req, res) => {
         dataWorseAssets.outcome.push(row.outcome)
       })
       var getUserCurrency = await query(`SELECT currency FROM currencies WHERE id = ?`, req.user.currency_id)
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS ASSETS (render) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.render('user/statistics/details-assets',
         {
@@ -155,7 +160,11 @@ module.exports.indexInfinite = (req, res) => {
       AS strategyStatsTable ORDER BY -avg_return ASC LIMIT 25 OFFSET ?;`;
   db.query(getAssets, [req.user.id, req.user.id, req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'STATISTICS ASSETS (render) INFINITE SCROLL something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     }
     return res.json({
       dataList: results,
@@ -200,8 +209,12 @@ module.exports.changeStatsTable = (req, res) => {
           GROUP BY rs, result
           ORDER BY numcount DESC
           LIMIT 1;`, [req.user.id, req.params.id])
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS ASSETS (change stats table) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.json({
           strategyStats: getStraregyStats[0],
@@ -226,8 +239,12 @@ module.exports.changeStatsAvgs = (req, res) => {
            IFNULL(SUM(IF(result = 'win', 1, 0)) * 1.0 / COUNT(DISTINCT DATE_FORMAT(entry_dt, '%m-%Y')), 0) AS avg_win_month,
            IFNULL(SUM(IF(result = 'loss', 1, 0)) * 1.0 / COUNT(DISTINCT DATE_FORMAT(entry_dt, '%m-%Y')), 0) AS avg_loss_month
         FROM entries WHERE status = 1 AND user_id = ? AND pair_id = ?;`, [req.user.id, req.params.id])
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS ASSETS (change avgs table) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.json({
         strategyAvgs: getStrategyAvg[0],

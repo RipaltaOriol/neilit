@@ -5,6 +5,7 @@ const util = require('util');
 let pairs         = require('../models/pairs');
 let db            = require('../models/dbConfig');
 let addonBacktest = require('../models/elements/backtest');
+let logger        = require('../models/winstonConfig')
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -17,7 +18,11 @@ module.exports.index = (req, res) => {
     WHERE b.user_id = ? ORDER BY created_at DESC LIMIT 25;`;
   db.query(getAllBacktest, req.user.id, (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'BACKTEST (index) could not retrieve getAllBacktest',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -41,8 +46,11 @@ module.exports.indexInfinite = (req, res) => {
   if (req.body.query) { getBacktest = req.body.query + ' OFFSET ?;'}
   db.query(getBacktest, [req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
-      console.log(err);
-      // COMBAK: log error
+      logger.error({
+        message: 'BACKTEST (index) could not retrieve INFINITE SCROLL getBacktest',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -67,8 +75,11 @@ module.exports.filter = (req, res) => {
     ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`
   db.query(getBacktest, req.user.id, (err, results) => {
     if (err) {
-      console.log(err);
-      // COMBAK: log error
+      logger.error({
+        message: 'BACKTEST (index) could not resolve filter',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -126,8 +137,11 @@ module.exports.createBacktest = (req, res) => {
     // stores the principal backtest parametes into the DB
     db.query('INSERT INTO backtest SET ?', newBacktest, (err, backtestId) => {
       if (err) {
-        console.log(err);
-        // COMBAK: log error
+        logger.error({
+          message: 'BACKTEST (new) could not create a new Backtest',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest/new');
       }
@@ -203,8 +217,11 @@ module.exports.createBacktest = (req, res) => {
         // stores the backtest addons into the DB
         db.query(addAddons, [newAddons], (err, complete) => {
           if (err) {
-            console.log(err);
-            // COMBAK: log error
+            logger.error({
+              message: 'BACKTEST (new) could not create addons',
+              endpoint: req.method + ': ' + req.originalUrl,
+              programMsg: err
+            })
             req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username + '/journal/backtest');
           }
@@ -234,21 +251,31 @@ module.exports.showBacktest = (req, res) => {
     WHERE bd.backtest_id = ?;`
   db.query(getBacktest, [req.params.id, req.user.id], (err, backtestInfo) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'BACKTEST (show) could not getBacktest',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     db.query(getAddons, backtestInfo[0].id, (err, backtestAddons) => {
       if (err) {
-        console.log(err);
-        // COMBAK: log error
+        logger.error({
+          message: 'BACKTEST (show) could not getAddons',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       db.query(getData, backtestInfo[0].id, (err, backtestData) => {
         if (err) {
-          console.log(err);
-          // COMBAK: log error
+          logger.error({
+            message: 'BACKTEST (show) could not getData',
+            endpoint: req.method + ': ' + req.originalUrl,
+            programMsg: err
+          })
           req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username + '/journal/backtest');
         }
@@ -282,22 +309,31 @@ module.exports.renderEditForm = (req, res) => {
     WHERE bd.backtest_id = ?;`
   db.query(getBacktest, [req.params.id, req.user.id], (err, backtestInfo) => {
     if (err) {
-      console.log(err);
-      // COMBAK: log error
+      logger.error({
+        message: 'BACKTEST (edit) could not getBacktest',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/backtest');
     }
     db.query(getAddons, backtestInfo[0].id, (err, backtestAddons) => {
       if (err) {
-        console.log(err);
-        // COMBAK: log error
+        logger.error({
+          message: 'BACKTEST (edit) could not getAddons',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/backtest');
       }
       db.query(getData, backtestInfo[0].id, (err, backtestData) => {
         if (err) {
-          console.log(err);
-          // COMBAK: log error
+          logger.error({
+            message: 'BACKTEST (edit) could not getData',
+            endpoint: req.method + ': ' + req.originalUrl,
+            programMsg: err
+          })
           req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username + '/journal/backtest');
         }
@@ -331,9 +367,12 @@ module.exports.updateBacktest = (req, res) => {
         })
         var addData = await query(`INSERT INTO backtest_data (identifier, backtest_id, direction, result, pair_id, strategy_id, timeframe_id${dataAddons}) VALUES ?`, [parseData.data])
       }
-    } catch (e) {
-      console.log(e);
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'BACKTEST (edit) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/backtest');
     } finally {
@@ -349,8 +388,12 @@ module.exports.deleteBacktest = (req, res) => {
       var deleteBacktestData = await query('DELETE FROM backtest_data WHERE backtest_id = ?', req.params.id)
       var deleteAddons = await query('DELETE FROM backtest_addons WHERE backtest_id = ?', req.params.id)
       var deleteBacktest = await query('DELETE FROM backtest WHERE id = ?', req.params.id)
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'BACKTEST (delete) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       req.flash('success', res.__('Backtest was deleted successfully.'))
       return res.redirect("/" + req.user.username + "/journal/backtest");

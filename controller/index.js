@@ -10,23 +10,7 @@ const saltRounds  = 10;
 let plans             = require('../models/plans');
 let localeTimeframes  = require("../models/timeframes");
 let db                = require('../models/dbConfig');
-// let logger            = require('../models/loggerConfig');
-
-let winston = require('winston')
-
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  defaultMeta: { service: 'user-service' },
-  transports: [
-    //
-    // - Write all logs with level `error` and below to `error.log`
-    // - Write all logs with level `info` and below to `combined.log`
-    //
-    new winston.transports.File({ filename: './error.log', level: 'error' }),
-    new winston.transports.File({ filename: './combined.log' })
-  ],
-});
+let logger            = require('../models/winstonConfig');
 
 // COMBAK: set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -40,6 +24,10 @@ module.exports.renderHome = (req, res) => {
 }
 
 module.exports.renderFeatures = (req, res) => {
+  logger.info({
+    message: 'It\s a test log',
+    endpoint: req.method + ': ' + req.originalUrl,
+  })
   res.render("features");
 }
 
@@ -82,7 +70,6 @@ module.exports.renderLogin = (req, res) => {
 module.exports.logicLogin = (req, res) => {
   (async () => {
     try {
-      // logger.error('It passes the middleware, but it fails here')
       let getUserStrategies = await query('SELECT id, strategy FROM strategies WHERE user_id = ?', req.user.id);
       req.session.strategyNames = []
       req.session.strategyIds = []
@@ -101,10 +88,12 @@ module.exports.logicLogin = (req, res) => {
       })
       req.session.timeframes = await localeTimeframes();
       req.session.notification = true;
-      // logger.error(req.user)
-      // logger.error(req.session)
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'INDEX (login logic) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       res.cookie('lang', req.user.language)
       res.redirect("/" + req.user.username)
@@ -292,8 +281,12 @@ module.exports.logicSignup = async (req, res) => {
     })
     req.session.timeframes = await localeTimeframes();
     req.session.notification = true;
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    logger.error({
+      message: 'INDEX (signup logic) something went wrong',
+      endpoint: req.method + ': ' + req.originalUrl,
+      programMsg: err
+    })
   } finally {
     res.cookie('lang', 'en')
     res.redirect("/" + req.user.username)

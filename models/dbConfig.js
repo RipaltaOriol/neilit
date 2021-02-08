@@ -1,5 +1,6 @@
-// Requires MySQL
-let mysql = require('mysql');
+// dependencies
+let mysql   = require('mysql');
+let logger  = require('./winstonConfig')
 
 // Connect to DB
 var connection = mysql.createConnection({
@@ -21,10 +22,12 @@ var connection = mysql.createConnection({
 
 connection.connect((err) => {
   if (err) {
-    console.log('Connection failed!');
-    console.log('Error connecting: ' + err.stack);
-    throw err;
-  };
+    logger.error({
+      message: 'DB CONFIG could not connect to the DB',
+      endpoint: 'N/A',
+      programMsg: err.stack
+    })
+  }
 })
 
 module.exports = connection;

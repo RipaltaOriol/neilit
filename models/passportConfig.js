@@ -1,39 +1,19 @@
-// Load necessary requirements and connenctions
+// load necessary requirements and connenctions
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt        = require('bcrypt');
 const currencies    = require(__dirname + '/currencies.js')
-
 const saltRounds     = 10;
 
-// Connect to DB
+// dependencies
 let db = require('./dbConfig')
-
-let winston = require('winston')
-
-let logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  defaultMeta: { service: 'user-service' },
-  transports: [
-    //
-    // - Write all logs with level `error` and below to `error.log`
-    // - Write all logs with level `info` and below to `combined.log`
-    //
-    new winston.transports.File({ filename: './error.log', level: 'error' }),
-    new winston.transports.File({ filename: './combined.log' }),
-    new winston.transports.Console(),
-  ],
-});
+let logger = require('./winstonConfig')
 
 // Start AUTHENTICATION
-// Expose this function to APP.JS
 module.exports = function(passport) {
 
   // Passport Session Setup
   // Serialize the user for the session
   passport.serializeUser(function(user, done) {
-    // logger.error('user: ' + user)
-    // logger.error('Fails to serialize')
     done(null, user.id);
   });
 
@@ -41,6 +21,11 @@ module.exports = function(passport) {
   passport.deserializeUser(function(id, done) {
     db.query('SELECT * FROM users_deserialize WHERE id = ?', id, (err, rows) => {
       if (err)  {
+        logger.error({
+          message: 'PASSPORT CONFIG could not connect deserialize user',
+          endpoint: 'N/A',
+          programMsg: err
+        })
         throw err
       }
       done(err, rows[0]);

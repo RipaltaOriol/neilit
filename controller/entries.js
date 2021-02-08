@@ -7,6 +7,7 @@ let pairs       = require('../models/pairs');
 let currencies  = require('../models/currencies');
 let categories  = require('../models/categories');
 let db          = require('../models/dbConfig');
+let logger      = require('../models/winstonConfig');
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -26,7 +27,11 @@ module.exports.index = (req, res) => {
     WHERE e.user_id = ? ORDER BY entry_dt DESC LIMIT 25;`
   db.query(getEntries, req.user.id, (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'ENTRIES (index) could not getEntries',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -50,7 +55,11 @@ module.exports.indexInfinite = (req, res) => {
   if (req.body.query) { getEntries = req.body.query + ' OFFSET ?;'}
   db.query(getEntries, [req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'ENTRIES (index) could not INFINITE SCROLL getEntries',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     }
     return res.json({
       dataList: results,
@@ -74,8 +83,11 @@ module.exports.filter = (req, res) => {
     ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
   db.query(getEntries, req.user.id, (err, results) => {
     if (err) {
-      console.log(err);
-      // COMBAK: log error
+      logger.error({
+        message: 'ENTRIES (index) could not FILTER getEntries',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -97,13 +109,21 @@ module.exports.renderNewForm = (req, res) => {
   var selectCurrency = 'SELECT currency FROM currencies WHERE id = ?;'
   db.query(getTas, req.user.id, (err, taInfo) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'ENTRIES (new) could not getTas',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/entry');
     }
     db.query(selectCurrency, req.user.currency_id, (err, result) => {
       if (err) {
-        // COMBAK: log error
+        logger.error({
+          message: 'ENTRIES (new) could not selectCurrency',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/entry');
       }
@@ -239,7 +259,11 @@ module.exports.createEntry = async (req, res) => {
           })
           .catch((err) => {
             if (err) {
-              // COMBAK: log error
+              logger.error({
+                message: 'ENTRIES (new) could not make the API call',
+                endpoint: req.method + ': ' + req.originalUrl,
+                programMsg: err
+              })
               req.flash('error', res.__('Something went wrong, please try again later.'))
               return res.redirect('/' + req.user.username + "/journal/entry");
             }
@@ -253,8 +277,11 @@ module.exports.createEntry = async (req, res) => {
     // saves the entry to the DB
     db.query('INSERT INTO entries SET ?', newEntry, (err, response) => {
       if (err) {
-        console.log(err);
-        // COMBAK: log error
+        logger.error({
+          message: 'ENTRIES (new) could not create the new entry',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again later.'))
         return res.redirect('/' + req.user.username + "/journal/entry");
       }
@@ -273,7 +300,11 @@ module.exports.showEntry = (req, res) => {
   var getCurrency = 'SELECT currency FROM currencies WHERE id = ?;';
   db.query(getEntry, req.params.id, (err, entryInfo) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'ENTRIES (show) could not getEntry',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again later.'))
       return res.redirect('/' + req.user.username + "/journal/entry");
     }
@@ -282,8 +313,11 @@ module.exports.showEntry = (req, res) => {
     }
     db.query(getCurrency, req.user.currency_id, (err, result) => {
       if (err) {
-        // COMBAK: log error
-        console.log(err);
+        logger.error({
+          message: 'ENTRIES (show) could not getCurrency',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again later.'))
         return res.redirect('/' + req.user.username + "/journal/entry");
       }
@@ -312,20 +346,32 @@ module.exports.renderEditForm = (req, res) => {
   var selectCurrency = 'SELECT currency FROM currencies WHERE id = ?;'
   db.query(getEntry, req.params.id, (err, entryInfo) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'ENTRIES (edit) could not getEntry',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again later.'))
       return res.redirect('/' + req.user.username + "/journal/entry");
     }
     // gets the technical analysis from the user
     db.query(getTas, req.user.id, (err, taInfo) => {
       if (err) {
-        // COMBAK: log error
+        logger.error({
+          message: 'ENTRIES (edit) could not getTas',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again later.'))
         return res.redirect('/' + req.user.username + "/journal/entry");
       }
       db.query(selectCurrency, req.user.currency_id, (err, result) => {
         if (err) {
-          // COMBAK: log error
+          logger.error({
+            message: 'ENTRIES (edit) could not selectCurrency',
+            endpoint: req.method + ': ' + req.originalUrl,
+            programMsg: err
+          })
           req.flash('error', res.__('Something went wrong, please try again later.'))
           return res.redirect('/' + req.user.username + "/journal/entry");
         }
@@ -463,7 +509,11 @@ module.exports.updateEntry = async (req, res) => {
           })
           .catch((err) => {
             if (err) {
-              // COMBAK: log error
+              logger.error({
+                message: 'ENTRIES (edit) could not make the API call',
+                endpoint: req.method + ': ' + req.originalUrl,
+                programMsg: err
+              })
               req.flash('error', res.__('Something went wrong, please try again later.'))
               return res.redirect('/' + req.user.username + "/journal/entry");
             }
@@ -484,13 +534,14 @@ module.exports.updateEntry = async (req, res) => {
     // updated the entry on the DB
     db.query('UPDATE entries SET ? WHERE id = ?', [newEntry, req.params.id], (err, response) => {
       if (err) {
-        // COMBAK: log error
-        console.log(err);
+        logger.error({
+          message: 'ENTRIES (edit) could not edit entry',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again later.'))
         return res.redirect('/' + req.user.username + "/journal/entry");
       }
-      // prints the # of rows that were changed (should be one)
-      // console.log(response.changedRows);
       req.flash('success', res.__('The entry was updated successfully.'))
       res.redirect("/" + req.user.username + "/journal/entry");
     })
@@ -499,10 +550,13 @@ module.exports.updateEntry = async (req, res) => {
 
 module.exports.deleteEntry = (req, res) => {
   var deleteEntry = 'DELETE FROM entries WHERE id = ?'
-  // deletes the technical analysis from the DB
   db.query(deleteEntry, req.params.id, (err) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'ENTRIES (delete) could not deleteEntry',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again later.'))
       return res.redirect('/' + req.user.username + "/journal/entry");
     }

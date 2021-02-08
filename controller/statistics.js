@@ -2,8 +2,9 @@
 const util = require('util');
 
 // global variables
-let pairs = require("../models/pairs");
-let db = require('../models/dbConfig');
+let pairs   = require('../models/pairs');
+let db      = require('../models/dbConfig');
+let logger  = require('../models/winstonConfig')
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -39,8 +40,12 @@ module.exports.loadEquityChart = (req, res) => {
           pointerDate = updateDatePointer + '-01'
         }
       }
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (equity chart) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       res.json({
         data: equityData
@@ -95,8 +100,12 @@ module.exports.profits = (req, res) => {
               FROM entries WHERE status = 1 AND user_id = ?;`, [req.user.id, req.user.id]);
           break;
       }
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (profits) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -114,8 +123,12 @@ module.exports.customProfits = (req, res) => {
       var getEntries = await query(`SELECT IFNULL(SUM(profits - fees), 0)                    AS outcome,
               IFNULL(SUM(profits - fees)/(SELECT balance FROM users WHERE id = ?) * 100, 0)  AS percent
           FROM entries WHERE status = 1 AND user_id = ? AND entry_dt > ? AND entry_dt < ?;`, [req.user.id, req.user.id, req.params.from, req.params.to]);
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (custom profits) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -177,8 +190,12 @@ module.exports.accountEntries = (req, res) => {
             FROM entries WHERE status = 1 AND user_id = ?;`, req.user.id);
           break;
       }
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (account entries) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -198,8 +215,12 @@ module.exports.customAccountEntries = (req, res) => {
               SUM(IF(result = 'loss', 1, 0))                                     AS loss,
               SUM(IF(result = 'be', 1, 0))                                       AS be
           FROM entries WHERE status = 1 AND user_id = ? AND entry_dt > ? AND entry_dt < ?;`, [req.user.id, req.params.from, req.params.to]);
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (custom account entries) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -247,8 +268,12 @@ module.exports.bestAsset = (req, res) => {
             JOIN pairs p ON p.id = e.pair_id
         WHERE e.user_id = ? AND status = 1 ${queryPeriod} GROUP BY pair_id ORDER BY outcome DESC LIMIT 1;`
       var getBestAsset = await query(queryBestAsset, [req.user.id, req.user.id])
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (best asset) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -272,8 +297,12 @@ module.exports.customBestAsset = (req, res) => {
           FROM entries e
               JOIN pairs p ON p.id = e.pair_id
           WHERE e.user_id = ? AND status = 1 AND entry_dt > ? AND entry_dt < ? GROUP BY pair_id ORDER BY outcome DESC LIMIT 1;`, [req.user.id, req.user.id, req.params.from, req.params.to]);
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (custom best asset) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -318,8 +347,12 @@ module.exports.directionDistribution = (req, res) => {
       var getDirection = await query(`SELECT SUM(IF(direction = 'long', 1 , 0)) AS d_long,
        SUM(IF(direction = 'short', 1 , 0))                                      AS d_short
        FROM entries WHERE user_id = ? AND status = 1 ${queryPeriod};`, req.user.id)
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (direction distribution) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -338,8 +371,12 @@ module.exports.customDirectionDistribution = (req, res) => {
        SUM(IF(direction = 'short', 1 , 0))                                    AS d_short
        FROM entries WHERE user_id = ? AND status = 1
           AND user_id = ? AND entry_dt > ? AND entry_dt < ?;`, [req.user.id, req.params.from, req.params.to]);
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (custom direction distribution) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -395,8 +432,12 @@ module.exports.directionGraph = (req, res) => {
           dataDirectionGraph.outcomeLong[month.month] = month.outcome_long;
           dataDirectionGraph.outcomeShort[month.month] = month.outcome_short;
         });
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (direction graph) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -427,8 +468,12 @@ module.exports.customDirectionGraph = (req, res) => {
         dataDirectionGraph.outcomeLong[month.month] = month.outcome_long;
         dataDirectionGraph.outcomeShort[month.month] = month.outcome_short;
       });
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (custon direction graph) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -477,8 +522,12 @@ module.exports.strategies = (req, res) => {
         FROM entries e
             JOIN strategies s ON s.id = e.strategy_id
         WHERE e.user_id = ? AND status = 1 ${queryPeriod} GROUP BY strategy_id ORDER BY entries DESC LIMIT 7;`, [req.user.id, req.user.id])
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (strategies) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -526,8 +575,12 @@ module.exports.asset = (req, res) => {
         FROM entries e
             JOIN pairs p ON p.id = e.pair_id
         WHERE e.user_id = ? AND status = 1 ${queryPeriod} GROUP BY pair_id ORDER BY entries DESC LIMIT 7;`, [req.user.id, req.user.id])
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (assets) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -575,8 +628,12 @@ module.exports.timeframes = (req, res) => {
         FROM entries e
             JOIN timeframes t ON t.id = e.timeframe_id
         WHERE e.user_id = ? AND status = 1 ${queryPeriod} GROUP BY timeframe_id ORDER BY entries DESC LIMIT 7;`, [req.user.id, req.user.id])
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (timeframes) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -623,8 +680,12 @@ module.exports.days = (req, res) => {
             SUM(IF(result = 'be', 1, 0))                                         AS be
         FROM entries e
         WHERE e.user_id = ? AND status = 1 ${queryPeriod} GROUP BY day ORDER BY entries DESC LIMIT 7;`, [req.user.id, req.user.id])
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (days) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {
@@ -684,8 +745,12 @@ module.exports.custom = (req, res) => {
           AND entry_dt > ? AND entry_dt < ? GROUP BY day ORDER BY entries DESC LIMIT 7;`, [req.user.id, req.user.id, req.params.from, req.params.to])
           break;
       }
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS (custom) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username + '/statistics');
     } finally {

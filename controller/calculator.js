@@ -53,7 +53,11 @@ module.exports.convert = async (req, res) => {
           })
         })
         .catch((err) => {
-          // error
+          logger.error({
+            message: 'CALCULATOR (convert) could not make API call FOREX',
+            endpoint: req.method + ': ' + req.originalUrl,
+            programMsg: err
+          })
         })
       break;
     case 'Crypto':
@@ -70,7 +74,11 @@ module.exports.convert = async (req, res) => {
         })
       })
       .catch((err) => {
-        // error
+        logger.error({
+          message: 'CALCULATOR (convert) could not make API call CRYPTO',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
       })
       break;
   }

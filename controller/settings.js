@@ -8,6 +8,7 @@ let cryptoPairs       = require('../models/generateCrypto');
 let currencies        = require('../models/currencies');
 let localeTimeframes  = require('../models/timeframes');
 let db                = require('../models/dbConfig');
+let logger            = require('../models/winstonConfig');
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -34,7 +35,11 @@ module.exports.newStrategy = (req, res) => {
           }
         )
       } else {
-        // COMBAK: log error
+        logger.error({
+          message: 'SETTINGS (new strategy) could not add new strategy',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         return res.json(
           {
             response: 'error',
@@ -79,8 +84,11 @@ module.exports.deleteStrategy = (req, res) => {
     // deletes the strategy from the DB
     await db.query(deleteStrategy, [req.body.strategy, req.user.id], (err, done) => {
       if (err) {
-        console.log(err);
-        // COMBAK: log error
+        logger.error({
+          message: 'SETTINGS (delete strategy) could not delete strategy',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         return res.json(
           {
             response: 'error',
@@ -104,7 +112,11 @@ module.exports.newGoal = (req, res) => {
   // saves the goal to the DB
   db.query('INSERT INTO goals SET ?', newGoal, (err, done) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'SETTINGS (new goal) could not add new goal',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
@@ -117,7 +129,11 @@ module.exports.deleteGoal = (req, res) => {
   // deletes the goal from the DB
   db.query(deleteGoal, req.body.goal, (err) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'SETTINGS (delete goal) could not delete goal',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
@@ -131,7 +147,11 @@ module.exports.changeCurrency = (req, res) => {
   // updates the base currency from the DB
   db.query(updateCurrency, [currency, req.user.id], (err) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'SETTINGS (change currency) could not change currency',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
@@ -144,7 +164,11 @@ module.exports.changeShowProfits = (req, res) => {
   // updates the show profits in entries config. from the DB
   db.query(updateShowProfits, [req.body.showProfits, req.user.id], (err) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'SETTINGS (show profits) could not change show profits',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
@@ -157,7 +181,11 @@ module.exports.changeMode = (req, res) => {
   // updates the mode from the DB
   db.query(updateMode, [req.body.mode, req.user.id], (err) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'SETTINGS (mode) could not change mode',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }
@@ -197,8 +225,12 @@ module.exports.toggleAssets = (req, res) => {
           rate: asset.has_rate
         }
       })
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'SETTINGS (premade assets) could not toggle premade assets',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       res.end();
     }
@@ -215,15 +247,19 @@ module.exports.addAsset = (req, res) => {
   }
   db.query('INSERT INTO pairs SET ?', newAsset, (err, result) => {
     if (err) {
-      console.log(err);
       if (err.code === 'ER_DUP_ENTRY') {
-        // COMBAK: log error
         return res.json(
           {
             response: 'error',
             message: res.__('You cannot add an asset twice.')
           }
         )
+      } else {
+        logger.error({
+          message: 'SETTINGS (new asset) could not add new asset',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
       }
     }
     req.session.assets[req.body.pair] = {
@@ -238,7 +274,11 @@ module.exports.addAsset = (req, res) => {
 module.exports.deleteAsset = (req, res) => {
   db.query('DELETE FROM pairs WHERE pair = ? AND user_id = ?', [req.body.asset, req.user.id], (err) => {
     if (err) {
-      console.log(err);
+      logger.error({
+        message: 'SETTINGS (delete asset) could not delete asset',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     }
     delete req.session.assets[req.body.asset]
     res.end()
@@ -247,10 +287,13 @@ module.exports.deleteAsset = (req, res) => {
 
 module.exports.changeLanguage = (req, res) => {
   var updateLanguage = 'UPDATE users SET language = ? WHERE id = ?'
-  // updates the user's language in the DB
   db.query(updateLanguage, [req.body.lang, req.user.id], (err) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'SETTINGS (language) could not change language',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     }

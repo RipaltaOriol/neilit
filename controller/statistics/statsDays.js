@@ -2,7 +2,8 @@
 const util = require('util');
 
 // global variables
-let db = require('../../models/dbConfig');
+let db      = require('../../models/dbConfig');
+let logger  = require('../../models/winstonConfig');
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -97,8 +98,12 @@ module.exports.renderDays = (req, res) => {
         dataOutcomeExitDate.outcome.push(row.outcome)
       })
       var getUserCurrency = await query(`SELECT currency FROM currencies WHERE id = ?`, req.user.currency_id)
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS DAYS (render days) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       res.render('user/statistics/details-days',
         {
@@ -154,8 +159,12 @@ module.exports.changeStatsTable = (req, res) => {
           GROUP BY rs, result
           ORDER BY numcount DESC
           LIMIT 1;`, [req.user.id, req.params.id])
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS DAYS (change stats table) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.json({
           strategyStats: getStraregyStats[0],

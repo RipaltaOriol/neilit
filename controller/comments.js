@@ -1,11 +1,16 @@
 // global variables
-let db = require('../models/dbConfig');
+let db      = require('../models/dbConfig');
+let logger  = require('../models/winstonConfig')
 
 module.exports.index = (req, res) => {
   var getComments = 'SELECT * FROM comments WHERE user_id = ? ORDER BY created_at DESC LIMIT 25;'
   db.query(getComments, req.user.id, (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'COMMENTS (index) could not getComments',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -27,8 +32,11 @@ module.exports.indexInfinite = (req, res) => {
   queryVariables.push(Number(req.body.offset))
   db.query(getComments, queryVariables, (err, results) => {
     if (err) {
-      console.log(err);
-      // COMBAK: log error
+      logger.error({
+        message: 'COMMENTS (index) could not INFINITE SCROLL getComments',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -58,8 +66,11 @@ module.exports.filter = (req, res) => {
     ORDER BY created_at ${req.body.order} LIMIT 25`
   db.query(getAllContent, [req.user.id, req.user.id, req.user.id], (err, results) => {
     if (err) {
-      console.log(err);
-      // COMBAK: log error
+      logger.error({
+        message: 'COMMENTS (index) could not FILTER getAllComments',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/ta');
     }
@@ -88,7 +99,11 @@ module.exports.createComment = (req, res) => {
   // save comment to the DB
   db.query(commentQuery, newcomment, (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'COMMENTS (new) could not insertComment',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment/new');
     }
@@ -102,7 +117,11 @@ module.exports.showComment = (req, res) => {
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   db.query(getComment, req.params.id, (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'COMMENTS (show) could not getComment',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment');
     }
@@ -120,7 +139,11 @@ module.exports.renderEditForm = (req, res) => {
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   db.query(getComment, req.params.id, (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'COMMENTS (edit) could not getComments',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment');
     }
@@ -141,7 +164,11 @@ module.exports.updateComment = (req, res) => {
   }
   db.query('UPDATE comments SET ? WHERE id = ?', [commentbody, req.params.id], (err, updated) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'COMMENTS (edit) could not updateComment',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment');
     }
@@ -152,12 +179,16 @@ module.exports.updateComment = (req, res) => {
 }
 
 module.exports.deleteComment = (req, res) => {
-  var comment2Delete = req.params.id
+  var commentToDelete = req.params.id
   var deleteQuery = 'DELETE FROM comments WHERE id = ?'
   // Query to delte the entry
-  db.query(deleteQuery, comment2Delete, (err) => {
+  db.query(deleteQuery, commentToDelete, (err) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'COMMENTS (delete) could not deleteComment',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/comment');
     }

@@ -2,7 +2,8 @@
 const util = require('util');
 
 // global variables
-let db = require('../models/dbConfig');
+let db      = require('../models/dbConfig');
+let logger  = require('../models/winstonConfig')
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -13,55 +14,73 @@ module.exports.index = (req, res) => {
 
 module.exports.showStrategy = (req, res) => {
   (async () => {
-    var getStrategy = await query(`SELECT id, strategy FROM strategies
-      WHERE id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
-    if (getStrategy[0].strategy == 'None') {
-      req.flash('error', res.__('You are not allowed here! This action is illegal.'))
-      return res.redirect('/' + req.user.username + '/strategies')
+    try {
+      var getStrategy = await query(`SELECT id, strategy FROM strategies
+        WHERE id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
+      if (getStrategy[0].strategy == 'None') {
+        req.flash('error', res.__('You are not allowed here! This action is illegal.'))
+        return res.redirect('/' + req.user.username + '/strategies')
+      }
+      var getStrategyDoc = await query(`SELECT description FROM strategies_docs
+        WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
+      var getStrategyRules = await query(`SELECT rule FROM strategies_rules
+        WHERE strategy_id = ? AND user_id = ? ORDER BY position;`, [req.params.id, req.user.id]);
+      var getStrategyExits = await query(`SELECT name, description, type, order_type FROM strategies_exits
+        WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
+      var getStrategyObs = await query(`SELECT observation FROM strategies_observations
+        WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
+    } catch (err) {
+      logger.error({
+        message: 'STRATEGIES (show) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
+    } finally {
+      return res.render('user/strategies/show', {
+        strategy: getStrategy[0],
+        doc: getStrategyDoc[0],
+        rules: getStrategyRules,
+        exits: getStrategyExits,
+        observations: getStrategyObs
+      })
     }
-    var getStrategyDoc = await query(`SELECT description FROM strategies_docs
-      WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
-    var getStrategyRules = await query(`SELECT rule FROM strategies_rules
-      WHERE strategy_id = ? AND user_id = ? ORDER BY position;`, [req.params.id, req.user.id]);
-    var getStrategyExits = await query(`SELECT name, description, type, order_type FROM strategies_exits
-      WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
-    var getStrategyObs = await query(`SELECT observation FROM strategies_observations
-      WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
-    return res.render('user/strategies/show', {
-      strategy: getStrategy[0],
-      doc: getStrategyDoc[0],
-      rules: getStrategyRules,
-      exits: getStrategyExits,
-      observations: getStrategyObs
-    })
   })()
 }
 
 module.exports.renderEditForm = (req, res) => {
   (async () => {
-    var getStrategy = await query(`SELECT id, strategy FROM strategies
-      WHERE id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
-    if (getStrategy[0].strategy == 'None') {
-      req.flash('error', res.__('You are not allowed here! This action is illegal.'))
-      return res.redirect('/' + req.user.username + '/strategies')
+    try {
+      var getStrategy = await query(`SELECT id, strategy FROM strategies
+        WHERE id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
+      if (getStrategy[0].strategy == 'None') {
+        req.flash('error', res.__('You are not allowed here! This action is illegal.'))
+        return res.redirect('/' + req.user.username + '/strategies')
+      }
+      var getStrategyDoc = await query(`SELECT description FROM strategies_docs
+        WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
+      var getStrategyRules = await query(`SELECT id, rule FROM strategies_rules
+        WHERE strategy_id = ? AND user_id = ? ORDER BY position;`, [req.params.id, req.user.id]);
+      var getStrategyExits = await query(`SELECT id, name, description, type, order_type FROM strategies_exits
+        WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
+      var getStrategyObs = await query(`SELECT id, observation FROM strategies_observations
+        WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
+    } catch (err) {
+      logger.error({
+        message: 'STRATEGIES (edit) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
+    } finally {
+      return res.render('user/strategies/edit', {
+        strategy: getStrategy[0],
+        doc: getStrategyDoc[0],
+        rules: getStrategyRules,
+        exits: getStrategyExits,
+        observations: getStrategyObs,
+        saved: res.__('Saved'),
+        saving: res.__('Saving')
+      })
     }
-    var getStrategyDoc = await query(`SELECT description FROM strategies_docs
-      WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
-    var getStrategyRules = await query(`SELECT id, rule FROM strategies_rules
-      WHERE strategy_id = ? AND user_id = ? ORDER BY position;`, [req.params.id, req.user.id]);
-    var getStrategyExits = await query(`SELECT id, name, description, type, order_type FROM strategies_exits
-      WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
-    var getStrategyObs = await query(`SELECT id, observation FROM strategies_observations
-      WHERE strategy_id = ? AND user_id = ?;`, [req.params.id, req.user.id]);
-    return res.render('user/strategies/edit', {
-      strategy: getStrategy[0],
-      doc: getStrategyDoc[0],
-      rules: getStrategyRules,
-      exits: getStrategyExits,
-      observations: getStrategyObs,
-      saved: res.__('Saved'),
-      saving: res.__('Saving')
-    })
   })()
 }
 
@@ -169,8 +188,12 @@ module.exports.updateStrategy = (req, res) => {
           }
           break;
       }
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STRATEGIES (edit) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       if (insertId != 0) {
         if (addingType == 'rules') {
@@ -194,7 +217,6 @@ module.exports.updateStrategy = (req, res) => {
             id: insertId
           })
         }
-
       } else {
         return res.send({
           status: 'done'

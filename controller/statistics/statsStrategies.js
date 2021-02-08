@@ -2,7 +2,8 @@
 const util = require('util');
 
 // global variables
-let db = require('../../models/dbConfig');
+let db      = require('../../models/dbConfig');
+let logger  = require('../../models/winstonConfig');
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -154,8 +155,12 @@ module.exports.renderStrategies = (req, res) => {
         dataAmountOutcome.amount.push(row.amount)
       })
       var getUserCurrency = await query(`SELECT currency FROM currencies WHERE id = ?`, req.user.currency_id)
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS STRATEGIES (render strategies) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       res.render('user/statistics/details-strategies',
         {
@@ -216,7 +221,12 @@ module.exports.changeStatsTable = (req, res) => {
           ORDER BY numcount DESC
           LIMIT 1;`, [req.user.id, req.params.id])
     } catch (e) {
-      console.log(e);
+      console.log(err);
+      logger.error({
+        message: 'STATISTICS STRATEGIES (change stats table) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.json({
           strategyStats: getStraregyStats[0],
@@ -241,8 +251,12 @@ module.exports.changeStatsAvgs = (req, res) => {
            IFNULL(SUM(IF(result = 'win', 1, 0)) * 1.0 / COUNT(DISTINCT DATE_FORMAT(entry_dt, '%m-%Y')), 0) AS avg_win_month,
            IFNULL(SUM(IF(result = 'loss', 1, 0)) * 1.0 / COUNT(DISTINCT DATE_FORMAT(entry_dt, '%m-%Y')), 0) AS avg_loss_month
         FROM entries WHERE status = 1 AND user_id = ? AND strategy_id = ?;`, [req.user.id, req.params.id])
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS STRATEGIES (change avgs table) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.json({
         strategyAvgs: getStrategyAvg[0],
@@ -264,8 +278,12 @@ module.exports.changeGraphDurability = (req, res) => {
         dataOutcomeDurability.outcome.push(row.outcome)
         dataOutcomeDurability.durability.push(row.time + ' days')
       })
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      logger.error({
+        message: 'STATISTICS STRATEGIES (change graph durability) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
     } finally {
       return res.json({
         strategyOutcomeTime: dataOutcomeDurability,

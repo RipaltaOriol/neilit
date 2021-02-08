@@ -5,6 +5,7 @@ const util = require('util');
 let pairs       = require('../models/pairs');
 let currencies  = require('../models/currencies');
 let db          = require('../models/dbConfig');
+let logger      = require('../models/winstonConfig')
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -47,8 +48,12 @@ module.exports.biggestTrade = (req, res) => {
           pair = pairs[entry.pair_id - 1];
         }
       });
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'DASHBOARD (biggest trade) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     } finally {
@@ -73,8 +78,12 @@ module.exports.customBiggestTrade = (req, res) => {
           biggestPair = pairs[entry.pair_id - 1];
         }
       })
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'DASHBOARD (custom biggest trade) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     } finally {
@@ -129,8 +138,12 @@ module.exports.totalEntries = (req, res) => {
       } else {
         rate = wins/total * 100;
       }
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'DASHBOARD (total entries) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     } finally {
@@ -160,8 +173,12 @@ module.exports.customTotalEntries = (req, res) => {
       } else {
         rate = wins/total * 100
       }
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'DASHBOARD (custom total entries) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     } finally {
@@ -209,8 +226,12 @@ module.exports.monthlyOutcome = (req, res) => {
         outcomeMonthAmount[entry.month - 1] += (entry.profits - entry.fees);
         outcomeMonthTotal[entry.month - 1] += 1;
       });
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'DASHBOARD (monthly outcome) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     } finally {
@@ -233,8 +254,12 @@ module.exports.customMonthlyOutcome = (req, res) => {
         outcomeMonthAmount[entry.month - 1] += (entry.profits - entry.fees);
         outcomeMonthTotal[entry.month - 1] += 1;
       })
-    } catch (e) {
-      // COMBAK: log error
+    } catch (err) {
+      logger.error({
+        message: 'DASHBOARD (custom monthly outcome) something went wrong',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong. Please, try again later.'))
       return res.redirect('/' + req.user.username);
     } finally {

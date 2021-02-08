@@ -7,6 +7,9 @@ let pairs       = require('../models/pairs');
 let categories  = require('../models/categories')
 let taElements  = require('../models/ta_elements.js');
 let db          = require('../models/dbConfig');
+let logger      = require('../models/winstonConfig');
+
+// imported elements
 var titleTA     = require('../models/elements/title');
 var textTA      = require('../models/elements/text');
 var imageTA     = require('../models/elements/image');
@@ -16,8 +19,11 @@ module.exports.index = (req, res) => {
   var getTAs = 'SELECT ta.id, created_at, pair, last_update FROM tanalysis ta JOIN pairs p ON ta.pair_id = p.id WHERE ta.user_id = ? ORDER BY created_at DESC LIMIT 25;';
   db.query(getTAs, req.user.id, (err, results) => {
     if (err) {
-      console.log(err);
-      // COMBAK: log error
+      logger.error({
+        message: 'TECHNICAL ANALYSIS (index) could not getTAs',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -37,7 +43,11 @@ module.exports.indexInfinite = (req, res) => {
   if (req.body.query) { getTAs = req.body.query + ' OFFSET ?;'}
   db.query(getTAs, [req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'TECHNICAL ANALYSIS (index) INFINITE SCROLL could not getTAs',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username);
     }
@@ -58,8 +68,11 @@ module.exports.filter = (req, res) => {
     WHERE tanalysis.user_id = ? && (${req.body.pairs}) && (${req.body.categories}) ${editFilter} ${createFilter} ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
   db.query(getTAs, req.user.id, (err, results) => {
     if (err) {
-      console.log(err);
-      // COMBAK: log error
+      logger.error({
+        message: 'TECHNICAL ANALYSIS (index) FILTER could not getTAs',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/ta');
     }
@@ -111,8 +124,11 @@ module.exports.createTechnicalAnalysis = (req, res) => {
     // stores the constants of the technical analysis variables into the DB
     db.query('INSERT INTO tanalysis SET ?', newTa, (err, taId) => {
       if (err) {
-        console.log(err);
-        // COMBAK: log error
+        logger.error({
+          message: 'TECHNICAL ANALYSIS (new) could create newTa',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/ta');
       }
@@ -257,13 +273,11 @@ module.exports.createTechnicalAnalysis = (req, res) => {
         // stores the TA elements into the DB
         db.query(addElements, [data], (err, complete) => {
           if (err) {
-            var logFile = fs.createWriteStream('log.txt', { flags: 'w' });
-            var logStdout = process.stdout;
-            console.log = function () {
-              logFile.write(util.format.apply(null, arguments) + '\n');
-              logStdout.write(util.format.apply(null, arguments) + '\n');
-            }
-            console.error = console.log(err);
+            logger.error({
+              message: 'TECHNICAL ANALYSIS (new) could not addElements',
+              endpoint: req.method + ': ' + req.originalUrl,
+              programMsg: err
+            })
             req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username + '/journal/ta');
           }
@@ -286,7 +300,11 @@ module.exports.showTechnicalAnalysis = (req, res) => {
     WHERE ta.ta_id = ? ORDER BY order_at`;
   db.query(getTa, req.params.id, (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'TECHNICAL ANALYSIS (show) could not getTa',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/ta');
     }
@@ -295,8 +313,11 @@ module.exports.showTechnicalAnalysis = (req, res) => {
     // loads the technical analysis elements
     db.query(getElementsTa, req.params.id, (err, elementsTa) => {
       if (err) {
-        console.log(err);
-        // COMBAK: log error
+        logger.error({
+          message: 'TECHNICAL ANALYSIS (show) could not getElementsTa',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/ta');
       }
@@ -355,7 +376,11 @@ module.exports.renderEditForm = (req, res) => {
   var taInfo = { }
   db.query(getTa, req.params.id, (err, results) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'TECHNICAL ANALYSIS (edit) could not getTa',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/ta');
     }
@@ -364,7 +389,11 @@ module.exports.renderEditForm = (req, res) => {
     // loads the technical analysis elements
     db.query(getElementsTa, req.params.id, (err, elementsTa) => {
       if (err) {
-        // COMBAK: log error
+        logger.error({
+          message: 'TECHNICAL ANALYSIS (edit) could not getElementsTa',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/ta');
       }
@@ -424,8 +453,11 @@ module.exports.updateTechnicalAnalysis = (req, res) => {
     // stores the constants of the technical analysis into the DB
     db.query('UPDATE tanalysis SET ? WHERE id = ?', [editTa, req.params.id], (err, taId) => {
       if (err) {
-        console.log(err);
-        // COMBAK: log error
+        logger.error({
+          message: 'TECHNICAL ANALYSIS (edit logic) something went wrong',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/ta');
       }
@@ -433,7 +465,11 @@ module.exports.updateTechnicalAnalysis = (req, res) => {
       // deletes the old technical analysis before storing the updated elements
       db.query('DELETE FROM telementanalysis WHERE ta_id = ?', ta_id, (err) => {
         if (err) {
-          // COMBAK: log error
+          logger.error({
+            message: 'TECHNICAL ANALYSIS (edit) could not delete technical analysis elements',
+            endpoint: req.method + ': ' + req.originalUrl,
+            programMsg: err
+          })
           req.flash('error', res.__('Something went wrong, please try again.'))
           return res.redirect('/' + req.user.username + '/journal/ta');
         }
@@ -577,8 +613,11 @@ module.exports.updateTechnicalAnalysis = (req, res) => {
           // stores the TA elements into the DB
           db.query(addElements, [data], (err, complete) => {
             if (err) {
-              console.log(err);
-              // COMBAK: log error
+              logger.error({
+                message: 'TECHNICAL ANALYSIS (edit) could not addElements',
+                endpoint: req.method + ': ' + req.originalUrl,
+                programMsg: err
+              })
               req.flash('error', res.__('Something went wrong, please try again.'))
               return res.redirect('/' + req.user.username + '/journal/ta');
             }
@@ -598,14 +637,22 @@ module.exports.deleteTechnicalAnalysis = (req, res) => {
   // deletes the technical analysis elements from the DB
   db.query(deleteElementsTa, req.params.id, (err) => {
     if (err) {
-      // COMBAK: log error
+      logger.error({
+        message: 'TECHNICAL ANALYSIS (delete) could not deleteElementsTa',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
       req.flash('error', res.__('Something went wrong, please try again.'))
       return res.redirect('/' + req.user.username + '/journal/ta');
     }
     // deletes the technical analysis from the DB
     db.query(deleteTa, req.params.id, (err) => {
       if (err) {
-        // COMBAK: log error
+        logger.error({
+          message: 'TECHNICAL ANALYSIS (delete) could not deleteTa',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
         req.flash('error', res.__('Something went wrong, please try again.'))
         return res.redirect('/' + req.user.username + '/journal/ta');
       }
