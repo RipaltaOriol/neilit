@@ -62,6 +62,21 @@
   <div class="d-flex justify-content-center mb-4">
     <!-- tabs content -->
     <div class="tab-content">
+      <!-- flash messages -->
+      <% if (error && error.length > 0) { %>
+        <div id="flash-alert" class="container px-0">
+          <div class="alert alert-danger mt-2" role="alert">
+            <%= error %>
+          </div>
+        </div>
+      <% } %>
+      <% if (success && success.length > 0) { %>
+        <div id="flash-alert" class="container px-0">
+          <div class="alert alert-success mt-2" role="alert">
+            <%= success %>
+          </div>
+        </div>
+      <% } %>
       <!-- profile -->
       <div role="tabpanel" class="tab-box tab-pane" id="profile">
         <div class="d-flex flex-column">
@@ -94,11 +109,20 @@
             <div class="w-50 mx-5 my-4">
               <h4 class="pb-1 mb-3"><%= __('Public Information') %></h4>
               <!-- Profile Picture -->
-              <div class="mb-2 d-flex flex-row justify-content-center align-items-baseline">
-                <!-- // DEBUG: hacer que cuando hagas hover aparezca texto encima con un color negro al 25% para cambiar la imagen. -->
-                <a href="#">
-                  <img src="/imgs/icons/face.svg" class="profile-picture mb-2" alt="profile picture">
-                </a>
+              <div class="mb-2 d-flex flex-row justify-content-center">
+                <div class="profile-container">
+                  <% if (profilePicture != null) { %>
+                    <img src="/<%= profilePicture %>" class="profile-picture mx-auto mb-2" alt="profile picture">
+                  <% } else { %>
+                    <img src="/imgs/icons/face.svg" class="profile-default profile-picture mx-auto mb-2" alt="profile picture">
+                  <% } %>
+                  <div class="profile-btn">
+                    <form id="profile-image-form" action="/<%= currentUser.username %>/settings/uploadProfileImage" method="POST" enctype="multipart/form-data">
+                      <input id="profile-input" type="file" name="profileImage" class="d-none">
+                      <button id="profile-upload" type="button" class="btn-neilit">Change Image</button>
+                    </form>
+                  </div>
+                </div>
               </div>
               <!-- Username -->
               <div class="mb-2 d-flex flex-row justify-content-between align-items-baseline">

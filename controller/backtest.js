@@ -11,7 +11,7 @@ let logger        = require('../models/winstonConfig')
 const query = util.promisify(db.query).bind(db);
 
 module.exports.index = (req, res) => {
-  var getAllBacktest = `SELECT b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
+  var getAllBacktest = `SELECT b.title, b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
     LEFT JOIN pairs p ON b.pair_id = p.id
     LEFT JOIN timeframes t ON b.timeframe_id = t.id
     LEFT JOIN strategies s ON b.strategy_id = s.id
@@ -38,7 +38,7 @@ module.exports.index = (req, res) => {
 }
 
 module.exports.indexInfinite = (req, res) => {
-  getBacktest = `SELECT b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
+  getBacktest = `SELECT b.title, b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
     LEFT JOIN pairs p ON b.pair_id = p.id
     LEFT JOIN timeframes t ON b.timeframe_id = t.id
     LEFT JOIN strategies s ON b.strategy_id = s.id
@@ -65,7 +65,7 @@ module.exports.indexInfinite = (req, res) => {
 module.exports.filter = (req, res) => {
   var createFilter = ''
   if (req.body.create) { createFilter = '&& created_at >= ' + req.body.create + ' >= created_at' }
-  var getBacktest = `SELECT b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
+  var getBacktest = `SELECT b.title, b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
     LEFT JOIN pairs p ON b.pair_id = p.id
     LEFT JOIN timeframes t ON b.timeframe_id = t.id
     LEFT JOIN strategies s ON b.strategy_id = s.id
@@ -119,6 +119,9 @@ module.exports.createBacktest = (req, res) => {
     var newBacktest = {
       user_id: req.user.id,
       result: req.body.outcome
+    }
+    if (req.body.title != '') {
+      newBacktest.title = req.body.title
     }
     newBacktest.pair_id = (req.body.pairs == 0) ? null :req.body.selectPair;
     switch (req.body.direction) {
@@ -188,7 +191,7 @@ module.exports.createBacktest = (req, res) => {
             req.flash('error', res.__('The addon\'s title cannot be blank.'))
             return res.redirect('/' + req.user.username + '/journal/backtest/new');
           }
-          var addon = [backtest_id, req.body.varName, req.body.intList]
+          var addon = [backtest_id, 1, req.body.varName, req.body.intList]
           // configures an integers value addon
           if (req.body.intList == 1) {
             addon.push(null, null, null, null, null, null)
@@ -236,7 +239,7 @@ module.exports.createBacktest = (req, res) => {
 
 module.exports.showBacktest = (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = `SELECT b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
+  var getBacktest = `SELECT b.title, b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
     LEFT JOIN pairs p ON b.pair_id = p.id
     LEFT JOIN timeframes t ON b.timeframe_id = t.id
     LEFT JOIN strategies s ON b.strategy_id = s.id
@@ -294,7 +297,7 @@ module.exports.showBacktest = (req, res) => {
 
 module.exports.renderEditForm = (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = `SELECT b.id, created_at, b.result, pair, pair_id, timeframe, strategy FROM backtest b
+  var getBacktest = `SELECT b.title, b.id, created_at, b.result, pair, pair_id, timeframe, strategy FROM backtest b
     LEFT JOIN pairs p ON b.pair_id = p.id
     LEFT JOIN timeframes t ON b.timeframe_id = t.id
     LEFT JOIN strategies s ON b.strategy_id = s.id

@@ -109,17 +109,45 @@
         Next, add the lot size you are using and the entry price you got into the trade.
         Lastly, select the date you made the entry and the direction of your trade.
       </p>
-      <img class="w-100 mb-3" src="/imgs/resources-create-entry.png" alt="how-to-create-an-entry">
+      <img class="w-100 mb-3" src="/imgs/resources-create-entry-1.png" alt="how-to-create-an-entry">
       <p>
         This is the required information to create an entry, although there are
         other optional fields you could fill in and find useful in your analysis:
       </p>
-      <ul class="pl-4 resources-content">
+      <ul id="logCriteria" class="pl-4 resources-content">
         <li>Stop loss</li>
         <li>Take profit</li>
         <li>Time of entry</li>
         <li>Link your entry with a Technical Analysis</li>
       </ul>
+      <h2 class="orange text-left mb-2">Logging Criteria</h2>
+      <ol class="pl-4">
+        <li>
+          <span class="font-20">Profits</span>
+          <p>
+            Porfits for the entries should be logged as recorded your the trading account.
+            <br>
+            For instace, if you had a $100 winning trade your input should be 100.
+            On the other hand, if you experienced a ($100) loss. Then, you should input -100.
+          </p>
+        </li>
+        <li>
+          <span class="font-20">Fees</span>
+          <p>
+            Neilit assumes that fees are a loss in your trading capital by default.
+            Therefore, if you trade had a fee of $5, then you input should be 5.
+            <br>
+            However, if you receive positive funding from your exchange you should
+            state your fees as (-).
+            <br>
+            For instance, if you receive $0.5 of funding after adding up your fees
+            your input should be -0.5.
+          </p>
+        </li>
+      </ol>
+      <h3>Example</h3>
+      <p>In this example the trade resulted in a $100 win. The fees for the trade were $5. Therefore, the net profit of the entry was $95.</p>
+      <img class="w-75" src="/imgs/resources-create-entry-2.png" alt="example for logging criteria">
     </div>
   </div>
 </div>

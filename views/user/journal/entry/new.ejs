@@ -160,8 +160,13 @@
         </div>
         <textarea id="server-comment" name="comment" class="d-none"></textarea>
         <br>
-        <h3 class="mx-3"><%= __('Close Entry') %></h3>
+        <div class="d-flex justify-content-between mx-3">
+          <h3><%= __('Close Entry') %></h3>
+          <a href="/resources/create-entry#logCriteria" class="help-link"><%= __('quick look up at logging criteria') %></a>
+
+        </div>
         <hr>
+
         <div class="mx-3 mb-3">
           <span class="d-block">
             <label class="checkbox-orange mb-0 font-18">

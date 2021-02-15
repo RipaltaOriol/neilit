@@ -1,5 +1,37 @@
 // dependencies
-const util = require('util');
+const util    = require('util');
+const multer  = require('multer');
+const fs      = require('fs-extra')
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    let userId = req.user.id;
+    let path = `./uploads/${userId}/profile`
+    fs.mkdirsSync(path);
+    cb(null, path)
+  },
+  filename: function(req, file, cb) {
+    cb(null, req.user.username + '-'
+      + new Date().toISOString() + '-' + file.originalname)
+  }
+})
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype == 'image/png') {
+    cb(null, true)
+  } else {
+    // reject file if the type is not correct
+    cb(null, false)
+  }
+}
+
+const upload  = multer({
+  storage: storage,
+  lmits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+})
 
 // global variables
 let pairs             = require('../models/pairs');
@@ -16,6 +48,8 @@ const query = util.promisify(db.query).bind(db);
 // COMBAK: Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
 const stripe = require('stripe')('sk_test_51HTTZyFaIcvTY5RCCdt6kRcZcNMwtjq13cAVcs6jWWvowXuRqXQKvFCK6pYG7Q8NRSy9NQ8uCjHADKAHd36Mfosx006ajk0pov');
+
+module.exports.multerHandle = upload.single('profileImage')
 
 module.exports.newStrategy = (req, res) => {
   // creates an object with the new strategy
@@ -300,6 +334,24 @@ module.exports.changeLanguage = (req, res) => {
     res.cookie('lang', req.body.lang)
     timeframes = localeTimeframes();
     res.end();
+  })
+}
+
+module.exports.uploadProfileImage = (req, res) => {
+  if (req.file === undefined) {
+    req.flash('error', res.__('Please, ensure the image is a one of the followings: PNG, JPG or JPEG'))
+    return res.redirect('/' + req.user.username + '/settings')
+  }
+  var updateProfilePicture = 'UPDATE users SET profile_picture = ? WHERE id = ?'
+  db.query(updateProfilePicture, [req.file.path, req.user.id], (err) => {
+    if (err) {
+      logger.error({
+        message: 'SETTINGS (profile picture) could not set profile picture',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
+    }
+    return res.redirect('/' + req.user.username + '/settings')
   })
 }
 

@@ -4,7 +4,21 @@
   <div class="container mx-auto mb-5">
     <div class="journal-box px-0">
       <form action="/<%= currentUser.username %>/journal/entry/<%= entryInfo.id %>?_method=DELETE" method="POST">
-        <h3 class="mx-3"><%= entryInfo.pair %> - <%= entryInfo.entry_dt.toLocaleDateString(currentUser.language, options) %></h3>
+        <div class="d-flex justify-content-between">
+          <h3 class="mx-3"><%= entryInfo.pair %> - <%= entryInfo.entry_dt.toLocaleDateString(currentUser.language, options) %></h3>
+          <div class="d-flex mb-2">
+            <% if (prevEntry.length > 0) { %>
+              <a href="/<%= currentUser.username %>/journal/entry/<%= prevEntry[0].id %>" class="mr-2">
+                <img src="/imgs/icons/arrow-back-neilit.svg" class="navigation-btn" alt="<%= __('Prev') %>">
+              </a>
+            <% } %>
+            <% if (nextEntry.length > 0) { %>
+              <a href="/<%= currentUser.username %>/journal/entry/<%= nextEntry[0].id %>" class="mr-2">
+                <img src="/imgs/icons/arrow-forward-neilit.svg" class="navigation-btn" alt="<%= __('Next') %><">
+              </a>
+            <% } %>
+          </div>
+        </div>
         <hr>
         <div class="row mx-3 form-fields">
           <div class="col-12 col-xl-6 mb-3">
@@ -123,7 +137,7 @@
         <br>
         <br>
         <div class="d-flex justify-content-end mx-3">
-          <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Cancel') %></a>
+          <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Back') %></a>
           <a href="/<%= currentUser.username %>/journal/entry/<%= entryInfo.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
           <button type="submit" class="btn-neilit ml-2"><%= __('Delete') %></button>
         </div>

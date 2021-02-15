@@ -147,7 +147,7 @@
 	"next updates": "próximas actualizaciones",
 	"FAQs": "PF",
 	"Frequently Asked Question(s)": "Preguntas frequentes",
-	"How to create an entry?": "¿Cómo crear una entrada",
+	"How to create an entry?": "¿Cómo crear una entrada?",
 	"How to backtest?": "¿Cómo hacer backtest?",
 	"How to add strategies?": "¿Cómo añadir estrategias?",
 	"Link a technical analysis to an entry": "Vincular un análisis técnico a una entrada",
@@ -691,5 +691,12 @@
 	"Fees by Month": "Comisión por Mes",
 	"See more details on longs and shorts": "Ver más detalles en compras y ventas",
 	"1 Year Equity Curve": "Curva de Capital a 1 Año",
-	"Technical Analysis vs. No TA": "Análisis Técnico vs. No TA"
+	"Technical Analysis vs. No TA": "Análisis Técnico vs. No TA",
+	"Report Bug": "Reportar Error",
+	"Suggest Improvement": "Sugerir Mejora",
+	"Next": "Siguiente",
+	"Prev": "Anterior",
+	"How to create an entry": "How to create an entry",
+	"quick look up at logging criteria": "consulta rápida de los criterios de registro",
+	"Please, ensure the image is a one of the followings: PNG, JPG or JPEG": "Por favor, asegúrese de que la imagen este en uno de los siguientes formatos: PNG, JPG o JPEG "
 }

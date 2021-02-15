@@ -20,9 +20,11 @@
         <a id="open-menu" class="my-auto" href="#!">
           <img src="/imgs/icons/menu.svg">
         </a>
-        <a href="/<%= currentUser.username %>/settings" class="my-auto">
-          <img src="/imgs/icons/settings.svg" alt="settings" class="icon-settings">
-        </a>
+        <div class="my-auto">
+          <a href="/<%= currentUser.username %>/settings">
+            <img src="/imgs/icons/settings.svg" alt="settings" class="icon-settings">
+          </a>
+        </div>
       </div>
       <div id="blur-bar" class="fixed-top"></div>
       <!-- MENU BAR -->
@@ -69,6 +71,15 @@
           <a href="/<%= currentUser.username %>/calculator" class="d-flex align-items-center pl-3 py-1 mb-2">
             <img src="/imgs/icons/calculator.svg" alt="calculator">
             <span class="pl-2"><%= __('Calculator') %></span>
+          </a>
+          <hr class="separator mx-3">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeGY0sYhTAB3RZf9eTQwHl14TYzgO8wtpE7QavBJRN3-mtftg/viewform?usp=sf_link" target="_blank" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/bug-report.svg" alt="report bug">
+            <span class="pl-2"><%= __('Report Bug') %></span>
+          </a>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSejUGfLsXlQw27E8sppWmE5sMVLAs3hBTqoMPqwCBBbOVrd1A/viewform?usp=sf_link" target="_blank" class="d-flex align-items-center pl-3 py-1 mb-2">
+            <img src="/imgs/icons/suggestion.svg" alt="suggest improvement">
+            <span class="pl-2"><%= __('Suggest Improvement') %></span>
           </a>
         </div>
         <!-- <div class="mt-auto text-center">

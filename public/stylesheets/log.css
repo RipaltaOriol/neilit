@@ -89,9 +89,18 @@ span .checkbox-orange {
   }
 }
 
+/* || Utility */
 .mandatory {
   font-weight: 500;
 }
+
+/* || Utility */
+.help-link {
+  color: var(--neilit-permanent)
+}
+  .help-link:hover {
+    color: var(--neilit-permanent)
+  }
 
 /* || Utility */
 .placeholder-journal {
@@ -284,6 +293,11 @@ span .checkbox-orange {
   border-radius: .25rem;
   padding: 0 5px;
   margin: 0 10px
+}
+
+.navigation-btn {
+  width: 25px;
+  height: 25px;
 }
 
 /* || spinner */

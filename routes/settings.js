@@ -25,6 +25,8 @@ router.post("/deleteAsset", middleware.isLoggedIn, settings.deleteAsset)
 
 router.post("/changeLanguage", middleware.isLoggedIn, settings.changeLanguage)
 
+router.post("/uploadProfileImage", middleware.isLoggedIn, settings.multerHandle, settings.uploadProfileImage)
+
 router.get("/change-plan", middleware.isLoggedIn, settings.renderChangePlan)
 
 router.post('/cancel-subscription', middleware.isLoggedIn, settings.cancelSubscription);

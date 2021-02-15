@@ -315,6 +315,15 @@ function cancelSubscription() {
     });
 }
 
+// triggers action to upload file
+$('#profile-upload').click(() => {
+  $('#profile-input').click()
+})
+
+$('#profile-input').change(() => {
+  $('#profile-image-form').submit()
+})
+
 // cancels the susbscription
 var form = document.getElementById('cancel-form');
 if (form) {

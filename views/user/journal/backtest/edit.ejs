@@ -6,7 +6,8 @@
       <form action="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>?_method=PUT" method="POST" novalidate>
         <input type="hidden" id="obj" name="serverData">
         <h3 class="mx-3">
-          <%= backtest.created_at.toLocaleDateString(currentUser.language, options) %>
+          <%= backtest.title %>
+          [<%= backtest.created_at.toLocaleDateString(currentUser.language, options) %>]
           <span class="backtest-result"><%= backtest.result %></span>
           <span class="float-right">
             <img class="info" src="/imgs/icons/info.svg" data-toggle="tooltip" data-placement="bottom" title="<%= __('To see the title of the addons hover on the component.') %>">

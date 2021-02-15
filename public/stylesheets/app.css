@@ -310,7 +310,7 @@ input[type=search] {
     transition: 0.3s;
   }
   #menu-links a:hover {
-    background: rgba(255,255,255,.15);
+    background: rgba(255, 255, 255, .15);
    }
     #menu-links a img {
       width: 25px;
@@ -318,6 +318,11 @@ input[type=search] {
       min-width: 25px;
       min-height: 25px;
     }
+  #menu-links .separator {
+    width: auto;
+    border-color: rgba(255, 255, 255, .5);
+    border-width: 2px;
+  }
 
 #content {
   width: auto;

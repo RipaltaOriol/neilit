@@ -12,6 +12,7 @@
                 <table id="index-table" class="table table-borderless table-hover mt-1">
                   <thead>
                     <tr class="table-header text-center text-nowrap">
+                      <th class="align-top" scope="col"><%= __('Title') %></th>
                       <th class="align-top" scope="col"><%= __('Date') %></th>
                       <th class="align-top" scope="col"><%= __('Outcome type') %></th>
                       <th class="align-top" scope="col"><%= __('Pair') %></th>
@@ -22,7 +23,8 @@
                   <tbody class="text-center">
                     <% dataList.forEach((backtest) => { %>
                       <tr onclick="document.location = '/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>'">
-                        <td class="px-2 text-left"><%= backtest.created_at.toLocaleDateString(currentUser.language, options) %></td>
+                        <td class="px-2 text-left"><%= backtest.title %></td>
+                        <td class="px-2"><%= backtest.created_at.toLocaleDateString(currentUser.language, options) %></td>
                         <td><%= backtest.result %></td>
                         <% if (backtest.pair != null) { %>
                           <td><span class="pill pill-yellow"><%= backtest.pair %></span></td>

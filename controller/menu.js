@@ -82,6 +82,7 @@ module.exports.renderSettings = async (req, res) => {
   var selectRole = 'SELECT role FROM roles WHERE id = ?';
   var selectPaymentInfo = 'SELECT last4 from stripe_users WHERE user_id = ?';
   var selectCustomAssets = 'SELECT id, pair FROM pairs WHERE user_id = ? AND is_custom = 1'
+  var selectProfilePicture = 'SELECT profile_picture FROM users WHERE id = ?'
   let invoice;
   if (req.user.stripeSubscriptionId) {
     invoice = await stripe.invoices.retrieveUpcoming({
@@ -126,26 +127,32 @@ module.exports.renderSettings = async (req, res) => {
         }
         db.query(selectPaymentInfo, req.user.id, (err, getPaymentInfo) => {
           if (err) {
-            logger.error({
-              message: 'MENU (settings) could not selectPaymentInfo',
-              endpoint: req.method + ': ' + req.originalUrl,
-              programMsg: err
-            })
+
             req.flash('error', res.__('Something went wrong, please try again.'))
             return res.redirect('/' + req.user.username);
           }
           if (getPaymentInfo.length > 0) { var last4 = getPaymentInfo[0].last4 } else { var last4 = null }
-          return res.render("user/settings",
-            {
-              currencies: currencies,
-              customAssets: getCustomAssets,
-              goals: goals,
-              role: role,
-              last: last4,
-              amount: invoice.total,
-              next: invoice.next_payment_attempt
+          db.query(selectProfilePicture, req.user.id, (err, pathProfilePicture) => {
+            if (err) {
+              logger.error({
+                message: 'MENU (settings) could not selectProfilePicture',
+                endpoint: req.method + ': ' + req.originalUrl,
+                programMsg: err
+              })
             }
-          );
+            return res.render("user/settings",
+              {
+                currencies: currencies,
+                profilePicture: pathProfilePicture[0].profile_picture,
+                customAssets: getCustomAssets,
+                goals: goals,
+                role: role,
+                last: last4,
+                amount: invoice.total,
+                next: invoice.next_payment_attempt
+              }
+            );
+          })
         })
       })
     })

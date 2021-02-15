@@ -298,6 +298,8 @@ module.exports.showEntry = (req, res) => {
     JOIN timeframes t on e.timeframe_id = t.id
     WHERE e.id = ?;`
   var getCurrency = 'SELECT currency FROM currencies WHERE id = ?;';
+  var getPrev = 'SELECT id FROM entries WHERE entry_dt < ? AND user_id = ? ORDER BY entry_dt DESC LIMIT 1;'
+  var getNext = 'SELECT id FROM entries WHERE entry_dt > ? AND user_id = ? ORDER BY entry_dt LIMIT 1;'
   db.query(getEntry, req.params.id, (err, entryInfo) => {
     if (err) {
       logger.error({
@@ -321,14 +323,34 @@ module.exports.showEntry = (req, res) => {
         req.flash('error', res.__('Something went wrong, please try again later.'))
         return res.redirect('/' + req.user.username + "/journal/entry");
       }
-      res.render("user/journal/entry/show",
-        {
-          currency: result[0].currency,
-          currencies: pairs,
-          entryInfo: entryInfo[0],
-          options: { year: 'numeric', month: 'long', day: 'numeric' }
+      db.query(getPrev, [entryInfo[0].entry_dt, req.user.id], (err, prevEntry) => {
+        if (err) {
+          logger.error({
+            message: 'ENTRIES (show) could not getPrev',
+            endpoint: req.method + ': ' + req.originalUrl,
+            programMsg: err
+          })
         }
-      );
+        db.query(getNext, [entryInfo[0].entry_dt, req.user.id], (err, nextEntry) => {
+          if (err) {
+            logger.error({
+              message: 'ENTRIES (show) could not getNext',
+              endpoint: req.method + ': ' + req.originalUrl,
+              programMsg: err
+            })
+          }
+          res.render("user/journal/entry/show",
+            {
+              currency: result[0].currency,
+              currencies: pairs,
+              entryInfo: entryInfo[0],
+              prevEntry: prevEntry,
+              nextEntry: nextEntry,
+              options: { year: 'numeric', month: 'long', day: 'numeric' }
+            }
+          );
+        })
+      })
     })
   })
 }

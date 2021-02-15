@@ -130,6 +130,7 @@ $('.table-scroll').scroll(() => {
     loadingState(true);
     $.post('backtest/load-index', data)
       .done((data) => {
+        console.log('resolved');
         loadedCount+= 25;
         loadingState(false);
         // add new data to index table
@@ -137,15 +138,18 @@ $('.table-scroll').scroll(() => {
         data.dataList.forEach((backtest) => {
           var newRow = table.insertRow();
           var createHandler = function() { return function() { window.location.href = 'backtest/' + backtest.id; } }
-          var date          = newRow.insertCell(0);
-          var result        = newRow.insertCell(1);
-          var pair          = newRow.insertCell(2);
-          var strategy      = newRow.insertCell(3);
-          var timeframe     = newRow.insertCell(4);
+          var title         = newRow.insertCell(0);
+          var date          = newRow.insertCell(1);
+          var result        = newRow.insertCell(2);
+          var pair          = newRow.insertCell(3);
+          var strategy      = newRow.insertCell(4);
+          var timeframe     = newRow.insertCell(5);
           newRow.onclick = createHandler();
           // adds acutal data
+          title.innerHTML = backtest.data;
+          title.className = 'px-2 text-left';
           date.innerHTML = new Date(backtest.created_at).toLocaleDateString(language, data.options);
-          date.className = 'text-left';
+          date.className = 'px-2';
           result.innerHTML = backtest.result;
           if (backtest.pair != null) {
             pair.innerHTML = indexPill1 + backtest.pair + indexPill2
@@ -212,15 +216,18 @@ $('#apply-filter').click(() => {
       data.dataList.forEach((backtest) => {
         var newRow = $('tbody')[0].insertRow();
         var createHandler = function() { return function() { window.location.href = 'backtest/' + backtest.id; } }
-        var date          = newRow.insertCell(0);
-        var result        = newRow.insertCell(1);
-        var pair          = newRow.insertCell(2);
-        var strategy      = newRow.insertCell(3);
-        var timeframe     = newRow.insertCell(4);
+        var title         = newRow.insertCell(0);
+        var date          = newRow.insertCell(1);
+        var result        = newRow.insertCell(2);
+        var pair          = newRow.insertCell(3);
+        var strategy      = newRow.insertCell(4);
+        var timeframe     = newRow.insertCell(5);
         newRow.onclick = createHandler();
         // adds acutal data
+        title.innerHTML = backtest.title;
+        title.className = 'px-2 text-left'
         date.innerHTML = new Date(backtest.created_at).toLocaleDateString(language, data.options);
-        date.className = 'text-left';
+        date.className = 'px-2';
         result.innerHTML = backtest.result;
         if (backtest.pair != null) {
           pair.innerHTML = indexPill1 + backtest.pair + indexPill2

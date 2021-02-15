@@ -24,10 +24,6 @@ module.exports.renderHome = (req, res) => {
 }
 
 module.exports.renderFeatures = (req, res) => {
-  logger.info({
-    message: 'It\s a test log',
-    endpoint: req.method + ': ' + req.originalUrl,
-  })
   res.render("features");
 }
 
