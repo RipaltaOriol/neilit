@@ -2,9 +2,6 @@ if (process.env.NODE_ENV != "production") {
   require('dotenv').config()
 }
 
-// App Monitoring
-require('newrelic')
-
 // Program Dependencies
 let express         = require('express'),
     app             = express(),
