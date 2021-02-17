@@ -2,6 +2,9 @@ if (process.env.NODE_ENV != "production") {
   require('dotenv').config()
 }
 
+// App Monitoring
+require('newrelic')
+
 // Program Dependencies
 let express         = require('express'),
     app             = express(),
@@ -29,7 +32,6 @@ let indexRoutes       = require('./routes/index'),
     entryRoutes       = require('./routes/entries'),
     taRoutes          = require('./routes/tas'),
     backtestRoutes    = require('./routes/backtest'),
-    planRoutes        = require('./routes/plan'),
     strategiesRoutes  = require('./routes/strategies'),
     statisticsRoutes  = require('./routes/statistics'),
     calculatorRoutes  = require('./routes/calculator'),
@@ -147,7 +149,6 @@ app.use("/:profile/journal/entry", entryRoutes);
 app.use("/:profile/journal/ta", taRoutes);
 app.use("/:profile/journal/backtest", backtestRoutes);
 app.use("/:profile/statistics", statisticsRoutes);
-app.use("/:profile/plan", planRoutes);
 app.use("/:profile/strategies", strategiesRoutes);
 app.use("/:profile/calculator", calculatorRoutes);
 

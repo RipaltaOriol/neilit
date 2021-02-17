@@ -140,8 +140,7 @@ hr.profile {
       cursor: default;
     }
   .tab-box img {
-    width: auto;
-    height: 150px;
+    width: 100px;
   }
   .tab-box .img-sm{
     width: 20px;
@@ -158,6 +157,10 @@ hr.profile {
   .tab-box .img-md {
     height: 40px;
     width: auto;
+  }
+  .tab-box .profile-picture {
+    width: auto;
+    height: 150px;
   }
 
 /* || Bootstrap class */
@@ -185,7 +188,6 @@ hr.profile {
 
 .profile-picture {
   display: block;
-  width: 100%;
   height: auto;
   transition: .5s ease;
   backface-visibility: hidden;
