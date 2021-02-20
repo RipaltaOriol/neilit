@@ -93,13 +93,12 @@
               </span>
               <span class="input-group mb-2">
                 <label class="my-auto"><%= __('Time of Entry') %>:</label>
-                <input id="entry-time" type="text" class="form-control form-input p-1 px-2" name="entryTime" value="
-                  <% if (entryInfo.entry_dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) == '24:00') { %>
-                    00:00
-                  <% } else { %>
-                    <%= entryInfo.entry_dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
-                  <% } %>
-                ">
+                <input id="entry-time" type="text" class="form-control form-input p-1 px-2" name="entryTime" value="<%
+                  if (entryInfo.entry_dt.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }) == '24:00') {
+                    %>00:00<%
+                  } else {
+                    %><%= entryInfo.entry_dt.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }) %><%
+                  } %>">
               </span>
               <span class="mb-2">
                 <div class="form-check form-check-inline">
