@@ -1,6 +1,6 @@
 :root {
   --red-soft:     #fddfdd;
-  --red-strong:   #4d0009;
+  --red-hard:     #4d0009;
   --red-border:   #f5c6cb;
   --green-soft:   #cbf6e5;
   --green-strong: #155724;
@@ -83,10 +83,10 @@ td { }
 
 /* || Utility */
 .placeholder {
-  color: var(--red-strong);
+  color: var(--red-hard);
 }
   .placeholder a {
-    color: var(--red-strong);
+    color: var(--red-hard);
     text-decoration: underline;
   }
   .placeholder a:hover {
@@ -179,7 +179,7 @@ td { }
     border: 1px solid var(--green-border);
   }
   .status-badge.saving {
-    color: var(--red-strong);
+    color: var(--red-hard);
     background: var(--red-soft);
     border: 1px solid var(--red-border);
   }
@@ -248,7 +248,7 @@ td { }
 .exit-description {
   white-space: pre-wrap;      /* Webkit */
   white-space: -moz-pre-wrap; /* Firefox */
-  white-space: -pre-wrap;     /* Opera <7 */    
+  white-space: -pre-wrap;     /* Opera <7 */
   white-space: -o-pre-wrap;   /* Opera 7 */
   word-wrap: break-word;      /* IE */
 }

@@ -1,18 +1,11 @@
 // dependencies
 const util    = require('util');
 const multer  = require('multer');
-const fs      = require('fs-extra')
+const uuid    = require('uuid/v4')
 
-const storage = multer.diskStorage({
+const storage = multer.memoryStorage({
   destination: function(req, file, cb) {
-    let userId = req.user.id;
-    let path = `./uploads/${userId}/profile`
-    fs.mkdirsSync(path);
-    cb(null, path)
-  },
-  filename: function(req, file, cb) {
-    cb(null, req.user.username + '-'
-      + new Date().toISOString() + '-' + file.originalname)
+    cb(null, '')
   }
 })
 
@@ -41,6 +34,7 @@ let currencies        = require('../models/currencies');
 let localeTimeframes  = require('../models/timeframes');
 let db                = require('../models/dbConfig');
 let logger            = require('../models/winstonConfig');
+let s3                = require('../models/s3Config');
 
 // node native promisify
 const query = util.promisify(db.query).bind(db);
@@ -342,17 +336,36 @@ module.exports.uploadProfileImage = (req, res) => {
     req.flash('error', res.__('Please, ensure the image is a one of the followings: PNG, JPG or JPEG'))
     return res.redirect('/' + req.user.username + '/settings')
   }
-  var updateProfilePicture = 'UPDATE users SET profile_picture = ? WHERE id = ?'
-  db.query(updateProfilePicture, [req.file.path, req.user.id], (err) => {
+  var fileName = req.file.originalname.split('.')
+  var fileType = fileName[fileName.length - 1]
+  var params = {
+    Bucket: process.env.S3_BUCKET,
+    Key: `${req.user.id}/profile/${uuid()}.${fileType}`,
+    Body: req.file.buffer
+  }
+  s3.upload(params, (err, data) => {
     if (err) {
       logger.error({
-        message: 'SETTINGS (profile picture) could not set profile picture',
+        message: 'SETTINGS (profile picture) could not upload to s3',
         endpoint: req.method + ': ' + req.originalUrl,
         programMsg: err
       })
+      req.flash('error', res.__('Something went wrong. Please, try again later.'))
+      return res.redirect('/' + req.user.username);
     }
-    return res.redirect('/' + req.user.username + '/settings')
+    var updateProfilePicture = 'UPDATE users SET profile_picture = ? WHERE id = ?'
+    db.query(updateProfilePicture, [data.Location, req.user.id], (err) => {
+      if (err) {
+        logger.error({
+          message: 'SETTINGS (profile picture) could not set profile picture',
+          endpoint: req.method + ': ' + req.originalUrl,
+          programMsg: err
+        })
+      }
+      return res.redirect('/' + req.user.username + '/settings')
+    })
   })
+
 }
 
 module.exports.renderChangePlan = (req, res) => {

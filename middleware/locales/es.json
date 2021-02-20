@@ -380,7 +380,7 @@
 	"Entry connected to": "Entrada conectada a",
 	"Select a": "Seleccione un",
 	"to connect to this entry": "para conectar a esta entrada",
-	"Use this spece to write anything outstanding during the operation": "Utiliza este especio para escribir cualquier cosa relevante durante la operación",
+	"Use this space to write anything outstanding during the operation": "Utiliza este especio para escribir cualquier cosa relevante durante la operación",
 	"Close Entry": "Cerrar Entrada",
 	"The operation remains open": "La entrada continúa abierta",
 	"The operation is closed": "La enrada esta cerrada",
@@ -615,7 +615,7 @@
 	"Therefore, we are able provide position and profits calculations.": "Por lo tanto, podemos proporcionar cálculos de posición y ganancias.",
 	"Forex assets": "Activos de Forex",
 	"Here are our forex assets.": "Aquí están nuestros activos de forex.",
-	"Learn how to manage your assets": "Learn a administrar tus activos",
+	"Learn how to manage your assets": "Aprende a administrar tus activos",
 	"We don't have the rate for this asset. Please, introduce your profits.": "No tenemos la tarifa para este activo. Por favor, introduzca sus ganancias.",
 	"In case of leaving this field blank, Neilit will calculate the profits of the operation for you.": "In case of leaving this field blank, Neilit will calculate the profits of the operation for you.",
 	"Got to Entry": "Got to Entry",
@@ -634,5 +634,8 @@
 	"Psychology Tips": "Psicología",
 	"Description": "Descripción",
 	"Type": "Tipo",
-	"Order Type": "Tipo de Orden"
+	"Order Type": "Tipo de Orden",
+	"Objectives": "Objectives",
+	"Welcome to Neilit": "Bienvenido a Neilit",
+	"General Information": "General Information"
 }

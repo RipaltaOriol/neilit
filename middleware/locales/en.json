@@ -248,7 +248,7 @@
 	"Entry connected to": "Entry connected to",
 	"Select a": "Select a",
 	"to connect to this entry": "to connect to this entry",
-	"Use this spece to write anything outstanding during the operation": "Use this spece to write anything outstanding during the operation",
+	"Use this space to write anything outstanding during the operation": "Use this space to write anything outstanding during the operation",
 	"Close Entry": "Close Entry",
 	"The operation remains open": "The operation remains open",
 	"The operation is closed": "The operation is closed",
@@ -541,5 +541,10 @@
 	"Next": "Next",
 	"Prev": "Prev",
 	"quick look up at logging criteria": "quick look up at logging criteria",
-	"Please, ensure the image is a one of the followings: PNG, JPG or JPEG": "Please, ensure the image is a one of the followings: PNG, JPG or JPEG"
+	"Please, ensure the image is a one of the followings: PNG, JPG or JPEG": "Please, ensure the image is a one of the followings: PNG, JPG or JPEG",
+	"Welcome to Neilit": "Welcome to Neilit",
+	"Forgot Your Password?": "Forgot Your Password?",
+	"We'll send a link to your email to reset your password": "We'll send a link to your email to reset your password",
+	"Back to log in": "Back to log in",
+	"Send": "Send"
 }

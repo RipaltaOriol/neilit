@@ -275,10 +275,10 @@ function addExitFE(id) {
         <div class="col-6 col-lg-3 mb-2">
           <!-- dropdown -->
           <div class="dropdown">
-            <button id="dropdown-label" class="dropdown-select p-1 px-2 w-100" type="button" data-toggle="dropdown">
+            <button id="dropdown-label" class="type-select p-1 px-2 w-100" type="button" data-toggle="dropdown">
               Loss
             </button>
-            <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+            <ul id="dropdown-items" class="dropdown-menu exit-type" aria-labelledby="dropdown-label">
               <li>Loss</li>
               <li>Profit</li>
               <li>Add</li>
@@ -289,10 +289,10 @@ function addExitFE(id) {
         <div class="col-6 col-lg-3 mb-2">
           <!-- dropdown -->
           <div class="dropdown">
-            <button id="dropdown-label" class="dropdown-select p-1 px-2 w-100" type="button" data-toggle="dropdown">
+            <button id="dropdown-label" class="order-select p-1 px-2 w-100" type="button" data-toggle="dropdown">
               Market order
             </button>
-            <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
+            <ul id="dropdown-items" class="dropdown-menu exit-order" aria-labelledby="dropdown-label">
               <li>Market order</li>
               <li>Limit order</li>
               <li>Stop order</li>
@@ -311,6 +311,37 @@ function addExitFE(id) {
     </div>
     `
   )
+  // dropdown for exit type
+  $('.exit-type li').on('click', function() {
+    var allDD = $('.exit-type');
+    var current = allDD.index($(this).parent())
+    var getValue = $(this).text();
+    if ($('.type-select')[current]) {
+      $('.type-select')[current].innerHTML = getValue;
+    }
+    saveToDB({
+      type: 'exits',
+      method: 'type',
+      id: $('.exit-id')[current].value,
+      content: getValue
+    })
+  })
+
+  // dropdown for exit order type
+  $('.exit-order li').on('click', function() {
+    var allDD = $('.exit-order');
+    var current = allDD.index($(this).parent())
+    var getValue = $(this).text();
+    if ($('.order-select')[current]) {
+      $('.order-select')[current].innerHTML = getValue;
+    }
+    saveToDB({
+      type: 'exits',
+      method: 'order',
+      id: $('.exit-id')[current].value,
+      content: getValue
+    })
+  })
   // allows changing exit title for new exits
   $('.exit-name').on('input propertychange change', (e) => {
     isSaving(true)
@@ -386,7 +417,6 @@ function saveToDB(data) {
       if (result.status == 'done') {
         isSaving(false)
         if (result.type == 'rules') {
-          console.log('The rule is returned success')
           addRuleFE(result.id, result.content)
         }
         if (result.type == 'exit') {

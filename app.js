@@ -15,8 +15,8 @@ let express         = require('express'),
     db              = require('./models/dbConfig'),
     session         = require('express-session'),
     RedisStore      = require('connect-redis')(session),
-    // redisClient     = redis.createClient();
-    redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
+    redisClient     = redis.createClient();
+    // redisClient     = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true}); // production
 
 
 // Routes Dependencies
@@ -40,7 +40,6 @@ app.use(express.urlencoded({limit: '50mb', extended: true}));
 // app.use(express.static('public'));
 app.use(methodOverride('_method'));
 app.use(express.static(__dirname + '/public'))
-app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 app.use(flash());
@@ -53,7 +52,7 @@ const sessionConfig = {
   saveUninitialized: true,
   proxy: true,
   cookie: {
-     secure: true, // production only (localhost is not https)
+     // secure: true, // production only (localhost is not https)
      httpOnly: true,
      maxAge: 24 * 60 * 60 * 1000
   }
