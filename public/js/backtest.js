@@ -21,6 +21,17 @@ function loadingState(bool) {
   }
 }
 
+// saves backtest comment to the DB
+function saveToDB(data) {
+  $.post('upload-comment', data)
+    .done((data) => {
+      // success
+    })
+    .fail(() => {
+      // error
+  })
+}
+
 // toggles the pair selection when the multiples checkbox is clicked
 function letPair(bool) {
   if (bool) {
@@ -552,6 +563,18 @@ function retrieveData() {
     }
   }
 }
+
+// saves backtest comment while typing
+var timeoutId;
+$('#backtest-comment').on('input propertychange change', (e) => {
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // runs 1 second (1000 ms) after the last chagne
+    saveToDB({
+      comments: document.getElementById('backtest-comment').innerText.replace(/\n/g, '<br>')
+    })
+  }, 1000);
+})
 
 // sends the data from the updated backtest to the server side
 if (updateBacktest != null) {

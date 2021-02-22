@@ -50,8 +50,6 @@ function searchStrategies(obj) {
   $('#index-strategies').html('')
   for (var i = 0; i < strategies.length; i++) {
     if (strategies[i].indexOf(obj.value) > -1) {
-      console.log(strategies);
-      console.log(strategiesID);
       if (strategies[i] != 'None') {
         $('#index-strategies').append(`
           <div class="strategy d-flex mx-3 p-2 mb-3">
@@ -517,7 +515,6 @@ $('.observation-description').on('input propertychange change', (e) => {
   clearTimeout(timeoutId);
   timeoutId = setTimeout(() => {
       // Runs 1 second (1000 ms) after the last change
-      console.log();
       saveToDB({
         type: 'observations',
         method: 'description',

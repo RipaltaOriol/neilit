@@ -22,8 +22,12 @@
                   <% Object.keys(currencies).forEach((key) => { %>
                     <li class="<%= currencies[key].id %>"><%= key %></li>
                   <% }) %>
+                  <a href="/<%= currentUser.username %>/settings" class="help-link"><%= __("Can't find your pair? Add it now") %></a>
                 </ul>
               </div>
+              <!-- adds space to hyperlink only when its placed next ot the dropdown -->
+              <span class="mr-3"></span>
+              <a href="/resources/manage-assets" class="help-link non-wrap"><%= __('Learn to manage your assets') %></a>
             </span>
             <span class="mb-2 d-block">
               <label class="mandatory"><%= __('Category') %>:</label>
@@ -162,8 +166,7 @@
         <br>
         <div class="d-flex justify-content-between mx-3">
           <h3><%= __('Close Entry') %></h3>
-          <a href="/resources/create-entry#logCriteria" class="help-link"><%= __('quick look up at logging criteria') %></a>
-
+          <a href="/resources/create-entry#logCriteria" class="help-link"><%= __('Quick look up at logging criteria') %></a>
         </div>
         <hr>
 

@@ -78,6 +78,12 @@
           </div>
         </div>
         <br>
+        <% if (!(backtest.comments == null || backtest.comments == '')) { %>
+          <div class="backtest-comment p-2 mx-3">
+            <%- backtest.comments %>
+          </div>
+          <br>
+        <% } %>
         <div class="d-flex justify-content-end mx-3">
           <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Cancel') %></a>
           <a href="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>

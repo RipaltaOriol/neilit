@@ -224,10 +224,21 @@ span .checkbox-orange {
   .dropdown-menu a {
     border-radius: .25rem;
   }
-    .dropdown-menu a:active{
+    .dropdown-menu a:active {
       color: white;
       background-color: #ff8818;
     }
+  .dropdown .help-link {
+    line-height: 1.5;
+    letter-spacing: 0.7px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+  .dropdown .help-link:active {
+    color: var(--neilit-permanent);
+    background-color: inherit;
+  }
 
 .widget-trigger { }
   .widget-trigger span {
@@ -293,6 +304,11 @@ span .checkbox-orange {
   border-radius: .25rem;
   padding: 0 5px;
   margin: 0 10px
+}
+
+.backtest-comment {
+  background-color: var(--background-hover);
+  border-radius: 5pt;
 }
 
 .navigation-btn {

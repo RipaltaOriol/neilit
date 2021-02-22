@@ -239,7 +239,7 @@ module.exports.createBacktest = (req, res) => {
 
 module.exports.showBacktest = (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = `SELECT b.title, b.id, created_at, b.result, pair, timeframe, strategy FROM backtest b
+  var getBacktest = `SELECT b.title, b.id, created_at, b.result, pair, timeframe, strategy, b.comments FROM backtest b
     LEFT JOIN pairs p ON b.pair_id = p.id
     LEFT JOIN timeframes t ON b.timeframe_id = t.id
     LEFT JOIN strategies s ON b.strategy_id = s.id
@@ -297,7 +297,7 @@ module.exports.showBacktest = (req, res) => {
 
 module.exports.renderEditForm = (req, res) => {
   // inserts DB queries to a variable
-  var getBacktest = `SELECT b.title, b.id, created_at, b.result, pair, pair_id, timeframe, strategy FROM backtest b
+  var getBacktest = `SELECT b.title, b.id, created_at, b.result, pair, pair_id, timeframe, strategy, b.comments FROM backtest b
     LEFT JOIN pairs p ON b.pair_id = p.id
     LEFT JOIN timeframes t ON b.timeframe_id = t.id
     LEFT JOIN strategies s ON b.strategy_id = s.id
@@ -352,6 +352,23 @@ module.exports.renderEditForm = (req, res) => {
       })
     })
   })
+}
+
+module.exports.uploadComment = (req, res) => {
+  (async () => {
+    try {
+      var updateComment = await query(`UPDATE backtest SET comments = ?
+        WHERE user_id = ? AND id = ?`, [req.body.comments, req.user.id, req.params.id])
+    } catch (err) {
+      logger.error({
+        message: 'BACKTEST (upload comment) could not update backtest comment',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
+    } finally {
+      res.end()
+    }
+  })()
 }
 
 module.exports.updateBacktest = (req, res) => {
