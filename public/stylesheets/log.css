@@ -428,8 +428,13 @@ span .checkbox-orange {
     padding: 0 15px;
   }
   #backtest-table td {
-  color: var(--text-contrast);
-  border-radius: .15rem;
+    color: var(--text-contrast);
+    border-radius: .15rem;
+  }
+  #backtest-table #backtest-stats td:first-child{
+    text-align: left;
+    background-color: var(--background-soft);
+    color: var(--invert-black);
   }
 
 /* || Technical Analysis Elements */

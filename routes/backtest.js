@@ -20,6 +20,8 @@ router.route('/:id')
 
 router.get("/:id/edit", middleware.isLoggedIn, backtest.renderEditForm)
 
+router.get("/:id/statistics", middleware.isLoggedIn, backtest.renderStatistics)
+
 router.post("/:id/upload-comment", middleware.isLoggedIn, backtest.uploadComment)
 
 module.exports = router;

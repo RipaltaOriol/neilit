@@ -402,6 +402,37 @@ module.exports.updateBacktest = (req, res) => {
   })()
 }
 
+module.exports.renderStatistics = (req, res) => {
+  (async () => {
+    try {
+      var getBacktest = await query(`SELECT b.title, b.id, created_at, b.result FROM backtest b WHERE b.id = ? AND b.user_id = ?;`, [req.params.id, req.user.id])
+      var getStatistics = await query(`SELECT ROUND(SUM(result), 2) AS sum, ROUND(AVG(result), 2) AS avg, COUNT(*) as total,
+         ROUND(SUM(IF(result > 0, 1, 0)), 2) AS wins,
+         ROUND(SUM(IF(result < 0, 1, 0)), 2) AS loss,
+         ROUND(SUM(IF(result > 0, 1, 0)) / COUNT(*), 2) AS rate,
+         ROUND(SUM(IF(result > 0, result, 0)) / SUM(IF(result > 0, 1, 0)), 2) AS avg_win,
+         ROUND(SUM(IF(result < 0, result, 0)) / SUM(IF(result < 0, 1, 0)), 2) AS avg_loss,
+         ROUND((SUM(IF(result > 0, result, 0)) / SUM(IF(result > 0, 1, 0))) * SUM(IF(result > 0, 1, 0)) / COUNT(*) +
+              (SUM(IF(result < 0, result, 0)) / SUM(IF(result < 0, 1, 0))) * (1 - SUM(IF(result > 0, 1, 0)) / COUNT(*)), 2) AS expected
+         FROM backtest_data WHERE backtest_id = ?;`, req.params.id)
+    } catch (err) {
+      logger.error({
+        message: 'BACKTEST (statistics) could not getBacktest',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
+    } finally {
+      res.render("user/journal/backtest/statistics",
+        {
+          backtest: getBacktest[0],
+          statistics: getStatistics[0],
+          options: { year: 'numeric', month: 'long', day: 'numeric' }
+        }
+      )
+    }
+  })()
+}
+
 module.exports.deleteBacktest = (req, res) => {
   (async () => {
     try {

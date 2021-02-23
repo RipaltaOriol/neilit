@@ -24,7 +24,7 @@ const logger = winston.createLogger({
         winston.format.timestamp(),
         winston.format.json(),
         winston.format.printf(msg =>
-            colorizer.colorize(msg.level, `${msg.timestamp} - ${msg.level}: ${msg.message} - ${msg.endpoint}
+            colorizer.colorize(msg.level, `NEILIT LOGGER ${msg.timestamp} - ${msg.level}: ${msg.message} - ${msg.endpoint}
               ::${msg.programMsg}`)
         )
       ),

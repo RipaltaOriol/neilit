@@ -189,30 +189,30 @@ $('.table-scroll').scroll(() => {
 $('#apply-filter').click(() => {
   $("#modal-loading").modal();
   var filterPairs = $('input[name=pair]:checked').map(function(){
-    return 'pair LIKE "' + this.value + '"';
+    return "pair LIKE '" + this.value + "'";
   }).get().join(' || ');
   var filterCategories = $('input[name=category]:checked').map(function(){
-    return 'entries.category LIKE "' + this.value + '"';
+    return "entries.category LIKE '" + this.value + "'";
   }).get().join(' || ');
   var filterCreate, filterExit, filterSort, filterOrder;
   if ($('#display-create').is(":checked")) {
     filterCreate = $('input[name=create]').map(function(){
-      return '"' + this.value + '"';
+      return "'" + this.value + "'";
     }).get().join(' && ');
   }
   if ($('#display-exit').is(":checked")) {
     filterExit = $('input[name=exit]').map(function(){
-      return '"' + this.value + '"';
+      return "'" + this.value + "'";
     }).get().join(' && ');
   }
   var filterStrategies = $('input[name=strategy]:checked').map(function(){
-    return 'strategy_id LIKE "' + this.value + '"';
+    return "strategy_id LIKE '" + this.value + "'";
   }).get().join(' || ');
   var filterTimeframes = $('input[name=timeframe]:checked').map(function(){
-    return 'timeframe_id LIKE "' + this.value + '"';
+    return "timeframe_id LIKE '" + this.value + "'";
   }).get().join(' || ');
   var filterResults = $('input[name=result]:checked').map(function(){
-    return 'IFNULL(result, "open") LIKE "' + this.value + '"';
+    return "IFNULL(result, 'open') LIKE '" + this.value + "'";
   }).get().join(' || ');
   filterSort = $('input[name=sort]:checked').val()
   filterOrder = $('input[name=order]:checked').val()

@@ -84,10 +84,13 @@
           </div>
           <br>
         <% } %>
-        <div class="d-flex justify-content-end mx-3">
-          <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Cancel') %></a>
-          <a href="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
-          <button type="submit" class="btn-neilit ml-2"><%= __('Delete') %></button>
+        <div class="d-flex justify-content-between mx-3">
+          <a href="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>/statistics" class="btn-neilit ml-2"><%= __('Statistics') %></a>
+          <div class="d-flex justify-content-end">
+            <a href="javascript:history.back()" class="btn-neilit ml-2"><%= __('Cancel') %></a>
+            <a href="/<%= currentUser.username %>/journal/backtest/<%= backtest.id %>/edit" class="btn-inverted ml-2"><%= __('Edit') %></a>
+            <button type="submit" class="btn-neilit ml-2"><%= __('Delete') %></button>
+          </div>
         </div>
       </form>
     </div>

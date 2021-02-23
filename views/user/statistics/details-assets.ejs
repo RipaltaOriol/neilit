@@ -25,11 +25,11 @@
         <div class="widget-neilit row mx-2 mb-4">
           <div class="d-flex align-items-center pt-3 mx-2 w-100">
             <img src="/imgs/icons/science.svg" class="mx-2 image-widget" alt="Per Strategy Statistics">
-            <h5 class="m-0">Per Strategy Statistics</h5>
+            <h5 class="m-0"><%= __('Per Asset Statistics') %></h5>
           </div>
           <div class="w-100 mt-2 mb-0 mx-3">
             <span class="select-detail pb-2">
-              <label>Select a strategy:</label>
+              <label><%= __('Select a strategy') %>:</label>
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select px-2" type="button" data-toggle="dropdown">
@@ -46,67 +46,67 @@
             <div class="row my-2">
               <div class="col-4 d-flex flex-column">
                 <div class="d-flex justify-content-between">
-                  <label>Total Revenue</label>
+                  <label><%= __('Total Revenue') %></label>
                   <span id="revenue"><%= assetStats.revenue.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Total Fees</label>
+                  <label><%= __('Total Fees') %></label>
                   <span id="fees"><%= assetStats.fees.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Net Profit</label>
+                  <label><%= __('Net Profit') %></label>
                   <span id="profit"><%= assetStats.profit.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Return</label>
+                  <label><%= __('Return') %></label>
                   <span id="return"><%= assetStats.str_return.toFixed(2) %> %</span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Max Win</label>
+                  <label><%= __('Max Win') %></label>
                   <span id="max-win"><%= assetStats.max.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Max Loss</label>
+                  <label><%= __('Max Loss') %></label>
                   <span id="max-loss"><%= assetStats.min.toFixed(2) %> <%= userCurrency %></span>
                 </div>
               </div>
               <div class="col-4">
                 <div class="d-flex justify-content-between">
-                  <label>Average Win</label>
+                  <label><%= __('Average Win') %></label>
                   <span id="avg-win"><%= assetStats.avg_win.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Average Loss</label>
+                  <label><%= __('Average Loss') %></label>
                   <span id="avg-loss"><%= assetStats.avg_loss.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Average</label>
+                  <label><%= __('Average') %></label>
                   <span id="avg"><%= assetStats.avg.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Average Holding Time</label>
-                  <span id="avg-hold"><%= assetStats.avg_holding.toFixed(2) %> days</span>
+                  <label><%= __('Average Holding Time') %></label>
+                  <span id="avg-hold"><%= assetStats.avg_holding.toFixed(2) %> <%= __('days') %></span>
                 </div>
               </div>
               <div class="col-4">
                 <div class="d-flex justify-content-between">
-                  <label>Gross Loss</label>
+                  <label><%= __('Gross Loss') %></label>
                   <span id="gross-loss"><%= assetStats.gross_loss.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Profit Factor</label>
+                  <label><%= __('Profit Factor') %></label>
                   <span id="profit-factor"><%= assetStats.profit_factor.toFixed(2) %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Playoff Ratio</label>
+                  <label><%= __('Playoff Ratio') %></label>
                   <span id="playoff-ratio"><%= assetStats.playoff.toFixed(2) %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Maximum Dradown</label>
+                  <label><%= __('Maximum Dradown') %></label>
                   <span id="max-drawdown"><%= assetDrawdown.max_drawdown.toFixed(2) %> <%= userCurrency %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Consecutive Winning Trades</label>
+                  <label><%= __('Consecutive Winning Trades') %></label>
                   <% if (assetCountWin != undefined) { %>
                     <span id="consec-win"><%= assetCountWin.numcount.toFixed(2) %></span>
                   <% } else { %>
@@ -114,7 +114,7 @@
                   <% } %>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Consecutive Lossing Trades</label>
+                  <label><%= __('Consecutive Lossing Trades') %></label>
                   <% if (assetCountLoss != undefined) { %>
                     <span id="consec-loss"><%= assetCountLoss.numcount.toFixed(2) %></span>
                   <% } else { %>
@@ -182,11 +182,11 @@
         <div class="widget-neilit row mx-2 mb-4">
           <div class="d-flex align-items-center pt-3 mx-2 w-100">
             <img src="/imgs/icons/science.svg" class="mx-2 image-widget" alt="Statistics Per Period">
-            <h5 class="m-0">Statistics Per Period</h5>
+            <h5 class="m-0"><%= __('Statistics Per Period') %></h5>
           </div>
           <div class="w-100 mt-2 mb-0 mx-3">
             <span class="select-detail pb-2">
-              <label>Select a strategy:</label>
+              <label><%= __('Select a strategy') %>:</label>
               <!-- dropdown -->
               <div class="dropdown d-inline">
                 <button id="dropdown-label" class="dropdown-select px-2" type="button" data-toggle="dropdown">
@@ -203,43 +203,43 @@
             <div class="row my-2">
               <div class="col-4 d-flex flex-column">
                 <div class="d-flex justify-content-between">
-                  <label>Trades/Day</label>
+                  <label><%= __('Trades/Day') %></label>
                   <span id="avg-day"><%= assetAvgs.avg_daily.toFixed(2) %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Trades/Week</label>
+                  <label><%= __('Trades/Week') %></label>
                   <span id="avg-week"><%= assetAvgs.avg_week.toFixed(2) %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Trades/Month</label>
+                  <label><%= __('Trades/Month') %></label>
                   <span id="avg-month"><%= assetAvgs.avg_month.toFixed(2) %></span>
                 </div>
               </div>
               <div class="col-4 flex-column">
                 <div class="d-flex justify-content-between">
-                  <label>Winning Trades/Day</label>
+                  <label><%= __('Winning Trades/Day') %></label>
                   <span id="avg-win-day"><%= assetAvgs.avg_win_daily.toFixed(2) %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Winning Trades/Week</label>
+                  <label><%= __('Winning Trades/Week') %></label>
                   <span id="avg-win-week"><%= assetAvgs.avg_win_week.toFixed(2) %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Winning Trades/Month</label>
+                  <label><%= __('Winning Trades/Month') %></label>
                   <span id="avg-win-month"><%= assetAvgs.avg_win_month.toFixed(2) %></span>
                 </div>
               </div>
               <div class="col-4 flex-column">
                 <div class="d-flex justify-content-between">
-                  <label>Lost Trades/Day</label>
+                  <label><%= __('Lost Trades/Day') %></label>
                   <span id="avg-loss-day"><%= assetAvgs.avg_loss_daily.toFixed(2) %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Lost Trades/Week</label>
+                  <label><%= __('Lost Trades/Week') %></label>
                   <span id="avg-loss-week"><%= assetAvgs.avg_loss_week.toFixed(2) %></span>
                 </div>
                 <div class="d-flex justify-content-between">
-                  <label>Lost Trades/Month</label>
+                  <label><%= __('Lost Trades/Month') %></label>
                   <span id="avg-loss-month"><%= assetAvgs.avg_loss_month.toFixed(2) %></span>
                 </div>
               </div>
