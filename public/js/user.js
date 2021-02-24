@@ -260,12 +260,14 @@ function getExchangeRate(base, target, hasRate, category) {
           })
           break;
         case 'Crypto':
-          fetch(`http://api.coinlayer.com/api/live?access_key=${key}`)
-          .then((resp) => resp.json())
-          .then((data) => {
-            resolve(data.rates[base])
-          })
-          break;
+          resolve(null)
+          // NOTE: API not working in production - missing SSL
+          // fetch(`http://api.coinlayer.com/api/live?access_key=${key}`)
+          // .then((resp) => resp.json())
+          // .then((data) => {
+          //   resolve(data.rates[base])
+          // })
+          // break;
       }
     } else {
       resolve(null)

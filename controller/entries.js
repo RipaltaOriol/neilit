@@ -81,7 +81,6 @@ module.exports.filter = (req, res) => {
       && (${req.body.strategy}) && (${req.body.timeframe})
       && (${req.body.result}) ${createFilter} ${exitFilter}
     ORDER BY ${req.body.sort} ${req.body.order} LIMIT 25`;
-  console.log(getEntries);
   db.query(getEntries, req.user.id, (err, results) => {
     if (err) {
       logger.error({

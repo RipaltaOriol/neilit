@@ -207,13 +207,13 @@ $('#apply-filter').click(() => {
   }
   var filterStrategies = $('input[name=strategy]:checked').map(function(){
     return "strategy_id LIKE '" + this.value + "'";
-  }).get().join(' || ');
+  }).get().join(' OR ');
   var filterTimeframes = $('input[name=timeframe]:checked').map(function(){
     return "timeframe_id LIKE '" + this.value + "'";
-  }).get().join(' || ');
+  }).get().join(' OR ');
   var filterResults = $('input[name=result]:checked').map(function(){
     return "IFNULL(result, 'open') LIKE '" + this.value + "'";
-  }).get().join(' || ');
+  }).get().join(' OR ');
   filterSort = $('input[name=sort]:checked').val()
   filterOrder = $('input[name=order]:checked').val()
   var data = {

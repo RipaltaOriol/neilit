@@ -194,16 +194,16 @@ $('#apply-filter').click(() => {
   $("#modal-loading").modal();
   var filterPairs = $('input[name=pair]:checked').map(function(){
     return 'pair LIKE "' + this.value + '"';
-  }).get().join(' || ');
+  }).get().join(' OR ');
   var filterStrategies = $('input[name=strategy]:checked').map(function(){
     return 'strategy_id LIKE "' + this.value + '"';
-  }).get().join(' || ');
+  }).get().join(' OR ');
   var filterTimeframes = $('input[name=timeframe]:checked').map(function(){
     return 'timeframe_id LIKE "' + this.value + '"';
-  }).get().join(' || ');
+  }).get().join(' OR ');
   var filterResults = $('input[name=result]:checked').map(function(){
     return 'result LIKE "' + this.value + '"';
-  }).get().join(' || ');
+  }).get().join(' OR ');
   var filterCreate, filterSort, filterOrder;
   if ($('#display-create').is(":checked")) {
     filterCreate = $('input[name=create]').map(function(){
