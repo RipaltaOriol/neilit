@@ -35,7 +35,7 @@ input {
 
 .input-group .form-control:not(:first-child){
   font-size: 18px;
-  color: #ff8818;
+  color: var(--invert-black);
   border: none;
   border-radius: .25rem!important;
 }

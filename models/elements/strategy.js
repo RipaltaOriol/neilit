@@ -9,9 +9,9 @@ function strategyHtml(strategies, strategiesID, timeframes){
   });
   // loads all timeframes
   var timeframesSelect = ``;
-  timeframes.forEach((timeframe, i) => {
-    timeframesSelect += `<li class="` + (i + 1) + `">` + timeframe + `</li>`
-  });
+  for (const tf in timeframes) {
+    timeframesSelect += `<li class="` + timeframes[tf].id + `">` + tf + `</li>`
+  }
   // returns the html put together
   return `
     <span class="d-flex py-2 mb-2 strategy ta-element">
@@ -37,10 +37,10 @@ function strategyHtml(strategies, strategiesID, timeframes){
         <div class="dropdown d-inline mb-2">
           <button id="dropdown-label" class="timeframe-select dropdown-select w-100 px-2" type="button" data-toggle="dropdown">
             `
-            + timeframes[0] +
+            + Object.keys(timeframes)[0] +
             `
           </button>
-          <input type="text" name="timeframe" class="dropdown-server d-none" value="1">
+          <input type="text" name="timeframe" class="dropdown-server d-none" value="` + timeframes[Object.keys(timeframes)[0]].id + `">
           <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
             <input class="dropdown-search p-2 w-100" type="text" placeholder="Search..." onkeyup="searchDropdown(this)">
               `
@@ -118,9 +118,9 @@ function editStrategy(strategies, strategiesID, timeframes, imp, strategy, timef
   });
   // loads all timeframes
   var timeframesSelect = ``;
-  timeframes.forEach((timeframe, i) => {
-    timeframesSelect += `<li class="` + (i + 1) + `">` + timeframe + `</li>`
-  });
+  for (const tf in timeframes) {
+    timeframesSelect += `<li class="` + timeframes[tf].id + `">` + tf + `</li>`
+  }
   // loads the user view that corresponds to the straegy importance
   var general = 'd-none';
   var trigger = 'd-none';

@@ -32,6 +32,14 @@ span .checkbox-orange {
   font-size: 18px;
 }
 
+/* || Utility */
+input.bg-style {
+  width: 100%;
+  padding: 5px 10px;
+  background-color: var(--background-hover);
+  border-radius: 5pt;
+}
+
 .journal-box { }
 
 .journal-scroll {
@@ -89,7 +97,6 @@ span .checkbox-orange {
   }
 }
 
-/* || Utility */
 .mandatory {
   font-weight: 500;
 }
@@ -106,6 +113,25 @@ span .checkbox-orange {
 .placeholder-journal {
   color: var(--red-strong);
 }
+
+.status-badge {
+  height: 30px;
+  border-radius: 5pt;
+  padding: 5px 10px;
+}
+  .status-badge.save {
+    color: var(--green-strong);
+    background: var(--green-soft);
+    border: 1px solid var(--green-border);
+  }
+  .status-badge.saving {
+    color: var(--red-hard);
+    background: var(--red-soft);
+    border: 1px solid var(--red-border);
+  }
+    .status-badge.saving .spinner-border {
+      color: #870010;
+    }
 
 /* || Utility */
 .pill {
@@ -178,12 +204,14 @@ span .checkbox-orange {
 }
 
 .ui-datepicker-title {
+  color: var(--neilit-permanent);
   text-align: center;
   font-weight: 500;
 }
 
 .ui-datepicker-prev { }
 .ui-datepicker-prev span {
+  font-weight: 500;
   padding: 0 10px;
 }
   .ui-datepicker-prev span:hover {
@@ -194,6 +222,7 @@ span .checkbox-orange {
 
 .ui-datepicker-next { }
 .ui-datepicker-next span {
+  font-weight: 500;
   padding: 0 10px;
   float: right;
 }
@@ -207,12 +236,17 @@ span .checkbox-orange {
   color: var(--text-grey);
 }
   .ui-state-default:hover {
-    color: var(--invert-black);
+    color: var(--neilit-permanent);
   }
 
 .ui-datepicker-calendar {
   width: 100%;
   text-align: center;
+}
+
+.entry-image {
+  width: 100%;
+  height: auto;
 }
 
 .date-badge {
@@ -224,7 +258,7 @@ span .checkbox-orange {
   .dropdown-menu a {
     border-radius: .25rem;
   }
-    .dropdown-menu a:active {
+    .dropdown-menu a:active{
       color: white;
       background-color: #ff8818;
     }
@@ -298,6 +332,20 @@ span .checkbox-orange {
       filter: invert();
     }
 
+.table-wrapper {
+  position: relative;
+}
+
+.table-scroll {
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.backtest-scroll {
+  max-height: 70vh;
+  overflow: auto;
+}
+
 .backtest-result {
   color: var(--neilit-altern);
   background: var(--neilit-background);
@@ -339,6 +387,19 @@ span .checkbox-orange {
     content: "";
   }
 
+
+#flag-entry {
+  cursor: pointer;
+}
+
+#btn-add-timeframe {
+  border: none;
+  background-color: var(--background-medium);
+}
+  .dark-mode #btn-add-timeframe img {
+    filter: invert();
+  }
+
 #add-e {
   color: var(--neilit-permanent);
   font-weight: 500;
@@ -351,20 +412,6 @@ span .checkbox-orange {
   #add-e:focus {
     box-shadow: none;
   }
-
-.table-wrapper {
-  position: relative;
-}
-
-.table-scroll {
-  max-height: 70vh;
-  overflow: auto;
-}
-
-.backtest-scroll {
-  max-height: 70vh;
-  overflow: auto;
-}
 
 /* || Index elements table */
 #index-table {
@@ -428,13 +475,8 @@ span .checkbox-orange {
     padding: 0 15px;
   }
   #backtest-table td {
-    color: var(--text-contrast);
-    border-radius: .15rem;
-  }
-  #backtest-table #backtest-stats td:first-child{
-    text-align: left;
-    background-color: var(--background-soft);
-    color: var(--invert-black);
+  color: var(--text-contrast);
+  border-radius: .15rem;
   }
 
 /* || Technical Analysis Elements */
@@ -543,7 +585,7 @@ span .checkbox-orange {
     color: var(--neilit-permanent);
   }
   .entry-input #dropdown-label {
-    color: var(--neilit-permanent);
+    color: var(--invert-black);
   }
   #dropdown-label.disabled {
     color: var(--invert-white);

@@ -1,4 +1,5 @@
 var filterQuery;
+var timeoutId;
 
 $(document).ready(function() {
   // redirects to notification page
@@ -25,11 +26,7 @@ $(document).ready(function() {
   })
 })
 
-var storeEntry = document.getElementById('submit-entry')
-var clientComment = document.getElementById("client-comment");
-var serverComment = document.getElementById("server-comment");
-
-// Sets placeholder for comment input
+// sets placeholder for comment input
 jQuery(function($){
   $("#client-comment").focusout(function(){
     var element = $(this);
@@ -39,8 +36,74 @@ jQuery(function($){
   });
 });
 
+// loading animation
+function isSaving(bool) {
+  if (bool) {
+    $('.save').removeClass('save').addClass('saving')
+    .html(`
+      ` + savingTxt + `
+      <div class="spinner-border spinner-border-sm ml-1" role="status">
+        <span class="visually-hidden"></span>
+      </div>
+      `)
+  } else {
+    $('.saving').removeClass('saving').addClass('save')
+    .html(`
+      ` + savedTxt + `
+      <img class="ml-1" src="/imgs/icons/check-circle.svg">
+      `)
+  }
+}
+
+// allows flagging entries
+$('#flag-entry').on('click', function() {
+  if ($('input[name ="flag"]').val() == 0) {
+    $('input[name ="flag"]').val(1)
+    $(this).attr('src', '/imgs/icons/flag.svg')
+  } else {
+    $('input[name ="flag"]').val(0)
+    $(this).attr('src', '/imgs/icons/flag-outline.svg')
+  }
+})
+
+// enables inserting an element after another
+function insertAfter(referenceNode, newNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
+// adds custom timeframe
+$('#btn-add-timeframe').click(() => {
+  if ($('#add-timeframe').val())
+  var data = {
+    timeframe: $('#add-timeframe').val()
+  }
+  $.post('/' + username + '/settings/addTimeframe', data)
+    .done((data) => {
+      if (data.response == 'success') {
+        // deletes the timeframe from the client
+        $('#add-timeframe').val('')
+        $('#val-timeframe').val(data.timeframeID)
+        document.getElementsByClassName('dd-timeframe')[0].innerHTML = data.timeframe
+        var prevLi = document.getElementById('add-timeframe').parentElement
+        var liTimeframe = document.createElement('li')
+        liTimeframe.innerHTML = data.timeframe
+        liTimeframe.className = data.timeframeID
+        insertAfter(prevLi, liTimeframe)
+        saveToDB({
+          component: 'timeframe',
+          value: data.timeframeID
+        })
+      }
+  })
+    .fail(() => {
+    // error
+  })
+
+})
+
 // dropdown to selection
 $('.dropdown-menu li').on('click', function() {
+  var data = { }
   var allDD = $('.dropdown-menu');
   var current = allDD.index($(this).parent())
   var getValue = $(this).text();
@@ -52,7 +115,11 @@ $('.dropdown-menu li').on('click', function() {
   }
   if ($('.dropdown-menu')[current].classList.contains('dropdown-asset')) {
     $('#category').val(currencies[getValue].category)
+    data.category = currencies[getValue].category
   }
+  data.component = $('.dropdown-server')[current].name
+  data.value = $('.dropdown-server')[current].value
+  saveToDB(data)
 });
 
 // dropdown for filter feature
@@ -272,8 +339,12 @@ $('#apply-filter').click(() => {
   })
 })
 
-// Dispaly fields for entry close
+// display fields for entry close
 function displayClose(close) {
+  saveToDB({
+    component: 'status',
+    value: close
+  })
   if (close == 0) {
     document.getElementById('entry-closure').classList.add("d-none");
     document.getElementById('entry-closure').classList.remove("d-flex");
@@ -283,51 +354,247 @@ function displayClose(close) {
   }
 }
 
-// Connects a technical analysis to the entry
+// connects a technical analysis to the entry
 function connectTa(index) {
   var connectedId = technicalAnalysis[index].id
-  document.getElementById('ta').value = connectedId;
+  saveToDB({
+    component: 'ta',
+    value: connectedId
+  })
   $('#entry-ta').removeClass('d-none')
   var connectedTa = technicalAnalysis[index].pair + ' - '
     + new Date(technicalAnalysis[index].created_at).toLocaleDateString(language, options)
   $('#connect-ta').text(connectedTa);
 }
 
-// Hides the technical analysis associated to the entry
+// hides the technical analysis associated to the entry
 $('#noneTa').click(() => {
+  isSaving(true)
+  saveToDB({
+    component: 'ta',
+    value: null
+  })
   $('#entry-ta').addClass('d-none')
 })
 
-// Runs before making the POST request
-if (storeEntry != null) {
-  storeEntry.addEventListener('click', () => {
-    // sends the comment to the server
-    serverComment.value = clientComment.innerText.replace(/\n/g, "<br>");
+// saves size while typing
+$('#size').on('input propertychange change', () => {
+  // runs the saving animation
+  isSaving(true)
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // Runs 1 second (1000 ms) after the last change
+    saveToDB({
+      component: 'size',
+      value: $('#size').val()
+    })
+  }, 1000);
+})
+
+// saves entry-price while typing
+$('#entry-price').on('input propertychange change', () => {
+  // runs the saving animation
+  isSaving(true)
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // Runs 1 second (1000 ms) after the last change
+    saveToDB({
+      component: 'entry-price',
+      value: $('#entry-price').val()
+    })
+  }, 1000);
+})
+
+// saves stop-loss while typing
+$('#stop-loss').on('input propertychange change', () => {
+  // runs the saving animation
+  isSaving(true)
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // Runs 1 second (1000 ms) after the last change
+    saveToDB({
+      component: 'stop-loss',
+      value: $('#stop-loss').val()
+    })
+  }, 1000);
+})
+
+// saves take-profit while typing
+$('#take-profit').on('input propertychange change', () => {
+  // runs the saving animation
+  isSaving(true)
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // Runs 1 second (1000 ms) after the last change
+    saveToDB({
+      component: 'take-profit',
+      value: $('#take-profit').val()
+    })
+  }, 1000);
+})
+
+// saves entry-date
+$('#entry-date-pretty').change(() => {
+  isSaving(true)
+  saveToDB({
+    component: 'entry-date',
+    value: $('#entry-date').val()
+  })
+})
+
+// saves direction
+$('input[name="direction"]').change((e) => {
+  isSaving(true)
+  saveToDB({
+    component: 'direction',
+    value: $(e.target).val()
+  })
+})
+
+// saves commen while typing
+$('#comment').on('input propertychange change', () => {
+  // runs the saving animation
+  isSaving(true)
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // Runs 1 second (1000 ms) after the last change
+    saveToDB({
+      component: 'comment',
+      value: document.getElementById('comment').innerText.replace(/\n/g, '<br>')
+    })
+  }, 1000);
+})
+
+// saves entry-date
+$('#exit-date-pretty').change(() => {
+  isSaving(true)
+  saveToDB({
+    component: 'exit-date',
+    value: $('#exit-date').val()
+  })
+})
+
+// saves exit-price while typing
+$('#exit-price').on('input propertychange change', () => {
+  // runs the saving animation
+  isSaving(true)
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // Runs 1 second (1000 ms) after the last change
+    saveToDB({
+      component: 'exit-price',
+      value: $('#exit-price').val()
+    })
+  }, 1000);
+})
+
+// saves profits while typing
+$('#profits').on('input propertychange change', () => {
+  // runs the saving animation
+  isSaving(true)
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // Runs 1 second (1000 ms) after the last change
+    saveToDB({
+      component: 'profits',
+      value: $('#profits').val()
+    })
+  }, 1000);
+})
+
+// saves fees while typing
+$('#fees').on('input propertychange change', () => {
+  // runs the saving animation
+  isSaving(true)
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(() => {
+    // Runs 1 second (1000 ms) after the last change
+    saveToDB({
+      component: 'fees',
+      value: $('#fees').val()
+    })
+  }, 1000);
+})
+
+// controls what image gets uploaded: 1, 2, 3 or 4
+function uploadTo(number) {
+  $('#url-1').addClass('d-none')
+  $('#url-2').addClass('d-none')
+  $('#url-3').addClass('d-none')
+  $('#url-4').addClass('d-none')
+  $('#file-1').addClass('d-none')
+  $('#file-2').addClass('d-none')
+  $('#file-3').addClass('d-none')
+  $('#file-4').addClass('d-none')
+  switch (number) {
+    case 1:
+      $('#url-1').removeClass('d-none')
+      $('#file-1').removeClass('d-none')
+      break;
+    case 2:
+      $('#url-2').removeClass('d-none')
+      $('#file-2').removeClass('d-none')
+      break;
+    case 3:
+      $('#url-3').removeClass('d-none')
+      $('#file-3').removeClass('d-none')
+      break;
+    case 4:
+      $('#url-4').removeClass('d-none')
+      $('#file-4').removeClass('d-none')
+      break;
+  }
+}
+
+// renders images from URL
+function renderURL(number) {
+  var src = $(`#url-src-${number}`).val()
+  if (src != '') {
+    var data = {
+      component: 'imageURL',
+      src: src,
+      number: number
+    }
+    saveToDB(data)
+    $(`#entry-image-${number}`).attr('src', src)
+    $(`#entry-image-${number}`).removeClass('d-none')
+  }
+}
+
+// renders images from fil
+function renderFile(number) {
+  isSaving(true)
+  var fileBtn = `#file-src-${number}`
+  $(fileBtn).click()
+  $(`#file-src-${number}`).change(function() {
+    var formData = new FormData()
+    formData.append('number', number)
+    formData.append('file', this.files[0])
+    $.ajax({
+      url: '/' + username + '/journal/entry/' + id + '/edit/imageFile',
+      method: 'POST',
+      type: 'POST',
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false
+    })
+    .done((result) => {
+      if (result.status) {
+        $(`#entry-image-${number}`).attr('src', result.urlPoint)
+        $(`#entry-image-${number}`).removeClass('d-none')
+        isSaving(false)
+      }
+    })
   })
 }
 
-
-$('#entry-form').submit(function() {
-  $('#modal-edit-alert').modal('hide')
-  $("#modal-loading").modal('show')
-});
-
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function () {
-  'use strict'
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.validate-form')
-
-  // Loop over them and prevent submission
-  Array.from(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-          $("#modal-loading").modal('hide')
-        }
-        form.classList.add('was-validated')
-      }, false)
+function saveToDB(data) {
+  isSaving(true)
+  $.post('/' + username + '/journal/entry/' + id + '/edit/' + data.component, data)
+    .done((result) => {
+      if (result.status) {
+        isSaving(false)
+      }
     })
-})()
+}

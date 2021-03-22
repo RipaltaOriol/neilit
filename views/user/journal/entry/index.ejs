@@ -47,7 +47,9 @@
         <hr>
         <div class="d-flex justify-content-end mx-3">
           <button type="button" id="open-filter" class="btn-inverted mr-2" data-toggle="modal" data-target="#filter-modal"><%= __('Filter') %></button>
-          <a href="/<%= currentUser.username %>/journal/entry/new" class="btn-neilit"><%= __('New') %></a>
+          <form class="w-auto" action="/<%= currentUser.username %>/journal/entry" method="POST">
+            <button type="submit" class="btn-neilit"><%= __('New') %></button>
+          </form>
         </div>
       </div>
       <!-- loading modal -->

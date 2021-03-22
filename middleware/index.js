@@ -2,7 +2,6 @@
 const util        = require('util');
 
 // global variables
-let localeTimeframes  = require('../models/timeframes');
 let db                = require('../models/dbConfig');
 let logger            = require('../models/winstonConfig')
 

@@ -562,7 +562,6 @@
 	"None": "Ninguno",
 	"Closure": "Cierre",
 	"Open": "Abierta",
-	"Altering existing fields might alter your current statistics": "La modificación de los campos existentes podría alterar sus estadísticas actuales",
 	"Add tecnical analysis": "Añadir análisis técnico",
 	"Add Tecnical Analysis": "Añadir Análisis Técnico",
 	"New Row": "Nueva Fila",
@@ -628,8 +627,12 @@
 	"Suggest Improvement": "Sugerir Mejora",
 	"Next": "Siguiente",
 	"Prev": "Anterior",
+	"Images": "Imagenes",
+	"Submit URL": "Cargar URL",
+	"Upload File": "Subir Archivo",
+	"Upload Image": "Subir Imagen",
 	"How to create an entry": "How to create an entry",
-	"Quick look up at logging criteria": "Consulta rápida de los criterios de registro",
+	"quick look up at logging criteria": "consulta rápida de los criterios de registro",
 	"Please, ensure the image is a one of the followings: PNG, JPG or JPEG": "Por favor, asegúrese de que la imagen este en uno de los siguientes formatos: PNG, JPG o JPEG ",
 	"Psychology Tips": "Psicología",
 	"Description": "Descripción",
@@ -681,5 +684,6 @@
 	"Net Profit": "Net Profit",
 	"Per Timeframe Statistics": "Estadísticas por Gráfico de Plazos",
 	"Per Days Statistics": "Estadísticas por Dias",
-	"Per Direction Statistics": "Estadísticas por Dirección"
+	"Per Direction Statistics": "Estadísticas por Dirección",
+	"Add Timeframe": "Añadir Período"
 }

@@ -44,21 +44,21 @@ button:disabled {
   }
 
 /* || Utility */
-.separator {
+.separator-between {
     display: flex;
     align-items: center;
     text-align: center;
     opacity: .75;
 }
-  .separator::before, .separator::after {
+  .separator-between::before, .separator-between::after {
       content: '';
       flex: 1;
       border-bottom: 1px solid #525252;
   }
-  .separator::before {
+  .separator-between::before {
       margin-right: .25em;
   }
-  .separator::after {
+  .separator-between::after {
       margin-left: .25em;
   }
 

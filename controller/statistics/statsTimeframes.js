@@ -79,11 +79,11 @@ module.exports.renderTimeframes = (req, res) => {
       var getTimeframesWinRate = await query(`SELECT timeframe, SUM(IF(result = 'win', 1, 0))/COUNT(*) AS win_rate
           FROM entries e
               LEFT JOIN timeframes t ON e.timeframe_id = t.id
-          WHERE user_id = ? AND status = 1 GROUP BY timeframe_id ORDER BY timeframe_id;`, req.user.id)
+          WHERE e.user_id = ? AND status = 1 GROUP BY timeframe_id ORDER BY timeframe_id;`, req.user.id)
       var getBestTimeframes = await query(`SELECT timeframe, ROUND(SUM(profits - IFNULL(fees, 0)), 2) AS outcome
           FROM entries e
               LEFT JOIN timeframes t ON e.timeframe_id = t.id
-          WHERE user_id = ? AND status = 1 GROUP BY timeframe_id ORDER BY outcome DESC LIMIT 7;`, req.user.id)
+          WHERE e.user_id = ? AND status = 1 GROUP BY timeframe_id ORDER BY outcome DESC LIMIT 7;`, req.user.id)
       var dataBestTimeframes = {
         timeframes: [],
         outcome: []

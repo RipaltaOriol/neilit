@@ -8,7 +8,6 @@ const saltRounds  = 10;
 
 // global variables
 let plans             = require('../models/plans');
-let localeTimeframes  = require("../models/timeframes");
 let db                = require('../models/dbConfig');
 let logger            = require('../models/winstonConfig');
 
@@ -82,7 +81,13 @@ module.exports.logicLogin = (req, res) => {
           rate: asset.has_rate
         }
       })
-      req.session.timeframes = await localeTimeframes();
+      let getUserTimeframes = await query("SELECT id, timeframe FROM timeframes WHERE user_id = ? OR user_id IS NULL ORDER BY user_id DESC;", req.user.id)
+      req.session.timeframes = { }
+      getUserTimeframes.forEach((timeframe) => {
+        req.session.timeframes[timeframe.timeframe] = {
+          id: timeframe.id
+        }
+      })
       req.session.notification = true;
     } catch (err) {
       logger.error({

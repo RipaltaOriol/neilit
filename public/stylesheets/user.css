@@ -287,12 +287,14 @@ a { }
 }
 
 .ui-datepicker-title {
+  color: var(-neilit-permanent);
   text-align: center;
   font-weight: 500;
 }
 
 .ui-datepicker-prev { }
 .ui-datepicker-prev span {
+  font-weight: 500;
   padding: 0 10px;
 }
   .ui-datepicker-prev span:hover {
@@ -303,6 +305,7 @@ a { }
 
 .ui-datepicker-next { }
 .ui-datepicker-next span {
+  font-weight: 500;
   padding: 0 10px;
   float: right;
 }
@@ -328,7 +331,7 @@ a { }
   color: var(--text-grey);
 }
   .ui-state-default:hover {
-    color: var(--invert-black);
+    color: var(--neilit-permanent);
   }
 
 input::-webkit-calendar-picker-indicator{

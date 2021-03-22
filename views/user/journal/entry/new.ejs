@@ -3,8 +3,14 @@
   <!-- CONTENT -->
   <div class="container mx-auto mb-5">
     <div class="journal-box px-0 entry-input">
-      <form action="/<%= currentUser.username %>/journal/entry" method="POST" novalidate class="validate-form" id="entry-form">
-        <h3 class="mx-3"><%= __('Create Entry') %></h3>
+      <form id="entry-form" action="/<%= currentUser.username %>/journal/entry" method="POST" novalidate class="validate-form" enctype="multipart/form-data">
+        <div class="d-flex justify-content-between mx-3">
+          <h3><%= __('Create Entry') %></h3>
+          <div>
+            <input type="checkbox" name="flag" value="0" class="d-none">
+            <img id="flag-entry" src="/imgs/icons/flag-outline.svg" alt="flag">
+          </div>
+        </div>
         <hr>
         <div class="mb-2 mx-3">
           <div class="d-flex flex-column mt-2 p-2 form-fields">
@@ -51,17 +57,23 @@
             </span>
             <span class="d-block">
               <label class="mandatory"><%= __('Timeframe') %>:</label>
-              <input type="text" name="timeframe" value="1" class="dropdown-server d-none">
+              <input id="val-timeframe" type="text" name="timeframe" value="<%= timeframes[Object.keys(timeframes)[0]].id %>" class="dropdown-server d-none">
               <!-- dropdown -->
               <div class="dropdown d-inline">
-                <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
-                  <%= timeframes[0] %>
+                <button id="dropdown-label" class="dropdown-select p-2 dd-timeframe" type="button" data-toggle="dropdown">
+                  <%= Object.keys(timeframes)[0] %>
                 </button>
                 <ul id="dropdown-items" class="dropdown-menu" aria-labelledby="dropdown-label">
                   <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
-                  <% for (var i = 0; i < timeframes.length; i++) { %>
-                    <li class="<%= i + 1 %>"><%= timeframes[i] %></li>
-                  <% } %>
+                  <span class="d-flex justify-content-between">
+                    <input id="add-timeframe" class="help-link" type="input" placeholder="<%= __('Add Timeframe') %>">
+                    <button id="btn-add-timeframe" type="button">
+                      <img src="/imgs/icons/add.svg">
+                    </button>
+                  </span>
+                  <% Object.keys(timeframes).forEach((key) => { %>
+                    <li class="<%= timeframes[key].id %>"><%= key %></li>
+                  <% }) %>
                 </ul>
               </div>
             </span>
@@ -164,12 +176,34 @@
         </div>
         <textarea id="server-comment" name="comment" class="d-none"></textarea>
         <br>
+        <h3 class="mx-3">Images</h3>
+        <hr>
+        <div class="container">
+          <div class="row">
+            <div class="col-6 mb-2">
+              <button type="button" class="btn-inverted" data-toggle="modal" data-target=".modal-image" onclick="uploadTo(1)">Upload Image 1</button>
+              <img id="entry-image-1" class="entry-image mt-1 d-none" src="" alt="image-1">
+            </div>
+            <div class="col-6 mb-2">
+              <button type="button" class="btn-inverted" data-toggle="modal" data-target=".modal-image" onclick="uploadTo(2)">Upload Image 2</button>
+              <img id="entry-image-2" class="entry-image mt-1 d-none" src="" alt="image-2">
+            </div>
+            <div class="col-6 mb-2">
+              <button type="button" class="btn-inverted" data-toggle="modal" data-target=".modal-image" onclick="uploadTo(3)">Upload Image 3</button>
+              <img id="entry-image-3" class="entry-image mt-1 d-none" src="" alt="image-3">
+            </div>
+            <div class="col-6 mb-2">
+              <button type="button" class="btn-inverted" data-toggle="modal" data-target=".modal-image" onclick="uploadTo(4)">Upload Image 4</button>
+              <img id="entry-image-4" class="entry-image mt-1 d-none" src="" alt="image-4">
+            </div>
+          </div>
+        </div>
+        <br>
         <div class="d-flex justify-content-between mx-3">
           <h3><%= __('Close Entry') %></h3>
           <a href="/resources/create-entry#logCriteria" class="help-link"><%= __('Quick look up at logging criteria') %></a>
         </div>
         <hr>
-
         <div class="mx-3 mb-3">
           <span class="d-block">
             <label class="checkbox-orange mb-0 font-18">
@@ -222,9 +256,58 @@
               </ul>
             </div>
           </span>
+          <span class="mb-2 d-block">
+            <label>Mistakes:</label>
+            <input type="text" name="mistakes" value="null" class="dropdown-server d-none">
+            <!-- dropdown -->
+            <div class="dropdown d-inline">
+              <button id="dropdown-label" class="dropdown-select p-2" type="button" data-toggle="dropdown">
+                None
+              </button>
+              <ul id="dropdown-items" class="dropdown-menu dropdown-asset" aria-labelledby="dropdown-label">
+                <input class="dropdown-search p-2 w-100" type="text" placeholder="<%= __('Search') %>..." onkeyup="searchDropdown(this)">
+                <li>Too excited</li>
+                <input class="help-link" type="input" placeholder="New mistaks">
+              </ul>
+            </div>
+          </span>
         </div>
         <div class="d-flex justify-content-end mx-3">
           <button id="submit-entry" type="submit" class="btn-neilit"><%= __('Create') %></button>
+        </div>
+        <!-- image upload modal -->
+        <div class="modal modal-image fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div id="url-1" class="d-none">
+                  <input id="url-src-1" type="text" name="urlImage1" placeholder="URL" class="bg-style mb-2">
+                  <button type="button" class="btn-neilit" data-dismiss="modal" onclick="renderURL(1)">Submit URL</button>
+                </div>
+                <div id="url-2" class="d-none">
+                  <input id="url-src-2" type="text" name="urlImage2" placeholder="URL" class="bg-style mb-2">
+                  <button type="button" class="btn-neilit" data-dismiss="modal" onclick="renderURL(2)">Submit URL</button>
+                </div>
+                <div id="url-3" class="d-none">
+                  <input id="url-src-3" type="text" name="urlImage3" placeholder="URL" class="bg-style mb-2">
+                  <button type="button" class="btn-neilit" data-dismiss="modal" onclick="renderURL(3)">Submit URL</button>
+                </div>
+                <div id="url-4" class="d-none">
+                  <input id="url-src-4" type="text" name="urlImage4" placeholder="URL" class="bg-style mb-2">
+                  <button type="button" class="btn-neilit" data-dismiss="modal" onclick="renderURL(4)">Submit URL</button>
+                </div>
+                <hr>
+                <button id="file-1" type="button" class="btn-neilit d-none" data-dismiss="modal" onclick="renderFile(1)">Upload File</button>
+                <input id="file-src-1" type="file" name="fileImage1" class="d-none">
+                <button id="file-2" type="button" class="btn-neilit d-none" data-dismiss="modal" onclick="renderFile(2)">Upload File</button>
+                <input id="file-src-2" type="file" name="fileImage2" class="d-none">
+                <button id="file-3" type="button" class="btn-neilit d-none" data-dismiss="modal" onclick="renderFile(3)">Upload File</button>
+                <input id="file-src-3" type="file" name="fileImage3" class="d-none">
+                <button id="file-4" type="button" class="btn-neilit d-none" data-dismiss="modal" onclick="renderFile(4)">Upload File</button>
+                <input id="file-src-4" type="file" name="fileImage4" class="d-none">
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -243,6 +326,7 @@
   </div>
 
 <script type="text/javascript">
+  var username          = <%- JSON.stringify(currentUser.username) %>;
   var language          = <%- JSON.stringify(currentUser.language) %>;
   var currencies        = <%- JSON.stringify(currencies) %>;
   var technicalAnalysis = <%- JSON.stringify(technicalAnalysis) %>;

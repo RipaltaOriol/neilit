@@ -193,6 +193,18 @@ input[type=search] {
     }
 
 /* || Utility */
+.default {
+  color: var(--invert-black);
+}
+  a.default {
+    color: var(--invert-black);
+    text-decoration: none;
+  }
+    a.default:focus {
+      outline: none;
+    }
+
+/* || Utility */
 .outline-none { }
   .outline-none:focus {
     outline: none;

@@ -1,4 +1,5 @@
 {
+	"11": "11",
 	"Already a member?": "Already a member?",
 	"Log in": "Log in",
 	"Join Neilit": "Join Neilit",
@@ -336,7 +337,6 @@
 	"Edit": "Edit",
 	"Delete": "Delete",
 	"Save": "Save",
-	"Altering existing fields might alter your current statistics": "Altering existing fields might alter your current statistics",
 	"Accept": "Accept",
 	"The 'None' strategy cannot be deleted.": "The 'None' strategy cannot be deleted.",
 	"Measure you trading efficiently. And start becoming profitable.": "Measure you trading efficiently. And start becoming profitable.",
@@ -540,7 +540,11 @@
 	"Suggest Improvement": "Suggest Improvement",
 	"Next": "Next",
 	"Prev": "Prev",
-	"Quick look up at logging criteria": "Quick look up at logging criteria",
+	"Images": "Images",
+	"Submit URL": "Submit URL",
+	"Upload File": "Upload File",
+	"Upload Image": "Upload Image",
+	"quick look up at logging criteria": "quick look up at logging criteria",
 	"Please, ensure the image is a one of the followings: PNG, JPG or JPEG": "Please, ensure the image is a one of the followings: PNG, JPG or JPEG",
 	"Welcome to Neilit": "Welcome to Neilit",
 	"Forgot Your Password?": "Forgot Your Password?",
@@ -593,5 +597,7 @@
 	"Net Profit": "Net Profit",
 	"Per Asset Statistics": "Per Asset Statistics",
 	"Per Days Statistics": "Per Days Statistics",
-	"Per Timeframe Statistics": "Per Timeframe Statistics"
+	"Per Timeframe Statistics": "Per Timeframe Statistics",
+	"Add Timeframe": "Add Timeframe",
+	"CAD": "CAD"
 }

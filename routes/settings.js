@@ -23,6 +23,8 @@ router.post("/addAsset", middleware.isLoggedIn, settings.addAsset)
 
 router.post("/deleteAsset", middleware.isLoggedIn, settings.deleteAsset)
 
+router.post("/addTimeframe", middleware.isLoggedIn, settings.addTimeframe)
+
 router.post("/changeLanguage", middleware.isLoggedIn, settings.changeLanguage)
 
 router.post("/uploadProfileImage", middleware.isLoggedIn, settings.multerHandle, settings.uploadProfileImage)

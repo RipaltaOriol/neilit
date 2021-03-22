@@ -111,7 +111,7 @@ function setProfits(data) {
     $('#profits-amount').html('<p class="d-inline pill pill-green"><img src="/imgs/icons/trending-up-green.svg" class="image-widget-grande mr-2">'
       + data.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>')
   } else {
-    $('#profits-amount').html('<p class="d-inline pill pill-green"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2"'
+    $('#profits-amount').html('<p class="d-inline pill pill-red"><img src="/imgs/icons/trending-down-red.svg" class="image-widget-grande mr-2">'
       + data.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ' + userBase + '</p>')
   }
 }

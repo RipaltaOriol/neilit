@@ -31,7 +31,6 @@ let pairs             = require('../models/pairs');
 let forexPairs        = require('../models/generateForex');
 let cryptoPairs       = require('../models/generateCrypto');
 let currencies        = require('../models/currencies');
-let localeTimeframes  = require('../models/timeframes');
 let db                = require('../models/dbConfig');
 let logger            = require('../models/winstonConfig');
 let s3                = require('../models/s3Config');
@@ -97,37 +96,47 @@ module.exports.deleteStrategy = (req, res) => {
     var oldIndex = req.session.strategyNames.findIndex(strategy => strategy == req.body.strategy)
     var old = req.session.strategyIds[oldIndex]
     var data = [replace, old, req.user.id]
-    // update entries
-    var deleteEntries = await query('UPDATE entries SET strategy_id = ? WHERE strategy_id = ? && user_id = ?', data);
-    // update technical analysis
-    var deleteTAs = await query('UPDATE tanalysis r JOIN telementanalysis t ON (r.id = t.ta_id) SET t.strategy_id = ? WHERE t.strategy_id = ? && r.user_id = ?', data);
-    // update backtest single strategy
-    var deleteBTsingle = await query('UPDATE backtest SET strategy_id = ? WHERE strategy_id = ? && user_id = ?', data);
-    // update backtest multiple strategies
-    var deleteBTmultiple = await query('UPDATE backtest b JOIN backtest_data d ON (b.id = d.backtest_id) SET d.strategy_id = ? WHERE d.strategy_id = ? && b.user_id = ?', data);
-    // update plan positions
-    var deletePlanPositions = await query('UPDATE plans p JOIN pln_positions o ON p.id = o.plan_id SET o.strategy_id = ? WHERE o.strategy_id = ? && p.user_id = ?', data);
-    // update plan strategies
-    var deletePlanStrategies = await query('UPDATE plans p JOIN pln_strategies s ON p.id = s.plan_id SET s.strategy_id = ? WHERE s.strategy_id = ? && p.user_id = ?', data);
-    // deletes the strategy from the DB
-    await db.query(deleteStrategy, [req.body.strategy, req.user.id], (err, done) => {
-      if (err) {
-        logger.error({
-          message: 'SETTINGS (delete strategy) could not delete strategy',
-          endpoint: req.method + ': ' + req.originalUrl,
-          programMsg: err
-        })
-        return res.json(
-          {
-            response: 'error',
-            message: res.__('Something went wrong, please try again.')
-          }
-        )
-      }
-      req.session.strategyNames.splice(oldIndex, 1);
-      req.session.strategyIds.splice(oldIndex, 1);
-      return res.json({response: 'success'})
-    })
+    try {
+      // update entries
+      var deleteEntries = await query('UPDATE entries SET strategy_id = ? WHERE strategy_id = ? && user_id = ?', data);
+      // update technical analysis
+      var deleteTAs = await query('UPDATE tanalysis r JOIN telementanalysis t ON (r.id = t.ta_id) SET t.strategy_id = ? WHERE t.strategy_id = ? && r.user_id = ?', data);
+      // update backtest single strategy
+      var deleteBTsingle = await query('UPDATE backtest SET strategy_id = ? WHERE strategy_id = ? && user_id = ?', data);
+      // update backtest multiple strategies
+      var deleteBTmultiple = await query('UPDATE backtest b JOIN backtest_data d ON (b.id = d.backtest_id) SET d.strategy_id = ? WHERE d.strategy_id = ? && b.user_id = ?', data);
+      // delete strategy docs
+      var deleteStratDocs = await query('DELETE FROM strategies_docs WHERE user_id = ? && strategy_id = ?', [req.user.id, old]);
+      // delete strategy rules
+      var deleteStratRules = await query('DELETE FROM strategies_rules WHERE user_id = ? && strategy_id = ?', [req.user.id, old]);
+      // delete strategy exits
+      var deleteStratExits = await query('DELETE FROM strategies_exits WHERE user_id = ? && strategy_id = ?', [req.user.id, old]);
+      // delete strategy observations
+      var deleteStratObservations = await query('DELETE FROM strategies_observations WHERE user_id = ? && strategy_id = ?', [req.user.id, old]);
+    } catch (err) {
+        console.log(err);
+    } finally {
+      // deletes the strategy from the DB
+      await db.query(deleteStrategy, [req.body.strategy, req.user.id], (err, done) => {
+        if (err) {
+          console.log('here');
+          logger.error({
+            message: 'SETTINGS (delete strategy) could not delete strategy',
+            endpoint: req.method + ': ' + req.originalUrl,
+            programMsg: err
+          })
+          return res.json(
+            {
+              response: 'error',
+              message: res.__('Something went wrong, please try again.')
+            }
+          )
+        }
+        req.session.strategyNames.splice(oldIndex, 1);
+        req.session.strategyIds.splice(oldIndex, 1);
+        return res.json({response: 'success'})
+      })
+    }
   })()
 }
 
@@ -313,6 +322,32 @@ module.exports.deleteAsset = (req, res) => {
   })
 }
 
+module.exports.addTimeframe = (req, res) => {
+  var newTimeframe = {
+    timeframe: req.body.timeframe,
+    user_id: req.user.id
+  }
+  db.query('INSERT INTO timeframes SET ?', newTimeframe, (err, result) => {
+    if (err) {
+      logger.error({
+        message: 'SETTINGS (new timeframe) could not add new timeframe',
+        endpoint: req.method + ': ' + req.originalUrl,
+        programMsg: err
+      })
+      return res.json({ response: 'fail' })
+    } else {
+      req.session.timeframes = {[req.body.timeframe]: { id: result.insertId }, ...req.session.timeframes}
+      return res.json(
+        {
+          response: 'success',
+          timeframe: req.body.timeframe,
+          timeframeID: result.insertId
+        }
+      )
+    }
+  })
+}
+
 module.exports.changeLanguage = (req, res) => {
   var updateLanguage = 'UPDATE users SET language = ? WHERE id = ?'
   db.query(updateLanguage, [req.body.lang, req.user.id], (err) => {
@@ -326,7 +361,6 @@ module.exports.changeLanguage = (req, res) => {
       return res.redirect('/' + req.user.username);
     }
     res.cookie('lang', req.body.lang)
-    timeframes = localeTimeframes();
     res.end();
   })
 }
@@ -365,7 +399,6 @@ module.exports.uploadProfileImage = (req, res) => {
       return res.redirect('/' + req.user.username + '/settings')
     })
   })
-
 }
 
 module.exports.renderChangePlan = (req, res) => {

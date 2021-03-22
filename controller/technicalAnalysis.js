@@ -39,7 +39,7 @@ module.exports.index = (req, res) => {
 }
 
 module.exports.indexInfinite = (req, res) => {
-  var getTAs = 'SELECT tanalysis.id, created_at, pair, last_update FROM tanalysis JOIN pairs ON tanalysis.pair_id = pairs.id WHERE user_id = ? ORDER BY created_at DESC LIMIT 25 OFFSET ?;';
+  var getTAs = 'SELECT ta.id, created_at, pair, last_update FROM tanalysis ta JOIN pairs ON ta.pair_id = pairs.id WHERE ta.user_id = ? ORDER BY created_at DESC LIMIT 25 OFFSET ?;';
   if (req.body.query) { getTAs = req.body.query + ' OFFSET ?;'}
   db.query(getTAs, [req.user.id, Number(req.body.offset)], (err, results) => {
     if (err) {
