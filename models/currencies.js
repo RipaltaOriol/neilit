@@ -11,6 +11,7 @@ var currenciesList = [];
 // Query to the DB
 db.query("SELECT currency FROM currencies", (err, results) => {
   if (err) {
+    console.log('error here');
     logger.error({
       message: 'CURRENCIES MODELS could not load currencies',
       endpoint: 'N/A',

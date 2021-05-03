@@ -159,8 +159,9 @@ module.exports.showEntry = (req, res) => {
     WHERE e.id = ?;`
   var getEntryImages = 'SELECT image1, image2, image3, image4 FROM entries_imgs WHERE entry_id = ?'
   var getCurrency = 'SELECT currency FROM currencies WHERE id = ?;';
-  var getPrev = 'SELECT id FROM entries WHERE entry_dt < ? AND user_id = ? ORDER BY entry_dt DESC LIMIT 1;'
-  var getNext = 'SELECT id FROM entries WHERE entry_dt > ? AND user_id = ? ORDER BY entry_dt LIMIT 1;'
+  // if entries with same datetime exist then ignore them in the query
+  var getPrev = 'SELECT id, entry_dt FROM entries WHERE entry_dt < ? AND user_id = ? ORDER BY entry_dt DESC LIMIT 1;'
+  var getNext = 'SELECT id, entry_dt FROM entries WHERE entry_dt > ? AND user_id = ? ORDER BY entry_dt LIMIT 1;'
   db.query(getEntry, req.params.id, (err, entryInfo) => {
     if (err) {
       logger.error({
@@ -301,6 +302,23 @@ module.exports.renderEditForm = (req, res) => {
   })
 }
 
+module.exports.editFlag = async(req, res) => {
+  const status = 1;
+  try {
+    var updateFlag = await query('UPDATE entries SET flag = ? WHERE id = ?',
+      [req.body.value, req.params.id])
+  } catch (err) {
+    logger.error({
+      message: 'ENTRIES (edit) could not edit flat',
+      endpoint: req.method + ': ' + req.originalUrl,
+      programMsg: err
+    })
+    status = 0
+  } finally {
+    return res.send({ status: status})
+  }
+}
+
 module.exports.editPair = async(req, res) => {
   const status = 1;
   try {
@@ -315,9 +333,7 @@ module.exports.editPair = async(req, res) => {
     status = 0;
   } finally {
     return res.send({ status: status})
-
   }
-
 }
 
 module.exports.editStrategy = async(req, res) => {

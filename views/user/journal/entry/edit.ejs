@@ -13,7 +13,16 @@
       <hr>
       <div class="mb-2 mx-3">
         <div class="d-flex flex-column mt-2 p-2 form-fields">
-          <h5><%= __('Specific') %></h5>
+          <div class="d-flex justify-content-between">
+            <h5><%= __('Specific') %></h5>
+            <span>
+              <% if (entryInfo.flag) { %>
+                <img id="flag-entry" class="1" src="/imgs/icons/flag.svg" alt="flag">
+              <% } else { %>
+                <img id="flag-entry" class="0" src="/imgs/icons/flag-outline.svg" alt="flag">
+              <% } %>
+            </span>
+          </div>
           <span class="mb-2 d-block">
             <label><%= __('Pair') %>:</label>
             <input type="text" name="pair" value="<%= entryInfo.pair_id %>" class="dropdown-server d-none">

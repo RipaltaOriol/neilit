@@ -391,6 +391,9 @@ input.bg-style {
 #flag-entry {
   cursor: pointer;
 }
+  .dark-mode #flag-entry {
+    filter: invert();
+  }
 
 #btn-add-timeframe {
   border: none;

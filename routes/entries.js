@@ -17,6 +17,8 @@ router.route('/:id')
 
 router.get("/:id/edit", middleware.isLoggedIn, entries.renderEditForm)
 
+router.post("/:id/edit/flag", middleware.isLoggedIn, entries.editFlag)
+
 router.post("/:id/edit/pair", middleware.isLoggedIn, entries.editPair)
 
 router.post("/:id/edit/strategy", middleware.isLoggedIn, entries.editStrategy)

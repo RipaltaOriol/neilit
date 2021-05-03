@@ -7,16 +7,17 @@
         <div class="d-flex justify-content-between">
           <h3 class="mx-3"><%= entryInfo.pair %> - <%= entryInfo.entry_dt.toLocaleDateString(currentUser.language, options) %></h3>
           <div class="d-flex mb-2">
-            <% if (prevEntry.length > 0) { %>
-              <a href="/<%= currentUser.username %>/journal/entry/<%= prevEntry[0].id %>" class="mr-2">
-                <img src="/imgs/icons/arrow-back-neilit.svg" class="navigation-btn" alt="<%= __('Prev') %>">
-              </a>
-            <% } %>
             <% if (nextEntry.length > 0) { %>
               <a href="/<%= currentUser.username %>/journal/entry/<%= nextEntry[0].id %>" class="mr-2">
-                <img src="/imgs/icons/arrow-forward-neilit.svg" class="navigation-btn" alt="<%= __('Next') %><">
+                <img src="/imgs/icons/arrow-back-neilit.svg" class="navigation-btn" alt="<%= __('Next') %><">
               </a>
             <% } %>
+            <% if (prevEntry.length > 0) { %>
+              <a href="/<%= currentUser.username %>/journal/entry/<%= prevEntry[0].id %>" class="mr-2">
+                <img src="/imgs/icons/arrow-forward-neilit.svg" class="navigation-btn" alt="<%= __('Prev') %>">
+              </a>
+            <% } %>
+
           </div>
         </div>
         <hr>
@@ -52,6 +53,14 @@
                 } else {
                   %><%= entryInfo.entry_dt.toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }) %><%
                 } %>" readonly>
+            </div>
+            <div>
+              <label><%= __('Flagged') %>:</label>
+              <% if (entryInfo.flag) { %>
+                <img id="flag-entry" class="1" src="/imgs/icons/flag.svg" alt="flag">
+              <% } else { %>
+                <img id="flag-entry" class="0" src="/imgs/icons/flag-outline.svg" alt="flag">
+              <% } %>
             </div>
           </div>
           <!-- SPECIFIC ENTRY INFORMATION -->

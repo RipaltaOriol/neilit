@@ -57,11 +57,15 @@ function isSaving(bool) {
 
 // allows flagging entries
 $('#flag-entry').on('click', function() {
-  if ($('input[name ="flag"]').val() == 0) {
-    $('input[name ="flag"]').val(1)
+  saveToDB({
+    component: 'flag',
+    value: this.className ^ 1
+  })
+  if (this.className == 0) {
+    this.className = 1
     $(this).attr('src', '/imgs/icons/flag.svg')
   } else {
-    $('input[name ="flag"]').val(0)
+    this.className = 0
     $(this).attr('src', '/imgs/icons/flag-outline.svg')
   }
 })
